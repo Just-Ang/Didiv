@@ -5,7 +5,7 @@ import { Header } from 'components/Header/Header';
 // import { selectIsLoggedIn } from '../../redux/auth/selectors';
 
 const SharedLayout = () => {
-
+console.log('rer')
   return (
     <>
         <Header />
