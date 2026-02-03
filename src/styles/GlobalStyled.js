@@ -5,12 +5,9 @@ export const GlobalStyle = createGlobalStyle`
 :root {
   /* colors */
   --black-color: #000000;
-  --orange-color: #E6533C;
-  --orange-light-color: #EF8964;
-  --white-color: #EFEDE8; 
-  --grey-color: #636366;
-  --light-grey-color: rgba(239, 237, 232, 0.5);
-  --more-light-grey-color: rgba(239, 237, 232, 0.30); }
+  --main-brand-color: #3e2c1a;
+  --white-color: #ffffff; 
+ }
 
 .no-scroll {
   /* overflow: hidden; */

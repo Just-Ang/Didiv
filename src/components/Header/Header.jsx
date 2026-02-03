@@ -1,29 +1,37 @@
-import {
-  HeaderContainer,
-  Navigation,
-  StyledLink,
-  IconWrapper,
-} from './Header.styled';
-import sprite from 'assets/sprite.svg';
+import { HeaderContainer, Logo, ProductButton, Wrapper } from './Header.styled';
+import logo from '../../img/logo.png';
+import { useEffect, useRef, useState } from 'react';
+import ProductsMenu from '../ProductsMenu/ProductsMenu';
 
 export const Header = () => {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <HeaderContainer>
-      <Navigation>
-        <StyledLink to="/first">
-          <IconWrapper>
-            <use href={`${sprite}#icon-logo`} />
-          </IconWrapper>
-          First
-        </StyledLink>
-        <StyledLink to="/second">
-          <IconWrapper>
-            <use href={`${sprite}#icon-logo`} />
-          </IconWrapper>
-          Second
-        </StyledLink>
-      </Navigation>
+      <Logo src={logo} alt="logo">
+        
+      </Logo>
+      <Wrapper
+          ref={wrapperRef}
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+        >
+          <ProductButton onClick={() => setOpen((prev) => !prev)}>
+            ☰ Продукція
+          </ProductButton>
+          {open && <ProductsMenu />}
+        </Wrapper>
     </HeaderContainer>
   );
 };
