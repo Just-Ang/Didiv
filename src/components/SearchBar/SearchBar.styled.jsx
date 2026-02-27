@@ -28,7 +28,7 @@ export const Button = styled.button`
   width: 42px;
   border-radius: 50%;
   border: none;
-  background: #184c3f;
+  background: #453821;
   color: white;
   cursor: pointer;
   font-size: 16px;

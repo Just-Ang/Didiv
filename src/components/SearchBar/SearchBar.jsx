@@ -9,7 +9,7 @@ export const SearchBar =()=>{
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Быстрый и умный поиск"
+        placeholder="Пошук"
       />
 
       <Button>

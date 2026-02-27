@@ -4,8 +4,8 @@ import styled from "styled-components";
 export const Menu = styled.div`
 overflow: visible;
   position: absolute;
-  top: calc(100% + 12px);
-  left: 0;
+
+  left:20px;
 
   background: #fff;
   border-radius: 14px;
