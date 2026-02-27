@@ -3,7 +3,9 @@ import styled from 'styled-components';
 
 export const HeaderContainer = styled.div`
 width: 100%;
-max-width: 320px,
+max-width: 320px;
+padding: 20px;
+
 
 
 @media screen and (min-width: 1440px) {
@@ -11,11 +13,15 @@ max-width: 320px,
   }
 `;
 
+export const HeaderUp = styled.div`
+display: flex;
+`;
+
 
 export const Logo = styled.img`
   display: flex;
-  width:100px;
-  height:100px;
+  width:50px;
+  height:50px;
   justify-content: center;
   align-items: center;
 `;
@@ -45,6 +51,6 @@ export const ProductButton = styled.button`
 `;
 
 export const Wrapper = styled.div`
- position: absolute; 
+
   z-index: 9999;
 `;
