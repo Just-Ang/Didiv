@@ -1,8 +1,13 @@
 import styled from "styled-components";
+export const FavoriteLogo = styled.svg`
+  width: 24px;
+  height: 24px;
+  fill: var(--black-color);
+`;
 
 // Обгортка іконки
 export const Wrapper = styled.div`
-background: #4cff30;
+
 width:30px;
 height:30px;
 

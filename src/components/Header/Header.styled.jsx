@@ -3,8 +3,12 @@ import styled from 'styled-components';
 
 export const HeaderContainer = styled.div`
 width: 100%;
-max-width: 320px;
+max-width: 768px;
 padding: 20px;
+padding-left: 50px;
+padding-right: 50px;
+text-align:center;
+background: linear-gradient(1800deg, #5b3721, #695c51); // приклад градієнта
 
 
 
@@ -16,12 +20,17 @@ padding: 20px;
 export const HeaderUp = styled.div`
 display: flex;
 `;
+export const HeaderDown = styled.div`
+display: flex;
+    justify-content: space-around;
+`;
+
 
 
 export const Logo = styled.img`
   display: flex;
-  width:50px;
-  height:50px;
+  width:70px;
+  height:70px;
   justify-content: center;
   align-items: center;
 `;

@@ -1,5 +1,6 @@
 import {
   HeaderContainer,
+  HeaderDown,
   HeaderUp,
   Logo,
   ProductButton,
@@ -40,9 +41,11 @@ export const Header = () => {
           <Logo src={logo} alt="logo"></Logo>
         </Link>
       </HeaderUp>
-      <SearchBar></SearchBar>
+      <HeaderDown>
+        <SearchBar></SearchBar>
       <CartIcon></CartIcon>
       <FavoriteIcon></FavoriteIcon>
+      </HeaderDown>
     </HeaderContainer>
   );
 };

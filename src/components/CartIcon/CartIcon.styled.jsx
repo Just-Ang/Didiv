@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
+
+export const CartLogo = styled.svg`
+  width: 24px;
+  height: 24px;
+ fill: var(--black-color);
+`;
+
 // Обгортка іконки
 export const Wrapper = styled.div`
-background: #ff3b30;
+
 width:30px;
 height:30px;
 
