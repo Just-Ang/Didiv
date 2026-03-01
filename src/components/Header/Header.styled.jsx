@@ -26,7 +26,7 @@ background: radial-gradient(
 
 export const HeaderUp = styled.div`
 display: flex;
-    justify-content: space-between;
+    
 `;
 export const HeaderDown = styled.div`
 display: flex;
@@ -44,6 +44,7 @@ export const Logo = styled.img`
   display: flex;
   width:100px;
   height:100px;
+  
   justify-content: center;
   align-items: center;
   
@@ -53,6 +54,7 @@ export const Logo = styled.img`
 export const TitleLogo = styled.h1`
   color: var(--white-color);
   font-family: DM Serif Display;
+  margin-left: 70px;
 `;
 
 export const CatalogIcon = styled.svg`
@@ -152,3 +154,8 @@ export const Overlay = styled.div`
     transition: 0.3s;
   }
 `;
+
+export const MenuItem = styled.a`
+color: var(--black-color);
+  
+`

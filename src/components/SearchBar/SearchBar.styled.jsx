@@ -2,19 +2,26 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
  display: flex;
   align-items: center;
-  background: #45200e4b;
+  background: #33140645;
    border-radius: 12px;
  
  
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
  
   max-width: 520px;
+  @media screen and (max-width: 768px) {
+   position: fixed;
+   top:16px;
+  left:450px;
+  transform: translateX(-50%);
+  }
+ 
   
  
- @media screen and (max-width: 768px) {
- background: ${props => (props.isMobileOpen ? "#45200e4b" : "transparent")};
+ /* @media screen and (max-width: 768px) {
+ background: ${props => (props.isMobileOpen ? "#1d0e07d3" : "transparent")};
   
-  }
+  } */
 
   
 

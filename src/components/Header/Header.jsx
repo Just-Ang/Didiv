@@ -6,6 +6,8 @@ import {
   Logo,
   MenuButton,
 
+  MenuItem,
+
   MobileMenu,
 
   Overlay,
@@ -24,7 +26,7 @@ import {Menu} from '../Menu/Menu'
 import { FavoriteIcon } from '../FavoriteIcon/FavoriteIcon';
 
 import sprite from '../../img/symbol-defs.svg';
-import { MenuItem } from '../Menu/Menu.styled';
+
 
 
 export const Header = () => {
