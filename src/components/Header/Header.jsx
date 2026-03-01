@@ -1,48 +1,62 @@
 import {
+  CatalogIcon,
   HeaderContainer,
   HeaderDown,
   HeaderUp,
   Logo,
-  ProductButton,
-  Wrapper,
+  MenuButton,
+
+  MobileMenu,
+
+  StyledLink,
+
+  TitleLogo,
+
 } from './Header.styled';
 import logo from '../../img/logo.png';
-import { useEffect, useRef, useState } from 'react';
-import ProductsMenu from '../ProductsMenu/ProductsMenu';
+import {useState } from 'react';
+
 import { SearchBar } from '../SearchBar/SearchBar';
 import { CartIcon } from '../CartIcon/CartIcon';
+import {Menu} from '../Menu/Menu'
 import { FavoriteIcon } from '../FavoriteIcon/FavoriteIcon';
-import { Link } from 'react-router-dom';
+
+import sprite from '../../img/symbol-defs.svg';
+import { MenuItem } from '../Menu/Menu.styled';
+
 
 export const Header = () => {
-  const [open, setOpen] = useState(false);
-  const wrapperRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const [menuOpen, setMenuOpen] = useState(false);
+ 
+
+ 
 
   return (
     <HeaderContainer>
       <HeaderUp>
-        <Wrapper ref={wrapperRef}>
-          <ProductButton onClick={() => setOpen((prev) => !prev)}>
-            ☰ Продукція
-          </ProductButton>
-          {open && <ProductsMenu />}
-        </Wrapper>
-        <Link to="/">
-          <Logo src={logo} alt="logo"></Logo>
-        </Link>
-      </HeaderUp>
-      <HeaderDown>
+    
+        <Menu></Menu>
+        <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
+                <CatalogIcon> <use href={`${sprite}#icon-menu`} /></CatalogIcon>
+      </MenuButton>
+
+     
+      <MobileMenu open={menuOpen}>
+        <MenuItem href="#">Головна</MenuItem>
+        <MenuItem href="#">Про нас</MenuItem>
+        <MenuItem href="#">Послуги</MenuItem>
+        <MenuItem href="#">Контакти</MenuItem>
+      </MobileMenu>
+        <TitleLogo>Дідів хлів</TitleLogo>
         <SearchBar></SearchBar>
+       
+      </HeaderUp>
+       <StyledLink to="/">
+          <Logo src={logo} alt="logo"></Logo>
+        </StyledLink>
+      <HeaderDown>
+        
       <CartIcon></CartIcon>
       <FavoriteIcon></FavoriteIcon>
       </HeaderDown>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const CartLogo = styled.svg`
   width: 24px;
   height: 24px;
- fill: var(--black-color);
+ fill: var(--white-color);
 `;
 
 // Обгортка іконки

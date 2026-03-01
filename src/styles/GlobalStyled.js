@@ -6,7 +6,7 @@ export const GlobalStyle = createGlobalStyle`
   /* colors */
   --black-color: #000000;
   --main-brand-color: #3e2c1a;
-  --white-color: #ffffff; 
+  --white-color: #f2ebd4; 
  }
 
 .no-scroll {
