@@ -8,6 +8,8 @@ import {
 
   MobileMenu,
 
+  Overlay,
+
   StyledLink,
 
   TitleLogo,
@@ -41,11 +43,11 @@ export const Header = () => {
                 <CatalogIcon> <use href={`${sprite}#icon-menu`} /></CatalogIcon>
       </MenuButton>
 
-     
+     <Overlay open={menuOpen} onClick={() => setMenuOpen(false)} />
       <MobileMenu open={menuOpen}>
         <MenuItem href="#">Головна</MenuItem>
         <MenuItem href="#">Про нас</MenuItem>
-        <MenuItem href="#">Послуги</MenuItem>
+        <MenuItem href="#">Каталог</MenuItem>
         <MenuItem href="#">Контакти</MenuItem>
       </MobileMenu>
         <TitleLogo>Дідів хлів</TitleLogo>

@@ -11,7 +11,7 @@ export const MenuNav = styled.nav`
 
 export const MenuItem = styled.a`
   text-decoration: none;
-  color: #333;
+  color: var(--white-color);
   font-weight: 500;
   cursor: pointer;
 

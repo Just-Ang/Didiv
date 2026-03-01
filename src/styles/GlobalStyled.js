@@ -4,7 +4,7 @@ import 'modern-normalize';
 export const GlobalStyle = createGlobalStyle`
 :root {
   /* colors */
-  --black-color: #000000;
+  --black-color: #1d0f0a;
   --main-brand-color: #382116;
   --white-color: #f2ebd4; 
  }

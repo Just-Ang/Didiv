@@ -2,19 +2,21 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
  display: flex;
   align-items: center;
-  background: #ffffff;
-  border-radius: 50%;
+  background: #45200e4b;
+   border-radius: 12px;
+ 
  
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
  
   max-width: 520px;
+  
  
+ @media screen and (max-width: 768px) {
+ background: ${props => (props.isMobileOpen ? "#45200e4b" : "transparent")};
+  
+  }
 
-   @media(min-width: 600px) {
-    
- display: flex;
- flex-direction: row;
-}
+  
 
 
 
@@ -27,11 +29,15 @@ display: none;
   outline: none;
   padding: 14px 22px;
   font-size: 16px;
+  background-color: transparent;
+  color: var(--white-color);
+ 
+ 
   
   
   
   ::placeholder {
-    color: #9aa0a6;
+    color: #a09589;
 
      
   }
@@ -52,7 +58,7 @@ export const Button = styled.button`
   color: white;
   cursor: pointer;
   font-size: 16px;
-background: #453821;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +79,7 @@ margin-right: 6px;
   width: 42px;
   border-radius: 50%;
   border: none;
-   background: #453821;
+   background: transparent;
   color: white;
   cursor: pointer;
   font-size: 16px;

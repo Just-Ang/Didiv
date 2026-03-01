@@ -114,6 +114,8 @@ export const Wrapper = styled.div`
 
 export const MobileMenu = styled.div`
   display: flex;
+  font-family: DM Serif Display;
+  font-size: 25px;
 
 @media (max-width: 768px) {
     position: fixed;
@@ -122,6 +124,7 @@ export const MobileMenu = styled.div`
     width: 280px;
     height: 100vh;
     background-color: var(--white-color);
+    color: var(--black-color);
 
     flex-direction: column;
     justify-content: center;
@@ -137,5 +140,15 @@ export const MobileMenu = styled.div`
   }
     @media screen and (min-width: 768px) {
   display: none;
+  }
+`;
+export const Overlay = styled.div`
+  @media (max-width: 768px) {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: ${({ open }) => (open ? 1 : 0)};
+    visibility: ${({ open }) => (open ? "visible" : "hidden")};
+    transition: 0.3s;
   }
 `;

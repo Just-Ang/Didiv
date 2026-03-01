@@ -19,7 +19,7 @@ export const SearchBar =()=>{
 
       
 
-        <Button className="search-button" onClick={toggleSearch}>
+        <Button className="search-button" isMobileOpen={isMobileOpen} onClick={toggleSearch}>
        <ButtonLogo>
   <use href={`${sprite}#icon-search`} />
        </ButtonLogo>
