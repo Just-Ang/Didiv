@@ -53,7 +53,7 @@ export const Header = () => {
         <MenuItem href="#">Контакти</MenuItem>
       </MobileMenu>
         <TitleLogo>Дідів хлів</TitleLogo>
-        <SearchBar></SearchBar>
+        
        
       </HeaderUp>
        <StyledLink to="/">
@@ -62,6 +62,7 @@ export const Header = () => {
       <HeaderDown>
         
       <CartIcon></CartIcon>
+      <SearchBar></SearchBar>
       <FavoriteIcon></FavoriteIcon>
       </HeaderDown>
     </HeaderContainer>

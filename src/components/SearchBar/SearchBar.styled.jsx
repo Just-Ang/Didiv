@@ -9,23 +9,12 @@ export const Wrapper = styled.div`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
  
   max-width: 520px;
-  @media screen and (max-width: 768px) {
-   position: fixed;
-   top:16px;
-  left:450px;
-  transform: translateX(-50%);
+ 
+
+ @media screen and (max-width: 768px) {
+ background: ${props => (props.isMobileOpen ? "#33140645" : "transparent")};
+  box-shadow:${props => (props.isMobileOpen ? "0 2px 8px rgba(0, 0, 0, 0.12);" : "none")};
   }
- 
-  
- 
- /* @media screen and (max-width: 768px) {
- background: ${props => (props.isMobileOpen ? "#1d0e07d3" : "transparent")};
-  
-  } */
-
-  
-
-
 
 `;
 

@@ -9,7 +9,7 @@ export const SearchBar =()=>{
      const toggleSearch = () => setIsMobileOpen(prev => !prev);
 
   return (
-    <Wrapper>
+    <Wrapper isMobileOpen={isMobileOpen}>
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}
