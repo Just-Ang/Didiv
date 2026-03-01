@@ -113,19 +113,29 @@ export const Wrapper = styled.div`
 // `;
 
 export const MobileMenu = styled.div`
-  display: none;
+  display: flex;
 
-  @media (max-width: 768px) {
-    display: ${({ open }) => (open ? "flex" : "none")};
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 70px);
-    background-color: #fff;
+@media (max-width: 768px) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: var(--white-color);
+
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap: 20px;
+    align-items: center;
+    gap: 30px;
+
+    transform: ${({ open }) =>
+      open ? "translateX(0)" : "translateX(100%)"};
+
+    transition: transform 0.3s ease-in-out;
+
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  }
+    @media screen and (min-width: 768px) {
+  display: none;
   }
 `;

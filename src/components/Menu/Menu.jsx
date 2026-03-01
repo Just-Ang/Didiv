@@ -15,3 +15,19 @@ export const Menu = () => {
 
   );
 };
+
+export const MobileMenu = () => {
+
+
+  return (
+    <MenuNav>
+        <MenuItem>Продукція</MenuItem>
+           <MenuItem>Акції</MenuItem>
+             <MenuItem>Контакти</MenuItem>
+
+    </MenuNav>
+
+
+
+  );
+};
