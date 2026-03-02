@@ -40,6 +40,10 @@ export const HeaderUp = styled.div`
 /* display: grid;
 grid-template-columns: 1fr auto 1fr; */
 display: flex;
+@media screen and (max-width: 768px) {
+  justify-content: space-between;
+  }
+
 
 
     
