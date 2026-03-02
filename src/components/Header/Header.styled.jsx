@@ -2,23 +2,34 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const HeaderContainer = styled.div`
-width: 100%;
-max-width: 768px;
-padding: 20px;
-padding-left: 50px;
-padding-right: 50px;
-text-align:center;
+
+export const HeaderSection = styled.div`
 background: radial-gradient(
   circle at 50% 45%,
   #6F4B30 0%,
   #56341F 35%,
   #382116 65%,
   #1E0F09 100%
-);
+);`
 
+export const HeaderContainer = styled.div`
+width: 100%;
+max-width: 320px;
+padding: 10px;
+padding-left: 20px;
+padding-right: 20px;
+margin-left: auto;
+    margin-right: auto;
+text-align:center;
+display: flex;
+flex-direction: column;
+gap: 10px;
 
-
+@media screen and (min-width: 768px) {
+  max-width: 768px;
+  padding-left: 30px;
+padding-right: 30px;
+  }
 @media screen and (min-width: 1440px) {
    max-width: 1440px,
   }
@@ -26,11 +37,22 @@ background: radial-gradient(
 
 export const HeaderUp = styled.div`
 display: flex;
+    justify-content: space-between;
     
 `;
-export const HeaderDown = styled.div`
+export const HeadeRight = styled.div`
 display: flex;
     justify-content: space-around;
+
+
+@media screen and (min-width: 768px) {
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+
 `;
 
 
@@ -42,8 +64,8 @@ display: flex;
 `;
 export const Logo = styled.img`
   display: flex;
-  width:100px;
-  height:100px;
+  width:50px;
+  height:50px;
   
   justify-content: center;
   align-items: center;
@@ -71,8 +93,6 @@ export const MenuButton = styled.button`
   color: var(--white-color);
   border: none;
   border-radius: 30px;
-
-  padding: 12px 22px;
   font-size: 15px;
   font-weight: 600;
   display: none;

@@ -5,7 +5,11 @@ export const MenuNav = styled.nav`
   gap: 20px;
 
   @media (max-width: 768px) {
-    display: none; // ховаємо на мобільних
+    display: none; 
+  }
+   @media (min-width: 768px) {
+   order:1;
+   margin-right: 200px;
   }
 `;
 

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-   import { Link } from "react-router-dom";
-import { Badge, CartLogo, Wrapper } from "./CartIcon.styled";
+
+import { Badge, CartLogo, StyledLink, Wrapper } from "./CartIcon.styled";
 
 import sprite from '../../img/symbol-defs.svg';
 export const CartIcon = ({ onClick }) => {
@@ -11,7 +11,7 @@ const cartCount = useSelector(state => state.cart.items.length);
   return (
 
 
-<Link to="/cart">
+<StyledLink to="/cart">
   <Wrapper onClick={onClick}>
 
   <CartLogo>
@@ -19,6 +19,6 @@ const cartCount = useSelector(state => state.cart.items.length);
   </CartLogo>
     {cartCount > 0 && <Badge>{cartCount}</Badge>}
     </Wrapper>
-</Link>
+</StyledLink>
   );
 };

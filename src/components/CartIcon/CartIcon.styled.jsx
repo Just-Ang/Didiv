@@ -1,6 +1,18 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 
+
+export const  StyledLink =styled(Link)`
+      display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    @media screen and (min-width: 768px) {
+   order: 2;
+  }
+       
+`
 export const CartLogo = styled.svg`
   width: 24px;
   height: 24px;

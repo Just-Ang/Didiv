@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
-   import { Link } from "react-router-dom";
-import { Badge, FavoriteLogo, Wrapper } from "./FavoriteIcon.syled";
+
+import { Badge, FavoriteLogo, Wrapper } from "./FavoriteIcon.styled";
 import sprite from '../../img/symbol-defs.svg';
+import { StyledLink } from "../CartIcon/CartIcon.styled";
 
 
 export const FavoriteIcon = ({ onClick }) => {
@@ -11,7 +12,7 @@ export const FavoriteIcon = ({ onClick }) => {
   return (
 
 
-<Link to="/cart">
+<StyledLink to="/cart">
   <Wrapper onClick={onClick}>
 
       <FavoriteLogo>
@@ -20,6 +21,6 @@ export const FavoriteIcon = ({ onClick }) => {
   
     {favCount > 0 && <Badge>{favCount}</Badge>}
     </Wrapper>
-</Link>
+</StyledLink>
   );
 };

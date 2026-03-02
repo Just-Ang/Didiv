@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BtnClose, Button, ButtonCloseLogo, ButtonLogo, Input, Wrapper } from "./SearchBar.styled";
+import {  Button,  ButtonLogo, Input, Wrapper } from "./SearchBar.styled";
 import sprite from '../../img/symbol-defs.svg';
 
 export const SearchBar =()=>{
@@ -9,13 +9,11 @@ export const SearchBar =()=>{
      const toggleSearch = () => setIsMobileOpen(prev => !prev);
 
   return (
-    <Wrapper isMobileOpen={isMobileOpen}>
+    <Wrapper>
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Пошук"
-         isMobileOpen={isMobileOpen}
-     
       />
 
       
@@ -29,13 +27,7 @@ export const SearchBar =()=>{
       </Button>
       
 
-         {isMobileOpen && (
-        <BtnClose className="close-button" onClick={toggleSearch}>
-          <ButtonCloseLogo> X
-  <use href={`${sprite}#icon-x`} />
-       </ButtonCloseLogo>
-        </BtnClose>
-      )}
+        
       
     </Wrapper>
   )}
