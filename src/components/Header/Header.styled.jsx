@@ -26,9 +26,10 @@ flex-direction: column;
 gap: 10px;
 
 @media screen and (min-width: 768px) {
-  max-width: 768px;
+  max-width: 1440px;
   padding-left: 30px;
 padding-right: 30px;
+
   }
 @media screen and (min-width: 1440px) {
    max-width: 1440px,
@@ -36,8 +37,11 @@ padding-right: 30px;
 `;
 
 export const HeaderUp = styled.div`
+/* display: grid;
+grid-template-columns: 1fr auto 1fr; */
 display: flex;
-    justify-content: space-between;
+
+
     
 `;
 export const HeadeRight = styled.div`
@@ -50,6 +54,7 @@ display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
+    flex:1;
   }
 
 

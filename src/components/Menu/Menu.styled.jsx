@@ -9,7 +9,10 @@ export const MenuNav = styled.nav`
   }
    @media (min-width: 768px) {
    order:1;
-   margin-right: 200px;
+    gap: 80px;
+    margin-right: auto;
+    margin-left: auto;
+ 
   }
 `;
 

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 export const FavoriteLogo = styled.svg`
   width: 24px;
@@ -5,7 +6,19 @@ export const FavoriteLogo = styled.svg`
   fill: var(--white-color);
 `;
 
-// Обгортка іконки
+export const  StyledLink =styled(Link)`
+      display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    
+    @media screen and (min-width: 768px) {
+   order: 2;
+ 
+  }
+       
+`
+
 export const Wrapper = styled.div`
 
 width:30px;

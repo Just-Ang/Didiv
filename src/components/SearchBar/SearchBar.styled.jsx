@@ -10,7 +10,9 @@ export const Wrapper = styled.div`
  width: 100%;
   max-width: 300px;
  @media screen and (min-width: 768px) {
-   max-width: 700px;
+   max-width:  1000px;
+   margin-left: auto;
+   margin-right:auto;
   }
 
 
@@ -37,7 +39,7 @@ export const Input = styled.input`
   
 
   @media screen and (min-width: 768px) {
-   max-width: 700px;
+   max-width: 1000px;
   }
 `;
 

@@ -8,8 +8,11 @@ export const  StyledLink =styled(Link)`
     align-items: center;
     align-content: center;
     justify-content: center;
+    
     @media screen and (min-width: 768px) {
    order: 2;
+  margin-right: 10px;
+  
   }
        
 `

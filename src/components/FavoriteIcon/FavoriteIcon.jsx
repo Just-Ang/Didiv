@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 import { Badge, FavoriteLogo, Wrapper } from "./FavoriteIcon.styled";
 import sprite from '../../img/symbol-defs.svg';
-import { StyledLink } from "../CartIcon/CartIcon.styled";
+import { StyledLink } from "../FavoriteIcon/FavoriteIcon.styled";
 
 
 export const FavoriteIcon = ({ onClick }) => {
