@@ -12,7 +12,7 @@ export const FavoriteIcon = ({ onClick }) => {
   return (
 
 
-<StyledLink to="/cart">
+<StyledLink to="/favorite">
   <Wrapper onClick={onClick}>
 
       <FavoriteLogo>

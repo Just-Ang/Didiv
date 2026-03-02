@@ -2,7 +2,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
  display: flex;
   align-items: center;
-  background: #33140645;
+  background: #ffffff2b;
    border-radius: 12px;
  
  
