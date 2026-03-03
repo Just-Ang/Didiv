@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import SharedLayout from 'components/SharedLayout/SharedLayout';
 import FirstPage from 'pages/FirstPage/FirstPage';
-import SecondPage from 'pages/SecondPage/SecondPage';
+import CatalogPage from 'pages/CatalogPage/CatalogPage';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import { AppWrapper } from './App.styled';
 import { Suspense } from 'react';
@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route path="/first" element={<FirstPage />} />
-          <Route path="/second" element={<SecondPage />}>
+          <Route path="/catalog" element={<CatalogPage />}>
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Route>

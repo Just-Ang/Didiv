@@ -1,4 +1,4 @@
-import { Container, Title, StyledImage } from './FirstPage.styled';
+import { Container, Title, StyledImage } from './HomePage.styled';
 import example from '../../assets/example.png';
 
 const FirstPage = () => {
