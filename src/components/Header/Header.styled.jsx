@@ -4,13 +4,7 @@ import styled from 'styled-components';
 
 
 export const HeaderSection = styled.div`
-background: radial-gradient(
-  circle at 50% 45%,
-  #6F4B30 0%,
-  #56341F 35%,
-  #382116 65%,
-  #1E0F09 100%
-);`
+    background: radial-gradient(circle at 50% 45%, #634e3f 0%, #4d392d 35%, #36241b 65%, #1E0F09 100%);`
 
 export const HeaderContainer = styled.div`
 width: 100%;
