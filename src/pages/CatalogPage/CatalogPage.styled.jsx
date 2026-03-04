@@ -22,6 +22,18 @@ export const CatalogBox = styled.div`
 
   gap: 24px; /* відстань між картками */
   margin-top: 32px;
+   max-height: 600px;   /* обмежуємо висоту */
+  overflow-y: auto;  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* старий IE */
+  -ms-overflow-style: none;
+  
 
   /* адаптивність для планшета/мобільного */
   @media (max-width: 1024px) {
