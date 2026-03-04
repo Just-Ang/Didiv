@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
  
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
  width: 100%;
-  max-width: 300px;
+      max-width: 380px;
  @media screen and (min-width: 768px) {
    max-width:  1400px;
    margin-left: auto;

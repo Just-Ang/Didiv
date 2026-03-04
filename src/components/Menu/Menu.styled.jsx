@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const MenuNav = styled.nav`
@@ -18,6 +19,20 @@ export const MenuNav = styled.nav`
 
 export const MenuItem = styled.a`
   text-decoration: none;
+  color: var(--white-color);
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    color: #007bff;
+  }
+`;
+ export const StyledLink = styled(Link)`
+      display: flex;
+    align-items: center;
+    text-align: center;
+        justify-content: center;
+         text-decoration: none;
   color: var(--white-color);
   font-weight: 500;
   cursor: pointer;

@@ -7,6 +7,7 @@ export const GlobalStyle = createGlobalStyle`
   --black-color: #1d0f0a;
   --main-brand-color: #382116;
   --white-color: #f2ebd4; 
+  --main-font:  DMSerifDisplay;
  }
 
 .no-scroll {

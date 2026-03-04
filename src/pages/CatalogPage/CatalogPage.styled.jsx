@@ -7,14 +7,19 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 30px;
+  background-color: #f6e1d338;
 `;
 
 export const CatalogTitle = styled.h1`
+font-family: var(--main-font);
+color: var( --black-color)
+
  
 `;
 export const CatalogBox = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 колонки однакової ширини */
+  grid-template-columns: repeat(3, 1fr); 
+
   gap: 24px; /* відстань між картками */
   margin-top: 32px;
 
@@ -24,8 +29,11 @@ export const CatalogBox = styled.div`
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; /* 1 колонка на мобілці */
-  }
+  grid-template-columns: repeat(2, 1fr);
+      padding-left: 20px;
+    padding-right: 20px;
+    gap: 20px;
+}
 `;
 export const Overlay = styled.div`
   position: absolute;
@@ -61,12 +69,24 @@ export const ItemImg = styled.img`
   object-fit: cover;
 
   display: block;
+   @media screen and (max-width: 768px) {
+  height: 100px;
+  }
+
 `;
 
 
 export const ItemTitle = styled.p`
+color: var( --black-color);
   padding: 16px;
   font-size: 18px;
   font-weight: 600;
+  font-family: var(--main-font);
   text-align: center;
+    @media screen and (max-width: 768px) {
+ padding:10px;
+   font-size: 15px;
+  font-weight: 400;
+  }
+
 `;

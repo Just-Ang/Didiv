@@ -20,13 +20,14 @@ function App() {
         <GlobalStyle />
        <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path="/" element={<SharedLayout />}>
-          <Route path="/first" element={< HomePage/>} />
-          <Route path="/catalog" element={<CatalogPage />}>
-          </Route>
-          <Route path="*" element={<ErrorPage />} />
-        </Route>
-      </Routes>
+  <Route path="/" element={<SharedLayout />}>
+    <Route index element={<HomePage />} /> {/* Головна */}
+    <Route path="catalog" element={<CatalogPage />} />
+    <Route path="about" element={<div>Про нас</div>} /> 
+    <Route path="contacts" element={<div>Контакти</div>} />
+    <Route path="*" element={<ErrorPage />} />
+  </Route>
+</Routes>
       </Suspense>
     </AppWrapper>
   );

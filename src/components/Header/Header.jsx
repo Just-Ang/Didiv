@@ -7,7 +7,7 @@ import {
   HeaderUp,
   Logo,
   MenuButton,
-  MenuItem,
+
   MobileMenu,
   Overlay,
   StyledLink,
@@ -46,11 +46,12 @@ export const Header = () => {
 
           <Overlay open={menuOpen} onClick={() => setMenuOpen(false)} />
           <MobileMenu open={menuOpen}>
-            <MenuItem href="#">Головна</MenuItem>
-            <MenuItem href="#">Про нас</MenuItem>
-            <MenuItem href="#">Каталог</MenuItem>
-            <MenuItem href="#">Контакти</MenuItem>
-          </MobileMenu>
+           
+  <StyledLink to="/">Головна</StyledLink>
+  <StyledLink to="/about">Про нас</StyledLink>
+  <StyledLink to="/catalog">Каталог</StyledLink>
+  <StyledLink to="/contacts">Контакти</StyledLink>
+</MobileMenu>
         </HeadeRight>
       </HeaderUp>
       <SearchBar></SearchBar>

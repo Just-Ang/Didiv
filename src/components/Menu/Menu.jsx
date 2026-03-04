@@ -1,13 +1,14 @@
-import { MenuItem, MenuNav } from "./Menu.styled";
+import {  MenuNav, StyledLink } from "./Menu.styled";
 
 export const Menu = () => {
 
 
   return (
     <MenuNav>
-        <MenuItem>Продукція</MenuItem>
-           <MenuItem>Акції</MenuItem>
-             <MenuItem>Контакти</MenuItem>
+  <StyledLink to="/">Головна</StyledLink>
+         <StyledLink to="/about">Про нас</StyledLink>
+         <StyledLink to="/catalog">Каталог</StyledLink>
+         <StyledLink to="/contacts">Контакти</StyledLink>
 
     </MenuNav>
 
@@ -16,18 +17,19 @@ export const Menu = () => {
   );
 };
 
-export const MobileMenu = () => {
+// export const MobileMenu = () => {
 
 
-  return (
-    <MenuNav>
-        <MenuItem>Продукція</MenuItem>
-           <MenuItem>Акції</MenuItem>
-             <MenuItem>Контакти</MenuItem>
+//   return (
+//     <MenuNav>
+//          <StyledLink to="/">Головна</StyledLink>
+//          <StyledLink to="/about">Про нас</StyledLink>
+//          <StyledLink to="/catalog">Каталог</StyledLink>
+//          <StyledLink to="/contacts">Контакти</StyledLink>
 
-    </MenuNav>
+//     </MenuNav>
 
 
 
-  );
-};
+//   );
+// };
