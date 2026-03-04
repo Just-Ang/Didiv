@@ -4,10 +4,8 @@ import sprite from '../../img/symbol-defs.svg';
 
 export const SearchBar =()=>{
     const [value, setValue] = useState("");
-    const [isMobileOpen, setIsMobileOpen] = useState(false);
-    console.log(isMobileOpen)
-     const toggleSearch = () => setIsMobileOpen(prev => !prev);
-
+    
+     
   return (
     <Wrapper>
       <Input
@@ -18,7 +16,7 @@ export const SearchBar =()=>{
 
       
 
-        <Button className="search-button" isMobileOpen={isMobileOpen} onClick={toggleSearch}>
+        <Button className="search-button" >
        <ButtonLogo>
   <use href={`${sprite}#icon-search`} />
        </ButtonLogo>
