@@ -2,9 +2,22 @@ import { Button, Card,  CardButtons,  CardImg, CardInfo, CardPrice, CardTitle, C
 import { products } from "../../data/products";
 import sprite from '../../img/symbol-defs.svg';
 
-export const ProductList = ({ category }) => {
-  const filteredProducts = products.filter(item => item.category === category);
-console.log(filteredProducts);
+export const ProductList = ({ category, selectedFilters = {}  }) => {
+let filteredProducts = products.filter(p => p.category === category);
+
+  // фільтруємо по чекбоксам
+  Object.keys(selectedFilters).forEach(key => {
+    const value = selectedFilters[key];
+    if (Array.isArray(value) && value.length > 0) {
+      filteredProducts = filteredProducts.filter(p => value.includes(p[key]));
+    }
+    // фільтруємо по range
+    if (typeof value === "string" || typeof value === "number") {
+      if (key === "price") {
+        filteredProducts = filteredProducts.filter(p => p.price <= Number(value));
+      }
+    }
+  });
   return (
     <GridWrapper>
       {filteredProducts.map(product => (
