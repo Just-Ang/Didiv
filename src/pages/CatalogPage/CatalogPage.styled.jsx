@@ -20,24 +20,23 @@ export const CatalogBox = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
 
-  gap: 24px; /* відстань між картками */
-  margin-top: 32px;
-   max-height: 600px;   /* обмежуємо висоту */
+  gap: 24px; 
+  padding-top:30px;
+  padding-bottom:30px;
+   max-height: 600px;   
   overflow-y: auto;  
   &::-webkit-scrollbar {
     display: none;
   }
 
-  /* Firefox */
   scrollbar-width: none;
 
-  /* старий IE */
   -ms-overflow-style: none;
-  
 
-  /* адаптивність для планшета/мобільного */
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr); /* 2 колонки на середніх екранах */
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr); 
+     padding-left: 20px;
+    padding-right: 20px;
   }
 
   @media (max-width: 768px) {
@@ -46,6 +45,11 @@ export const CatalogBox = styled.div`
     padding-right: 20px;
     gap: 20px;
 }
+ @media screen and (min-width: 1440px) {
+     grid-template-columns: repeat(4, 1fr); 
+     padding-left: 30px;
+    padding-right: 30px;
+  }
 `;
 export const Overlay = styled.div`
   position: absolute;
