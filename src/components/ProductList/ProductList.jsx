@@ -1,5 +1,6 @@
-import { Button, Card,  CardButtons,  CardImg, CardInfo, CardPrice, CardTitle, CardWeight, GridWrapper,} from "./ProductList.styled";
+import { Button, Card,  CardButtons,  CardImg, CardInfo, CardPrice, CardTitle, CardWeight, CartLogo, FavoriteLogo, GridWrapper,} from "./ProductList.styled";
 import { products } from "../../data/products";
+import sprite from '../../img/symbol-defs.svg';
 
 export const ProductList = ({ category }) => {
   const filteredProducts = products.filter(item => item.category === category);
@@ -18,8 +19,16 @@ console.log(filteredProducts);
 
 
           <CardButtons>
-            <Button>Додати в кошик</Button>
-            <Button>Додати в обране</Button>
+            <Button>
+              <CartLogo>
+                   <use href={`${sprite}#icon-cart`} />
+                </CartLogo>
+               <span className="button-text">в кошик</span></Button>
+            <Button>
+              <FavoriteLogo>
+                       <use href={`${sprite}#icon-heart`} />
+                    </FavoriteLogo>
+            </Button>
           </CardButtons>
         </Card>
       ))}

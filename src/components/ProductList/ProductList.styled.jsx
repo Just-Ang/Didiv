@@ -33,10 +33,13 @@ export const Card = styled.div`
   background: #fff;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+   padding-bottom:30px;
+ 
 
   &:hover {
-    transform: translateY(-6px);
+     transform: scale(1.05); /* трохи збільшуємо карточку */
     box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+     
      div.card-buttons {
       opacity: 1;
       transform: translateY(0);
@@ -87,7 +90,7 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
 
 export const Button = styled.button`
   flex: 1;
-  padding: 6px 10px;
+  padding: 6px 5px;
   border: none;
   border-radius: 6px;
   background-color: #a2856a;
@@ -95,8 +98,34 @@ export const Button = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    gap: 10px;
+     span.button-text {
+    display: none; /* за замовчуванням ховаємо текст */
+  }
+
+  @media (min-width: 768px) {
+    span.button-text {
+      display: inline; /* показуємо текст на десктопі */
+    }
+  }
+
 
   &:hover {
-    background-color: #ff4c4c;
+    background-color: #a85d5d;
   }
+`;
+
+export const CartLogo = styled.svg`
+  width: 24px;
+  height: 24px;
+ fill: var(--white-color);
+`;
+export const FavoriteLogo = styled.svg`
+  width: 24px;
+  height: 24px;
+ fill: var(--white-color);
 `;

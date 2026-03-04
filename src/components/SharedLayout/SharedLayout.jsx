@@ -9,7 +9,10 @@ console.log('rer')
   return (
     <>
         <Header />
-      <Outlet />
+          <main className="main-content">
+ <Outlet />
+          </main>
+     
         <Footer />
     </>
   );

@@ -12,7 +12,6 @@ export const CategoryPage = () => {
 
   return (
     <Wrapper>
-        <h3>{category}</h3>
       <SidebarFilters category={category} />
       <ProductList category={category} />
     </Wrapper>

@@ -14,6 +14,8 @@ export const GlobalStyle = createGlobalStyle`
   /* overflow: hidden; */
 }
 
+
+
 body {
   background-size: auto 100%;
   background-position: center center;
@@ -36,6 +38,22 @@ body {
     border-radius: 12px;
   }
 
+}
+
+/* index.css або глобальний стиль */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Висота на весь екран */
+}
+
+.main-content {
+  flex: 1; /* займає весь простір між header і footer */
 }
 
 
@@ -72,3 +90,6 @@ dd {
   margin-left: 0;
 }
 `;
+
+
+
