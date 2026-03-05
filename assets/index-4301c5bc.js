@@ -70,8 +70,9 @@ Error generating stack: `+o.message+`
 `)},c=0;c<a;c++)u(c);return s}(i)})}return e.registerId=function(t){return _o(t)},e.prototype.reconstructWithOptions=function(t,n){return n===void 0&&(n=!0),new e(Ie(Ie({},this.options),t),this.gs,n&&this.names||void 0)},e.prototype.allocateGSInstance=function(t){return this.gs[t]=(this.gs[t]||0)+1},e.prototype.getTag=function(){return this.tag||(this.tag=(t=function(n){var r=n.useCSSOMInjection,i=n.target;return n.isServer?new $_(i):r?new j_(i):new O_(i)}(this.options),new w_(t)));var t},e.prototype.hasNameForId=function(t,n){return this.names.has(t)&&this.names.get(t).has(n)},e.prototype.registerName=function(t,n){if(_o(t),this.names.has(t))this.names.get(t).add(n);else{var r=new Set;r.add(n),this.names.set(t,r)}},e.prototype.insertRules=function(t,n,r){this.registerName(t,n),this.getTag().insertRules(_o(t),r)},e.prototype.clearNames=function(t){this.names.has(t)&&this.names.get(t).clear()},e.prototype.clearRules=function(t){this.getTag().clearGroup(_o(t)),this.clearNames(t)},e.prototype.clearTag=function(){this.tag=void 0},e}(),T_=/&/g,M_=/^\s*\/\/.*$/gm;function kg(e,t){return e.map(function(n){return n.type==="rule"&&(n.value="".concat(t," ").concat(n.value),n.value=n.value.replaceAll(",",",".concat(t," ")),n.props=n.props.map(function(r){return"".concat(t," ").concat(r)})),Array.isArray(n.children)&&n.type!=="@keyframes"&&(n.children=kg(n.children,t)),n})}function N_(e){var t,n,r,i=e===void 0?jr:e,o=i.options,l=o===void 0?jr:o,a=i.plugins,s=a===void 0?la:a,u=function(h,y,g){return g===n||g.startsWith(n)&&g.endsWith(n)&&g.replaceAll(n,"").length>0?".".concat(t):h},c=s.slice();c.push(function(h){h.type===na&&h.value.includes("&")&&(h.props[0]=h.props[0].replace(T_,n).replace(r,u))}),l.prefix&&c.push(l_),c.push(r_);var d=function(h,y,g,x){y===void 0&&(y=""),g===void 0&&(g=""),x===void 0&&(x="&"),t=x,n=y,r=new RegExp("\\".concat(n,"\\b"),"g");var C=h.replace(M_,""),p=t_(g||y?"".concat(g," ").concat(y," { ").concat(C," }"):C);l.namespace&&(p=kg(p,l.namespace));var f=[];return El(p,i_(c.concat(o_(function(m){return f.push(m)})))),f};return d.hash=s.length?s.reduce(function(h,y){return y.name||Xi(15),cr(h,y.name)},5381).toString():"",d}var D_=new Pl,ku=N_(),Cg=St.createContext({shouldForwardProp:void 0,styleSheet:D_,stylis:ku});Cg.Consumer;St.createContext(void 0);function Cu(){return b.useContext(Cg)}var I_=function(){function e(t,n){var r=this;this.inject=function(i,o){o===void 0&&(o=ku);var l=r.name+o.hash;i.hasNameForId(r.id,l)||i.insertRules(r.id,l,o(r.rules,l,"@keyframes"))},this.name=t,this.id="sc-keyframes-".concat(t),this.rules=n,Bc(this,function(){throw Xi(12,String(r.name))})}return e.prototype.getName=function(t){return t===void 0&&(t=ku),this.name+t.hash},e}(),z_=function(e){return e>="A"&&e<="Z"};function Id(e){for(var t="",n=0;n<e.length;n++){var r=e[n];if(n===1&&r==="-"&&e[0]==="-")return e;z_(r)?t+="-"+r.toLowerCase():t+=r}return t.startsWith("ms-")?"-"+t:t}var Eg=function(e){return e==null||e===!1||e===""},bg=function(e){var t,n,r=[];for(var i in e){var o=e[i];e.hasOwnProperty(i)&&!Eg(o)&&(Array.isArray(o)&&o.isCss||Or(o)?r.push("".concat(Id(i),":"),o,";"):zi(o)?r.push.apply(r,Ii(Ii(["".concat(i," {")],bg(o),!1),["}"],!1)):r.push("".concat(Id(i),": ").concat((t=i,(n=o)==null||typeof n=="boolean"||n===""?"":typeof n!="number"||n===0||t in pg||t.startsWith("--")?String(n).trim():"".concat(n,"px")),";")))}return r};function _n(e,t,n,r){if(Eg(e))return[];if(Uc(e))return[".".concat(e.styledComponentId)];if(Or(e)){if(!Or(o=e)||o.prototype&&o.prototype.isReactComponent||!t)return[e];var i=e(t);return _n(i,t,n,r)}var o;return e instanceof I_?n?(e.inject(n,r),[e.getName(r)]):[e]:zi(e)?bg(e):Array.isArray(e)?Array.prototype.concat.apply(la,e.map(function(l){return _n(l,t,n,r)})):[e.toString()]}function Pg(e){for(var t=0;t<e.length;t+=1){var n=e[t];if(Or(n)&&!Uc(n))return!1}return!0}var L_=gg("6.0.7"),A_=function(){function e(t,n,r){this.rules=t,this.staticRulesId="",this.isStatic=(r===void 0||r.isStatic)&&Pg(t),this.componentId=n,this.baseHash=cr(L_,n),this.baseStyle=r,Pl.registerId(n)}return e.prototype.generateAndInjectStyles=function(t,n,r){var i=this.baseStyle?this.baseStyle.generateAndInjectStyles(t,n,r):"";if(this.isStatic&&!r.hash)if(this.staticRulesId&&n.hasNameForId(this.componentId,this.staticRulesId))i=Mn(i,this.staticRulesId);else{var o=wu(_n(this.rules,t,n,r)),l=_u(cr(this.baseHash,o)>>>0);if(!n.hasNameForId(this.componentId,l)){var a=r(o,".".concat(l),void 0,this.componentId);n.insertRules(this.componentId,l,a)}i=Mn(i,l),this.staticRulesId=l}else{for(var s=cr(this.baseHash,r.hash),u="",c=0;c<this.rules.length;c++){var d=this.rules[c];if(typeof d=="string")u+=d;else if(d){var h=wu(_n(d,t,n,r));s=cr(s,h),u+=h}}if(u){var y=_u(s>>>0);n.hasNameForId(this.componentId,y)||n.insertRules(this.componentId,y,r(u,".".concat(y),void 0,this.componentId)),i=Mn(i,y)}}return i},e}(),Wc=St.createContext(void 0);Wc.Consumer;var ss={};function F_(e,t,n){var r=Uc(e),i=e,o=!ls(e),l=t.attrs,a=l===void 0?la:l,s=t.componentId,u=s===void 0?function(m,_){var S=typeof m!="string"?"sc":$d(m);ss[S]=(ss[S]||0)+1;var k="".concat(S,"-").concat(vg("6.0.7"+S+ss[S]));return _?"".concat(_,"-").concat(k):k}(t.displayName,t.parentComponentId):s,c=t.displayName;c===void 0&&function(m){return ls(m)?"styled.".concat(m):"Styled(".concat(d_(m),")")}(e);var d=t.displayName&&t.componentId?"".concat($d(t.displayName),"-").concat(t.componentId):t.componentId||u,h=r&&i.attrs?i.attrs.concat(a).filter(Boolean):a,y=t.shouldForwardProp;if(r&&i.shouldForwardProp){var g=i.shouldForwardProp;if(t.shouldForwardProp){var x=t.shouldForwardProp;y=function(m,_){return g(m,_)&&x(m,_)}}else y=g}var C=new A_(n,d,r?i.componentStyle:void 0);function p(m,_){return function(S,k,w){var T=S.attrs,L=S.componentStyle,D=S.defaultProps,Ee=S.foldedComponentIds,O=S.styledComponentId,R=S.target,I=St.useContext(Wc),W=Cu(),F=S.shouldForwardProp||W.shouldForwardProp,z=function(le,te,J){for(var ne,he=Ie(Ie({},te),{className:void 0,theme:J}),en=0;en<le.length;en+=1){var Pn=Or(ne=le[en])?ne(he):ne;for(var et in Pn)he[et]=et==="className"?Mn(he[et],Pn[et]):et==="style"?Ie(Ie({},he[et]),Pn[et]):Pn[et]}return te.className&&(he.className=Mn(he.className,te.className)),he}(T,k,hg(k,I,D)||jr),P=z.as||R,$={};for(var N in z)z[N]===void 0||N[0]==="$"||N==="as"||N==="theme"||(N==="forwardedAs"?$.as=z.forwardedAs:F&&!F(N,P)||($[N]=z[N]));var A=function(le,te){var J=Cu(),ne=le.generateAndInjectStyles(te,J.styleSheet,J.stylis);return ne}(L,z),H=Mn(Ee,O);return A&&(H+=" "+A),z.className&&(H+=" "+z.className),$[ls(P)&&!mg.has(P)?"class":"className"]=H,$.ref=w,b.createElement(P,$)}(f,m,_)}var f=St.forwardRef(p);return f.attrs=h,f.componentStyle=C,f.shouldForwardProp=y,f.foldedComponentIds=r?Mn(i.foldedComponentIds,i.styledComponentId):"",f.styledComponentId=d,f.target=r?i.target:e,Object.defineProperty(f,"defaultProps",{get:function(){return this._foldedDefaultProps},set:function(m){this._foldedDefaultProps=r?function(_){for(var S=[],k=1;k<arguments.length;k++)S[k-1]=arguments[k];for(var w=0,T=S;w<T.length;w++)Su(_,T[w],!0);return _}({},i.defaultProps,m):m}}),Bc(f,function(){return".".concat(f.styledComponentId)}),o&&wg(f,e,{attrs:!0,componentStyle:!0,displayName:!0,foldedComponentIds:!0,shouldForwardProp:!0,styledComponentId:!0,target:!0}),f}function zd(e,t){for(var n=[e[0]],r=0,i=t.length;r<i;r+=1)n.push(t[r],e[r+1]);return n}var Ld=function(e){return Object.assign(e,{isCss:!0})};function jg(e){for(var t=[],n=1;n<arguments.length;n++)t[n-1]=arguments[n];if(Or(e)||zi(e)){var r=e;return Ld(_n(zd(la,Ii([r],t,!0))))}var i=e;return t.length===0&&i.length===1&&typeof i[0]=="string"?_n(i):Ld(_n(zd(i,t)))}function Eu(e,t,n){if(n===void 0&&(n=jr),!t)throw Xi(1,t);var r=function(i){for(var o=[],l=1;l<arguments.length;l++)o[l-1]=arguments[l];return e(t,n,jg.apply(void 0,Ii([i],o,!1)))};return r.attrs=function(i){return Eu(e,t,Ie(Ie({},n),{attrs:Array.prototype.concat(n.attrs,i).filter(Boolean)}))},r.withConfig=function(i){return Eu(e,t,Ie(Ie({},n),i))},r}var Og=function(e){return Eu(F_,e)},E=Og;mg.forEach(function(e){E[e]=Og(e)});var U_=function(){function e(t,n){this.rules=t,this.componentId=n,this.isStatic=Pg(t),Pl.registerId(this.componentId+1)}return e.prototype.createStyles=function(t,n,r,i){var o=i(wu(_n(this.rules,n,r,i)),""),l=this.componentId+t;r.insertRules(l,l,o)},e.prototype.removeStyles=function(t,n){n.clearRules(this.componentId+t)},e.prototype.renderStyles=function(t,n,r,i){t>2&&Pl.registerId(this.componentId+t),this.removeStyles(t,r),this.createStyles(t,n,r,i)},e}();function B_(e){for(var t=[],n=1;n<arguments.length;n++)t[n-1]=arguments[n];var r=jg.apply(void 0,Ii([e],t,!1)),i="sc-global-".concat(vg(JSON.stringify(r))),o=new U_(r,i),l=function(s){var u=Cu(),c=St.useContext(Wc),d=St.useRef(u.styleSheet.allocateGSInstance(i)).current;return u.styleSheet.server&&a(d,s,u.styleSheet,c,u.stylis),St.useLayoutEffect(function(){if(!u.styleSheet.server)return a(d,s,u.styleSheet,c,u.stylis),function(){return o.removeStyles(d,u.styleSheet)}},[d,s,u.styleSheet,c,u.stylis]),null};function a(s,u,c,d,h){if(o.isStatic)o.renderStyles(s,s_,c,h);else{var y=Ie(Ie({},u),{theme:hg(u,d,l.defaultProps)});o.renderStyles(s,y,c,h)}}return St.memo(l)}const W_=E.div`
     background: radial-gradient(circle at 50% 45%, #634e3f 0%, #4d392d 35%, #36241b 65%, #1E0F09 100%);`,V_=E.div`
 width: 100%;
-    max-width: 380px;
-padding: 10px;
+        max-width: 750px;
+        padding:10px;
+  
 padding-left: 20px;
 padding-right: 20px;
 margin-left: auto;
@@ -213,7 +214,9 @@ color: var(--black-color);
  
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
  width: 100%;
-      max-width: 380px;
+        max-width: 750px;
+       
+  
  @media screen and (min-width: 768px) {
    max-width:  1400px;
    margin-left: auto;
@@ -230,9 +233,10 @@ color: var(--black-color);
   font-size: 16px;
   background-color: transparent;
   color: var(--white-color);
-  width: 100%;
-
-  max-width: 300px;
+ width: 100%;
+        max-width: 750px;
+        padding:10px;
+  
 
   ::placeholder {
     color: #a09589;
@@ -270,7 +274,7 @@ max-width:  1400px;
   height: 24px;
   
 
-`,kn="/Didiv/assets/symbol-defs-214c2b92.svg",rw=()=>{const[e,t]=b.useState("");return v.jsxs(J_,{children:[v.jsx(ew,{value:e,onChange:n=>t(n.target.value),placeholder:"Пошук"}),v.jsx(tw,{className:"search-button",children:v.jsx(nw,{children:v.jsx("use",{href:`${kn}#icon-search`})})})]})};var $g={exports:{}},Rg={};/**
+`,kn="/Didiv/assets/symbol-defs-0a56c766.svg",rw=()=>{const[e,t]=b.useState("");return v.jsxs(J_,{children:[v.jsx(ew,{value:e,onChange:n=>t(n.target.value),placeholder:"Пошук"}),v.jsx(tw,{className:"search-button",children:v.jsx(nw,{children:v.jsx("use",{href:`${kn}#icon-search`})})})]})};var $g={exports:{}},Rg={};/**
  * @license React
  * use-sync-external-store-with-selector.production.js
  *
@@ -429,6 +433,7 @@ padding-right: 30px;
   align-items: center;
   padding-top: 30px;
   background-color: #f6e1d338;
+  
 `,LS=Xe.h1`
 font-family: var(--main-font);
 color: var( --black-color)
@@ -437,6 +442,11 @@ color: var( --black-color)
 `,AS=Xe.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
+
+  width: 100%;
+        max-width: 750px;
+        padding:10px;
+  
 
   gap: 24px; 
   padding-top:30px;
@@ -667,13 +677,14 @@ dd {
   height: 40px;
   object-fit: cover;
 `,M2="/Didiv/assets/example-def0f7cb.png",N2=()=>v.jsxs($2,{children:[v.jsx(R2,{children:"First Page"}),v.jsx(T2,{src:M2,alt:"Example"})]}),D2=E.div`
-     width: 100%;
-    max-width: 380px; /* максимальна ширина контенту */
+    width: 100%;
+        max-width: 750px;
+        padding:10px;
   margin: 0 auto; /* центрування по горизонталі */
-  padding: 20px; /* відступи з усіх сторін */
+  
   display: flex;
   flex-direction: column;
-  gap: 20px; /* відстань між блоками */
+ 
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
@@ -695,25 +706,37 @@ dd {
     display: none; /* ховаємо кнопку на десктопі */
   }
 `,z2=E.button`
+    height: 30px;
   padding: 5px ;
-  background: #675650;
+  background: var(--second-color);
   color: white;
   border: none;
   border-radius: 8px;
+  font-family: var(--main-font);
+      display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
 `,L2=E.svg`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   fill: var(--white-color);
 
 `,A2=E.button`
+    height: 30px;
   padding: 10px 10px;
-  background: #675650;
+  background:var(--second-color);
   color: white;
   border: none;
   border-radius: 8px;
+   font-family: var(--main-font);
+      display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
 `,F2=E.svg`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   fill: var(--white-color);
 
 `,U2=E.div`
@@ -910,11 +933,14 @@ flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 колонки */
   gap: 24px;
- 
+   width: 100%;
+        max-width: 750px;
+        padding:10px;
  
     @media screen and (max-width: 768px) {
-      width: 100%;
-        max-width: 380px;
+       width: 100%;
+        max-width: 750px;
+        padding:10px;
          grid-template-columns: repeat(2, 1fr);
       
     gap: 10px;
@@ -1018,7 +1044,7 @@ flex: 1;
   width: 24px;
   height: 24px;
  fill: var(--white-color);
-`,V0=[{id:1,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",brand:"Shimano",color:"чорні",type:"Шосейні",size:"29`",weight:1622,price:2800,inStock:!0,description:"Вага 1633 грами без ексцентриків (945+688), крутять ідеально, дуже довгий накат, барабан під 11-12 шв. шосе касети, рідні ексцентрики, ширина 16.3/21.3, обода без отворів для ніпелів, не потребують стрічки, без корозії, рівні. Мінус - знос, спереду сильний, ззаду менше, вживу не такий страшний, як показали на фото, короче кажучи, їздити можна сміливо.",image:"/Didiv/catalog/wheels.jpeg"},{id:2,name:"Сідло Selle San Marco Aspide Superleggera",category:"saddles",price:800,inStock:!0,size:"29`",description:"140 мм, вага 171 гр, рейки алюміній, корпус пластик, підкладка Pebax, оббивка Microfeel.",image:"/Didiv/catalog/photo_2026-03-02 15.18.11.jpeg"},{id:3,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,weight:1622,inStock:!0,description:"Вага 1633 грами без ексцентриків (945+688), крутять ідеально...",image:"/Didiv/catalog/wheels.jpeg"},{id:4,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,weight:1622,inStock:!0,description:"Вага 1633 грами без ексцентриків...",image:"/Didiv/catalog/wheels.jpeg"},{id:5,name:'Рама MTB 17"',category:"Рами",price:4500,inStock:!0,image:"/Didiv/catalog/frame_mtb_17.jpg"},{id:6,name:'Рама Road 19"',category:"Рами",price:5200,inStock:!0,image:"/Didiv/catalog/frame_road_19.jpg"},{id:7,name:"Винос керма Alu",category:"Виноси",price:800,inStock:!0,image:"/Didiv/catalog/stem_alu.jpg"},{id:8,name:"Винос керма Carbon",category:"Виноси",price:1800,inStock:!1,image:"/Didiv/catalog/stem_carbon.jpg"},{id:9,name:"Кермо MTB 680мм",category:"Керма",price:1200,inStock:!0,image:"/Didiv/catalog/handlebar_mtb.jpg"},{id:10,name:"Кермо Road 420мм",category:"Керма",price:1400,inStock:!0,image:"/Didiv/catalog/handlebar_road.jpg"},{id:11,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами без ексцентриків...",image:"/Didiv/catalog/wheels.jpeg"},{id:12,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:"/Didiv/catalog/wheels.jpeg"},{id:13,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:"/Didiv/catalog/wheels.jpeg"},{id:14,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:"/Didiv/catalog/wheels.jpeg"}],EC=({category:e,selectedFilters:t={}})=>{let n=V0.filter(i=>i.category===e);const r=Zp();return Object.keys(t).forEach(i=>{const o=t[i];Array.isArray(o)&&o.length>0&&(n=n.filter(l=>o.includes(l[i]))),(typeof o=="string"||typeof o=="number")&&i==="price"&&(n=n.filter(l=>l.price<=Number(o)))}),v.jsx(mC,{children:n.map(i=>v.jsxs(gC,{onClick:()=>r(`/product/${i.id}`),style:{cursor:"pointer"},children:[v.jsx(vC,{src:i.image,alt:i.name}),v.jsxs(yC,{children:[v.jsx(xC,{children:i.name}),v.jsxs(_C,{children:[i.price," грн"]}),i.weight&&v.jsxs(wC,{children:[i.weight," грам"]})]}),v.jsxs(SC,{children:[v.jsxs(vp,{children:[v.jsx(kC,{children:v.jsx("use",{href:`${kn}#icon-cart`})}),v.jsx("span",{className:"button-text"})]}),v.jsx(vp,{children:v.jsx(CC,{children:v.jsx("use",{href:`${kn}#icon-heart`})})})]})]},i.id))})},bC=()=>{const[e,t]=b.useState({}),{category:n}=Jp(),[r,i]=b.useState(!1);return console.log(n),v.jsxs(D2,{children:[v.jsxs(I2,{children:[v.jsx(z2,{onClick:()=>i(!0),children:v.jsx(L2,{children:v.jsx("use",{href:`${kn}#icon-filter`})})}),v.jsx(A2,{onClick:()=>i(!0),children:v.jsx(F2,{children:v.jsx("use",{href:`${kn}#icon-sort`})})})]}),v.jsx(aC,{category:n,selectedFilters:e,setSelectedFilters:t}),v.jsx(EC,{category:n,selectedFilters:e}),r&&v.jsx(U2,{children:v.jsxs(B2,{children:[v.jsx(W2,{onClick:()=>i(!1),children:"✕"}),v.jsx(hC,{category:n,selectedFilters:e,setSelectedFilters:t})]})})]})},yp=E.div`
+`,V0=[{id:1,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",brand:"Shimano",color:"чорні",type:"Шосейні",size:"29`",weight:1622,price:2800,inStock:!0,description:"Вага 1633 грами без ексцентриків (945+688), крутять ідеально, дуже довгий накат, барабан під 11-12 шв. шосе касети, рідні ексцентрики, ширина 16.3/21.3, обода без отворів для ніпелів, не потребують стрічки, без корозії, рівні. Мінус - знос, спереду сильний, ззаду менше, вживу не такий страшний, як показали на фото, короче кажучи, їздити можна сміливо.",image:"/Didiv/catalog/wheels.jpeg"},{id:2,name:"Сідло Selle San Marco Aspide Superleggera",category:"saddles",price:800,inStock:!0,size:"29`",description:"140 мм, вага 171 гр, рейки алюміній, корпус пластик, підкладка Pebax, оббивка Microfeel.",image:"/Didiv/catalog/photo_2026-03-02 15.18.11.jpeg"},{id:3,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,weight:1622,inStock:!0,description:"Вага 1633 грами без ексцентриків (945+688), крутять ідеально...",image:"/Didiv/catalog/wheels.jpeg"},{id:4,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,weight:1622,inStock:!0,description:"Вага 1633 грами без ексцентриків...",image:"/Didiv/catalog/wheels.jpeg"},{id:5,name:'Рама MTB 17"',category:"Рами",price:4500,inStock:!0,image:"/Didiv/catalog/frame_mtb_17.jpg"},{id:6,name:'Рама Road 19"',category:"Рами",price:5200,inStock:!0,image:"/Didiv/catalog/frame_road_19.jpg"},{id:7,name:"Винос керма Alu",category:"Виноси",price:800,inStock:!0,image:"/Didiv/catalog/stem_alu.jpg"},{id:8,name:"Винос керма Carbon",category:"Виноси",price:1800,inStock:!1,image:"/Didiv/catalog/stem_carbon.jpg"},{id:9,name:"Кермо MTB 680мм",category:"Керма",price:1200,inStock:!0,image:"/Didiv/catalog/handlebar_mtb.jpg"},{id:10,name:"Кермо Road 420мм",category:"Керма",price:1400,inStock:!0,image:"/Didiv/catalog/handlebar_road.jpg"},{id:11,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами без ексцентриків...",image:"/Didiv/catalog/wheels.jpeg"},{id:12,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:"/Didiv/catalog/wheels.jpeg"},{id:13,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:"/Didiv/catalog/wheels.jpeg"},{id:14,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:"/Didiv/catalog/wheels.jpeg"}],EC=({category:e,selectedFilters:t={}})=>{let n=V0.filter(i=>i.category===e);const r=Zp();return Object.keys(t).forEach(i=>{const o=t[i];Array.isArray(o)&&o.length>0&&(n=n.filter(l=>o.includes(l[i]))),(typeof o=="string"||typeof o=="number")&&i==="price"&&(n=n.filter(l=>l.price<=Number(o)))}),v.jsx(mC,{children:n.map(i=>v.jsxs(gC,{onClick:()=>r(`/product/${i.id}`),style:{cursor:"pointer"},children:[v.jsx(vC,{src:i.image,alt:i.name}),v.jsxs(yC,{children:[v.jsx(xC,{children:i.name}),v.jsxs(_C,{children:[i.price," грн"]}),i.weight&&v.jsxs(wC,{children:[i.weight," грам"]})]}),v.jsxs(SC,{children:[v.jsxs(vp,{children:[v.jsx(kC,{children:v.jsx("use",{href:`${kn}#icon-cart`})}),v.jsx("span",{className:"button-text"})]}),v.jsx(vp,{children:v.jsx(CC,{children:v.jsx("use",{href:`${kn}#icon-heart`})})})]})]},i.id))})},bC=()=>{const[e,t]=b.useState({}),{category:n}=Jp(),[r,i]=b.useState(!1);return console.log(n),v.jsxs(D2,{children:[v.jsxs(I2,{children:[v.jsxs(z2,{onClick:()=>i(!0),children:["Фільтр",v.jsx(L2,{children:v.jsx("use",{href:`${kn}#icon-filter`})})]}),v.jsxs(A2,{onClick:()=>i(!0),children:["Сортування",v.jsx(F2,{children:v.jsx("use",{href:`${kn}#icon-sort`})})]})]}),v.jsx(aC,{category:n,selectedFilters:e,setSelectedFilters:t}),v.jsx(EC,{category:n,selectedFilters:e}),r&&v.jsx(U2,{children:v.jsxs(B2,{children:[v.jsx(W2,{onClick:()=>i(!1),children:"✕"}),v.jsx(hC,{category:n,selectedFilters:e,setSelectedFilters:t})]})})]})},yp=E.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -1034,7 +1060,7 @@ flex: 1;
   gap: 40px;
   @media (max-width: 768px) { grid-template-columns: 1fr; }
 `,OC=E.div`
-  position: relative;
+
 `;E.div`
   position: absolute;
   top: 10px;
