@@ -62,6 +62,7 @@ display: flex;
 
 
  export const StyledLink = styled(Link)`
+ color:var(--main-brand-color);
       display: flex;
     align-items: center;
     text-align: center;

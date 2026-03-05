@@ -9,6 +9,7 @@ export const ProductPage = () => {
   const product = products.find((p) => p.id === Number(id));
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+   const [activeImage, setActiveImage] = useState(product.image[0]);
 
   if (!product) {
     return <Container>Товар не знайдено</Container>;
@@ -26,10 +27,15 @@ export const ProductPage = () => {
       <MainSection>
         {/* Ліва колонка: Галерея */}
         <GallerySection>
-          <MainImage src={product.image} alt={product.name} />
+          <MainImage src={activeImage} alt={product.name} />
           <Thumbnails>
-            {[1, 2, 3, 4].map((i) => (
-              <Thumb key={i} src={product.image} />
+            {product.image.map((img) => (
+              <Thumb key={img} src={img}   onClick={() => setActiveImage(img)}
+            style={{
+              cursor: "pointer",
+              opacity: activeImage === img ? 1 : 0.4,
+             
+            }} />
             ))}
           </Thumbnails>
         </GallerySection>

@@ -39,7 +39,6 @@ export const Header = () => {
           <Menu></Menu>
           <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
             <CatalogIcon>
-              {' '}
               <use href={`${sprite}#icon-menu`} />
             </CatalogIcon>
           </MenuButton>
@@ -47,10 +46,10 @@ export const Header = () => {
           <Overlay open={menuOpen} onClick={() => setMenuOpen(false)} />
           <MobileMenu open={menuOpen}>
            
-  <StyledLink to="/">Головна</StyledLink>
-  <StyledLink to="/about">Про нас</StyledLink>
-  <StyledLink to="/catalog">Каталог</StyledLink>
-  <StyledLink to="/contacts">Контакти</StyledLink>
+  <StyledLink  onClick={() => setMenuOpen(false)} to="/">Головна</StyledLink>
+  <StyledLink  onClick={() => setMenuOpen(false)}to="/about">Про нас</StyledLink>
+  <StyledLink onClick={() => setMenuOpen(false)} to="/catalog">Каталог</StyledLink>
+  <StyledLink onClick={() => setMenuOpen(false)} to="/contacts">Контакти</StyledLink>
 </MobileMenu>
         </HeadeRight>
       </HeaderUp>

@@ -26,7 +26,7 @@ let filteredProducts = products.filter(p => p.category === category);
         <Card key={product.id}
          onClick={() => navigate(`/product/${product.id}`)} // перехід по кліку
           style={{ cursor: "pointer" }} >
-          <CardImg src={product.image} alt={product.name} />
+          <CardImg src={product.image[0] } alt={product.name} />
           <CardInfo>
             <CardTitle>{product.name}</CardTitle>
             <CardPrice>{product.price} грн</CardPrice>
