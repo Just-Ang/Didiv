@@ -6,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
   /* colors */
   --black-color: #1d0f0a;
   --main-brand-color: #382116;
+  --second-color: #927052;
   --white-color: #f2ebd4; 
   --main-font:  DMSerifDisplay;
  }

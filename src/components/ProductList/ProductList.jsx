@@ -1,9 +1,11 @@
 import { Button, Card,  CardButtons,  CardImg, CardInfo, CardPrice, CardTitle, CardWeight, CartLogo, FavoriteLogo, GridWrapper,} from "./ProductList.styled";
 import { products } from "../../data/products";
 import sprite from '../../img/symbol-defs.svg';
+import { useNavigate } from "react-router-dom";
 
 export const ProductList = ({ category, selectedFilters = {}  }) => {
 let filteredProducts = products.filter(p => p.category === category);
+  const navigate = useNavigate(); // хук для програмного переходу
 
   // фільтруємо по чекбоксам
   Object.keys(selectedFilters).forEach(key => {
@@ -21,7 +23,9 @@ let filteredProducts = products.filter(p => p.category === category);
   return (
     <GridWrapper>
       {filteredProducts.map(product => (
-        <Card key={product.id}>
+        <Card key={product.id}
+         onClick={() => navigate(`/product/${product.id}`)} // перехід по кліку
+          style={{ cursor: "pointer" }} >
           <CardImg src={product.image} alt={product.name} />
           <CardInfo>
             <CardTitle>{product.name}</CardTitle>
@@ -30,13 +34,12 @@ let filteredProducts = products.filter(p => p.category === category);
     
           </CardInfo>
 
-
           <CardButtons>
             <Button>
               <CartLogo>
                    <use href={`${sprite}#icon-cart`} />
                 </CartLogo>
-               <span className="button-text">в кошик</span></Button>
+               <span className="button-text"></span></Button>
             <Button>
               <FavoriteLogo>
                        <use href={`${sprite}#icon-heart`} />

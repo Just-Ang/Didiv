@@ -17,8 +17,9 @@ export const filtersConfig = {
   ],
    wheels: [
     { type: "checkbox", name: "brand", label: "Бренд", options: ["Shimano", "Campagnolo", "SRAM"] },
-    { type: "checkbox", name: "wheelSize", label: "Розмір колеса", options: ["26`", "27.5`", "29`"] },
-    { type: "range", name: "price", label: "Ціна", min: 1000, max: 10000 },
+    { type: "checkbox", name: "size", label: "Розмір колеса", options: ["26`", "27.5`", "29`"] },
+    { type: "range", name: "price", label: "Ціна, грн", min: 100, max: 10000 },
+    { type: "range", name: "weight", label: "Вага,г", min: 1, max: 100000 },
     
   ],
 };
