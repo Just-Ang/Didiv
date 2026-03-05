@@ -2,24 +2,29 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div``;
 export const GridWrapper = styled.div`
+flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 колонки */
   gap: 24px;
-  margin-top: 32px;
-  padding: 20px;
+ 
+ 
+    @media screen and (max-width: 768px) {
+      width: 100%;
+        max-width: 380px;
+         grid-template-columns: repeat(2, 1fr);
+      
+    gap: 10px;
+  
+  }
 
   @media (min-width: 768px) {
+     margin-top: 32px;
     grid-template-columns: repeat(3, 1fr); 
      padding-left: 20px;
     padding-right: 20px;
   }
 
-  @media (max-width: 768px) {
-  grid-template-columns: repeat(2, 1fr);
-      padding-left: 20px;
-    padding-right: 20px;
-    gap: 20px;
-}
+ 
  @media screen and (min-width: 1440px) {
      grid-template-columns: repeat(4, 1fr); 
      padding-left: 30px;

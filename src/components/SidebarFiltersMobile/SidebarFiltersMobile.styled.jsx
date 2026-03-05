@@ -5,17 +5,21 @@ import styled from "styled-components";
 
 // стилі ті ж самі
 export const Aside = styled.aside`
-  width: 240px;
+  width: 260px;
   padding: 16px;
   border-radius: 16px;
   background: #f8f8f8;
   @media (min-width: 768px) {
-  display: block;
+  display: none;
 }
 
 @media (max-width: 767px) {
-  display: none;
+   display: block;
+   width: 100%;
+        max-width: 380px;
+        padding:10px;
 }
+  
 `;
 
 export const FilterBlock = styled.div`
@@ -27,18 +31,28 @@ export const FilterLabel = styled.p`
   margin-bottom: 8px;
 `;
 
-export const CheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-  font-size: 14px;
+// export const CheckboxLabel = styled.label`
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   margin-bottom: 4px;
+//   font-size: 14px;
+// `;
+
+export const SectionContent = styled.div`
+  margin-top: 16px;
 `;
 
+export const PriceInputs = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
 
-
-
-
+  input {
+    width: 100%;
+    padding: 8px;
+  }
+`;
 
 export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
   display: none;
@@ -83,4 +97,7 @@ export const Label = styled.label`
   align-items: center;
   cursor: pointer;
   user-select: none;
+`;
+export const CheckboxLabel = styled.span`
+  font-size: 16px;
 `;

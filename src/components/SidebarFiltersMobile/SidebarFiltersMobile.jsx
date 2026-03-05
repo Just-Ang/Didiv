@@ -1,13 +1,14 @@
-import { Aside, CheckboxLabel, Checkmark, FilterBlock, FilterLabel, HiddenCheckbox, Label } from "./SidebarFilters.styled";
-
+import { Aside, CheckboxLabel, FilterBlock, FilterLabel } from "./SidebarFiltersMobile.styled";
 
 import { filtersConfig } from "../../data/FiltersConfig";
+
 import { PriceRange } from "../PriceRange/PriceRange";
+import {HiddenCheckbox, Label, Checkmark} from "../SidebarFiltersMobile/SidebarFiltersMobile.styled"
 
 
-
-export const SidebarFilters = ({ category, selectedFilters, setSelectedFilters }) => {
+export const SidebarFiltersMobile = ({ category, selectedFilters, setSelectedFilters }) => {
   const filters = filtersConfig[category] || [];
+
 
   const handleCheckbox = (filterName, option) => {
     setSelectedFilters(prev => {
@@ -20,7 +21,9 @@ export const SidebarFilters = ({ category, selectedFilters, setSelectedFilters }
     });
   };
 
- 
+  // const handleRange = (filterName, value) => {
+  //   setSelectedFilters(prev => ({ ...prev, [filterName]: value }));
+  // };
 
   return (
     <Aside>
@@ -29,7 +32,7 @@ export const SidebarFilters = ({ category, selectedFilters, setSelectedFilters }
         <FilterBlock key={filter.name}>
           <FilterLabel>{filter.label}</FilterLabel>
 
-           {filter.type === "checkbox" &&
+          {filter.type === "checkbox" &&
             (filter.options || []).map(option => (
               <CheckboxLabel key={option}>
               <Label>
@@ -43,15 +46,17 @@ export const SidebarFilters = ({ category, selectedFilters, setSelectedFilters }
                 {option}
               </CheckboxLabel>
             ))}
-
-          {filter.type === "range" && <PriceRange></PriceRange>
+  {filter.type === "range" && <PriceRange></PriceRange>
 }
+
+
+ 
         </FilterBlock>
       ))}
     </Aside>
   );
 };
 
-export default SidebarFilters;
+export default SidebarFiltersMobile;
    
      
