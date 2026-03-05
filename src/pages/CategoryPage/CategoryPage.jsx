@@ -27,14 +27,14 @@ export const CategoryPage = () => {
     <Wrapper>
       <TopBar>
         <FilterButton onClick={() => setIsFilterOpen(true)}>
-          
-         <FilterIcon>
+          Фільтр
+         <FilterIcon> 
            <use href={`${sprite}#icon-filter`} />
                      </FilterIcon>
                      
         </FilterButton>
          <SortButton onClick={() => setIsFilterOpen(true)}>
-          
+          Сортування
          <SortIcon>
            <use href={`${sprite}#icon-sort`} />
                      </SortIcon>

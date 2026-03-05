@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-     width: 100%;
-    max-width: 380px; /* максимальна ширина контенту */
+    width: 100%;
+        max-width: 750px;
+        padding:10px;
   margin: 0 auto; /* центрування по горизонталі */
-  padding: 20px; /* відступи з усіх сторін */
+  
   display: flex;
   flex-direction: column;
-  gap: 20px; /* відстань між блоками */
+ 
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
@@ -35,29 +36,41 @@ export const TopBar = styled.div`
 `;
 
 export const FilterButton = styled.button`
+    height: 30px;
   padding: 5px ;
-  background: #675650;
+  background: var(--second-color);
   color: white;
   border: none;
   border-radius: 8px;
+  font-family: var(--main-font);
+      display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
 `;
 export const FilterIcon = styled.svg`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   fill: var(--white-color);
 
 `
 export const SortButton = styled.button`
+    height: 30px;
   padding: 10px 10px;
-  background: #675650;
+  background:var(--second-color);
   color: white;
   border: none;
   border-radius: 8px;
+   font-family: var(--main-font);
+      display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
 `;
 export const SortIcon
  = styled.svg`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   fill: var(--white-color);
 
 `

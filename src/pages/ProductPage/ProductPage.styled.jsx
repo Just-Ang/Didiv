@@ -22,7 +22,7 @@ export const MainSection = styled.div`
 `;
 
 export const GallerySection = styled.div`
-  position: relative;
+
 `;
 
 export const Badge = styled.div`

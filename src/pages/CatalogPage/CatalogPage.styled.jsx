@@ -8,6 +8,7 @@ export const Container = styled.div`
   align-items: center;
   padding-top: 30px;
   background-color: #f6e1d338;
+  
 `;
 
 export const CatalogTitle = styled.h1`
@@ -19,6 +20,11 @@ color: var( --black-color)
 export const CatalogBox = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
+
+  width: 100%;
+        max-width: 750px;
+        padding:10px;
+  
 
   gap: 24px; 
   padding-top:30px;
