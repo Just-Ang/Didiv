@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
+  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   return (
     <PageContainer>
@@ -42,11 +43,11 @@ const CartPage = () => {
               </Counter>
               <PriceWrapper>
                 <div className="current-price">
-                  {item.price.toLocaleString()} ₽
+                  {item.price.toLocaleString()} ₴
                 </div>
                 {item.oldPrice && (
                   <div className="old-price">
-                    {item.oldPrice.toLocaleString()} ₽
+                    {item.oldPrice.toLocaleString()} ₴
                   </div>
                 )}
               </PriceWrapper>
@@ -69,14 +70,14 @@ const CartPage = () => {
             <span>Номер замовлення</span>
             <span>789563678</span>
           </SummaryRow>
-          <SummaryRow>
+          {/* <SummaryRow>
             <span>Вартість замовлення</span>
-            <span>692 </span>
-          </SummaryRow>
+            <span>{total} грн </span>
+          </SummaryRow> */}
 
           <SummaryRow className="total">
             <span>Всього</span>
-            <span>605 370 ₽</span>
+            <span>{total} грн </span>
           </SummaryRow>
           <OrderButton>Оформити замовлення</OrderButton>
         </SummaryCard>
