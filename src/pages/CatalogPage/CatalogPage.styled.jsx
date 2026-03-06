@@ -55,6 +55,7 @@ export const CatalogBox = styled.div`
      grid-template-columns: repeat(4, 1fr); 
      padding-left: 30px;
     padding-right: 30px;
+    max-width: 1340px
   }
 `;
 export const Overlay = styled.div`

@@ -2,11 +2,26 @@ import { Button, Card,  CardButtons,  CardImg, CardInfo, CardPrice, CardTitle, C
 import { products } from "../../data/products";
 import sprite from '../../img/symbol-defs.svg';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
+import { toast, ToastContainer } from "react-toastify";
+import { toggleFavorite } from "../../redux/favoritesSlice";
 
 export const ProductList = ({ category, selectedFilters = {}  }) => {
 let filteredProducts = products.filter(p => p.category === category);
   const navigate = useNavigate(); // хук для програмного переходу
+ const dispatch = useDispatch();
 
+const handleAdd = (product,e) => {
+  e.stopPropagation()
+  dispatch(addToCart(product));
+   toast.success(`${product.name} додано в кошик!`);
+};
+const HandleAddFavorite = (product, e) => {
+   e.stopPropagation()
+  dispatch(toggleFavorite(product));
+   toast.info(`${product.name} додано в обране!`);
+}
   // фільтруємо по чекбоксам
   Object.keys(selectedFilters).forEach(key => {
     const value = selectedFilters[key];
@@ -20,8 +35,11 @@ let filteredProducts = products.filter(p => p.category === category);
       }
     }
   });
-  return (
+  return (<>
+    <ToastContainer
+    />
     <GridWrapper>
+      
       {filteredProducts.map(product => (
         <Card key={product.id}
          onClick={() => navigate(`/product/${product.id}`)} // перехід по кліку
@@ -35,12 +53,13 @@ let filteredProducts = products.filter(p => p.category === category);
           </CardInfo>
 
           <CardButtons>
-            <Button>
+            <Button onClick={(e) => handleAdd(product,e)} >
               <CartLogo>
                    <use href={`${sprite}#icon-cart`} />
                 </CartLogo>
                <span className="button-text"></span></Button>
-            <Button>
+               
+            <Button  onClick={(e) => HandleAddFavorite(product,e)}>
               <FavoriteLogo>
                        <use href={`${sprite}#icon-heart`} />
                     </FavoriteLogo>
@@ -49,5 +68,6 @@ let filteredProducts = products.filter(p => p.category === category);
         </Card>
       ))}
     </GridWrapper>
+    </>
   );
 };

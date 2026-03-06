@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
 
 import { products } from "../../data/products";
 import { ActionRow, AddToCartBtn, Availability, Breadcrumbs, Container, CurrentPrice, DeliveryInfo, DescriptionText, GallerySection, InfoSection, MainImage, MainSection, OldPrice, PriceCard, PriceWrapper, QuantitySelector, RatingRow, SpecItem, SpecsGrid,   TabButton, TabButtons, TabContent,  TabsWrapper, Thumb, Thumbnails, Title } from "./ProductPage.styled";
+import { toast, ToastContainer } from "react-toastify";
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -10,6 +13,12 @@ export const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
    const [activeImage, setActiveImage] = useState(product.image[0]);
+   const dispatch = useDispatch();
+
+const handleAdd = () => {
+  dispatch(addToCart(product));
+   toast.success(`${product.name} додано в кошик!`);
+};
 
   if (!product) {
     return <Container>Товар не знайдено</Container>;
@@ -19,7 +28,8 @@ export const ProductPage = () => {
   const hasDiscount = !!product.oldPrice;
 
   return (
-    <Container>
+    <Container> <ToastContainer
+    />
       <Breadcrumbs>
         <Link to="/">Головна</Link> / <Link to="/catalog">Каталог</Link> / {product.name}
       </Breadcrumbs>
@@ -60,7 +70,7 @@ export const ProductPage = () => {
                 <span>{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </QuantitySelector>
-              <AddToCartBtn>В КОШИК</AddToCartBtn>
+              <AddToCartBtn onClick={handleAdd}>В КОШИК</AddToCartBtn>
             </ActionRow>
             
            

@@ -30,8 +30,10 @@ flex: 1;
  
  @media screen and (min-width: 1440px) {
      grid-template-columns: repeat(4, 1fr); 
-     padding-left: 30px;
-    padding-right: 30px;
+     padding-left: 0;
+    padding-right: 0;
+    margin-left: 30px;
+    max-width: 1340px
   }
 `;
 
