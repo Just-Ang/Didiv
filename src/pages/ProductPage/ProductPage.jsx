@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
-
+import sprite from '../../img/symbol-defs.svg';
 import { products } from "../../data/products";
-import { ActionRow, AddToCartBtn, Availability, Breadcrumbs, Container, CurrentPrice, DeliveryInfo, DescriptionText, GallerySection, InfoSection, MainImage, MainSection, OldPrice, PriceCard, PriceWrapper, QuantitySelector, RatingRow, SpecItem, SpecsGrid,   TabButton, TabButtons, TabContent,  TabsWrapper, Thumb, Thumbnails, Title } from "./ProductPage.styled";
+import { ActionRow, AddToCartBtn, Availability, Breadcrumbs, Container, CurrentPrice, DeliveryInfo, DescriptionText, FavoriteButton, GallerySection, HeartIcon, InfoSection, MainImage, MainSection, OldPrice, PriceCard, PriceWrapper, QuantitySelector, RatingRow, SpecItem, SpecsGrid,   TabButton, TabButtons, TabContent,  TabsWrapper, Thumb, Thumbnails, Title } from "./ProductPage.styled";
 import { toast, ToastContainer } from "react-toastify";
+import { toggleFavorite } from "../../redux/favoritesSlice";
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -14,12 +15,25 @@ export const ProductPage = () => {
   const [activeTab, setActiveTab] = useState("description");
    const [activeImage, setActiveImage] = useState(product.image[0]);
    const dispatch = useDispatch();
+   const favorites = useSelector(state => state.favorites.items);
 
 const handleAdd = () => {
   dispatch(addToCart(product));
    toast.success(`${product.name} додано в кошик!`);
 };
+const HandleAddFavorite = (product, e) => {
+ 
+   e.stopPropagation();
+     const exists = favorites.includes(product.id);
+  
+  dispatch(toggleFavorite(product.id));
+    if (exists) {
+    toast.warning(`${product.name} видалено з обраного`);
+  } else {
+    toast.info(`${product.name} додано в обране`);
+  }
 
+}
   if (!product) {
     return <Container>Товар не знайдено</Container>;
   }
@@ -71,6 +85,11 @@ const handleAdd = () => {
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </QuantitySelector>
               <AddToCartBtn onClick={handleAdd}>В КОШИК</AddToCartBtn>
+              <FavoriteButton  onClick={(e) => HandleAddFavorite(product,e)}>
+    <HeartIcon> <use href={`${sprite}#icon-heart`} /></HeartIcon>
+ 
+    В ОБРАНЕ
+  </FavoriteButton>
             </ActionRow>
             
            

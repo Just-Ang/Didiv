@@ -62,6 +62,7 @@ export const ProductInfo = styled.div`
   }
 `;
 
+
 export const Counter = styled.div`
   display: flex;
   align-items: center;
@@ -95,6 +96,13 @@ export const PriceWrapper = styled.div`
     text-decoration: line-through;
   }
 `;
+export const ButtonDelete = styled.button`
+ background: 'none';
+                  border: 'none';
+                  cursor: 'pointer';
+                  color: '#ccc';
+`;
+
 
 export const SummaryCard = styled.div`
   flex: 1;

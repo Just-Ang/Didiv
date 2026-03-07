@@ -2,7 +2,7 @@ import { Button, Card,  CardButtons,  CardImg, CardInfo, CardPrice, CardTitle, C
 import { products } from "../../data/products";
 import sprite from '../../img/symbol-defs.svg';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { toggleFavorite } from "../../redux/favoritesSlice";
@@ -11,16 +11,26 @@ export const ProductList = ({ category, selectedFilters = {}  }) => {
 let filteredProducts = products.filter(p => p.category === category);
   const navigate = useNavigate(); // хук для програмного переходу
  const dispatch = useDispatch();
+   const favorites = useSelector(state => state.favorites.items);
+   
 
 const handleAdd = (product,e) => {
-  e.stopPropagation()
+  e.stopPropagation();
   dispatch(addToCart(product));
    toast.success(`${product.name} додано в кошик!`);
 };
 const HandleAddFavorite = (product, e) => {
-   e.stopPropagation()
-  dispatch(toggleFavorite(product));
-   toast.info(`${product.name} додано в обране!`);
+ 
+   e.stopPropagation();
+     const exists = favorites.includes(product.id);
+  
+  dispatch(toggleFavorite(product.id));
+    if (exists) {
+    toast.warning(`${product.name} видалено з обраного`);
+  } else {
+    toast.info(`${product.name} додано в обране`);
+  }
+
 }
   // фільтруємо по чекбоксам
   Object.keys(selectedFilters).forEach(key => {

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import {
   Breadcrumbs,
+  ButtonDelete,
   CartItem,
   CartItemsList,
   ContentWrapper,
@@ -14,13 +15,26 @@ import {
   SummaryRow,
   Title,
 } from './CartPage.styled';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeFromCart } from '../../redux/cartSlice';
+import CartEmpty from '../../components/CartEmpty/CartEmpty';
 
 const CartPage = () => {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 
-  return (
+  const productsInCart = useSelector(state => state.cart.items);
+  console.log(productsInCart);
+  const isCartEmpty = productsInCart.length === 0;
+
+  const handleDelete = (item) => {
+    console.log(item);
+    dispatch(removeFromCart(item));
+  };
+
+  return (<>
+  { isCartEmpty ? <CartEmpty></CartEmpty> :
     <PageContainer>
       <Breadcrumbs>
         {' '}
@@ -30,8 +44,8 @@ const CartPage = () => {
 
       <ContentWrapper>
         <CartItemsList>
-          {cartItems.map((item) => (
-            <CartItem key={item.id}>
+          {cartItems.map((item, index) => (
+            <CartItem key={`${item.id}-${index}`}>
               <ProductImg src={item.img} alt={item.name} />
               <ProductInfo>
                 <h3>{item.name}</h3>
@@ -51,7 +65,8 @@ const CartPage = () => {
                   </div>
                 )}
               </PriceWrapper>
-              <button
+              <ButtonDelete
+                onClick={() => handleDelete(item)}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -60,7 +75,7 @@ const CartPage = () => {
                 }}
               >
                 ✕
-              </button>
+              </ButtonDelete>
             </CartItem>
           ))}
         </CartItemsList>
@@ -70,10 +85,6 @@ const CartPage = () => {
             <span>Номер замовлення</span>
             <span>789563678</span>
           </SummaryRow>
-          {/* <SummaryRow>
-            <span>Вартість замовлення</span>
-            <span>{total} грн </span>
-          </SummaryRow> */}
 
           <SummaryRow className="total">
             <span>Всього</span>
@@ -82,8 +93,8 @@ const CartPage = () => {
           <OrderButton>Оформити замовлення</OrderButton>
         </SummaryCard>
       </ContentWrapper>
-    </PageContainer>
-  );
+    </PageContainer> }
+  </>);
 };
 
 export default CartPage;

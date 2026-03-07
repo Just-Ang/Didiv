@@ -71,8 +71,7 @@ export const RatingRow = styled.div`
   margin-bottom: 20px;
 `;
 
-export const Stars = styled.span`color: #f1c40f;`;
-export const ReviewsCount = styled.span`font-size: 14px; color: #666;`;
+
 export const Availability = styled.span`color: #27ae60; font-size: 14px;`;
 
 export const PriceCard = styled.div`
@@ -226,3 +225,28 @@ font-size: 20px;
 
 
 `
+
+export const FavoriteButton = styled.button`
+    font-weight: bold;
+  background: transparent;
+
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  flex-grow: 1;
+
+  &:hover {
+    border-color: #bbb;
+  }
+`;
+
+export const HeartIcon = styled.svg`
+  width: 20px;
+  height: 20px;
+  fill: var(--black-color);
+`;

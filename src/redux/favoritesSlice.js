@@ -6,14 +6,17 @@ const favoritesSlice = createSlice({
     items: [],
   },
   reducers: {
-    toggleFavorite: (state, action) => {
-      const exists = state.items.includes(action.payload);
-      if (exists) {
-        state.items = state.items.filter(i => i !== action.payload);
-      } else {
-        state.items.push(action.payload);
-      }
-    },
+   toggleFavorite: (state, action) => {
+  const id = action.payload;
+  const exists = state.items.find(i => i === id);
+
+
+  if (exists) {
+    state.items = state.items.filter(i => i !== id);
+  } else {
+    state.items.push(id);
+  }
+}
   },
 });
 
