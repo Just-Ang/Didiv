@@ -1233,8 +1233,14 @@ font-size: 20px;
   
    fill: ${({$active:e})=>e?"white":" var(--black-color)"};
 `,h3=()=>{const{id:e}=Ih(),t=by.find(y=>y.id===Number(e)),[n,r]=C.useState(1),[o,i]=C.useState("description"),[a,s]=C.useState(t.image[0]),l=df(),u=Wn(y=>y.favorites.items),c=u.includes(t.id),d=()=>{l(Fy(t)),K.success(`${t.name} додано в кошик!`)},m=(y,_)=>{_.stopPropagation();const x=u.includes(y.id);l(jf(y.id)),x?K.warning(`${y.name} видалено з обраного`):K.info(`${y.name} додано в обране`)};return t?g.jsxs(sh,{children:[" ",g.jsx(Tf,{}),g.jsxs(HC,{children:[g.jsx(Xt,{to:"/",children:"Головна"})," / ",g.jsx(Xt,{to:"/catalog",children:"Каталог"})," /"," ",t.name]}),g.jsxs(VC,{children:[g.jsxs(KC,{children:[g.jsx(QC,{src:a,alt:t.name}),g.jsx(YC,{children:t.image.map(y=>g.jsx(GC,{src:y,onClick:()=>s(y),style:{cursor:"pointer",opacity:a===y?1:.4}},y))})]}),g.jsxs(XC,{children:[g.jsx(qC,{children:t.name}),g.jsx(ZC,{children:g.jsx(JC,{children:"● В наявності"})}),g.jsxs(e3,{children:[g.jsx(t3,{children:g.jsxs(n3,{children:[t.price.toLocaleString()," ₴"]})}),g.jsxs(r3,{children:[g.jsxs(o3,{children:[g.jsx("button",{onClick:()=>r(Math.max(1,n-1)),children:"-"}),g.jsx("span",{children:n}),g.jsx("button",{onClick:()=>r(n+1),children:"+"})]}),g.jsx(i3,{onClick:d,children:"В КОШИК"}),g.jsxs(d3,{$active:c,onClick:y=>m(t,y),children:[g.jsxs(p3,{$active:c,children:[" ",g.jsx("use",{href:`${jt}#icon-heart`})]}),"В ОБРАНЕ"]})]})]}),g.jsxs(s3,{children:[g.jsxs("p",{children:[g.jsx("strong",{children:"Ваше місто:"})," Київ"]}),g.jsx("p",{children:"🚚 Доставка по Україні (Розрахувати вартість)"})]})]})]}),g.jsxs(l3,{children:[g.jsxs(u3,{children:[g.jsx(lh,{active:o==="description",onClick:()=>i("description"),children:"Опис"}),g.jsx(lh,{active:o==="attributes",onClick:()=>i("attributes"),children:"Характеристики"})]}),g.jsxs(c3,{children:[o==="description"&&g.jsx(f3,{children:t.description}),o==="attributes"&&g.jsxs(a3,{children:[g.jsxs(Fi,{children:[g.jsx("span",{children:"Розміри, мм"})," ",g.jsx("b",{children:t.size||"2500x1500"})]}),g.jsxs(Fi,{children:[g.jsx("span",{children:"Тип"})," ",g.jsx("b",{children:t.type||""})]}),g.jsxs(Fi,{children:[g.jsx("span",{children:"Колір"})," ",g.jsx("b",{children:t.color||""})]}),g.jsxs(Fi,{children:[g.jsx("span",{children:"Колір"})," ",g.jsx("b",{children:t.color||""})]})]})]})]})]}):g.jsx(sh,{children:"Товар не знайдено"})},m3=E.div`
-  font-family: 'Inter', sans-serif;
-  max-width: 1200px;
+  font-family: var(--main-font);
+  width: 100%;
+  max-width: 750px;
+  padding: 10px;
+  @media screen and (min-width: 768px) {
+    max-width: 1340px;
+  }
+
   margin: 0 auto;
   padding: 40px 20px;
   color: #333;
@@ -1242,54 +1248,47 @@ font-size: 20px;
   font-size: 12px;
   color: #888;
   margin-bottom: 20px;
-  a { text-decoration: none; color: inherit; }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `,y3=E.h1`
   font-size: 48px;
   text-transform: uppercase;
   font-weight: 800;
   margin-bottom: 40px;
 `,v3=E.div`
- 
   display: flex;
-  flex-direction:column;
-      align-items: center;
-    justify-content: center;
-  gap: 40px;
-
-   @media screen and (min-width: 768px) {
-   flex-direction:row;
-  }
-
-    @media screen and (min-width: 1440px) {
-   
-  }
-
+  flex-direction: column;
+  gap: 20px; 
+  width: 100%;
   
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start; /* Щоб SummaryCard не розтягувалася по висоті */
+    justify-content: space-between; /* Розносить список і чек-аут */
+  }
 `,_3=E.div`
-  flex: 2;
-        border: 1px solid #eee;
-    border-radius: 12px;
+  flex: 1; /* Займає доступний простір */
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 12px;
 `,x3=E.div`
- 
   display: flex;
-  flex-direction:column;
-  
-  align-items: center;
+  flex-direction: column;
   padding: 20px;
-  
-  gap: 20px;
-    @media screen and (min-width: 768px) {
+  gap: 15px;
+  border-bottom: 1px solid #eee;
 
-  display: grid;
-  grid-template-columns: 150px 2fr 1fr 1fr 40px;
-  
+  @media screen and (min-width: 768px) {
+    display: grid;
+    /* 1. Картинка | 2. Назва | 3. Лічильник+Ціна | 4. Кнопки */
+    grid-template-columns: 100px 1.5fr 1.2fr 80px; 
+    align-items: center;
+    gap: 20px;
   }
 `,w3=E.img`
- width:200px;
-   @media screen and (min-width: 768px) {
   width: 100%;
-  }
-  
 
   height: auto;
 `,S3=E.div`
@@ -1300,23 +1299,19 @@ font-size: 20px;
     line-height: 1.4;
   }
 `,k3=E.div`
-/* display: grid;
-grid-template-columns: 1fr 1 fr;
-grid-template-rows: 1fr 1fr; */
-      display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    gap: 30px;
+
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 30px;
 `,b3=E.div`
-/* display: grid;
-grid-template-columns: 1fr 1 fr;
-grid-template-rows: 1fr 1fr; */
-      display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    gap: 30px;
+
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 30px;
 `,E3=E.div`
   display: flex;
   align-items: center;
@@ -1348,28 +1343,32 @@ grid-template-rows: 1fr 1fr; */
     text-decoration: line-through;
   }
 `,P3=E.button`
- background: 'none';
-                  border: 'none';
-                  cursor: 'pointer';
-                  color: '#ccc';
+  background: 'none';
+  border: 'none';
+  cursor: 'pointer';
+  color: '#ccc';
 `,T3=E.button`
- background: 'none';
-                  border: 'none';
-                  cursor: 'pointer';
-                  color: '#ccc';
+  background: 'none';
+  border: 'none';
+  cursor: 'pointer';
+  color: '#ccc';
 `,j3=E.div`
-  flex: 1;
+
   background: #fff;
   border: 1px solid #eee;
   border-radius: 12px;
   padding: 24px;
 
   top: 20px;
-   @media screen and (max-width: 768px) {
-      width: 100%;
-        max-width: 750px;
-        padding:10px;
-  
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 750px;
+    padding: 10px;
+  }
+   @media screen and (min-width: 768px) {
+    
+   width: 400px;
+    
   }
 `,uh=E.div`
   display: flex;
@@ -1403,11 +1402,9 @@ grid-template-rows: 1fr 1fr; */
     background: #e66a10;
   }
 `,ch=E.svg`
-
   width: 25px;
   height: 25px;
- fill: ${({$active:e})=>e?"var(--red-color)":"var(--black-color)"};
- 
+  fill: ${({$active:e})=>e?"var(--red-color)":"var(--black-color)"};
 `,$3=E.div`
   padding: 20px 40px;
   font-size: 14px;
@@ -1454,4 +1451,4 @@ grid-template-rows: 1fr 1fr; */
   &:hover {
     background-color: #e68a00;
   }
-`,z3=()=>g.jsxs(g.Fragment,{children:[g.jsx($3,{children:"Головна / Кошик"}),g.jsxs(R3,{children:[g.jsx(I3,{src:"/Didiv/../../../public/empty-cart.png",alt:"Порожній кошик"}),g.jsx(M3,{children:"Ваш кошик порожній"}),g.jsx(N3,{children:"Ви ще не додали жодного товару в кошик"}),g.jsx(D3,{onClick:()=>window.location.href="/Didiv/catalog",children:"Перейти до покупок"})]})]}),L3=()=>{const e=df(),t=Wn(l=>l.cart.items),n=t.reduce((l,u)=>l+u.price,0),r=Wn(l=>l.cart.items),o=Wn(l=>l.favorites.items),i=r.length===0,a=(l,u)=>{u.stopPropagation();const c=o.includes(l.id);console.log(l.id),console.log(o),e(jf(l.id)),c?K.warning(`${l.name} видалено з обраного`):K.info(`${l.name} додано в обране`)},s=l=>{console.log(l),e(iC(l))};return g.jsx(g.Fragment,{children:i?g.jsx(z3,{}):g.jsxs(m3,{children:[g.jsx(Tf,{}),g.jsxs(g3,{children:[" ",g.jsx(Xt,{to:"/",children:"Головна"})," / ",g.jsx(Xt,{to:"/cart",children:"Кошик"})]}),g.jsx(y3,{children:"Кошик"}),g.jsxs(v3,{children:[g.jsx(_3,{children:t.map((l,u)=>{const c=o.includes(l.id);return console.log(l.id),g.jsxs(x3,{children:[g.jsx(w3,{src:l.image[0],alt:l.name}),g.jsx(S3,{children:g.jsx("h3",{children:l.name})}),g.jsxs(k3,{children:[g.jsxs(E3,{children:[g.jsx("button",{children:"-"}),g.jsx("span",{children:"1"}),g.jsx("button",{children:"+"})]}),g.jsx(C3,{children:g.jsxs("div",{className:"current-price",children:[l.price.toLocaleString(),"₴"]})})]}),g.jsxs(b3,{children:[g.jsx(T3,{onClick:d=>a(l,d),style:{background:"none",border:"none",cursor:"pointer",color:"#ccc"},children:g.jsx(ch,{$active:c,children:g.jsx("use",{href:`${jt}#icon-heart`})})}),g.jsx(P3,{onClick:()=>s(l),style:{background:"none",border:"none",cursor:"pointer",color:"#ccc"},children:g.jsxs(ch,{children:[" ",g.jsx("use",{href:`${jt}#icon-remove`})]})})]})]},`${l.id}-${u}`)})}),g.jsxs(j3,{children:[g.jsxs(uh,{children:[g.jsx("span",{children:"Номер замовлення"}),g.jsx("span",{children:"789563678"})]}),g.jsxs(uh,{className:"total",children:[g.jsx("span",{children:"Всього"}),g.jsxs("span",{children:[n," грн "]})]}),g.jsx(O3,{children:"Оформити замовлення"})]})]})]})})},A3="";function F3(){return console.log(A3),g.jsxs(Uk,{children:[g.jsx(Sb,{}),g.jsx(C.Suspense,{fallback:g.jsx(wb,{}),children:g.jsx(v1,{children:g.jsxs(Rt,{path:"/",element:g.jsx(DS,{}),children:[g.jsx(Rt,{index:!0,element:g.jsx(Pb,{})})," ",g.jsx(Rt,{path:"catalog",element:g.jsx(zk,{})}),g.jsx(Rt,{path:"/catalog/:category",element:g.jsx(WC,{})}),g.jsx(Rt,{path:"/product/:id",element:g.jsx(h3,{})}),g.jsx(Rt,{path:"cart",element:g.jsx(L3,{})}),g.jsx(Rt,{path:"about",element:g.jsx("div",{children:"Про нас"})}),g.jsx(Rt,{path:"contacts",element:g.jsx("div",{children:"Контакти"})}),g.jsx(Rt,{path:"*",element:g.jsx(Fk,{})})]})})})]})}var Of="persist:",Gy="persist/FLUSH",$f="persist/REHYDRATE",Xy="persist/PAUSE",qy="persist/PERSIST",Zy="persist/PURGE",Jy="persist/REGISTER",U3=-1;function ua(e){return typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?ua=function(n){return typeof n}:ua=function(n){return n&&typeof Symbol=="function"&&n.constructor===Symbol&&n!==Symbol.prototype?"symbol":typeof n},ua(e)}function fh(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(o){return Object.getOwnPropertyDescriptor(e,o).enumerable})),n.push.apply(n,r)}return n}function B3(e){for(var t=1;t<arguments.length;t++){var n=arguments[t]!=null?arguments[t]:{};t%2?fh(n,!0).forEach(function(r){W3(e,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):fh(n).forEach(function(r){Object.defineProperty(e,r,Object.getOwnPropertyDescriptor(n,r))})}return e}function W3(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function H3(e,t,n,r){r.debug;var o=B3({},n);return e&&ua(e)==="object"&&Object.keys(e).forEach(function(i){i!=="_persist"&&t[i]===n[i]&&(o[i]=e[i])}),o}function V3(e){var t=e.blacklist||null,n=e.whitelist||null,r=e.transforms||[],o=e.throttle||0,i="".concat(e.keyPrefix!==void 0?e.keyPrefix:Of).concat(e.key),a=e.storage,s;e.serialize===!1?s=function(S){return S}:typeof e.serialize=="function"?s=e.serialize:s=K3;var l=e.writeFailHandler||null,u={},c={},d=[],m=null,y=null,_=function(S){Object.keys(S).forEach(function(k){p(k)&&u[k]!==S[k]&&d.indexOf(k)===-1&&d.push(k)}),Object.keys(u).forEach(function(k){S[k]===void 0&&p(k)&&d.indexOf(k)===-1&&u[k]!==void 0&&d.push(k)}),m===null&&(m=setInterval(x,o)),u=S};function x(){if(d.length===0){m&&clearInterval(m),m=null;return}var v=d.shift(),S=r.reduce(function(k,w){return w.in(k,v,u)},u[v]);if(S!==void 0)try{c[v]=s(S)}catch(k){console.error("redux-persist/createPersistoid: error serializing state",k)}else delete c[v];d.length===0&&b()}function b(){Object.keys(c).forEach(function(v){u[v]===void 0&&delete c[v]}),y=a.setItem(i,s(c)).catch(f)}function p(v){return!(n&&n.indexOf(v)===-1&&v!=="_persist"||t&&t.indexOf(v)!==-1)}function f(v){l&&l(v)}var h=function(){for(;d.length!==0;)x();return y||Promise.resolve()};return{update:_,flush:h}}function K3(e){return JSON.stringify(e)}function Q3(e){var t=e.transforms||[],n="".concat(e.keyPrefix!==void 0?e.keyPrefix:Of).concat(e.key),r=e.storage;e.debug;var o;return e.deserialize===!1?o=function(a){return a}:typeof e.deserialize=="function"?o=e.deserialize:o=Y3,r.getItem(n).then(function(i){if(i)try{var a={},s=o(i);return Object.keys(s).forEach(function(l){a[l]=t.reduceRight(function(u,c){return c.out(u,l,s)},o(s[l]))}),a}catch(l){throw l}else return})}function Y3(e){return JSON.parse(e)}function G3(e){var t=e.storage,n="".concat(e.keyPrefix!==void 0?e.keyPrefix:Of).concat(e.key);return t.removeItem(n,X3)}function X3(e){}function dh(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(o){return Object.getOwnPropertyDescriptor(e,o).enumerable})),n.push.apply(n,r)}return n}function Ut(e){for(var t=1;t<arguments.length;t++){var n=arguments[t]!=null?arguments[t]:{};t%2?dh(n,!0).forEach(function(r){q3(e,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):dh(n).forEach(function(r){Object.defineProperty(e,r,Object.getOwnPropertyDescriptor(n,r))})}return e}function q3(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function Z3(e,t){if(e==null)return{};var n=J3(e,t),r,o;if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(o=0;o<i.length;o++)r=i[o],!(t.indexOf(r)>=0)&&Object.prototype.propertyIsEnumerable.call(e,r)&&(n[r]=e[r])}return n}function J3(e,t){if(e==null)return{};var n={},r=Object.keys(e),o,i;for(i=0;i<r.length;i++)o=r[i],!(t.indexOf(o)>=0)&&(n[o]=e[o]);return n}var eP=5e3;function ev(e,t){var n=e.version!==void 0?e.version:U3;e.debug;var r=e.stateReconciler===void 0?H3:e.stateReconciler,o=e.getStoredState||Q3,i=e.timeout!==void 0?e.timeout:eP,a=null,s=!1,l=!0,u=function(d){return d._persist.rehydrated&&a&&!l&&a.update(d),d};return function(c,d){var m=c||{},y=m._persist,_=Z3(m,["_persist"]),x=_;if(d.type===qy){var b=!1,p=function(P,I){b||(d.rehydrate(e.key,P,I),b=!0)};if(i&&setTimeout(function(){!b&&p(void 0,new Error('redux-persist: persist timed out for persist key "'.concat(e.key,'"')))},i),l=!1,a||(a=V3(e)),y)return Ut({},t(x,d),{_persist:y});if(typeof d.rehydrate!="function"||typeof d.register!="function")throw new Error("redux-persist: either rehydrate or register is not a function on the PERSIST action. This can happen if the action is being replayed. This is an unexplored use case, please open an issue and we will figure out a resolution.");return d.register(e.key),o(e).then(function(w){var P=e.migrate||function(I,M){return Promise.resolve(I)};P(w,n).then(function(I){p(I)},function(I){p(void 0,I)})},function(w){p(void 0,w)}),Ut({},t(x,d),{_persist:{version:n,rehydrated:!1}})}else{if(d.type===Zy)return s=!0,d.result(G3(e)),Ut({},t(x,d),{_persist:y});if(d.type===Gy)return d.result(a&&a.flush()),Ut({},t(x,d),{_persist:y});if(d.type===Xy)l=!0;else if(d.type===$f){if(s)return Ut({},x,{_persist:Ut({},y,{rehydrated:!0})});if(d.key===e.key){var f=t(x,d),h=d.payload,v=r!==!1&&h!==void 0?r(h,c,f,e):f,S=Ut({},v,{_persist:Ut({},y,{rehydrated:!0})});return u(S)}}}if(!y)return t(c,d);var k=t(x,d);return k===x?c:u(Ut({},k,{_persist:y}))}}function ph(e){return rP(e)||nP(e)||tP()}function tP(){throw new TypeError("Invalid attempt to spread non-iterable instance")}function nP(e){if(Symbol.iterator in Object(e)||Object.prototype.toString.call(e)==="[object Arguments]")return Array.from(e)}function rP(e){if(Array.isArray(e)){for(var t=0,n=new Array(e.length);t<e.length;t++)n[t]=e[t];return n}}function hh(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(o){return Object.getOwnPropertyDescriptor(e,o).enumerable})),n.push.apply(n,r)}return n}function ac(e){for(var t=1;t<arguments.length;t++){var n=arguments[t]!=null?arguments[t]:{};t%2?hh(n,!0).forEach(function(r){oP(e,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):hh(n).forEach(function(r){Object.defineProperty(e,r,Object.getOwnPropertyDescriptor(n,r))})}return e}function oP(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var tv={registry:[],bootstrapped:!1},iP=function(){var t=arguments.length>0&&arguments[0]!==void 0?arguments[0]:tv,n=arguments.length>1?arguments[1]:void 0;switch(n.type){case Jy:return ac({},t,{registry:[].concat(ph(t.registry),[n.key])});case $f:var r=t.registry.indexOf(n.key),o=ph(t.registry);return o.splice(r,1),ac({},t,{registry:o,bootstrapped:o.length===0});default:return t}};function aP(e,t,n){var r=n||!1,o=bf(iP,tv,t&&t.enhancer?t.enhancer:void 0),i=function(u){o.dispatch({type:Jy,key:u})},a=function(u,c,d){var m={type:$f,payload:c,err:d,key:u};e.dispatch(m),o.dispatch(m),r&&s.getState().bootstrapped&&(r(),r=!1)},s=ac({},o,{purge:function(){var u=[];return e.dispatch({type:Zy,result:function(d){u.push(d)}}),Promise.all(u)},flush:function(){var u=[];return e.dispatch({type:Gy,result:function(d){u.push(d)}}),Promise.all(u)},pause:function(){e.dispatch({type:Xy})},persist:function(){e.dispatch({type:qy,register:i,rehydrate:a})}});return t&&t.manualPersist||s.persist(),s}var Rf={},If={};If.__esModule=!0;If.default=uP;function ca(e){return typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?ca=function(n){return typeof n}:ca=function(n){return n&&typeof Symbol=="function"&&n.constructor===Symbol&&n!==Symbol.prototype?"symbol":typeof n},ca(e)}function Nl(){}var sP={getItem:Nl,setItem:Nl,removeItem:Nl};function lP(e){if((typeof self>"u"?"undefined":ca(self))!=="object"||!(e in self))return!1;try{var t=self[e],n="redux-persist ".concat(e," test");t.setItem(n,"test"),t.getItem(n),t.removeItem(n)}catch{return!1}return!0}function uP(e){var t="".concat(e,"Storage");return lP(t)?self[t]:sP}Rf.__esModule=!0;Rf.default=dP;var cP=fP(If);function fP(e){return e&&e.__esModule?e:{default:e}}function dP(e){var t=(0,cP.default)(e);return{getItem:function(r){return new Promise(function(o,i){o(t.getItem(r))})},setItem:function(r,o){return new Promise(function(i,a){i(t.setItem(r,o))})},removeItem:function(r){return new Promise(function(o,i){o(t.removeItem(r))})}}}var Mf=void 0,pP=hP(Rf);function hP(e){return e&&e.__esModule?e:{default:e}}var mP=(0,pP.default)("local");Mf=mP;const gP={key:"cart",storage:Mf},yP={key:"favorites",storage:Mf},vP=ev(gP,aC),_P=ev(yP,UC),nv=QE({reducer:{cart:vP,favorites:_P},middleware:e=>e({serializableCheck:!1})});aP(nv);Fl.createRoot(document.getElementById("root")).render(g.jsx(mS,{store:nv,children:g.jsx(H.StrictMode,{children:g.jsx(b1,{basename:"/Didiv",children:g.jsx(F3,{})})})}));
+`,z3=()=>g.jsxs(g.Fragment,{children:[g.jsx($3,{children:"Головна / Кошик"}),g.jsxs(R3,{children:[g.jsx(I3,{src:"/Didiv/../../../public/empty-cart.png",alt:"Порожній кошик"}),g.jsx(M3,{children:"Ваш кошик порожній"}),g.jsx(N3,{children:"Ви ще не додали жодного товару в кошик"}),g.jsx(D3,{onClick:()=>window.location.href="/Didiv/catalog",children:"Перейти до покупок"})]})]}),L3=()=>{const e=df(),t=Wn(l=>l.cart.items),n=t.reduce((l,u)=>l+u.price,0),r=Wn(l=>l.cart.items),o=Wn(l=>l.favorites.items),i=r.length===0,a=(l,u)=>{u.stopPropagation();const c=o.includes(l.id);console.log(l.id),console.log(o),e(jf(l.id)),c?K.warning(`${l.name} видалено з обраного`):K.info(`${l.name} додано в обране`)},s=l=>{console.log(l),e(iC(l))};return g.jsx(g.Fragment,{children:i?g.jsx(z3,{}):g.jsxs(m3,{children:[g.jsx(Tf,{}),g.jsxs(g3,{children:[" ",g.jsx(Xt,{to:"/",children:"Головна"})," / ",g.jsx(Xt,{to:"/cart",children:"Кошик"})]}),g.jsx(y3,{children:"Кошик"}),g.jsxs(v3,{children:[g.jsx(_3,{children:t.map((l,u)=>{const c=o.includes(l.id);return console.log(l.id),g.jsxs(x3,{children:[g.jsx(w3,{src:l.image[0],alt:l.name}),g.jsx(S3,{children:g.jsx("h3",{children:l.name})}),g.jsxs(k3,{children:[g.jsxs(E3,{children:[g.jsx("button",{children:"-"}),g.jsx("span",{children:"1"}),g.jsx("button",{children:"+"})]}),g.jsx(C3,{children:g.jsxs("div",{className:"current-price",children:[l.price.toLocaleString(),"₴"]})})]}),g.jsxs(b3,{children:[g.jsx(T3,{onClick:d=>a(l,d),style:{background:"none",border:"none",cursor:"pointer",color:"#ccc"},children:g.jsx(ch,{$active:c,children:g.jsx("use",{href:`${jt}#icon-heart`})})}),g.jsx(P3,{onClick:()=>s(l),style:{background:"none",border:"none",cursor:"pointer",color:"#ccc"},children:g.jsxs(ch,{children:[" ",g.jsx("use",{href:`${jt}#icon-remove`})]})})]})]},`${l.id}-${u}`)})}),g.jsxs(j3,{children:[g.jsxs(uh,{children:[g.jsx("span",{children:"Номер замовлення"}),g.jsx("span",{children:"789563678"})]}),g.jsxs(uh,{className:"total",children:[g.jsx("span",{children:"Всього "}),g.jsxs("span",{children:[" ",n," грн "]})]}),g.jsx(O3,{children:"Оформити замовлення"})]})]})]})})},A3="";function F3(){return console.log(A3),g.jsxs(Uk,{children:[g.jsx(Sb,{}),g.jsx(C.Suspense,{fallback:g.jsx(wb,{}),children:g.jsx(v1,{children:g.jsxs(Rt,{path:"/",element:g.jsx(DS,{}),children:[g.jsx(Rt,{index:!0,element:g.jsx(Pb,{})})," ",g.jsx(Rt,{path:"catalog",element:g.jsx(zk,{})}),g.jsx(Rt,{path:"/catalog/:category",element:g.jsx(WC,{})}),g.jsx(Rt,{path:"/product/:id",element:g.jsx(h3,{})}),g.jsx(Rt,{path:"cart",element:g.jsx(L3,{})}),g.jsx(Rt,{path:"about",element:g.jsx("div",{children:"Про нас"})}),g.jsx(Rt,{path:"contacts",element:g.jsx("div",{children:"Контакти"})}),g.jsx(Rt,{path:"*",element:g.jsx(Fk,{})})]})})})]})}var Of="persist:",Gy="persist/FLUSH",$f="persist/REHYDRATE",Xy="persist/PAUSE",qy="persist/PERSIST",Zy="persist/PURGE",Jy="persist/REGISTER",U3=-1;function ua(e){return typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?ua=function(n){return typeof n}:ua=function(n){return n&&typeof Symbol=="function"&&n.constructor===Symbol&&n!==Symbol.prototype?"symbol":typeof n},ua(e)}function fh(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(o){return Object.getOwnPropertyDescriptor(e,o).enumerable})),n.push.apply(n,r)}return n}function B3(e){for(var t=1;t<arguments.length;t++){var n=arguments[t]!=null?arguments[t]:{};t%2?fh(n,!0).forEach(function(r){W3(e,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):fh(n).forEach(function(r){Object.defineProperty(e,r,Object.getOwnPropertyDescriptor(n,r))})}return e}function W3(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function H3(e,t,n,r){r.debug;var o=B3({},n);return e&&ua(e)==="object"&&Object.keys(e).forEach(function(i){i!=="_persist"&&t[i]===n[i]&&(o[i]=e[i])}),o}function V3(e){var t=e.blacklist||null,n=e.whitelist||null,r=e.transforms||[],o=e.throttle||0,i="".concat(e.keyPrefix!==void 0?e.keyPrefix:Of).concat(e.key),a=e.storage,s;e.serialize===!1?s=function(S){return S}:typeof e.serialize=="function"?s=e.serialize:s=K3;var l=e.writeFailHandler||null,u={},c={},d=[],m=null,y=null,_=function(S){Object.keys(S).forEach(function(k){p(k)&&u[k]!==S[k]&&d.indexOf(k)===-1&&d.push(k)}),Object.keys(u).forEach(function(k){S[k]===void 0&&p(k)&&d.indexOf(k)===-1&&u[k]!==void 0&&d.push(k)}),m===null&&(m=setInterval(x,o)),u=S};function x(){if(d.length===0){m&&clearInterval(m),m=null;return}var v=d.shift(),S=r.reduce(function(k,w){return w.in(k,v,u)},u[v]);if(S!==void 0)try{c[v]=s(S)}catch(k){console.error("redux-persist/createPersistoid: error serializing state",k)}else delete c[v];d.length===0&&b()}function b(){Object.keys(c).forEach(function(v){u[v]===void 0&&delete c[v]}),y=a.setItem(i,s(c)).catch(f)}function p(v){return!(n&&n.indexOf(v)===-1&&v!=="_persist"||t&&t.indexOf(v)!==-1)}function f(v){l&&l(v)}var h=function(){for(;d.length!==0;)x();return y||Promise.resolve()};return{update:_,flush:h}}function K3(e){return JSON.stringify(e)}function Q3(e){var t=e.transforms||[],n="".concat(e.keyPrefix!==void 0?e.keyPrefix:Of).concat(e.key),r=e.storage;e.debug;var o;return e.deserialize===!1?o=function(a){return a}:typeof e.deserialize=="function"?o=e.deserialize:o=Y3,r.getItem(n).then(function(i){if(i)try{var a={},s=o(i);return Object.keys(s).forEach(function(l){a[l]=t.reduceRight(function(u,c){return c.out(u,l,s)},o(s[l]))}),a}catch(l){throw l}else return})}function Y3(e){return JSON.parse(e)}function G3(e){var t=e.storage,n="".concat(e.keyPrefix!==void 0?e.keyPrefix:Of).concat(e.key);return t.removeItem(n,X3)}function X3(e){}function dh(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(o){return Object.getOwnPropertyDescriptor(e,o).enumerable})),n.push.apply(n,r)}return n}function Ut(e){for(var t=1;t<arguments.length;t++){var n=arguments[t]!=null?arguments[t]:{};t%2?dh(n,!0).forEach(function(r){q3(e,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):dh(n).forEach(function(r){Object.defineProperty(e,r,Object.getOwnPropertyDescriptor(n,r))})}return e}function q3(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function Z3(e,t){if(e==null)return{};var n=J3(e,t),r,o;if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(o=0;o<i.length;o++)r=i[o],!(t.indexOf(r)>=0)&&Object.prototype.propertyIsEnumerable.call(e,r)&&(n[r]=e[r])}return n}function J3(e,t){if(e==null)return{};var n={},r=Object.keys(e),o,i;for(i=0;i<r.length;i++)o=r[i],!(t.indexOf(o)>=0)&&(n[o]=e[o]);return n}var eP=5e3;function ev(e,t){var n=e.version!==void 0?e.version:U3;e.debug;var r=e.stateReconciler===void 0?H3:e.stateReconciler,o=e.getStoredState||Q3,i=e.timeout!==void 0?e.timeout:eP,a=null,s=!1,l=!0,u=function(d){return d._persist.rehydrated&&a&&!l&&a.update(d),d};return function(c,d){var m=c||{},y=m._persist,_=Z3(m,["_persist"]),x=_;if(d.type===qy){var b=!1,p=function(P,I){b||(d.rehydrate(e.key,P,I),b=!0)};if(i&&setTimeout(function(){!b&&p(void 0,new Error('redux-persist: persist timed out for persist key "'.concat(e.key,'"')))},i),l=!1,a||(a=V3(e)),y)return Ut({},t(x,d),{_persist:y});if(typeof d.rehydrate!="function"||typeof d.register!="function")throw new Error("redux-persist: either rehydrate or register is not a function on the PERSIST action. This can happen if the action is being replayed. This is an unexplored use case, please open an issue and we will figure out a resolution.");return d.register(e.key),o(e).then(function(w){var P=e.migrate||function(I,M){return Promise.resolve(I)};P(w,n).then(function(I){p(I)},function(I){p(void 0,I)})},function(w){p(void 0,w)}),Ut({},t(x,d),{_persist:{version:n,rehydrated:!1}})}else{if(d.type===Zy)return s=!0,d.result(G3(e)),Ut({},t(x,d),{_persist:y});if(d.type===Gy)return d.result(a&&a.flush()),Ut({},t(x,d),{_persist:y});if(d.type===Xy)l=!0;else if(d.type===$f){if(s)return Ut({},x,{_persist:Ut({},y,{rehydrated:!0})});if(d.key===e.key){var f=t(x,d),h=d.payload,v=r!==!1&&h!==void 0?r(h,c,f,e):f,S=Ut({},v,{_persist:Ut({},y,{rehydrated:!0})});return u(S)}}}if(!y)return t(c,d);var k=t(x,d);return k===x?c:u(Ut({},k,{_persist:y}))}}function ph(e){return rP(e)||nP(e)||tP()}function tP(){throw new TypeError("Invalid attempt to spread non-iterable instance")}function nP(e){if(Symbol.iterator in Object(e)||Object.prototype.toString.call(e)==="[object Arguments]")return Array.from(e)}function rP(e){if(Array.isArray(e)){for(var t=0,n=new Array(e.length);t<e.length;t++)n[t]=e[t];return n}}function hh(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(o){return Object.getOwnPropertyDescriptor(e,o).enumerable})),n.push.apply(n,r)}return n}function ac(e){for(var t=1;t<arguments.length;t++){var n=arguments[t]!=null?arguments[t]:{};t%2?hh(n,!0).forEach(function(r){oP(e,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):hh(n).forEach(function(r){Object.defineProperty(e,r,Object.getOwnPropertyDescriptor(n,r))})}return e}function oP(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var tv={registry:[],bootstrapped:!1},iP=function(){var t=arguments.length>0&&arguments[0]!==void 0?arguments[0]:tv,n=arguments.length>1?arguments[1]:void 0;switch(n.type){case Jy:return ac({},t,{registry:[].concat(ph(t.registry),[n.key])});case $f:var r=t.registry.indexOf(n.key),o=ph(t.registry);return o.splice(r,1),ac({},t,{registry:o,bootstrapped:o.length===0});default:return t}};function aP(e,t,n){var r=n||!1,o=bf(iP,tv,t&&t.enhancer?t.enhancer:void 0),i=function(u){o.dispatch({type:Jy,key:u})},a=function(u,c,d){var m={type:$f,payload:c,err:d,key:u};e.dispatch(m),o.dispatch(m),r&&s.getState().bootstrapped&&(r(),r=!1)},s=ac({},o,{purge:function(){var u=[];return e.dispatch({type:Zy,result:function(d){u.push(d)}}),Promise.all(u)},flush:function(){var u=[];return e.dispatch({type:Gy,result:function(d){u.push(d)}}),Promise.all(u)},pause:function(){e.dispatch({type:Xy})},persist:function(){e.dispatch({type:qy,register:i,rehydrate:a})}});return t&&t.manualPersist||s.persist(),s}var Rf={},If={};If.__esModule=!0;If.default=uP;function ca(e){return typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?ca=function(n){return typeof n}:ca=function(n){return n&&typeof Symbol=="function"&&n.constructor===Symbol&&n!==Symbol.prototype?"symbol":typeof n},ca(e)}function Nl(){}var sP={getItem:Nl,setItem:Nl,removeItem:Nl};function lP(e){if((typeof self>"u"?"undefined":ca(self))!=="object"||!(e in self))return!1;try{var t=self[e],n="redux-persist ".concat(e," test");t.setItem(n,"test"),t.getItem(n),t.removeItem(n)}catch{return!1}return!0}function uP(e){var t="".concat(e,"Storage");return lP(t)?self[t]:sP}Rf.__esModule=!0;Rf.default=dP;var cP=fP(If);function fP(e){return e&&e.__esModule?e:{default:e}}function dP(e){var t=(0,cP.default)(e);return{getItem:function(r){return new Promise(function(o,i){o(t.getItem(r))})},setItem:function(r,o){return new Promise(function(i,a){i(t.setItem(r,o))})},removeItem:function(r){return new Promise(function(o,i){o(t.removeItem(r))})}}}var Mf=void 0,pP=hP(Rf);function hP(e){return e&&e.__esModule?e:{default:e}}var mP=(0,pP.default)("local");Mf=mP;const gP={key:"cart",storage:Mf},yP={key:"favorites",storage:Mf},vP=ev(gP,aC),_P=ev(yP,UC),nv=QE({reducer:{cart:vP,favorites:_P},middleware:e=>e({serializableCheck:!1})});aP(nv);Fl.createRoot(document.getElementById("root")).render(g.jsx(mS,{store:nv,children:g.jsx(H.StrictMode,{children:g.jsx(b1,{basename:"/Didiv",children:g.jsx(F3,{})})})}));
