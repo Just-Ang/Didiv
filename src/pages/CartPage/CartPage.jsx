@@ -1,11 +1,16 @@
 import { Link } from 'react-router-dom';
+import sprite from '../../img/symbol-defs.svg';
 import {
   Breadcrumbs,
+  BtnIcons,
   ButtonDelete,
+  ButtonFavorite,
   CartItem,
   CartItemsList,
   ContentWrapper,
   Counter,
+  CounterPrice,
+  HeartIcon,
   OrderButton,
   PageContainer,
   PriceWrapper,
@@ -18,6 +23,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart } from '../../redux/cartSlice';
 import CartEmpty from '../../components/CartEmpty/CartEmpty';
+import { toggleFavorite } from '../../redux/favoritesSlice';
+import { toast, ToastContainer } from 'react-toastify';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -25,9 +32,21 @@ const CartPage = () => {
   const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   const productsInCart = useSelector(state => state.cart.items);
-  console.log(productsInCart);
+  const favorites = useSelector(state => state.favorites.items);
   const isCartEmpty = productsInCart.length === 0;
+const HandleAddFavorite = (product, e) => {
+ 
+   e.stopPropagation();
+     const exists = favorites.includes(product.id);
+  
+  dispatch(toggleFavorite(product.id));
+    if (exists) {
+    toast.warning(`${product.name} видалено з обраного`);
+  } else {
+    toast.info(`${product.name} додано в обране`);
+  }
 
+}
   const handleDelete = (item) => {
     console.log(item);
     dispatch(removeFromCart(item));
@@ -36,6 +55,8 @@ const CartPage = () => {
   return (<>
   { isCartEmpty ? <CartEmpty></CartEmpty> :
     <PageContainer>
+    <ToastContainer
+    />
       <Breadcrumbs>
         {' '}
         <Link to="/">Головна</Link> / <Link to="/cart">Кошик</Link>
@@ -46,25 +67,33 @@ const CartPage = () => {
         <CartItemsList>
           {cartItems.map((item, index) => (
             <CartItem key={`${item.id}-${index}`}>
-              <ProductImg src={item.img} alt={item.name} />
+              <ProductImg src={item.image[0]} alt={item.name} />
               <ProductInfo>
                 <h3>{item.name}</h3>
               </ProductInfo>
-              <Counter>
+           <CounterPrice>
+             <Counter>
                 <button>-</button>
                 <span>1</span>
                 <button>+</button>
               </Counter>
               <PriceWrapper>
                 <div className="current-price">
-                  {item.price.toLocaleString()} ₴
+                  {item.price.toLocaleString()}₴
                 </div>
-                {item.oldPrice && (
-                  <div className="old-price">
-                    {item.oldPrice.toLocaleString()} ₴
-                  </div>
-                )}
               </PriceWrapper>
+           
+           </CounterPrice>
+            <BtnIcons>
+                <ButtonFavorite onClick={(e) => HandleAddFavorite(item,e)}
+           style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#ccc',
+                }}>
+            <HeartIcon> <use href={`${sprite}#icon-heart`} /></HeartIcon>
+           </ButtonFavorite>
               <ButtonDelete
                 onClick={() => handleDelete(item)}
                 style={{
@@ -74,8 +103,11 @@ const CartPage = () => {
                   color: '#ccc',
                 }}
               >
-                ✕
+               <HeartIcon> <use href={`${sprite}#icon-remove`} /></HeartIcon>
               </ButtonDelete>
+            </BtnIcons>
+          
+             
             </CartItem>
           ))}
         </CartItemsList>

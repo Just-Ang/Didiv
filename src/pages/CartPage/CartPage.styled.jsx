@@ -26,30 +26,50 @@ export const Title = styled.h1`
 `;
 
 export const ContentWrapper = styled.div`
+ 
   display: flex;
+  flex-direction:column;
+      align-items: center;
+    justify-content: center;
   gap: 40px;
-  align-items: flex-start;
 
-  @media (max-width: 992px) {
-    flex-direction: column;
+   @media screen and (min-width: 768px) {
+   flex-direction:row;
   }
+
+    @media screen and (min-width: 1440px) {
+   
+  }
+
+  
 `;
 
 export const CartItemsList = styled.div`
   flex: 2;
+      border: 1px solid #eee;
 `;
 
 export const CartItem = styled.div`
-  display: grid;
-  grid-template-columns: 150px 2fr 1fr 1fr 40px;
+ 
+  display: flex;
+  flex-direction:column;
+  
   align-items: center;
-  padding: 20px 0;
+  padding: 20px;
   border-bottom: 1px solid #eee;
   gap: 20px;
+    @media screen and (min-width: 768px) {
+
+  display: grid;
+  grid-template-columns: 150px 2fr 1fr 1fr 40px;
+  
+  }
 `;
 
 export const ProductImg = styled.img`
   width: 100%;
+
+ 
   height: auto;
 `;
 
@@ -62,6 +82,26 @@ export const ProductInfo = styled.div`
   }
 `;
 
+export const CounterPrice = styled.div`
+/* display: grid;
+grid-template-columns: 1fr 1 fr;
+grid-template-rows: 1fr 1fr; */
+      display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    gap: 30px;
+`
+export const BtnIcons = styled.div`
+/* display: grid;
+grid-template-columns: 1fr 1 fr;
+grid-template-rows: 1fr 1fr; */
+      display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    gap: 30px;
+`
 
 export const Counter = styled.div`
   display: flex;
@@ -102,6 +142,12 @@ export const ButtonDelete = styled.button`
                   cursor: 'pointer';
                   color: '#ccc';
 `;
+export const ButtonFavorite = styled.button`
+ background: 'none';
+                  border: 'none';
+                  cursor: 'pointer';
+                  color: '#ccc';
+`;
 
 
 export const SummaryCard = styled.div`
@@ -112,6 +158,12 @@ export const SummaryCard = styled.div`
   padding: 24px;
   position: sticky;
   top: 20px;
+   @media screen and (max-width: 768px) {
+      width: 100%;
+        max-width: 750px;
+        padding:10px;
+  
+  }
 `;
 
 export const SummaryRow = styled.div`
@@ -147,4 +199,10 @@ export const OrderButton = styled.button`
   &:hover {
     background: #e66a10;
   }
+`;
+
+export const HeartIcon = styled.svg`
+  width: 20px;
+  height: 20px;
+  fill: var(--black-color);
 `;
