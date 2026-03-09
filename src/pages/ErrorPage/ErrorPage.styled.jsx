@@ -10,7 +10,6 @@ height:100vw;
    @media screen and (min-width: 768px) {
   height:40vw;
   }
-
 `;
 
 export const Title = styled.h1`

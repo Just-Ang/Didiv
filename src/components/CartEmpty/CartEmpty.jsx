@@ -6,7 +6,7 @@ const CartEmpty = () => {
       <Breadcrumbs>Головна / Кошик</Breadcrumbs>
       <Container>
         <CartImage
-          src={import.meta.env.BASE_URL + '../../../public/empty-cart.png'}
+          src={import.meta.env.BASE_URL + 'empty-cart.png'}
           alt="Порожній кошик" 
         />
         <MessageTitle>Ваш кошик порожній</MessageTitle>
