@@ -525,12 +525,15 @@ color: var( --black-color);
   }
 
 `,Dk=[{id:"bikes",title:"Велосипеди",image:"/Didiv/catalog/bikes.jpeg"},{id:"saddles",title:"Сідла",image:"/Didiv/catalog/saddles.jpeg"},{id:"wheels",title:"Колеса",image:"/Didiv/catalog/wheels.jpeg"},{id:"frames",title:"Рами",image:"/Didiv/catalog/frames.jpeg"},{id:"handlebars",title:"Керма",image:"/Didiv/catalog/handlebars.jpeg"},{id:"stems",title:"Виноси",image:"/Didiv/catalog/stems.jpeg"},{id:"conrods",title:"Шатуни",image:"/Didiv/catalog/conrods.jpeg"},{id:"pedals",title:"Педалі",image:"/Didiv/catalog/pedals.jpeg"},{id:"fenders",title:"Крила",image:"/Didiv/catalog/fenders.jpeg"},{id:"tubes",title:"Камери",image:"/Didiv/catalog/tubes.jpeg"},{id:"brakes",title:"Гальма",image:"/Didiv/catalog/brakes.jpeg"},{id:"forks",title:"Вилки",image:"/Didiv/catalog/forks.jpeg"}],zk=()=>g.jsxs(Ok,{children:[g.jsx($k,{children:"Каталог"}),g.jsx(Rk,{children:Dk.map(e=>g.jsxs(Ik,{to:`/catalog/${e.id}`,children:[g.jsx(Mk,{src:e.image,alt:e.title}),g.jsx(Nk,{children:e.title})]},e.id))})]}),Lk=He.div`
-   width: 100%;              // або конкретна ширина
-height:40vw;
+   width: 100%;
+height:100vw;
    background-image: url(${"/Didiv/error.png"});
-  background-size: cover;   // фото займає весь контейнер
-  background-position: center; // центрування
-  background-repeat: no-repeat; // щоб не повторювалось
+  background-size: cover;  
+  background-position: center; 
+  background-repeat: no-repeat; 
+   @media screen and (min-width: 768px) {
+  height:40vw;
+  }
 
 `;He.h1`
   color: #ffffff;
