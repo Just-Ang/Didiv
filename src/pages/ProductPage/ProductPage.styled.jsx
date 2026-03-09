@@ -227,8 +227,9 @@ font-size: 20px;
 `
 
 export const FavoriteButton = styled.button`
+ background: ${({ $active }) => ($active ? "var(--red-color)" : "transparent")};
     font-weight: bold;
-  background: transparent;
+ color: ${({ $active }) => ($active ? "white" : "black")};
 
   border: 1px solid #ddd;
   border-radius: 50px;
@@ -248,5 +249,6 @@ export const FavoriteButton = styled.button`
 export const HeartIcon = styled.svg`
   width: 20px;
   height: 20px;
-  fill: var(--black-color);
+  
+   fill: ${({ $active }) => ($active ? "white" : " var(--black-color)")};
 `;

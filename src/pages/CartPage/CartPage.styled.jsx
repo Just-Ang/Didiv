@@ -46,7 +46,8 @@ export const ContentWrapper = styled.div`
 
 export const CartItemsList = styled.div`
   flex: 2;
-      border: 1px solid #eee;
+        border: 1px solid #eee;
+    border-radius: 12px;
 `;
 
 export const CartItem = styled.div`
@@ -56,7 +57,7 @@ export const CartItem = styled.div`
   
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #eee;
+  
   gap: 20px;
     @media screen and (min-width: 768px) {
 
@@ -67,9 +68,12 @@ export const CartItem = styled.div`
 `;
 
 export const ProductImg = styled.img`
+ width:200px;
+   @media screen and (min-width: 768px) {
   width: 100%;
+  }
+  
 
- 
   height: auto;
 `;
 
@@ -156,7 +160,7 @@ export const SummaryCard = styled.div`
   border: 1px solid #eee;
   border-radius: 12px;
   padding: 24px;
-  position: sticky;
+
   top: 20px;
    @media screen and (max-width: 768px) {
       width: 100%;
@@ -202,7 +206,9 @@ export const OrderButton = styled.button`
 `;
 
 export const HeartIcon = styled.svg`
-  width: 20px;
-  height: 20px;
-  fill: var(--black-color);
+
+  width: 25px;
+  height: 25px;
+ fill: ${({ $active }) => ($active ? "var(--red-color)" : "var(--black-color)")};
+ 
 `;

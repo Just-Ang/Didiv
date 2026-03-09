@@ -40,7 +40,7 @@ export const Badge = styled.div`
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  background: #ff3b30; /* червоний колір */
+  background:var(--red-color);
   color: white;
   border-radius: 999px;
   font-size: 11px;
