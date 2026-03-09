@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
-   width: 100%;              // або конкретна ширина
-height:40vw;
+   width: 100%;
+height:100vw;
    background-image: url(${import.meta.env.BASE_URL + 'error.png'});
-  background-size: cover;   // фото займає весь контейнер
-  background-position: center; // центрування
-  background-repeat: no-repeat; // щоб не повторювалось
+  background-size: cover;  
+  background-position: center; 
+  background-repeat: no-repeat; 
+   @media screen and (min-width: 768px) {
+  height:40vw;
+  }
 
 `;
 
