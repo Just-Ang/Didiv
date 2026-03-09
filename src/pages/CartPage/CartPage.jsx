@@ -130,8 +130,8 @@ const CartPage = () => {
               </SummaryRow>
 
               <SummaryRow className="total">
-                <span>Всього</span>
-                <span>{total} грн </span>
+                <span>Всього </span>
+                <span> {total} грн </span>
               </SummaryRow>
               <OrderButton>Оформити замовлення</OrderButton>
             </SummaryCard>

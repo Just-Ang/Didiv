@@ -1,11 +1,16 @@
-
 import styled from 'styled-components';
 
 // --- Styled Components ---
 
 export const PageContainer = styled.div`
-  font-family: 'Inter', sans-serif;
-  max-width: 1200px;
+  font-family: var(--main-font);
+  width: 100%;
+  max-width: 750px;
+  padding: 10px;
+  @media screen and (min-width: 768px) {
+    max-width: 1340px;
+  }
+
   margin: 0 auto;
   padding: 40px 20px;
   color: #333;
@@ -15,7 +20,10 @@ export const Breadcrumbs = styled.div`
   font-size: 12px;
   color: #888;
   margin-bottom: 20px;
-  a { text-decoration: none; color: inherit; }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 export const Title = styled.h1`
@@ -26,53 +34,45 @@ export const Title = styled.h1`
 `;
 
 export const ContentWrapper = styled.div`
- 
   display: flex;
-  flex-direction:column;
-      align-items: center;
-    justify-content: center;
-  gap: 40px;
-
-   @media screen and (min-width: 768px) {
-   flex-direction:row;
-  }
-
-    @media screen and (min-width: 1440px) {
-   
-  }
-
+  flex-direction: column;
+  gap: 20px; 
+  width: 100%;
   
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start; /* Щоб SummaryCard не розтягувалася по висоті */
+    justify-content: space-between; /* Розносить список і чек-аут */
+  }
 `;
 
 export const CartItemsList = styled.div`
-  flex: 2;
-        border: 1px solid #eee;
-    border-radius: 12px;
+  flex: 1; /* Займає доступний простір */
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 12px;
 `;
 
 export const CartItem = styled.div`
- 
   display: flex;
-  flex-direction:column;
-  
-  align-items: center;
+  flex-direction: column;
   padding: 20px;
-  
-  gap: 20px;
-    @media screen and (min-width: 768px) {
+  gap: 15px;
+  border-bottom: 1px solid #eee;
 
-  display: grid;
-  grid-template-columns: 150px 2fr 1fr 1fr 40px;
-  
+  @media screen and (min-width: 768px) {
+    display: grid;
+    /* 1. Картинка | 2. Назва | 3. Лічильник+Ціна | 4. Кнопки */
+    grid-template-columns: 100px 1.5fr 1.2fr 80px; 
+    align-items: center;
+    gap: 20px;
   }
 `;
 
+
+
 export const ProductImg = styled.img`
- width:200px;
-   @media screen and (min-width: 768px) {
   width: 100%;
-  }
-  
 
   height: auto;
 `;
@@ -87,25 +87,21 @@ export const ProductInfo = styled.div`
 `;
 
 export const CounterPrice = styled.div`
-/* display: grid;
-grid-template-columns: 1fr 1 fr;
-grid-template-rows: 1fr 1fr; */
-      display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    gap: 30px;
-`
+
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 30px;
+`;
 export const BtnIcons = styled.div`
-/* display: grid;
-grid-template-columns: 1fr 1 fr;
-grid-template-rows: 1fr 1fr; */
-      display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    gap: 30px;
-`
+
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 30px;
+`;
 
 export const Counter = styled.div`
   display: flex;
@@ -141,32 +137,35 @@ export const PriceWrapper = styled.div`
   }
 `;
 export const ButtonDelete = styled.button`
- background: 'none';
-                  border: 'none';
-                  cursor: 'pointer';
-                  color: '#ccc';
+  background: 'none';
+  border: 'none';
+  cursor: 'pointer';
+  color: '#ccc';
 `;
 export const ButtonFavorite = styled.button`
- background: 'none';
-                  border: 'none';
-                  cursor: 'pointer';
-                  color: '#ccc';
+  background: 'none';
+  border: 'none';
+  cursor: 'pointer';
+  color: '#ccc';
 `;
 
-
 export const SummaryCard = styled.div`
-  flex: 1;
+
   background: #fff;
   border: 1px solid #eee;
   border-radius: 12px;
   padding: 24px;
 
   top: 20px;
-   @media screen and (max-width: 768px) {
-      width: 100%;
-        max-width: 750px;
-        padding:10px;
-  
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 750px;
+    padding: 10px;
+  }
+   @media screen and (min-width: 768px) {
+    
+   width: 400px;
+    
   }
 `;
 
@@ -206,9 +205,8 @@ export const OrderButton = styled.button`
 `;
 
 export const HeartIcon = styled.svg`
-
   width: 25px;
   height: 25px;
- fill: ${({ $active }) => ($active ? "var(--red-color)" : "var(--black-color)")};
- 
+  fill: ${({ $active }) =>
+    $active ? 'var(--red-color)' : 'var(--black-color)'};
 `;
