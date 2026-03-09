@@ -27,10 +27,14 @@ export const Breadcrumbs = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 48px;
-  text-transform: uppercase;
+  font-size:24px;
+ 
   font-weight: 800;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  @media screen and (min-width: 768px) {
+  font-size:30px;
+  }
+  
 `;
 
 export const ContentWrapper = styled.div`
