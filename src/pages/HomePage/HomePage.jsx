@@ -1,11 +1,12 @@
-import { Container, Title, StyledImage } from './HomePage.styled';
-import example from '../../assets/example.png';
+import { HeroSlider } from '../../components/HeroSlider/HeroSlider';
+import { Container } from './HomePage.styled';
+
 
 const HomePage = () => {
   return (
     <Container>
-      <Title>First Page</Title>
-      <StyledImage src={example} alt="Example" />
+     <HeroSlider></HeroSlider>
+  
     </Container>
   );
 };
