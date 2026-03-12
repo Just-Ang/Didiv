@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 
 export const StyledHeroSection = styled.section`
   width: 100%;
-  max-width: 1200px;
+
   margin: 20px auto;
   border-radius: 24;
   position: relative;
@@ -18,7 +18,7 @@ export const StyledHeroSection = styled.section`
 
 export const SlideInner = styled.div`
   height: 450px;
-  background-image: linear-gradient(90deg, rgba(16, 44, 31, 0.85) 0%, rgba(16, 44, 31, 0.2) 100%), 
+  background-image: linear-gradient(90deg, rgba(44, 35, 16, 0.85) 0%, rgba(44, 35, 16, 0.2) 100%), 
                     url(${props => props.bg});
   background-size: cover;
   background-position: center;

@@ -1,9 +1,24 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
+  width: 100%;
+  max-width: 750px;
+
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  @media screen and (min-width: 768px) {
+    max-width: 994px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media screen and (min-width: 1440px) {
+    max-width: 1340px;
+  }
 `;
 
 export const Title = styled.h1`

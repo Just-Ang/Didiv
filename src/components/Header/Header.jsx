@@ -6,11 +6,14 @@ import {
   HeaderSection,
   HeaderUp,
   Logo,
+  LogoBig,
   MenuButton,
 
   MobileMenu,
   Overlay,
   StyledLink,
+  StyledLinkBig,
+  WrapperDev,
 } from './Header.styled';
 import logo from '../../img/logo.png';
 import { useState } from 'react';
@@ -28,7 +31,12 @@ export const Header = () => {
   return ( 
     <HeaderSection>
     <HeaderContainer>
-      <HeaderUp>
+      <StyledLinkBig to="/">
+          <LogoBig src={logo} alt="logo"></LogoBig>
+        </StyledLinkBig>
+      
+      <WrapperDev>
+        <HeaderUp>
         <StyledLink to="/">
           <Logo src={logo} alt="logo"></Logo>
         </StyledLink>
@@ -54,6 +62,7 @@ export const Header = () => {
         </HeadeRight>
       </HeaderUp>
       <SearchBar></SearchBar>
+      </WrapperDev>
     </HeaderContainer>
     </HeaderSection>
   );
