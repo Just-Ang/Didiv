@@ -1,0 +1,121 @@
+
+import styled from "styled-components";
+
+export const GridContainer = styled.div`
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+max-width: 1440px;
+  margin: 0 auto;
+
+
+  grid-template-columns: 1fr;
+
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 200px);
+  }
+  
+`;
+export const GridWrapper = styled.div`
+  width: 100%; /* Обов'язково, щоб розтягнути flex-елемент */
+  display: grid;
+  gap: 15px;
+  margin-top: 40px; /* Відступ від слайдера */
+
+  /* Мобільна версія */
+  grid-template-columns: 1fr;
+
+  /* Планшет (2 колонки для економії місця) */
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Десктоп (твоя сітка на 4 колонки) */
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+    /* Висота рядків під твій макс-відс 1440px */
+    grid-template-rows: repeat(2, 280px); 
+  }
+`;
+
+export const Card = styled.a`
+position: relative;
+  display: block; /* Важливо для посилання */
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none; /* Прибираємо дефолтне підкреслення */
+  cursor: pointer;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+  min-height: 180px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+   &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.481); /* прозорий темний шар */
+  }
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @media (min-width: 1024px) {
+    /* Перша картка на десктопі займає 2 рядки */
+    ${props => props.isBig && `
+      grid-row: span 2;
+      height: 100%;
+    `}
+  }
+`;
+
+export const CardTitle = styled.h3`
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: #fff;
+  margin: 0;
+  font-family: var(--main-font);
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.892);
+  max-width: 80%;
+`;
+
+export const CatalogButton = styled.a`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+  background-color: var(--orange-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: var(--main-font);
+  font-weight: bold;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #cd6113;
+  }
+
+  span {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+`;

@@ -70,7 +70,7 @@ export const CatalogBox = styled.div`
 export const Overlay = styled.div`
   position: absolute;
   inset: 0; /* займає всю картку */
-  background: rgba(0, 0, 0, 0.25); /* чорний з прозорістю 25% */
+  background: rgba(0, 0, 0, 0.622); /* чорний з прозорістю 25% */
 `;
 
 export const StyledLink = styled(Link)`
@@ -94,11 +94,31 @@ export const StyledLink = styled(Link)`
 
 
 
+export const ImgWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+
+  @media screen and (max-width: 768px) {
+    height: 100px;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.309);
+    z-index: 1;
+  }
+`;
+  
 
 export const ItemImg = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
+ 
 
   display: block;
    @media screen and (max-width: 768px) {

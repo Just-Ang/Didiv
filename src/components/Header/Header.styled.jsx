@@ -173,6 +173,7 @@ export const MobileMenu = styled.div`
   font-size: 25px;
 
   @media (max-width: 768px) {
+        z-index: 5;
     position: fixed;
     top: 0;
     right: 0;

@@ -1,4 +1,4 @@
-import { CatalogBox, CatalogTitle, ItemImg, ItemTitle, StyledLink } from './CatalogPage.styled';
+import { CatalogBox, CatalogTitle, ImgWrapper, ItemImg, ItemTitle, StyledLink } from './CatalogPage.styled';
 import { Container } from './CatalogPage.styled';
 import { categories } from "../..//data/categories";
 
@@ -9,7 +9,7 @@ const CatalogPage = () => {
       <CatalogBox>
          {categories.map(cat => (
           <StyledLink key={cat.id} to={`/catalog/${cat.id}`}>
-            <ItemImg src={cat.image} alt={cat.title}></ItemImg>
+            <ImgWrapper><ItemImg src={cat.image} alt={cat.title}></ItemImg></ImgWrapper>
             
        <ItemTitle>{cat.title}</ItemTitle>
            
