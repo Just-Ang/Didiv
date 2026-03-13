@@ -5,9 +5,18 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+    margin-left: auto;
+  margin-right: auto;
   align-items: center;
   padding-top: 30px;
-  background-color: #f6e1d338;
+ @media screen and (min-width: 768px) {
+    max-width: 994px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media screen and (min-width: 1200px) {
+    max-width: 1440px;
+  }
   
 `;
 

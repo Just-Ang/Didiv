@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import {
   CloseButton,
+  Container,
   FilterButton,
   FilterIcon,
   MobileFilterContent,
@@ -8,7 +9,7 @@ import {
   SortButton,
   SortIcon,
   TopBar,
-  Wrapper,
+  
 } from './CategoryPage.styled';
 import { SidebarFilters } from '../../components/SidebarFilters/SidebarFilters';
 import {SidebarFiltersMobile} from '../../components/SidebarFiltersMobile/SidebarFiltersMobile'
@@ -24,7 +25,7 @@ export const CategoryPage = () => {
   console.log(category);
 
   return (
-    <Wrapper>
+    <Container>
       <TopBar>
         <FilterButton onClick={() => setIsFilterOpen(true)}>
           Фільтр
@@ -60,6 +61,6 @@ export const CategoryPage = () => {
           </MobileFilterContent>
         </MobileFilterOverlay>
       )}
-    </Wrapper>
+    </Container>
   );
 };

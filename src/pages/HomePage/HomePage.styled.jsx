@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
 
+
+export const HomeSection = styled.div`
+  background:var(--background-color);
+`;
 export const Container = styled.div`
   width: 100%;
   max-width: 750px;
@@ -16,8 +20,8 @@ export const Container = styled.div`
     padding-left: 30px;
     padding-right: 30px;
   }
-  @media screen and (min-width: 1440px) {
-    max-width: 1340px;
+ @media screen and (min-width: 1200px) {
+    max-width: 1440px;
   }
 `;
 

@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-    width: 100%;
-        max-width: 750px;
-        padding:10px;
-  margin: 0 auto; /* центрування по горизонталі */
-  
+export const Container = styled.div`
+  width: 100%;
+  max-width: 750px;
+  padding: 10px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+ 
  
 
   @media screen and (min-width: 768px) {
@@ -16,16 +16,15 @@ export const Wrapper = styled.div`
     padding-left: 30px;
     padding-right: 30px;
   }
-  @media screen and (min-width: 1440px) {
-    max-width: 1340px;
+   @media screen and (min-width: 1200px) {
+    max-width: 1440px;
   }
+ 
 `;
-
-
 
 export const TopBar = styled.div`
   display: grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   justify-content: flex-start;
   margin-bottom: 16px;
@@ -36,44 +35,41 @@ export const TopBar = styled.div`
 `;
 
 export const FilterButton = styled.button`
-    height: 30px;
-  padding: 5px ;
+  height: 30px;
+  padding: 5px;
   background: var(--second-color);
   color: white;
   border: none;
   border-radius: 8px;
   font-family: var(--main-font);
-      display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    align-content: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
 `;
 export const FilterIcon = styled.svg`
   width: 20px;
   height: 20px;
   fill: var(--white-color);
-
-`
+`;
 export const SortButton = styled.button`
-    height: 30px;
+  height: 30px;
   padding: 10px 10px;
-  background:var(--second-color);
+  background: var(--second-color);
   color: white;
   border: none;
   border-radius: 8px;
-   font-family: var(--main-font);
-      display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    align-content: center;
+  font-family: var(--main-font);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
 `;
-export const SortIcon
- = styled.svg`
+export const SortIcon = styled.svg`
   width: 20px;
   height: 20px;
   fill: var(--white-color);
-
-`
+`;
 
 export const MobileFilterOverlay = styled.div`
   position: fixed;

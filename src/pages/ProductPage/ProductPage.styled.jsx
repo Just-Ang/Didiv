@@ -1,10 +1,19 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  max-width: 1200px;
+   width: 100%;
+  max-width: 750px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--main-font);
+   @media screen and (min-width: 768px) {
+    max-width: 994px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media screen and (min-width: 1200px) {
+    max-width: 1440px;
+  }
 `;
 
 export const Breadcrumbs = styled.div`

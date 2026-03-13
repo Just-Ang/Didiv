@@ -1,13 +1,14 @@
 import { HeroSlider } from '../../components/HeroSlider/HeroSlider';
-import { Container } from './HomePage.styled';
+import { Container, HomeSection } from './HomePage.styled';
 
 
 const HomePage = () => {
   return (
+       <HomeSection>
     <Container>
      <HeroSlider></HeroSlider>
   
-    </Container>
+    </Container></HomeSection>
   );
 };
 

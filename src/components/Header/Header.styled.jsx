@@ -32,8 +32,8 @@ export const HeaderContainer = styled.div`
     padding-left: 30px;
     padding-right: 30px;
   }
-  @media screen and (min-width: 1440px) {
-    max-width: 1340px;
+  @media screen and (min-width: 1200px) {
+    max-width: 1440px;
   }
 `;
 export const WrapperDev = styled.div`

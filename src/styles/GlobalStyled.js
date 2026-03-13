@@ -11,6 +11,7 @@ export const GlobalStyle = createGlobalStyle`
   --orange-color: #f47920;
   --red-color: #be2222d6;
   --main-font:  DMSerifDisplay;
+  --background-color: #f6e1d338;
 
  }
 
