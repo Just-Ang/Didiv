@@ -34,7 +34,8 @@ import {
   Title,
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
-import { toggleFavorite } from '../../redux/favoritesSlice';
+import { clearFavorite, toggleFavorite } from '../../redux/favoritesSlice';
+
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -51,15 +52,19 @@ export const ProductPage = () => {
   };
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
-    const exists = favorites.includes(product.id);
+    const exists = favorites.some((favItem) => favItem.id === product.id);
 
-    dispatch(toggleFavorite(product.id));
+    dispatch(toggleFavorite(product));
+
     if (exists) {
       toast.warning(`${product.name} видалено з обраного`);
     } else {
       toast.info(`${product.name} додано в обране`);
     }
   };
+  const handleDelete =() => {
+    dispatch(clearFavorite())
+  }
   if (!product) {
     return <Container>Товар не знайдено</Container>;
   }
@@ -112,6 +117,8 @@ export const ProductPage = () => {
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </QuantitySelector>
               <AddToCartBtn onClick={handleAdd}>В КОШИК</AddToCartBtn>
+              <AddToCartBtn onClick={handleDelete}>Видлат</AddToCartBtn>
+
               <FavoriteButton $active={isFavorite} onClick={(e) => HandleAddFavorite(product, e)}>
                 <HeartIcon  $active={isFavorite} >
                   {' '}

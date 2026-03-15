@@ -33,13 +33,14 @@ const CartPage = () => {
 
   const productsInCart = useSelector((state) => state.cart.items);
   const favorites = useSelector((state) => state.favorites.items);
+  console.log(favorites);
   const isCartEmpty = productsInCart.length === 0;
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
-    const exists = favorites.includes(product.id);
- console.log(product.id)
- console.log(favorites);
-    dispatch(toggleFavorite(product.id));
+    console.log(product)
+   const exists = favorites.some((favItem) => favItem.id === product.id);
+
+    dispatch(toggleFavorite(product));
     if (exists) {
       toast.warning(`${product.name} видалено з обраного`);
     } else {

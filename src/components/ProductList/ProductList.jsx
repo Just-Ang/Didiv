@@ -22,9 +22,9 @@ const handleAdd = (product,e) => {
 const HandleAddFavorite = (product, e) => {
  
    e.stopPropagation();
-     const exists = favorites.includes(product.id);
-  
-  dispatch(toggleFavorite(product.id));
+       const exists = favorites.some((favItem) => favItem.id === product.id);
+
+    dispatch(toggleFavorite(product));
     if (exists) {
     toast.warning(`${product.name} видалено з обраного`);
   } else {

@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage/HomePage';
 import { CategoryPage } from './pages/CategoryPage/CategoryPage';
 import { ProductPage } from './pages/ProductPage/ProductPage';
 import CartPage from './pages/CartPage/CartPage';
+import FavoritesPage from './pages/FavoritesPage/FavoritesPage';
 
 
 const test = import.meta.env.VITE_API_TEST;
@@ -30,6 +31,7 @@ function App() {
     <Route path="/catalog/:category" element={<CategoryPage />} />
     <Route path="/product/:id" element={<ProductPage />} />
     <Route path="cart" element={<CartPage />} />
+    <Route path="favorite" element={<FavoritesPage/>} />
 
     <Route path="about" element={<div>Про нас</div>} /> 
     <Route path="contacts" element={<div>Контакти</div>} />
