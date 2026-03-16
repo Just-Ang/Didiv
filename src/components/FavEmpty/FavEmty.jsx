@@ -6,7 +6,7 @@ const FavEmpty = () => {
       <Breadcrumbs>Головна / Обране</Breadcrumbs>
       <Container>
         <CartImage
-          src={import.meta.env.BASE_URL + 'empty-cart.png'}
+          src={import.meta.env.BASE_URL + 'sad.png'}
           alt="Порожній кошик" 
         />
        

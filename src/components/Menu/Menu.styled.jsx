@@ -17,16 +17,6 @@ export const MenuNav = styled.nav`
   }
 `;
 
-export const MenuItem = styled.a`
-  text-decoration: none;
-  color: var(--white-color);
-  font-weight: 500;
-  cursor: pointer;
-
-  &:hover {
-    color: #007bff;
-  }
-`;
  export const StyledLink = styled(Link)`
       display: flex;
     align-items: center;
@@ -38,6 +28,7 @@ export const MenuItem = styled.a`
   cursor: pointer;
 
   &:hover {
-    color: #007bff;
+      color: #ffffff;
+      text-shadow: 0 0 5px rgba(255,255,255,0.8);
   }
 `;

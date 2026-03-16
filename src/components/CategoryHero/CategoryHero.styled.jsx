@@ -1,68 +1,62 @@
-
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const GridContainer = styled.div`
   display: grid;
   gap: 16px;
   padding: 20px;
-max-width: 1440px;
+  max-width: 1440px;
   margin: 0 auto;
-
+  margin-bottom: 30px;
 
   grid-template-columns: 1fr;
-
 
   @media (min-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 200px);
   }
-  
 `;
 export const GridWrapper = styled.div`
-  width: 100%; /* Обов'язково, щоб розтягнути flex-елемент */
+  width: 100%;
   display: grid;
   gap: 15px;
-  margin-top: 40px; /* Відступ від слайдера */
 
-  /* Мобільна версія */
   grid-template-columns: 1fr;
+      margin-bottom: 30px;
 
-  /* Планшет (2 колонки для економії місця) */
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* Десктоп (твоя сітка на 4 колонки) */
   @media screen and (min-width: 1200px) {
     grid-template-columns: repeat(4, 1fr);
-    /* Висота рядків під твій макс-відс 1440px */
-    grid-template-rows: repeat(2, 280px); 
+
+    grid-template-rows: repeat(2, 280px);
   }
 `;
 
 export const Card = styled.a`
-position: relative;
-  display: block; /* Важливо для посилання */
+  position: relative;
+  display: block;
   width: 100%;
   height: 100%;
   border-radius: 12px;
   overflow: hidden;
-  text-decoration: none; /* Прибираємо дефолтне підкреслення */
+  text-decoration: none;
   cursor: pointer;
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  background-image: url(${props => props.bg});
+  background-image: url(${(props) => props.bg});
   background-size: cover;
   background-position: center;
   min-height: 180px;
   cursor: pointer;
   transition: transform 0.2s ease;
-   &::before {
-    content: "";
+  &::before {
+    content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.481); /* прозорий темний шар */
+    background: rgba(0, 0, 0, 0.481);
   }
 
   &:hover {
@@ -70,8 +64,9 @@ position: relative;
   }
 
   @media (min-width: 1024px) {
-    /* Перша картка на десктопі займає 2 рядки */
-    ${props => props.isBig && `
+    ${(props) =>
+      props.isBig &&
+      `
       grid-row: span 2;
       height: 100%;
     `}
