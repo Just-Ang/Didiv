@@ -212,7 +212,24 @@ export const OrderButton = styled.button`
     background: #e66a10;
   }
 `;
+export const ClearButton =styled.button`
+ width: 100%;
+  background: #c1c1c1;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s;
 
+  &:hover {
+    background: #9e9e9e;
+  }
+  
+`
 export const HeartIcon = styled.svg`
   width: 25px;
   height: 25px;

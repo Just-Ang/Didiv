@@ -160,7 +160,7 @@ export const ProductPage = () => {
           {activeTab === 'attributes' && (
             <SpecsGrid>
               <SpecItem>
-                <span>Розміри, мм</span> <b>{product.size || '2500x1500'}</b>
+                <span>Розміри, мм</span> <b>{product.size || ''}</b>
               </SpecItem>
               <SpecItem>
                 <span>Тип</span> <b>{product.type || ''}</b>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import sprite from '../../img/symbol-defs.svg';
+
 import {
   Breadcrumbs,
   BtnIcons,
@@ -7,10 +7,11 @@ import {
   ButtonFavorite,
   CartItem,
   CartItemsList,
+  ClearButton,
   ContentWrapper,
   Counter,
   CounterPrice,
-  HeartIcon,
+ 
   OrderButton,
   PageContainer,
   PriceWrapper,
@@ -21,10 +22,11 @@ import {
   Title,
 } from './CartPage.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart } from '../../redux/cartSlice';
+import { clearCart, removeFromCart } from '../../redux/cartSlice';
 import CartEmpty from '../../components/CartEmpty/CartEmpty';
 import { toggleFavorite } from '../../redux/favoritesSlice';
 import { toast, ToastContainer } from 'react-toastify';
+import { Heart, Trash2 } from 'lucide-react';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -51,6 +53,9 @@ const CartPage = () => {
     console.log(item);
     dispatch(removeFromCart(item));
   };
+  const handleClear = () => {
+    dispatch(clearCart());
+  };
 
   return (
     <>
@@ -68,7 +73,7 @@ const CartPage = () => {
           <ContentWrapper>
             <CartItemsList>
               {cartItems.map((item, index) => { 
-                 const isFavorite = favorites.includes(item.id);
+                 const isFavorite = favorites.some(fav => fav.id === item.id);
                  console.log(item.id)
                 return (
                 
@@ -100,10 +105,9 @@ const CartPage = () => {
                         color: '#ccc',
                       }}
                     >
-                      <HeartIcon   $active={isFavorite}>
-                       
-                        <use href={`${sprite}#icon-heart`} />
-                      </HeartIcon>
+                     
+                       <Heart size={22}   fill={isFavorite ? "#ff4d4f" : "none"}
+  color={isFavorite ? "#ff4d4f" : "#999"}/>
                     </ButtonFavorite>
                     <ButtonDelete
                       onClick={() => handleDelete(item)}
@@ -111,13 +115,10 @@ const CartPage = () => {
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
-                        color: '#ccc',
+                        color: '#000000',
                       }}
                     >
-                      <HeartIcon>
-                        {' '}
-                        <use href={`${sprite}#icon-remove`} />
-                      </HeartIcon>
+                       <Trash2 size={22} />
                     </ButtonDelete>
                   </BtnIcons>
                 </CartItem>
@@ -135,7 +136,9 @@ const CartPage = () => {
                 <span> {total} грн </span>
               </SummaryRow>
               <OrderButton>Оформити замовлення</OrderButton>
+               <ClearButton  onClick={handleClear}>Oчистити кошик</ClearButton>
             </SummaryCard>
+            
           </ContentWrapper>
         </PageContainer>
       )}
