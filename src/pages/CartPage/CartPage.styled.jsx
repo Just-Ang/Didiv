@@ -214,7 +214,7 @@ export const OrderButton = styled.button`
 `;
 export const ClearButton =styled.button`
  width: 100%;
-  background: #c1c1c1;
+  background: var(--light-grey);
   color: white;
   border: none;
   padding: 16px;

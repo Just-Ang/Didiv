@@ -34,7 +34,7 @@ import {
   Title,
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
-import { clearFavorite, toggleFavorite } from '../../redux/favoritesSlice';
+import {toggleFavorite } from '../../redux/favoritesSlice';
 
 
 export const ProductPage = () => {
@@ -62,9 +62,7 @@ export const ProductPage = () => {
       toast.info(`${product.name} додано в обране`);
     }
   };
-  const handleDelete =() => {
-    dispatch(clearFavorite())
-  }
+
   if (!product) {
     return <Container>Товар не знайдено</Container>;
   }
@@ -117,7 +115,7 @@ export const ProductPage = () => {
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </QuantitySelector>
               <AddToCartBtn onClick={handleAdd}>В КОШИК</AddToCartBtn>
-              <AddToCartBtn onClick={handleDelete}>Видлат</AddToCartBtn>
+            
 
               <FavoriteButton $active={isFavorite} onClick={(e) => HandleAddFavorite(product, e)}>
                 <HeartIcon  $active={isFavorite} >

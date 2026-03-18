@@ -16,12 +16,13 @@ import {
   SummaryCard,
   SummaryRow,
   Title,
+  ClearButton,
 } from './FavoritesPage.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { toggleFavorite } from '../../redux/favoritesSlice';
+import { toast, ToastContainer } from 'react-toastify';
+import { clearFavorite, toggleFavorite } from '../../redux/favoritesSlice';
 import FavEmpty from '../../components/FavEmpty/FavEmty';
-import { addToCart } from '../../redux/cartSlice';
+import { addAllToCart, addToCart } from '../../redux/cartSlice';
 
 
 const FavoritesPage = () => {
@@ -31,6 +32,10 @@ const FavoritesPage = () => {
   const handleAdd = (item) => {
       dispatch(addToCart(item));
       toast.success(`${item.name} додано в кошик!`);
+    };
+     const handleAllAdd = () => {
+      dispatch(addAllToCart(favorites));
+      toast.success(`Товари додано в кошик!`);
     };
   
   console.log(favorites);
@@ -47,6 +52,9 @@ const FavoritesPage = () => {
       toast.info(`${product.name} додано в обране`);
     }
   };
+  const handleDeleteAll =() => {
+      dispatch(clearFavorite())
+    }
   const isFavEmpty = favorites.length === 0;
 
   return (
@@ -55,6 +63,7 @@ const FavoritesPage = () => {
         <FavEmpty></FavEmpty>
       ) : (
         <Container>
+           <ToastContainer />
           <Breadcrumbs>Головна / Обране</Breadcrumbs>
           <Title>Обране</Title>
 
@@ -68,7 +77,7 @@ const FavoritesPage = () => {
                   </ProductInfo>
 
                   <ActionsWrapper>
-                    <Price>{item.price} грн</Price>
+                    <Price>{item.price} ₴</Price>
                     <IconGroup>
                       <IconButton onClick={() => handleAdd(item)} >
                          <ShoppingCart size={22} />
@@ -87,7 +96,7 @@ const FavoritesPage = () => {
                 <span>Всього в обраному:</span>
                 <strong>{favorites.length} шт.</strong>
                 <span>На суму:</span>
-                <strong>{total} грн</strong>
+                <strong>{total}₴</strong>
               </SummaryRow>
               <hr
                 style={{
@@ -96,7 +105,8 @@ const FavoritesPage = () => {
                   margin: '20px 0',
                 }}
               />
-              <CheckoutButton>Додати все до кошика</CheckoutButton>
+              <CheckoutButton onClick={() => handleAllAdd()}>Додати все до кошика</CheckoutButton>
+               <ClearButton onClick={handleDeleteAll}>Очистити обрані</ClearButton>
             </SummaryCard>
           </Layout>
         </Container>

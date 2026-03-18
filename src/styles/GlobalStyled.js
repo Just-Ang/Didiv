@@ -12,6 +12,7 @@ export const GlobalStyle = createGlobalStyle`
   --red-color: #be2222d6;
   --main-font:  DMSerifDisplay;
   --background-color: #f6e1d338;
+  --light-grey: #c1c1c1;
 
  }
 

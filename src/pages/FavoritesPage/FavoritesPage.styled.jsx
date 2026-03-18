@@ -1,26 +1,25 @@
-
 import styled from 'styled-components';
 
-
-
 export const Container = styled.div`
+  font-family: var(--main-font);
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-  font-family: 'Inter', sans-serif; // Основний текст
   color: #1a1a1a;
 `;
 
 export const Breadcrumbs = styled.nav`
+  font-family: var(--main-font);
   font-size: 14px;
   color: #8c8c8c;
-  margin-bottom: 24px;
+  margin-bottom: 15px;
 `;
 
 export const Title = styled.h1`
-  font-family: 'Playfair Display', serif; // Шрифт із засічками як на фото
-  font-size: 36px;
-  font-weight: 700;
+color: var(--black-color);
+ font-family: var(--main-font);
+  font-size: 30px;
+  font-weight: 800;
   margin-bottom: 32px;
 `;
 
@@ -111,7 +110,7 @@ export const SummaryCard = styled.div`
   border-radius: 16px;
   padding: 30px;
   height: fit-content;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 `;
 
 export const SummaryRow = styled.div`
@@ -137,5 +136,22 @@ export const CheckoutButton = styled.button`
 
   &:hover {
     background-color: #d96a1a;
+  }
+`;
+export const ClearButton = styled.button`
+  width: 100%;
+  background:var(--light-grey);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #9e9e9e;
   }
 `;

@@ -9,7 +9,7 @@ import {
   CartItemsList,
   ClearButton,
   ContentWrapper,
-  Counter,
+
   CounterPrice,
  
   OrderButton,
@@ -27,11 +27,15 @@ import CartEmpty from '../../components/CartEmpty/CartEmpty';
 import { toggleFavorite } from '../../redux/favoritesSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import { Heart, Trash2 } from 'lucide-react';
+import Counter from '../../components/Counter/Counter';
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+const total = cartItems.reduce(
+  (sum, item) => sum + item.price * (item.quantity || 1),
+  0
+);
 
   const productsInCart = useSelector((state) => state.cart.items);
   const favorites = useSelector((state) => state.favorites.items);
@@ -56,6 +60,12 @@ const CartPage = () => {
   const handleClear = () => {
     dispatch(clearCart());
   };
+  const generateOrderNumber = () => {
+   const year = new Date().getFullYear().toString().slice(-2);
+  const time = Date.now().toString().slice(-4);
+  const random = Math.floor(100 + Math.random() * 900);
+  return `${year}${time}${random}`;
+};
 
   return (
     <>
@@ -83,14 +93,11 @@ const CartPage = () => {
                     <h3>{item.name}</h3>
                   </ProductInfo>
                   <CounterPrice>
-                    <Counter>
-                      <button>-</button>
-                      <span>1</span>
-                      <button>+</button>
-                    </Counter>
+                    
+                    <Counter item={{ ...item, quantity: item.quantity || 1 }} />
                     <PriceWrapper>
                       <div className="current-price">
-                        {item.price.toLocaleString()}₴
+                         {(item.price * (item.quantity || 1)).toLocaleString()}₴
                       </div>
                     </PriceWrapper>
                   </CounterPrice>
@@ -128,12 +135,12 @@ const CartPage = () => {
             <SummaryCard>
               <SummaryRow>
                 <span>Номер замовлення</span>
-                <span>789563678</span>
+               <span>{generateOrderNumber()}</span>
               </SummaryRow>
 
               <SummaryRow className="total">
                 <span>Всього </span>
-                <span> {total} грн </span>
+                <span> {total} ₴ </span>
               </SummaryRow>
               <OrderButton>Оформити замовлення</OrderButton>
                <ClearButton  onClick={handleClear}>Oчистити кошик</ClearButton>
