@@ -21,14 +21,11 @@ export const PageContainer = styled.div`
   color: #333;
 `;
 
-export const Breadcrumbs = styled.div`
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 20px;
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
+export const Breadcrumbs = styled.nav`
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: #8c8c8c;
+  margin-bottom: 15px;
 `;
 
 export const Title = styled.h1`
@@ -56,7 +53,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const CartItemsList = styled.div`
-  flex: 1; /* Займає доступний простір */
+  flex: 1; 
   width: 100%;
   border: 1px solid #eee;
   border-radius: 12px;
@@ -87,8 +84,8 @@ export const CartItem = styled.div`
 
 export const ProductImg = styled.img`
   width: 100%;
-
   height: auto;
+  border-radius: 4px;
 `;
 
 export const ProductInfo = styled.div`
