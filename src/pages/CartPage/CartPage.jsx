@@ -28,9 +28,11 @@ import { toggleFavorite } from '../../redux/favoritesSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import { Heart, Trash2 } from 'lucide-react';
 import Counter from '../../components/Counter/Counter';
+import { useState } from 'react';
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const [removingIds, setRemovingIds] = useState([]);
   const cartItems = useSelector((state) => state.cart.items);
 const total = cartItems.reduce(
   (sum, item) => sum + item.price * (item.quantity || 1),
@@ -53,10 +55,14 @@ const total = cartItems.reduce(
       toast.info(`${product.name} додано в обране`);
     }
   };
-  const handleDelete = (item) => {
-    console.log(item);
+const handleDelete = (item) => {
+  setRemovingIds(prev => [...prev, item.id]);
+
+  setTimeout(() => {
     dispatch(removeFromCart(item));
-  };
+    setRemovingIds(prev => prev.filter(id => id !== item.id));
+  }, 300); 
+};
   const handleClear = () => {
     dispatch(clearCart());
   };
@@ -84,10 +90,10 @@ const total = cartItems.reduce(
             <CartItemsList>
               {cartItems.map((item, index) => { 
                  const isFavorite = favorites.some(fav => fav.id === item.id);
-                 console.log(item.id)
                 return (
                 
-                <CartItem key={`${item.id}-${index}`}>
+                <CartItem key={`${item.id}-${index}`} 
+                 className={removingIds.includes(item.id) ? "removing" : ""}>
                   <ProductImg src={item.image[0]} alt={item.name} />
                   <ProductInfo>
                     <h3>{item.name}</h3>

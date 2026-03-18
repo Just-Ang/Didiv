@@ -68,10 +68,15 @@ export const CartItem = styled.div`
   padding: 20px;
   gap: 15px;
   border-bottom: 1px solid #eee;
+   transition: all 0.3s ease;
+
+  &.removing {
+    opacity: 0;
+    transform: translateX(40px);
+  }
 
   @media screen and (min-width: 768px) {
     display: grid;
-    /* 1. Картинка | 2. Назва | 3. Лічильник+Ціна | 4. Кнопки */
     grid-template-columns: 100px 1.5fr 1.2fr 80px; 
     align-items: center;
     gap: 20px;

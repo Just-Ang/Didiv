@@ -46,6 +46,7 @@ export const ItemCard = styled.div`
   justify-content: space-between;
   padding: 24px;
   border-bottom: 1px solid #f0f0f0;
+  
 
   &:last-child {
     border-bottom: none;
