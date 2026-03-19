@@ -27,6 +27,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Heart, Trash2 } from 'lucide-react';
 import Counter from '../../components/Counter/Counter';
 import { useState } from 'react';
+import placeholder from '../../../public/nofoto.png';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ const CartPage = () => {
                     key={`${item.id}-${index}`}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
-                    <ProductImg src={item.image} alt={item.name} />
+                    <ProductImg src={item.image[0]|| placeholder} alt={item.name} />
                     <ProductInfo>
                       <h3>{item.name}</h3>
                     </ProductInfo>

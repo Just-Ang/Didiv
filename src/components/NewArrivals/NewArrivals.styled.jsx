@@ -46,7 +46,7 @@ export const ProductCard = styled.div`
   border: 2px solid #eee;
   border-radius:12px;
   padding: 10px;
-  background-color: var( --second-white);
+  background-color:  #f5f5f5;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 26%);
    transition: transform 0.2s;
 

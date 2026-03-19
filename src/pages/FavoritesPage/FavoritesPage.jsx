@@ -24,6 +24,8 @@ import FavEmpty from '../../components/FavEmpty/FavEmty';
 import { addAllToCart, addToCart } from '../../redux/cartSlice';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import placeholder from '../../../public/nofoto.png';
+
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
@@ -90,7 +92,7 @@ const FavoritesPage = () => {
                   key={item.id}
                   className={removingIds.includes(item.id) ? 'removing' : ''}
                 >
-                  <Image src={item.image} alt={item.name} />
+                  <Image src={item.image[0] || placeholder} alt={item.name} />
                   <ProductName>{item.name}</ProductName>
 
                   <ActionsWrapper>
