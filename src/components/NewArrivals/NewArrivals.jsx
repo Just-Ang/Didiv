@@ -47,7 +47,7 @@ export const NewArrivals = () => {
 
         <AllNewButton to="/catalog/new">
           <ButtonContent>
-            <p>Весь каталог<br/>новинок</p>
+            <p>Усі новинки</p>
             <ArrowWrapper>
               <ArrowRight size={24} />
             </ArrowWrapper>
