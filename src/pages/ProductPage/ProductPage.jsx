@@ -34,8 +34,7 @@ import {
   Title,
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
-import {toggleFavorite } from '../../redux/favoritesSlice';
-
+import { toggleFavorite } from '../../redux/favoritesSlice';
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -45,18 +44,17 @@ export const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(product.image[0]);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
- const isFavorite = favorites.includes(product.id);
+  const isFavorite = favorites.some((favItem) => favItem.id === product.id);
   const handleAdd = () => {
-    dispatch(addToCart(product));
+    dispatch(addToCart({ ...product, quantity }));
     toast.success(`${product.name} додано в кошик!`);
   };
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
-    const exists = favorites.some((favItem) => favItem.id === product.id);
 
     dispatch(toggleFavorite(product));
 
-    if (exists) {
+    if (isFavorite) {
       toast.warning(`${product.name} видалено з обраного`);
     } else {
       toast.info(`${product.name} додано в обране`);
@@ -80,7 +78,7 @@ export const ProductPage = () => {
         <GallerySection>
           <MainImage src={activeImage} alt={product.name} />
           <Thumbnails>
-            {product.image.map((img) =>  (
+            {product.image.map((img) => (
               <Thumb
                 key={img}
                 src={img}
@@ -103,7 +101,7 @@ export const ProductPage = () => {
 
           <PriceCard>
             <PriceWrapper>
-              <CurrentPrice>{product.price.toLocaleString()} ₴</CurrentPrice>
+              <CurrentPrice>{product.price.toLocaleString()} грн</CurrentPrice>
             </PriceWrapper>
 
             <ActionRow>
@@ -115,13 +113,15 @@ export const ProductPage = () => {
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </QuantitySelector>
               <AddToCartBtn onClick={handleAdd}>В КОШИК</AddToCartBtn>
-            
 
-              <FavoriteButton $active={isFavorite} onClick={(e) => HandleAddFavorite(product, e)}>
-                <HeartIcon  $active={isFavorite} >
+              <FavoriteButton
+                $active={isFavorite}
+                onClick={(e) => HandleAddFavorite(product, e)}
+              >
+                <HeartIcon $active={isFavorite}>
                   {' '}
                   <use href={`${sprite}#icon-heart`} />
-                </HeartIcon >
+                </HeartIcon>
                 В ОБРАНЕ
               </FavoriteButton>
             </ActionRow>

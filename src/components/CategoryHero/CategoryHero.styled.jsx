@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
-export const GridContainer = styled.div`
-  display: grid;
-  gap: 16px;
-  padding: 20px;
-  max-width: 1440px;
-  margin: 0 auto;
-  margin-bottom: 30px;
+// export const GridContainer = styled.div`
+//   display: grid;
+//   gap: 16px;
+//   padding: 20px;
+//   max-width: 1440px;
+//   margin: 0 auto;
+//   margin-bottom: 30px;
 
-  grid-template-columns: 1fr;
+//   grid-template-columns: 1fr;
 
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 200px);
-  }
-`;
+//   @media (min-width: 1024px) {
+//     grid-template-columns: repeat(4, 1fr);
+//     grid-template-rows: repeat(2, 200px);
+//   }
+// `;
 export const GridWrapper = styled.div`
   width: 100%;
   display: grid;

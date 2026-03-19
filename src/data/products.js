@@ -1,7 +1,7 @@
-// products.js
+
 export const products = [
   { id: 1, name: "Шосейні безкамерні колеса Shimano Ultegra WH-6800", category: "wheels", brand: "Shimano",  color: "чорні",type: "Шосейні",size: "29`", weight:1622, price: 2800, inStock: true, description: "Вага 1633 грами без ексцентриків (945+688), крутять ідеально, дуже довгий накат, барабан під 11-12 шв. шосе касети, рідні ексцентрики, ширина 16.3/21.3, обода без отворів для ніпелів, не потребують стрічки, без корозії, рівні. Мінус - знос, спереду сильний, ззаду менше, вживу не такий страшний, як показали на фото, короче кажучи, їздити можна сміливо.", image: [import.meta.env.BASE_URL + 'catalog/wheels.jpeg'] },
-  { id: 2, name: "Сідло Selle San Marco Aspide Superleggera", category: "saddles", price: 800, inStock: true, size: "29`", description: "140 мм, вага 171 гр, рейки алюміній, корпус пластик, підкладка Pebax, оббивка Microfeel.", image:[ import.meta.env.BASE_URL + 'catalog/photo_2026-03-02 15.18.11.jpeg'] },
+  { id: 2, name: "Сідло Selle San Marco Aspide Superleggera", category: "saddles", price: 800, inStock: true, size: "29`", description: "140 мм, вага 171 гр, рейки алюміній, корпус пластик, підкладка Pebax, оббивка Microfeel.", image:[] },
   { id: 3, name: "Шосейні безкамерні колеса Shimano Ultegra WH-6800", category: "wheels", price: 2800, weight:1622, inStock: true, description: "Вага 1633 грами без ексцентриків (945+688), крутять ідеально...", image: [import.meta.env.BASE_URL + 'catalog/wheels.jpeg'] },
   { id: 4, name: "Шосейні безкамерні колеса Shimano Ultegra WH-6800", category: "wheels", price: 2800,weight:1622, inStock: true, description: "Вага 1633 грами без ексцентриків...", image: [import.meta.env.BASE_URL + 'catalog/wheels.jpeg'] },
   { id: 5, name: "Рама MTB 17\"", category: "Рами", price: 4500, inStock: true, image: import.meta.env.BASE_URL + 'catalog/frame_mtb_17.jpg' },

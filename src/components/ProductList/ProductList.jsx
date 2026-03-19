@@ -52,7 +52,7 @@ const HandleAddFavorite = (product, e) => {
       
       {filteredProducts.map(product => (
         <Card key={product.id}
-         onClick={() => navigate(`/product/${product.id}`)} // перехід по кліку
+         onClick={() => navigate(`/product/${product.id}`)}
           style={{ cursor: "pointer" }} >
           <CardImg src={product.image[0] } alt={product.name} />
           <CardInfo>

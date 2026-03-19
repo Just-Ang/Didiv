@@ -102,7 +102,7 @@ const CartPage = () => {
                     key={`${item.id}-${index}`}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
-                    <ProductImg src={item.image[0]} alt={item.name} />
+                    <ProductImg src={item.image} alt={item.name} />
                     <ProductInfo>
                       <h3>{item.name}</h3>
                     </ProductInfo>
