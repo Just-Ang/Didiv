@@ -20,6 +20,7 @@ import {
 } from './CheckoutPage.styled';
 import ReactInputMask from 'react-input-mask';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
  const API_KEY = import.meta.env.VITE_NP_API_KEY;
   const BASE_URL = 'https://api.novaposhta.ua/v2.0/json/';
 
@@ -30,7 +31,7 @@ const CheckoutPage = () => {
     0
   );
   const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '+38 (0',
@@ -174,11 +175,16 @@ const CheckoutPage = () => {
 
     const finalOrder = {
       ...formData,
-      city: selectedCity.label, // Ось тут ми використали selectedCity
-      address: selectedOffice.label, // А тут — selectedOffice
+      city: selectedCity.label,
+      address: selectedOffice.label, 
       items: cartItems,
       total: totalAmount,
     };
+   // 1. Зберігаємо замовлення на сервері
+    
+
+    // 2. Редирект на сторінку підтвердження, передаємо замовлення через state
+    navigate("/order-confirmation", { state: { order: finalOrder } });
 
     console.log('Замовлення готове до відправки:', finalOrder);
     // Тут зазвичай іде запит на бекенд або в Telegram-бот
