@@ -16,7 +16,10 @@ let filteredProducts = products.filter(p => p.category === category);
 
 const handleAdd = (product,e) => {
   e.stopPropagation();
-  dispatch(addToCart(product));
+  dispatch(addToCart( { 
+  ...product, 
+  quantity: 1  
+}));
    toast.success(`${product.name} додано в кошик!`);
 };
 const HandleAddFavorite = (product, e) => {
