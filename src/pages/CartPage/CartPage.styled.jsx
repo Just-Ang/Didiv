@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 // --- Styled Components ---
@@ -197,7 +198,9 @@ export const SummaryRow = styled.div`
   }
 `;
 
-export const OrderButton = styled.button`
+export const OrderButton = styled(Link)`
+display: flex;
+justify-content: center;
   width: 100%;
   background: #f47920;
   color: white;

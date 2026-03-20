@@ -166,7 +166,7 @@ const CartPage = () => {
                 <span>Всього </span>
                 <span> {total} ₴ </span>
               </SummaryRow>
-              <OrderButton>Оформити замовлення</OrderButton>
+              <OrderButton to='/checkout'>Оформити замовлення</OrderButton>
               <ClearButton onClick={handleClear}>Oчистити кошик</ClearButton>
             </SummaryCard>
           </ContentWrapper>
