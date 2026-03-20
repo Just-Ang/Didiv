@@ -26,7 +26,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import placeholder from '../../../public/nofoto.png';
 
-
 const FavoritesPage = () => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
@@ -92,7 +91,14 @@ const FavoritesPage = () => {
                   key={item.id}
                   className={removingIds.includes(item.id) ? 'removing' : ''}
                 >
-                  <Image src={item.image[0] || placeholder} alt={item.name} />
+                  <Image
+                    src={item.image?.[0] || placeholder}
+                    alt={item.name}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = placeholder;
+                    }}
+                  />
                   <ProductName>{item.name}</ProductName>
 
                   <ActionsWrapper>

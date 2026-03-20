@@ -103,7 +103,12 @@ const CartPage = () => {
                     key={`${item.id}-${index}`}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
-                    <ProductImg src={item.image[0]|| placeholder} alt={item.name} />
+                    <ProductImg  src={item.image?.[0] || placeholder}
+                                        alt={item.name}
+                                        onError={(e) => {
+                                          e.currentTarget.onerror = null;
+                                          e.currentTarget.src = placeholder;
+                                        }} />
                     <ProductInfo>
                       <h3>{item.name}</h3>
                     </ProductInfo>

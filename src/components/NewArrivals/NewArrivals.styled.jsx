@@ -15,6 +15,10 @@ export const Title = styled.h2`
   font-weight: 700;
   margin-bottom: 20px;
   color: #333;
+  @media screen and (min-width: 768px) {
+  font-size: 35px;
+  }
+
 `;
 
 export const Grid = styled.div`
@@ -181,6 +185,9 @@ display: flex;
   &:hover {
     transform: scale(1.02);
   }
+    @media screen and (max-width: 768px) {
+   padding: 20px ;
+  }
 
 `;
 
@@ -189,7 +196,7 @@ export  const ButtonContent = styled.div`
   color: white;
 
   p {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 12px;

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { toggleFavorite } from "../../redux/favoritesSlice";
+import placeholder from '../../../public/nofoto.png';
 
 export const ProductList = ({ category, selectedFilters = {}  }) => {
 let filteredProducts = products.filter(p => p.category === category);
@@ -57,7 +58,12 @@ const HandleAddFavorite = (product, e) => {
         <Card key={product.id}
          onClick={() => navigate(`/product/${product.id}`)}
           style={{ cursor: "pointer" }} >
-          <CardImg src={product.image[0] } alt={product.name} />
+          <CardImg  src={product.image?.[0] || placeholder}
+                              alt={product.name}
+                              onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = placeholder;
+                              }} />
           <CardInfo>
             <CardTitle>{product.name}</CardTitle>
             <CardPrice>{product.price} грн</CardPrice>
