@@ -48,7 +48,7 @@ export const NextActions = styled.div`
 
 export const Button = styled.button`
   padding: 0.6rem 1.2rem;
-  background-color: #0077ff;
+  background-color:var(--orange-color);
   color: #fff;
   border: none;
   border-radius: 6px;

@@ -44,8 +44,29 @@ const CheckoutPage = () => {
   const [selectedOffice, setSelectedOffice] = useState(null);
   const [cityOptions, setCityOptions] = useState([]);
   const [officeOptions, setOfficeOptions] = useState([]);
+const [deliveryMethod, setDeliveryMethod] = useState(null);
+const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
+const [selectedUkrOffice, setSelectedUkrOffice] = useState(null);
 
- 
+  const generateOrderNumber = () => {
+    const year = new Date().getFullYear().toString().slice(-2);
+    const time = Date.now().toString().slice(-4);
+    const random = Math.floor(100 + Math.random() * 900);
+    return `${year}${time}${random}`;
+  };
+  
+  const deliveryOptions = useMemo(() => {
+  const options = [
+    { value: 'nova', label: 'Нова пошта' },
+    { value: 'ukr', label: 'Укрпошта' },
+  ];
+
+  if (selectedCity?.label === 'Київ') {
+    options.push({ value: 'pickup', label: 'Самовивіз' });
+  }
+
+  return options;
+}, [selectedCity]);
 
   useEffect(() => {
     if (inputCity.length < 2) return;
@@ -106,7 +127,7 @@ const CheckoutPage = () => {
 
     fetchOffices();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCity]);
+  },  [selectedCity, deliveryMethod]);
 
   const handleCityChange = (option) => {
     setSelectedCity(option); // для Select
@@ -114,8 +135,15 @@ const CheckoutPage = () => {
       ...prev,
       city: option ? option.label : '', // записуємо у formData
     }));
-    setSelectedOffice(null); // очищаємо відділення
-    setOfficeOptions([]); // опції ще не завантажені
+     setSelectedOffice(null);
+  setOfficeOptions([]);
+  setSelectedUkrOffice(null);
+  setUkrOfficeOptions([]);
+
+  // Якщо нове місто не Київ, скидаємо самовивіз
+  if (option?.label !== 'Київ' && deliveryMethod === 'pickup') {
+    setDeliveryMethod(null);
+  }
   };
   const handleOfficeChange = (option) => {
     setSelectedOffice(option);
@@ -124,6 +152,28 @@ const CheckoutPage = () => {
       postOffice: option ? option.label : '', // записуємо у formData
     }));
   };
+
+  const handleUkrOfficeChange = (option) => {
+  setSelectedUkrOffice(option);
+  setFormData((prev) => ({
+    ...prev,
+    postOffice: option ? option.label : '',
+  }));
+};
+
+useEffect(() => {
+  if (deliveryMethod !== 'ukr' || !selectedCity) return;
+
+  // поки що просто приклад
+  const fakeData = [
+    { value: '1', label: 'Відділення №1' },
+    { value: '2', label: 'Відділення №2' },
+  ];
+
+  setUkrOfficeOptions(fakeData);
+}, [selectedCity, deliveryMethod]);
+
+
 
   // 2. Функція перевірки (валідації)
   const validate = (data) => {
@@ -148,19 +198,31 @@ const CheckoutPage = () => {
 
     // Перевірка пустих полів доставки
     if (!data.city.trim()) errors.city = 'Вкажіть місто';
-    if (!data.postOffice.trim()) errors.postOffice = 'Вкажіть відділення';
-    console.log('Errors list:', errors); // Це покаже в консолі браузера, яке саме поле "блокує" кнопку
+    // if (!data.postOffice.trim()) errors.postOffice = 'Вкажіть відділення';
+    console.log('Errors list:', errors); 
+ if (deliveryMethod === 'nova' && !selectedOffice) {
+  errors.postOffice = 'Оберіть відділення Нової пошти';
+}
 
+if (deliveryMethod === 'ukr' && !selectedUkrOffice) {
+  errors.postOffice = 'Оберіть відділення Укрпошти';
+}
+
+    
     return errors;
   };
+ 
 
   // 3. Обчислюємо помилки та активність кнопки
   const errors = useMemo(() => validate(formData), [formData]);
   const isFormValid =
-    Object.keys(errors).length === 0 && // немає помилок у текстових полях
-    selectedCity !== null && // місто обрано
-    selectedOffice !== null && // відділення обрано
-    cartItems.length > 0;
+  Object.keys(errors).length === 0 && // немає помилок
+  selectedCity !== null &&            // місто обрано
+  deliveryMethod !== null &&          // спосіб доставки обрано
+  (deliveryMethod === 'pickup' ||    // якщо самовивіз
+   (deliveryMethod === 'nova' && selectedOffice !== null) || 
+   (deliveryMethod === 'ukr' && selectedUkrOffice !== null)) &&
+  cartItems.length > 0;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -172,23 +234,25 @@ const CheckoutPage = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const finalOrder = {
-      ...formData,
-      city: selectedCity.label,
-      address: selectedOffice.label, 
-      items: cartItems,
-      total: totalAmount,
-    };
-   // 1. Зберігаємо замовлення на сервері
     
-
-    // 2. Редирект на сторінку підтвердження, передаємо замовлення через state
+    const finalOrder = {
+  ...formData,
+  city: selectedCity.label,
+  deliveryMethod,
+  address:
+    deliveryMethod === 'nova'
+      ? selectedOffice?.label
+      : deliveryMethod === 'ukr'
+      ? selectedUkrOffice?.label
+      : 'Самовивіз',
+  items: cartItems,
+  total: totalAmount,
+  orderNumer: generateOrderNumber(),
+};
+   // Зберігаємо замовлення на сервері
     navigate("/order-confirmation", { state: { order: finalOrder } });
 
     console.log('Замовлення готове до відправки:', finalOrder);
-    // Тут зазвичай іде запит на бекенд або в Telegram-бот
-    alert(`Дякуємо, ${formData.fullName}! Замовлення оформлено.`);
   };
 
   return (
@@ -256,6 +320,24 @@ const CheckoutPage = () => {
             </InputGroup>
 
             <InputGroup>
+  <Label>Спосіб доставки</Label>
+  <Select
+    options={deliveryOptions}
+    placeholder="Оберіть спосіб доставки..."
+    isDisabled={!selectedCity}
+   value={deliveryOptions.find(opt => opt.value === deliveryMethod) || null} 
+    onChange={(option) => {
+      setDeliveryMethod(option.value);
+
+      // очищаємо попередні вибори
+      setSelectedOffice(null);
+      setSelectedUkrOffice(null);
+
+    }}
+  />
+</InputGroup>
+{deliveryMethod === 'nova' && (
+            <InputGroup>
               <Label>Відділення</Label>
               <Select
                 options={officeOptions}
@@ -264,7 +346,38 @@ const CheckoutPage = () => {
                 onChange={handleOfficeChange}
                 value={selectedOffice}
               />
-            </InputGroup>
+            </InputGroup> )}
+            {deliveryMethod === 'ukr' && (
+  <InputGroup>
+    <Label>Відділення Укрпошти</Label>
+    <Select
+      options={ukrOfficeOptions}
+      placeholder="Оберіть відділення..."
+      isDisabled={!selectedCity}
+      onChange={handleUkrOfficeChange}
+      value={selectedUkrOffice}
+    />
+  </InputGroup>
+)}
+{deliveryMethod === 'pickup' && (
+  <InputGroup>
+    <Label>Самовивіз</Label>
+    <div style={{
+      backgroundColor: '#f9f9f9',
+      padding: '10px',
+      borderRadius: '6px',
+      border: '1px solid #ddd',
+      fontSize: '14px',
+      color: '#333',
+      lineHeight: '1.4',
+    }}>
+      <p>Ви обрали самовивіз.</p>
+      <p>Адреса магазину: вул. Казармена 6Г, Київ</p>
+      <p>Графік роботи: Вт, Ср, Пт, Сб, Нд — 11:00–20:00; вихідні: Пн, Чт</p>
+      <p>Телефон: +380 99 999 99</p>
+    </div>
+  </InputGroup>
+)}
           </Form>
         </Section>
 

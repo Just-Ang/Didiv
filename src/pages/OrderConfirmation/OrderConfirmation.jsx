@@ -12,7 +12,7 @@ const OrderConfirmation = () => {
   return (
     <Container>
       <Title>Дякуємо за ваше замовлення!</Title>
-      <Message>Ваше замовлення <strong>№{order.id}</strong> успішно прийняте.</Message>
+      <Message>Ваше замовлення <strong>№{order.orderNumer}</strong> успішно прийняте.</Message>
       <Message>Наш менеджер зв’яжеться з вами протягом <strong>30 хвилин</strong>.</Message>
 
       <OrderSummary>
@@ -25,7 +25,7 @@ const OrderConfirmation = () => {
           ))}
         </ul>
         <Message>Спосіб доставки: <strong>{order.deliveryMethod}</strong></Message>
-        <Message>Адреса отримання: {order.deliveryAddress}</Message>
+        <Message>Адреса отримання: {order.city}, {order.address}</Message>
       </OrderSummary>
 
       {order.paymentMethod === "online" && (
