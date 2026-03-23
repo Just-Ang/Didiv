@@ -16,6 +16,7 @@ import { DeliveryPage } from './pages/DeliveryPage/DeliveryPage';
 import CheckoutPage from './pages/CheckoutPage/CheckoutPage';
 import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
 import AboutUs from './pages/About/About';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 
 const test = import.meta.env.VITE_API_TEST;
@@ -26,6 +27,7 @@ function App() {
      
     <AppWrapper>
         <GlobalStyle />
+        <ScrollToTop />
        <Suspense fallback={<Loader />}>
       <Routes>
   <Route path="/" element={<SharedLayout />}>
