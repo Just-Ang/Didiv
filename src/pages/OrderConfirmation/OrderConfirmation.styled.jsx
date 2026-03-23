@@ -1,62 +1,114 @@
+import styled from 'styled-components';
 
-import styled from "styled-components";
-
-// ====== Styled components ======
 export const Container = styled.div`
-  padding: 2rem;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   text-align: center;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
 `;
 
 export const Title = styled.h1`
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
+  color: var(--orange-color); 
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 16px;
 `;
 
 export const Message = styled.p`
-  font-size: 1.1rem;
-  margin: 0.3rem 0;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 8px;
+
+  strong {
+    color: #1a1a1a;
+  }
 `;
 
-export const OrderSummary = styled.div`
-  margin-top: 2rem;
+export const OrderSummaryBox = styled.div`
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 30px 0;
   text-align: left;
-  display: inline-block;
-  background-color: #f8f8f8;
-  padding: 1.5rem;
-  border-radius: 8px;
+  border: 1px solid #edf2f7;
 `;
 
-export const SummaryTitle = styled.h2`
-  margin-bottom: 0.8rem;
+export const SummaryTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+`;
+
+export const List = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
 `;
 
 export const ListItem = styled.li`
-  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .item-info {
+    font-weight: 500;
+  }
+
+  .item-price {
+    font-weight: 700;
+    color: #2c3e50;
+  }
 `;
 
 export const PaymentInfo = styled.div`
-  margin-top: 1.5rem;
+  background: #fff4e5; 
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #ffe3c1;
 `;
 
 export const NextActions = styled.div`
-  margin-top: 2rem;
   display: flex;
+  gap: 15px;
   justify-content: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 20px;
 `;
 
 export const Button = styled.button`
-  padding: 0.6rem 1.2rem;
-  background-color:var(--orange-color);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 1rem;
-  transition: 0.2s;
+  transition: all 0.2s ease;
+  border: none;
+
+
+  background-color: ${props => props.primary ? 'var(--orange-color)' : '#f1f2f6'};
+  color: ${props => props.primary ? '#fff' : '#2f3542'};
 
   &:hover {
-    background-color: #005fcc;
+    background-color: ${props => props.primary ? 'var(--orange-color)' : '#dfe4ea'};
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
