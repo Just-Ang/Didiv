@@ -5,9 +5,6 @@ import { Badge, CartLogo, StyledLink, Wrapper } from "./CartIcon.styled";
 import sprite from '../../img/symbol-defs.svg';
 export const CartIcon = ({ onClick }) => {
 const cartCount = useSelector(state => state.cart.items.length);
-// const cartCount = 5;
-//   const favCount = useSelector(state => state.favorites.items.length);
-
   return (
 
 

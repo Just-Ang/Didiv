@@ -1,9 +1,18 @@
-import { Column, ColumnTitle, FooterLink, FooterWrapper, IconCircle, SocialIcons } from "./Footer.styled";
-
+import {
+  Column,
+  ColumnTitle,
+  FooterLink,
+  FooterWrapper,
+  IconSocial,
+  SocialIcons,
+  TopWrapper,
+} from './Footer.styled';
+import sprite from '../../img/symbol-defs.svg';
 
 export const Footer = () => {
   return (
     <FooterWrapper>
+      <TopWrapper>
       <Column>
         <ColumnTitle>Навігація</ColumnTitle>
         <FooterLink to="/">Головна</FooterLink>
@@ -19,23 +28,30 @@ export const Footer = () => {
         <FooterLink>Гарантія</FooterLink>
         <FooterLink>Політика конфіденційності</FooterLink>
       </Column>
-
-      {/* <Column>
-        <ColumnTitle>Контакти</ColumnTitle>
-        <FooterLink href="tel:+380979999999">+38 (097) 999-99-99</FooterLink>
-        <FooterLink href="tel:+380999999999">+38 (099) 999-99-99</FooterLink>
-        <FooterLink href="tel:+380739999999">+38 (073) 999-99-99</FooterLink>
-      </Column> */}
-
+</TopWrapper>
       <Column>
         <ColumnTitle>Контакти</ColumnTitle>
         <FooterLink href="tel:+380979999999">+38 (097) 999-99-99</FooterLink>
         <FooterLink href="mailto:email@email.com">email@email.com</FooterLink>
         <SocialIcons>
-          <IconCircle>f</IconCircle>
-          <IconCircle>i</IconCircle>
-          <IconCircle>t</IconCircle>
-          <IconCircle>y</IconCircle>
+          <IconSocial
+            href="https://www.instagram.com/didivxliv?igsh=MXhsNWRjdW5rajYwdQ=="
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20px">
+              <use href={`${sprite}#icon-instagram`} />
+            </svg>
+          </IconSocial>
+          <IconSocial
+            href="https://t.me/didivxliv"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20px">
+              <use href={`${sprite}#icon-telegram`} />
+            </svg>
+          </IconSocial>
         </SocialIcons>
       </Column>
     </FooterWrapper>
