@@ -2936,11 +2936,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   border: none;
 
 
-  background-color: ${e=>e.primary?"var(--orange-color)":"#f1f2f6"};
-  color: ${e=>e.primary?"#fff":"#2f3542"};
+  background-color: var(--orange-color);
+  color: #fff;
 
   &:hover {
-    background-color: ${e=>e.primary?"var(--orange-color)":"#dfe4ea"};
+    background-color: #c55c10;
     transform: translateY(-1px);
   }
 
