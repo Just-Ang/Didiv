@@ -100,11 +100,11 @@ export const Button = styled.button`
   border: none;
 
 
-  background-color: ${props => props.primary ? 'var(--orange-color)' : '#f1f2f6'};
-  color: ${props => props.primary ? '#fff' : '#2f3542'};
+  background-color: var(--orange-color);
+  color: #fff;
 
   &:hover {
-    background-color: ${props => props.primary ? 'var(--orange-color)' : '#dfe4ea'};
+    background-color: #c55c10;
     transform: translateY(-1px);
   }
 
