@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const HeaderSection = styled.div`
+position: sticky;
+  top: 0;
+  z-index: 1000;
   background: radial-gradient(
     circle at 50% 45%,
     #634e3f 0%,

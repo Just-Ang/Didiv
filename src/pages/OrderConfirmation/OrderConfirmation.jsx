@@ -34,7 +34,7 @@ const OrderConfirmation = () => {
         Ваше замовлення <strong>№{order.orderNumer}</strong> успішно прийняте.
       </Message>
       <Message>
-        Наш менеджер зв’яжеться з вами протягом <strong>30 хвилин</strong>.
+       Ми зв&rsquo;яжемось з Вами в найближчий час
       </Message>
 
       <OrderSummaryBox>
