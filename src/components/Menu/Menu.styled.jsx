@@ -18,6 +18,7 @@ export const MenuNav = styled.nav`
 `;
 
  export const StyledLink = styled(Link)`
+ font-size:20px;
       display: flex;
     align-items: center;
     text-align: center;

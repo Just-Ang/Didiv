@@ -2,13 +2,13 @@
 import styled from "styled-components";
 
 
-
-// стилі ті ж самі
 export const Aside = styled.aside`
+
+        margin-top: 42px;
   width: 240px;
   padding: 16px;
   border-radius: 16px;
-  background: #f8f8f8;
+  background: var(--second-background);
   @media (min-width: 768px) {
   display: block;
 }
@@ -17,6 +17,12 @@ export const Aside = styled.aside`
   display: none;
 }
 `;
+export const TitleSidebar = styled.h3`
+margin-bottom: 15px;
+font-size: 20px;
+font-family: var(--main-font);
+  
+`
 
 export const FilterBlock = styled.div`
   margin-bottom: 24px;

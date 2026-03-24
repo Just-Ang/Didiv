@@ -1,5 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
+export const Section = styled.section`
+  background-color: var(--second-background);
+`;
 export const Container = styled.div`
   width: 100%;
   max-width: 750px;
@@ -10,7 +13,7 @@ export const Container = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-  font-family:var(--main-font);
+  font-family: var(--main-font);
 
   @media screen and (min-width: 768px) {
     max-width: 994px;
@@ -25,7 +28,7 @@ export const Container = styled.div`
 
 export const HeroSection = styled.section`
   padding: 40px 0;
-  background-color: #f9f9f9;
+  background-color: #f9f9f980;
   border-radius: 12px;
   margin-bottom: 30px;
 `;
@@ -33,7 +36,7 @@ export const HeroSection = styled.section`
 export const Title = styled.h1`
   font-family: var(--main-font);
   font-size: 28px;
-  color:var(--black-color);
+  color: var(--black-color);
   margin-bottom: 10px;
 
   @media screen and (min-width: 768px) {
@@ -70,15 +73,16 @@ export const StatsGrid = styled.div`
 `;
 
 export const StatCard = styled.div`
+  background-color: #ffffffde;
   padding: 20px;
-  border: 1px solid #eee;
+  border: 1px solid #e3e2e2;
   border-radius: 8px;
 `;
 
 export const StatNumber = styled.div`
   font-size: 24px;
   font-weight: bold;
-  color:var(--orange-color);
+  color: var(--orange-color);
 `;
 
 export const StatText = styled.div`
@@ -105,7 +109,7 @@ export const GalleryGrid = styled.div`
 `;
 
 export const ImagePlaceholder = styled.div`
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   height: 200px;
   display: flex;
   align-items: center;

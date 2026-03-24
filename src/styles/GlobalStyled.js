@@ -14,6 +14,8 @@ export const GlobalStyle = createGlobalStyle`
   --main-font:  DMSerifDisplay;
   --background-color: #f6e1d338;
   --light-grey: #c1c1c1;
+  --second-background: #f9f7f2;
+  --brown-color: #3c2f2a;
   
 
  }

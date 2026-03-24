@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
+export const Section = styled.section`
+  background-color:  var(--second-background);
+ 
+ 
+`;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,8 +26,11 @@ export const Container = styled.div`
 `;
 
 export const CatalogTitle = styled.h1`
+
+    font-size: 32px;
 font-family: var(--main-font);
-color: var( --black-color)
+color: var( --black-color);
+text-transform: uppercase;
 
  
 `;

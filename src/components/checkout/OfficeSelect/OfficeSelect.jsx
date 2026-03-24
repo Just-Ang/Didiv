@@ -7,7 +7,8 @@ const OfficeSelect = ({
   selectedOffice,
   selectedUkrOffice,
   setSelectedOffice,
-  setSelectedUkrOffice
+  setSelectedUkrOffice, 
+
 }) => {
   if (deliveryMethod === 'nova') {
     return (
@@ -23,19 +24,20 @@ const OfficeSelect = ({
     );
   }
 
-  if (deliveryMethod === 'ukr') {
-    return (
-      <InputGroup>
-        <Label>Відділення Укрпошти</Label>
-        <Select
-          options={ukrOfficeOptions}
-          onChange={(option) => setSelectedUkrOffice(option)}
-          value={selectedUkrOffice}
-          placeholder="Оберіть відділення..."
-        />
-      </InputGroup>
-    );
-  }
+ if (deliveryMethod === 'ukr') {
+  return (
+    <InputGroup>
+      <Label>Відділення Укрпошти</Label>
+
+      <Select
+        options={ukrOfficeOptions}
+        onChange={(option) => setSelectedUkrOffice(option)}
+        value={selectedUkrOffice}
+        placeholder="Оберіть відділення..."
+      />
+    </InputGroup>
+  );
+}
 
   if (deliveryMethod === 'pickup') {
     return (

@@ -1,9 +1,10 @@
-import { CatalogBox, CatalogTitle, ImgWrapper, ItemImg, ItemTitle, StyledLink } from './CatalogPage.styled';
+import { CatalogBox, CatalogTitle, ImgWrapper, ItemImg, ItemTitle, Section, StyledLink } from './CatalogPage.styled';
 import { Container } from './CatalogPage.styled';
 import { categories } from "../..//data/categories";
 
 const CatalogPage = () => {
   return (
+    <Section>
     <Container>
       <CatalogTitle>Каталог</CatalogTitle>
       <CatalogBox>
@@ -20,6 +21,7 @@ const CatalogPage = () => {
 
       
     </Container>
+    </Section>
   );
 };
 

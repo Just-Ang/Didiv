@@ -17,8 +17,8 @@ export const  StyledLink =styled(Link)`
        
 `
 export const CartLogo = styled.svg`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
  fill: var(--white-color);
 `;
 

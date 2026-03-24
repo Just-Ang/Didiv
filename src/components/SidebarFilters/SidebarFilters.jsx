@@ -1,4 +1,4 @@
-import { Aside, CheckboxLabel, Checkmark, FilterBlock, FilterLabel, HiddenCheckbox, Label } from "./SidebarFilters.styled";
+import { Aside, CheckboxLabel, Checkmark, FilterBlock, FilterLabel, HiddenCheckbox, Label, TitleSidebar } from "./SidebarFilters.styled";
 
 
 import { filtersConfig } from "../../data/FiltersConfig";
@@ -24,7 +24,7 @@ export const SidebarFilters = ({ category, selectedFilters, setSelectedFilters }
 
   return (
     <Aside>
-      <h3>Фільтри</h3>
+      <TitleSidebar>Фільтри</TitleSidebar>
       {(filters || []).map(filter => (
         <FilterBlock key={filter.name}>
           <FilterLabel>{filter.label}</FilterLabel>

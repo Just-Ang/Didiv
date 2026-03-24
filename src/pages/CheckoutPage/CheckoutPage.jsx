@@ -7,6 +7,7 @@ import OfficeSelect from '../../components/checkout/OfficeSelect/OfficeSelect';
 import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
 import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
+import ukrposhtaData from '../../data/ukrposhta.json';
 
 
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
@@ -35,6 +36,7 @@ const CheckoutPage = () => {
   const [cityOptions, setCityOptions] = useState([]);
   const [officeOptions, setOfficeOptions] = useState([]);
   const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
+  const [ukrSearch, setUkrSearch] = useState('');
 
   const totalAmount = cartItems.reduce((acc, i) => acc + i.price * i.quantity, 0);
   const totalQuantity = cartItems.reduce((acc, i) => acc + i.quantity, 0);
@@ -105,14 +107,23 @@ const CheckoutPage = () => {
   }, [selectedCity, deliveryMethod]);
 
   // ---------------- УКРПОШТА (поки mock) ----------------
-  useEffect(() => {
-    if (deliveryMethod !== 'ukr' || !selectedCity) return;
+useEffect(() => {
+  if (deliveryMethod !== 'ukr' || !selectedCity) return;
 
-    setUkrOfficeOptions([
-      { value: '1', label: 'Відділення №1' },
-      { value: '2', label: 'Відділення №2' },
-    ]);
-  }, [selectedCity, deliveryMethod]);
+  const filtered = ukrposhtaData
+    .filter(o => o.city === selectedCity.label)
+    .filter(o =>
+      o.address.toLowerCase().includes(ukrSearch.toLowerCase())
+    )
+    .slice(0, 20); // обмеження
+
+  setUkrOfficeOptions(
+    filtered.map((o, index) => ({
+      value: index,
+      label: o.address,
+    }))
+  );
+}, [selectedCity, deliveryMethod, ukrSearch]);
 
   // ---------------- МІСТО CHANGE ----------------
   const handleCityChange = (option) => {
@@ -164,16 +175,6 @@ const CheckoutPage = () => {
 
   const isFormValid =
     Object.keys(errors).length === 0 && cartItems.length > 0;
-
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   // Спеціальна логіка для телефону, щоб не видалити префікс
-  //   if (name === 'phone' && !value.startsWith('+38 (0')) return;
-
-  //   setFormData((prev) => ({ ...prev, [name]: value }));
-  // };
 
   // ---------------- SUBMIT ----------------
  const handleSubmit = (e) => {
@@ -245,6 +246,8 @@ const CheckoutPage = () => {
         selectedUkrOffice={selectedUkrOffice}
         setSelectedOffice={setSelectedOffice}
         setSelectedUkrOffice={setSelectedUkrOffice}
+        setUkrSearch={setUkrSearch}
+        
       />
       </Section>
 
