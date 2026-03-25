@@ -7,8 +7,6 @@ export const Container = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
- 
- 
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
@@ -16,10 +14,9 @@ export const Container = styled.div`
     padding-left: 30px;
     padding-right: 30px;
   }
-   @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1200px) {
     max-width: 1440px;
   }
- 
 `;
 
 export const TopBar = styled.div`
@@ -30,7 +27,7 @@ export const TopBar = styled.div`
   margin-bottom: 16px;
 
   @media (min-width: 768px) {
-    display: none; /* ховаємо кнопку на десктопі */
+    display: none;
   }
 `;
 
@@ -74,8 +71,12 @@ export const SortIcon = styled.svg`
 export const MobileFilterOverlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   z-index: 1000;
+  opacity: ${({ open }) => (open ? 1 : 0)};
+  visibility: ${({ open }) => (open ? 'visible' : 'hidden')};
+  transition: all 0.3s ease-in-out;
 
   @media (min-width: 768px) {
     display: none;
@@ -84,10 +85,22 @@ export const MobileFilterOverlay = styled.div`
 
 export const MobileFilterContent = styled.div`
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  width: 85%;
+  max-width: 400px;
+  /* padding-left: 10px;
+  padding-right: 10px; */
+  height: 100%;
   background: white;
-  padding: 20px;
-  overflow-y: auto;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 25px rgba(0, 0, 0, 0.1);
+
+  /* Анімація виїзду справа */
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
 `;
 
 export const CloseButton = styled.button`
@@ -95,4 +108,74 @@ export const CloseButton = styled.button`
   border: none;
   background: none;
   margin-bottom: 20px;
+`;
+export const FilterHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+`;
+
+// Обгортка для самих фільтрів з прокруткою
+export const FilterBody = styled.div`
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+// Фіксована кнопка знизу
+export const FilterFooter = styled.div`
+  padding: 20px;
+  border-top: 1px solid #eee;
+  background: white;
+`;
+
+export const ApplyButton = styled.button`
+  width: 100%;
+  padding: 14px;
+  background: var(--orange-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+export const ClearFilter = styled.button`
+  width: 100%;
+  padding: 14px;
+  background: var(--light-grey);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 20px;
+
+  &:active {
+    transform: scale(0.98);
+  }
+  &:disabled {
+    text-decoration: none;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.7;
+  }
 `;

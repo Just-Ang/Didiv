@@ -1,56 +1,78 @@
-
 import styled from "styled-components";
 
-
-
-// стилі ті ж самі
 export const Aside = styled.aside`
-  width: 260px;
-  padding: 16px;
-  border-radius: 16px;
-  background: #f8f8f8;
-  @media (min-width: 768px) {
-  display: none;
-}
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+`;
 
-@media (max-width: 767px) {
-   display: block;
-   width: 100%;
-        max-width: 380px;
-        padding:10px;
-}
-  
+export const Title = styled.h3`
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
 `;
 
 export const FilterBlock = styled.div`
-  margin-bottom: 24px;
+  border-bottom: 1px solid #eee;
+  padding: 12px;
+  margin-bottom: 12px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const FilterHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 0;
+  
+  &:hover p {
+    color: #85683d;
+  }
 `;
 
 export const FilterLabel = styled.p`
   font-weight: 600;
-  margin-bottom: 8px;
+  font-size: 16px;
+  margin: 0;
+  color: #222;
+  transition: color 0.2s;
 `;
 
-// export const CheckboxLabel = styled.label`
-//   display: flex;
-//   align-items: center;
-//   gap: 8px;
-//   margin-bottom: 4px;
-//   font-size: 14px;
-// `;
-
-export const SectionContent = styled.div`
-  margin-top: 16px;
+export const ArrowIcon = styled.span`
+  border: solid #555;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: ${props => (props.isOpen ? "rotate(-135deg)" : "rotate(45deg)")};
+  transition: transform 0.3s ease;
 `;
 
-export const PriceInputs = styled.div`
+export const FilterContent = styled.div`
+  max-height: ${props => (props.isOpen ? "500px" : "0")};
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s;
+  opacity: ${props => (props.isOpen ? "1" : "0")};
+  padding: ${props => (props.isOpen ? "12px" : "0")};
+`;
+
+export const Label = styled.label`
   display: flex;
-  gap: 8px;
   align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #444;
 
-  input {
-    width: 100%;
-    padding: 8px;
+  &:hover span:first-of-type {
+    border-color: #85683d;
   }
 `;
 
@@ -61,43 +83,32 @@ export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
 export const Checkmark = styled.span`
   width: 20px;
   height: 20px;
-  border: 1px solid #555555;
-  border-radius: 2px;
-  margin-right: 8px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  margin-right: 12px;
   position: relative;
-  transition: all 0.2s;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   ${HiddenCheckbox}:checked + & {
     background-color: #85683d;
-    border-color: #583d2d;
+    border-color: #85683d;
   }
 
   &::after {
     content: "";
     position: absolute;
-    left: 5px;
-    top: 1px;
-    width: 6px;
-    height: 12px;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
     border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
     opacity: 0;
-    transition: opacity 0.2s;
   }
 
   ${HiddenCheckbox}:checked + &::after {
     opacity: 1;
   }
-`;
-
-
-export const Label = styled.label`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-`;
-export const CheckboxLabel = styled.span`
-  font-size: 16px;
 `;

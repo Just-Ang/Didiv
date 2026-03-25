@@ -5,6 +5,7 @@ export const GridWrapper = styled.div`
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  align-items: start;
   gap: 24px;
   width: 100%;
   max-width: 750px;
@@ -46,13 +47,10 @@ export const Card = styled.div`
   padding-bottom: 30px;
 
   &:hover {
-     @media screen and (min-width: 768px ){
-  transform: scale(1.05);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-
-  }
-    
-
+    @media screen and (min-width: 768px) {
+      transform: scale(1.05);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    }
 
     div.card-buttons {
       opacity: 1;
@@ -88,7 +86,7 @@ export const CardWeight = styled.p`
 `;
 
 export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
-   position: static;
+  position: static;
   bottom: 10px;
   left: 10px;
   right: 10px;
@@ -97,12 +95,11 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   gap: 10px;
   opacity: 1;
 
-  @media screen and (min-width: 768px ){
-  
-      position: absolute;
+  @media screen and (min-width: 768px) {
+    position: absolute;
     opacity: 0;
     transform: translateY(20px);
-  transition: all 0.3s;
+    transition: all 0.3s;
   }
 `;
 
