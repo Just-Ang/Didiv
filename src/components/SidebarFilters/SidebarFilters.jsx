@@ -15,6 +15,7 @@ import { filtersConfig } from '../../data/FiltersConfig';
 import { PriceRange } from '../PriceRange/PriceRange';
 import { useState } from 'react';
 import { ClearFilter } from '../../pages/CategoryPage/CategoryPage.styled';
+import { SlidersHorizontal } from 'lucide-react';
 
 export const SidebarFilters = ({
   category,
@@ -55,7 +56,8 @@ export const SidebarFilters = ({
   console.log(hasFilters);
   return (
     <Aside>
-      <TitleSidebar>Фільтри</TitleSidebar>
+      <TitleSidebar>Фільтри <SlidersHorizontal size={20} /></TitleSidebar>
+      
       {(filters || []).map((filter) => {
         const isOpen = !!openFilters[filter.name];
         return (

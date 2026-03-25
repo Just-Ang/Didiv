@@ -18,6 +18,8 @@ export const Aside = styled.aside`
 }
 `;
 export const TitleSidebar = styled.h3`
+    display: flex;
+    gap: 110px;
 margin-bottom: 15px;
 font-size: 20px;
 font-family: var(--main-font);
