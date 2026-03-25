@@ -1566,53 +1566,57 @@ font-family: var(--main-font);
 `,KM=E.span`
   font-size: 16px;
 `,QM=({category:e,selectedFilters:t,setSelectedFilters:n})=>{const r=Yb[e]||[],i=(o,a)=>{n(l=>{const s=l[o]||[];return s.includes(a)?{...l,[o]:s.filter(u=>u!==a)}:{...l,[o]:[...s,a]}})};return m.jsxs(WM,{children:[m.jsx("h3",{children:"Фільтри"}),(r||[]).map(o=>m.jsxs(GM,{children:[m.jsx(YM,{children:o.label}),o.type==="checkbox"&&(o.options||[]).map(a=>{var l;return m.jsxs(KM,{children:[m.jsxs(XM,{children:[m.jsx(vf,{type:"checkbox",checked:((l=t[o.name])==null?void 0:l.includes(a))||!1,onChange:()=>i(o.name,a)}),m.jsx(qM,{})]}),a]},a)}),o.type==="range"&&m.jsx(qb,{})]},o.name))]})};E.div``;const ZM=E.div`
-flex: 1;
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-   width: 100%;
-        max-width: 750px;
-        padding:10px;
- 
-    @media screen and (max-width: 768px) {
-       width: 100%;
-        max-width: 750px;
-        padding:10px;
-         grid-template-columns: repeat(2, 1fr);
-      
+  width: 100%;
+  max-width: 750px;
+  padding: 10px;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 750px;
+    padding: 10px;
+    grid-template-columns: repeat(2, 1fr);
+
     gap: 10px;
-  
   }
 
   @media (min-width: 768px) {
-     margin-top: 32px;
-    grid-template-columns: repeat(3, 1fr); 
-     padding-left: 20px;
+    margin-top: 32px;
+    grid-template-columns: repeat(3, 1fr);
+    padding-left: 20px;
     padding-right: 20px;
   }
 
- 
- @media screen and (min-width: 1440px) {
-     grid-template-columns: repeat(4, 1fr); 
-     padding-left: 0;
+  @media screen and (min-width: 1440px) {
+    grid-template-columns: repeat(4, 1fr);
+    padding-left: 0;
     padding-right: 0;
     margin-left: 30px;
-    max-width: 1340px
+    max-width: 1340px;
   }
 `,JM=E.div`
   border-radius: 16px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-   padding-bottom:30px;
- 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  padding-bottom: 30px;
 
   &:hover {
-     transform: scale(1.05);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-     
-     div.card-buttons {
+     @media screen and (min-width: 768px ){
+  transform: scale(1.05);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+
+  }
+    
+
+
+    div.card-buttons {
       opacity: 1;
       transform: translateY(0);
     }
@@ -1634,20 +1638,23 @@ flex: 1;
   font-size: 16px;
   color: #555;
 `,oI=E.div.attrs({className:"card-buttons"})`
-  position: absolute;
-  
+   position: static;
   bottom: 10px;
   left: 10px;
   right: 10px;
   display: flex;
- justify-content: space-around;
+  justify-content: space-around;
   gap: 10px;
+  opacity: 1;
 
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.3s;
-`,Qg=E.button`
+  @media screen and (min-width: 768px ){
   
+      position: absolute;
+    opacity: 0;
+    transform: translateY(20px);
+  transition: all 0.3s;
+  }
+`,Qg=E.button`
   padding: 6px 5px;
   border: none;
   border-radius: 6px;
@@ -1656,12 +1663,11 @@ flex: 1;
   font-weight: 500;
   cursor: pointer;
 
-      display: flex;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
   transition: all 0.3s ease-in-out;
-
 
   &:hover {
     transform: scale(1.2);
@@ -1670,11 +1676,11 @@ flex: 1;
 `;E.svg`
   width: 24px;
   height: 24px;
- fill: var(--white-color);
+  fill: var(--white-color);
 `;E.svg`
   width: 24px;
   height: 24px;
- fill: var(--white-color);
+  fill: var(--white-color);
 `;const Xb=Fb({name:"favorites",initialState:{items:[]},reducers:{toggleFavorite:(e,t)=>{const n=t.payload;e.items.find(i=>i.id===n.id)?e.items=e.items.filter(i=>i.id!==n.id):e.items.push(n)},clearFavorite:e=>{e.items=[]}}}),{toggleFavorite:wu,clearFavorite:aI}=Xb.actions,sI=Xb.reducer,lI=({category:e,selectedFilters:t={}})=>{let n=Qp.filter(s=>s.category===e);const r=gl(),i=Oi(),o=wn(s=>s.favorites.items),a=(s,u)=>{u.stopPropagation(),i(vu({...s,quantity:1})),K.success(`${s.name} додано в кошик!`)},l=(s,u)=>{u.stopPropagation();const c=o.some(d=>d.id===s.id);i(wu(s)),c?K.warning(`${s.name} видалено з обраного`):K.info(`${s.name} додано в обране`)};return Object.keys(t).forEach(s=>{const u=t[s];Array.isArray(u)&&u.length>0&&(n=n.filter(c=>u.includes(c[s]))),(typeof u=="string"||typeof u=="number")&&s==="price"&&(n=n.filter(c=>c.price<=Number(u)))}),m.jsxs(m.Fragment,{children:[m.jsx(sa,{autoClose:1500}),m.jsx(ZM,{children:n.map(s=>{var c;const u=o.some(d=>d.id===s.id);return m.jsxs(JM,{onClick:()=>r(`/product/${s.id}`),style:{cursor:"pointer"},children:[m.jsx(eI,{src:((c=s.image)==null?void 0:c[0])||jn,alt:s.name,onError:d=>{d.currentTarget.onerror=null,d.currentTarget.src=jn}}),m.jsxs(tI,{children:[m.jsx(nI,{children:s.name}),m.jsxs(rI,{children:[s.price," грн"]}),s.weight&&m.jsxs(iI,{children:[s.weight," грам"]})]}),m.jsxs(oI,{children:[m.jsx(Qg,{onClick:d=>a(s,d),children:m.jsx($p,{size:24,color:"black"})}),m.jsx(Qg,{onClick:d=>l(s,d),children:m.jsx(Vy,{size:24,fill:u?"#ff4d4f":"none",color:u?"#ff4d4f":"#000000"})})]})]},s.id)})})]})},uI=()=>{const[e,t]=T.useState({}),{category:n}=ov(),[r,i]=T.useState(!1);return console.log(n),m.jsxs(vM,{children:[m.jsxs(yM,{children:[m.jsxs(xM,{onClick:()=>i(!0),children:["Фільтр",m.jsx(bM,{children:m.jsx("use",{href:`${qt}#icon-filter`})})]}),m.jsxs(wM,{onClick:()=>i(!0),children:["Сортування",m.jsx(SM,{children:m.jsx("use",{href:`${qt}#icon-sort`})})]})]}),m.jsx(UM,{category:n,selectedFilters:e,setSelectedFilters:t}),m.jsx(lI,{category:n,selectedFilters:e}),r&&m.jsx(_M,{children:m.jsxs(CM,{children:[m.jsx(EM,{onClick:()=>i(!1),children:"✕"}),m.jsx(QM,{category:n,selectedFilters:e,setSelectedFilters:t})]})})]})},Zg=E.div`
    width: 100%;
   max-width: 750px;
