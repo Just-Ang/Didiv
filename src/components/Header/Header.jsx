@@ -1,5 +1,6 @@
 import {
   CatalogIcon,
+  CloseButton,
   HeaderContainer,
   
   HeadeRight,
@@ -8,6 +9,10 @@ import {
   Logo,
   LogoBig,
   MenuButton,
+
+  MenuContent,
+
+  MenuFooter,
 
   MobileMenu,
   Overlay,
@@ -24,6 +29,7 @@ import { Menu } from '../Menu/Menu';
 import { FavoriteIcon } from '../FavoriteIcon/FavoriteIcon';
 
 import sprite from '../../img/symbol-defs.svg';
+import { Home, Info, Mail, ShoppingBag, X } from 'lucide-react';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -53,11 +59,28 @@ export const Header = () => {
 
           <Overlay open={menuOpen} onClick={() => setMenuOpen(false)} />
           <MobileMenu open={menuOpen}>
+            <CloseButton onClick={() => setMenuOpen(false)}>
+              <X size={28} strokeWidth={1.5} />
+  </CloseButton>
            
-  <StyledLink  onClick={() => setMenuOpen(false)} to="/">Головна</StyledLink>
-  <StyledLink  onClick={() => setMenuOpen(false)}to="/about">Про нас</StyledLink>
-  <StyledLink onClick={() => setMenuOpen(false)} to="/catalog">Каталог</StyledLink>
-  <StyledLink onClick={() => setMenuOpen(false)} to="/contacts">Контакти</StyledLink>
+  <MenuContent>
+    <StyledLink onClick={() => setMenuOpen(false)} to="/">
+     <Home size={22} strokeWidth={1.5} /> Головна
+    </StyledLink>
+    <StyledLink onClick={() => setMenuOpen(false)} to="/about">
+      <Info size={22} strokeWidth={1.5} /> Про нас
+    </StyledLink>
+    <StyledLink onClick={() => setMenuOpen(false)} to="/catalog">
+      <ShoppingBag size={22} strokeWidth={1.5} /> Каталог
+    </StyledLink>
+    <StyledLink onClick={() => setMenuOpen(false)} to="/contacts">
+      <Mail size={22} strokeWidth={1.5} /> Контакти
+    </StyledLink>
+  </MenuContent>
+
+  <MenuFooter>
+    <p>© 2020 Дідів Хлів</p>
+  </MenuFooter>
 </MobileMenu>
         </HeadeRight>
       </HeaderUp>

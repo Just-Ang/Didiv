@@ -70,16 +70,16 @@ export const HeadeRight = styled.div`
   }
 `;
 
-export const StyledLink = styled(Link)`
-  color: var(--main-brand-color);
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  @media screen and (min-width: 768px) {
-    display: none;
-  }
-`;
+// export const StyledLink = styled(Link)`
+//   color: var(--main-brand-color);
+//   display: flex;
+//   align-items: center;
+//   text-align: center;
+//   justify-content: center;
+//   @media screen and (min-width: 768px) {
+//     display: none;
+//   }
+// `;
 export const StyledLinkBig = styled(Link)`
   color: var(--main-brand-color);
   display: none;
@@ -153,64 +153,129 @@ export const Wrapper = styled.div`
   z-index: 9999;
 `;
 
-// export const Burger = styled.div`
-//   display: none;
-//   cursor: pointer;
+// export const MobileMenu = styled.div`
+//   display: flex;
+//   font-family: DM Serif Display;
+//   font-size: 25px;
 
 //   @media (max-width: 768px) {
-//     display: block; // показуємо тільки на мобільних
-//   }
+//         z-index: 5;
+//     position: fixed;
+//     top: 0;
+//     right: 0;
+//     width: 280px;
+//     height: 100vh;
+//     background-color: var(--second-background);
+//     color: var(--black-color);
 
-//   div {
-//     width: 25px;
-//     height: 3px;
-//     background-color: #333;
-//     margin: 5px 0;
-//     transition: 0.4s;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     gap: 30px;
+
+//     transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
+
+//     transition: transform 0.3s ease-in-out;
+
+//     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+//   }
+//   @media screen and (min-width: 768px) {
+//     display: none;
+//   }
+// `;
+// export const Overlay = styled.div`
+//   @media (max-width: 768px) {
+//     position: fixed;
+//     inset: 0;
+//     background: rgba(0, 0, 0, 0.4);
+//     opacity: ${({ open }) => (open ? 1 : 0)};
+//     visibility: ${({ open }) => (open ? 'visible' : 'hidden')};
+//     transition: 0.3s;
 //   }
 // `;
 
-export const MobileMenu = styled.div`
-  display: flex;
-  font-family: DM Serif Display;
-  font-size: 25px;
-
-  @media (max-width: 768px) {
-        z-index: 5;
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 280px;
-    height: 100vh;
-    background-color: var(--white-color);
-    color: var(--black-color);
-
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-
-    transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
-
-    transition: transform 0.3s ease-in-out;
-
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-  }
-  @media screen and (min-width: 768px) {
-    display: none;
-  }
-`;
-export const Overlay = styled.div`
-  @media (max-width: 768px) {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    opacity: ${({ open }) => (open ? 1 : 0)};
-    visibility: ${({ open }) => (open ? 'visible' : 'hidden')};
-    transition: 0.3s;
-  }
-`;
-
 export const MenuItem = styled.a`
   color: var(--black-color);
+`;
+export const MobileMenu = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 80%; /* Трохи вужче, щоб бачити фон */
+  max-width: 350px;
+  height: 100%;
+  background: #ffffff;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 30px 40px;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+
+export const MenuContent = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+`;
+
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+  color: #2c2c2c;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Відступ між іконкою і текстом */
+  transition: color 0.3s;
+
+  svg {
+    color: #d35400; /* Колір як у вашої кнопки на фоні */
+    font-size: 24px;
+  }
+
+  &:hover, &:active {
+    color: #d35400;
+  }
+`;
+
+export const MenuFooter = styled.div`
+  margin-top: auto;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+`;
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px); /* Гарне розмиття фону */
+  z-index: 999;
+  display: ${({ open }) => (open ? 'block' : 'none')};
+  transition: opacity 0.3s;
 `;
