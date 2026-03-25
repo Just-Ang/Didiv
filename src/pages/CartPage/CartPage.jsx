@@ -65,12 +65,6 @@ const CartPage = () => {
   const handleClear = () => {
     dispatch(clearCart());
   };
-  const generateOrderNumber = () => {
-    const year = new Date().getFullYear().toString().slice(-2);
-    const time = Date.now().toString().slice(-4);
-    const random = Math.floor(100 + Math.random() * 900);
-    return `${year}${time}${random}`;
-  };
 
   return (
     <>
@@ -78,7 +72,7 @@ const CartPage = () => {
         <CartEmpty></CartEmpty>
       ) : (
         <PageContainer>
-          <ToastContainer />
+          <ToastContainer autoClose={1500} />
           <Breadcrumbs>
             {' '}
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
@@ -118,8 +112,7 @@ const CartPage = () => {
                       />
                       <PriceWrapper>
                         <div className="current-price">
-                          {(item.price * (item.quantity || 1)).toLocaleString()}
-                          ₴
+                          {(item.price * (item.quantity || 1)).toLocaleString()} грн
                         </div>
                       </PriceWrapper>
                     </CounterPrice>
@@ -158,13 +151,13 @@ const CartPage = () => {
 
             <SummaryCard>
               <SummaryRow>
-                <span>Номер замовлення</span>
-                <span>{generateOrderNumber()}</span>
+          
+                
               </SummaryRow>
 
               <SummaryRow className="total">
                 <span>Всього </span>
-                <span> {total} ₴ </span>
+                <span> {total} грн</span>
               </SummaryRow>
               <OrderButton to='/checkout'>Оформити замовлення</OrderButton>
               <ClearButton onClick={handleClear}>Oчистити кошик</ClearButton>

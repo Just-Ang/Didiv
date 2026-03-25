@@ -4,7 +4,7 @@ export const Wrapper = styled.div``;
 export const GridWrapper = styled.div`
 flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 колонки */
+  grid-template-columns: repeat(3, 1fr); 
   gap: 24px;
    width: 100%;
         max-width: 750px;
@@ -47,7 +47,7 @@ export const Card = styled.div`
  
 
   &:hover {
-     transform: scale(1.05); /* трохи збільшуємо карточку */
+     transform: scale(1.05);
     box-shadow: 0 10px 24px rgba(0,0,0,0.12);
      
      div.card-buttons {
@@ -90,7 +90,7 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   left: 10px;
   right: 10px;
   display: flex;
-  justify-content: space-between;
+ justify-content: space-around;
   gap: 10px;
 
   opacity: 0;
@@ -99,33 +99,25 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
 `;
 
 export const Button = styled.button`
-  flex: 1;
+  
   padding: 6px 5px;
   border: none;
   border-radius: 6px;
-  background-color: #a2856a;
+  background-color: transparent;
   color: white;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+
       display: flex;
     align-items: center;
     justify-content: center;
     align-content: center;
-    gap: 10px;
-     span.button-text {
-    display: none; /* за замовчуванням ховаємо текст */
-  }
-
-  @media (min-width: 768px) {
-    span.button-text {
-      display: inline; /* показуємо текст на десктопі */
-    }
-  }
+  transition: all 0.3s ease-in-out;
 
 
   &:hover {
-    background-color: #a85d5d;
+    transform: scale(1.2);
+    opacity: 0.8;
   }
 `;
 

@@ -20,7 +20,7 @@ const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, hand
     </CartPreviewList>
     <div className="summary-row">
       <span>Товари ({totalQuantity})</span>
-      <span>{totalAmount} ₴</span>
+      <span>{totalAmount} грн</span>
     </div>
     <div className="summary-row">
       <span>Доставка</span>

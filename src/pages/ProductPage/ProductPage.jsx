@@ -68,7 +68,7 @@ export const ProductPage = () => {
   return (
     <Container>
       {' '}
-      <ToastContainer />
+      <ToastContainer autoClose={1500} />
       <Breadcrumbs>
         <Link to="/">Головна</Link> / <Link to="/catalog">Каталог</Link> /{' '}
         {product.name}

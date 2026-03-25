@@ -68,7 +68,7 @@ const FavoritesPage = () => {
         <FavEmpty></FavEmpty>
       ) : (
         <Container>
-          <ToastContainer />
+          <ToastContainer autoClose={1500} />
           <Breadcrumbs>
             {' '}
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
@@ -102,13 +102,13 @@ const FavoritesPage = () => {
                   <ProductName>{item.name}</ProductName>
 
                   <ActionsWrapper>
-                    <Price>{item.price} ₴</Price>
+                    <Price>{item.price} грн</Price>
                     <IconGroup>
                       <IconButton onClick={() => handleAdd(item)}>
-                        <ShoppingCart size={22} />
+                        <ShoppingCart size={30} />
                       </IconButton>
                       <IconButton onClick={(e) => HandleAddFavorite(item, e)}>
-                        <Trash2 size={22} />
+                        <Trash2 size={30} />
                       </IconButton>
                     </IconGroup>
                   </ActionsWrapper>
@@ -121,7 +121,7 @@ const FavoritesPage = () => {
                 <span>Всього в обраному:</span>
                 <strong>{favorites.length} шт.</strong>
                 <span>На суму:</span>
-                <strong>{total}₴</strong>
+                <strong>{total} грн</strong>
               </SummaryRow>
               <hr
                 style={{

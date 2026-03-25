@@ -69,7 +69,7 @@ display: flex;
 
   @media screen and (min-width: 768px) {
     display: grid;
-    grid-template-columns: 150px 1.5fr 1.2fr; 
+    grid-template-columns: 150px 1.5fr 0.7fr; 
     align-items: center;
     gap: 20px;
   }
@@ -89,10 +89,15 @@ export const Image = styled.img`
 `;
 
 export const ProductName = styled.h3`
- font-size: 16px;
+ font-size: 20px;
     font-weight: 500;
     margin: 0;
     line-height: 1.4;
+    @media screen and (max-width: 768px) {
+    border-bottom: 1px solid #eee;
+    padding-bottom:10px;
+  }
+    
 `;
 
 export const ActionsWrapper = styled.div`
@@ -122,11 +127,7 @@ export const IconButton = styled.button`
   cursor: pointer;
   color: #1a1a1a;
   padding: 8px;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.7;
-  }
+  
 `;
 
 export const SummaryCard = styled.div`
