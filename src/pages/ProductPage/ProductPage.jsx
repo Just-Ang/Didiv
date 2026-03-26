@@ -35,13 +35,35 @@ import {
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
 import { toggleFavorite } from '../../redux/favoritesSlice';
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import Zoom from "yet-another-react-lightbox/plugins/zoom"; // Імпорт плагіна
+
+
 
 export const ProductPage = () => {
   const { id } = useParams();
   const product = products.find((p) => p.id === Number(id));
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+
   const [activeImage, setActiveImage] = useState(product.image[0]);
+ 
+  const [isOpen, setIsOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
+
+
+  const slides = product.image.map((src) => ({ src }));
+
+const handleMainImageClick = () => {
+    const index = product.image.indexOf(activeImage);
+    setPhotoIndex(index);
+    setIsOpen(true);
+  };
+
+
+
+
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorite = favorites.some((favItem) => favItem.id === product.id);
@@ -76,7 +98,7 @@ export const ProductPage = () => {
       <MainSection>
         {/* Ліва колонка: Галерея */}
         <GallerySection>
-          <MainImage src={activeImage} alt={product.name} />
+          <MainImage src={activeImage} alt={product.name} onClick={handleMainImageClick} />
           <Thumbnails>
             {product.image.map((img) => (
               <Thumb
@@ -91,6 +113,32 @@ export const ProductPage = () => {
             ))}
           </Thumbnails>
         </GallerySection>
+
+
+<Lightbox
+        open={isOpen}
+        close={() => setIsOpen(false)}
+        index={photoIndex}
+        slides={slides}
+        controller={{ closeOnBackdropClick: true }}
+        on={{
+          view: ({ index }) => {
+            setPhotoIndex(index);
+            setActiveImage(product.image[index]); 
+          }
+        }}
+        plugins={[Zoom]}
+         zoom={{
+    maxZoomPixelRatio: 3,
+    zoomInMultiplier: 2, 
+    doubleTapDelay: 300,  
+    doubleClickDelay: 300,
+    doubleClickEnabled: true,
+    pinchZoomDistanceFactor: 100, 
+    scrollToZoom: true,
+  }}
+      />
+
 
         {/* Права колонка: Інфо та покупка */}
         <InfoSection>
