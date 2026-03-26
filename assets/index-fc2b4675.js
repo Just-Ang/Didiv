@@ -1131,12 +1131,34 @@ dd {
   margin: 20px auto;
   border-radius: 24;
   position: relative;
-  --swiper-theme-color: var(--orange-color); 
+  --swiper-theme-color: var(--orange-color);
+  @media (max-width: 768px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+      width: 24px;
+      height: 24px;
+    }
 
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      font-size: 12px;
+    }
+    .swiper-button-next {
+      right: 1px;
+    }
+
+    .swiper-button-prev {
+      left: 1px;
+    }
+  }
 `,AI=T.div`
   height: 450px;
-  background-image: linear-gradient(90deg, rgba(27, 26, 22, 0.85) 0%, rgba(44, 42, 37, 0.2) 100%), 
-                    url(${e=>e.bg});
+  background-image: linear-gradient(
+      90deg,
+      rgba(27, 26, 22, 0.85) 0%,
+      rgba(44, 42, 37, 0.2) 100%
+    ),
+    url(${e=>e.bg});
   background-size: cover;
   background-position: center;
   display: flex;
@@ -1153,28 +1175,28 @@ dd {
     justify-content: center;
   }
 `,FI=T.div`
-text-align: left;
+  text-align: left;
   max-width: 600px;
-  
+  padding-left:10px;
+
   h1 {
-    color:  #e6e5e2;
+    color: #e6e5e2;
     font-family: var(--main-font);
     font-size: 25px;
     font-weight: 400;
-     @media screen and (min-width: 768px) {
-  font-size: 42px;
-  font-weight: 700;
-  }
+    @media screen and (min-width: 768px) {
+      font-size: 42px;
+      font-weight: 700;
+    }
     line-height: 1.1;
     margin-bottom: 20px;
-    
   }
 
   p {
-     font-size: 15px;
-     @media screen and (min-width: 768px) {
-   font-size: 20px;
-  }
+    font-size: 15px;
+    @media screen and (min-width: 768px) {
+      font-size: 20px;
+    }
     font-size: 18px;
     margin-bottom: 30px;
     opacity: 0.9;
@@ -1190,12 +1212,12 @@ text-align: left;
   font-size: 14px;
   cursor: pointer;
   text-decoration: none;
-   
-   transition: transform 0.2s ease;
+
+  transition: transform 0.2s ease;
 
   &:hover {
     transform: scale(1.05);
-background-color: #e0961d;
+    background-color: #e0961d;
   }
 `,zI=[{id:1,title:"Дідів хлів - найкращий вибір для Вашого велосипеда",desc:"Якісні запчастини, професійний серевіс та індивідуальний підхід. Створюйте ідеальний байк разом з нами",img:"/Didiv/bike2-hero.jpeg"},{id:2,title:"Перевірені велодеталі з пробігом бла бла",desc:"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam reprehenderit obcaecati molestias est alias vitae laboriosam nulla perferendis officia incidunt aliquid voluptatem iste libero, officiis ex modi enim repellat. Consectetur!",img:"/Didiv/inside.webp"}],VI=()=>y.jsx(LI,{children:y.jsx(rS,{modules:[m4,v4,g4],spaceBetween:0,slidesPerView:1,navigation:!0,pagination:{clickable:!0},autoplay:{delay:5e3},loop:!0,children:zI.map(e=>y.jsx(iS,{children:y.jsx(AI,{bg:e.img,children:y.jsxs(FI,{children:[y.jsx("h1",{children:e.title}),y.jsx("p",{children:e.desc}),y.jsx(NI,{to:"/catalog",children:"До каталогу"})]})})},e.id))})}),Jh=[{id:1,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",brand:"Shimano",color:"чорні",type:"Шосейні",size:"29`",weight:1622,price:2800,inStock:!0,description:"Вага 1633 грами без ексцентриків (945+688), крутять ідеально, дуже довгий накат, барабан під 11-12 шв. шосе касети, рідні ексцентрики, ширина 16.3/21.3, обода без отворів для ніпелів, не потребують стрічки, без корозії, рівні. Мінус - знос, спереду сильний, ззаду менше, вживу не такий страшний, як показали на фото, короче кажучи, їздити можна сміливо.",image:["/Didiv/catalog/wheels.jpeg"]},{id:2,name:"Сідло Selle San Marco Aspide Superleggera",category:"saddles",price:800,inStock:!0,size:"29`",description:"140 мм, вага 171 гр, рейки алюміній, корпус пластик, підкладка Pebax, оббивка Microfeel.",image:[]},{id:3,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,weight:1622,inStock:!0,description:"Вага 1633 грами без ексцентриків (945+688), крутять ідеально...",image:["/Didiv/catalog/wheels.jpeg"]},{id:4,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,weight:1622,inStock:!0,description:"Вага 1633 грами без ексцентриків...",image:["/Didiv/catalog/wheels.jpeg"]},{id:5,name:'Рама MTB 17"',category:"Рами",price:4500,inStock:!0,image:"/Didiv/catalog/frame_mtb_17.jpg"},{id:6,name:'Рама Road 19"',category:"Рами",price:5200,inStock:!0,image:"/Didiv/catalog/frame_road_19.jpg"},{id:7,name:"Винос керма Alu",category:"Виноси",price:800,inStock:!0,image:"/Didiv/catalog/stem_alu.jpg"},{id:8,name:"Винос керма Carbon",category:"Виноси",price:1800,inStock:!1,image:"/Didiv/catalog/stem_carbon.jpg"},{id:9,name:"Кермо MTB 680мм",category:"Керма",price:1200,inStock:!0,image:"/Didiv/catalog/handlebar_mtb.jpg"},{id:10,name:"Кермо Road 420мм",category:"Керма",price:1400,inStock:!0,image:"/Didiv/catalog/handlebar_road.jpg"},{id:11,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами без ексцентриків...",image:["/Didiv/catalog/wheels.jpeg","/Didiv/catalog/bikes.jpeg"]},{id:12,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:["/Didiv/catalog/wheels.jpeg"]},{id:13,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:["/Didiv/catalog/wheels.jpeg"]},{id:14,name:"Шосейні безкамерні колеса Shimano Ultegra WH-6800",category:"wheels",price:2800,inStock:!0,description:"Вага 1633 грами...",image:["/Didiv/catalog/wheels.jpeg"]}],BI=T.section`
 
