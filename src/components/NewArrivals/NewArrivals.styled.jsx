@@ -6,17 +6,19 @@ export const Container = styled.section`
 
   width: 100%;
   font-family: var(--main-font);
+  padding-top: 30px;
   
   
 `;
 
 export const Title = styled.h2`
-  font-size: 24px;
+   font-size: 30px;
+      text-transform: uppercase;
   font-weight: 700;
   margin-bottom: 20px;
   color: #333;
   @media screen and (min-width: 768px) {
-  font-size: 35px;
+ font-size: 35px;
   }
 
 `;
@@ -182,8 +184,11 @@ display: flex;
  
   transition: transform 0.2s;
 
+   transition: transform 0.2s ease;
+
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.05);
+    background-color: #e0961d;
   }
     @media screen and (max-width: 768px) {
    padding: 20px ;
@@ -201,6 +206,7 @@ export  const ButtonContent = styled.div`
     line-height: 1.2;
     margin-bottom: 12px;
   }
+  
 `;
 
 export const ArrowWrapper = styled.div`

@@ -34,19 +34,21 @@ height:30px;
 
 // Кружечок-бейдж
 export const Badge = styled.div`
+
   position: absolute;
   top: -6px;
   right: -6px;
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  background:var(--red-color);
+  background:var(--orange-color); 
   color: white;
   border-radius: 999px;
-  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
+   font-size: 13px;
   font-weight: 600;
+  font-family: var(--second-font); 
   box-shadow: 0 0 1px rgba(0,0,0,0.3);
 `;

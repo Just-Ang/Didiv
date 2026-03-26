@@ -27,6 +27,7 @@ export const SlideInner = styled.div`
   align-items: center;
   padding: 0 60px;
   color: white;
+  border-radius: 16px;
 
   @media (max-width: 768px) {
     height: 350px;
@@ -75,11 +76,12 @@ export const OrderButton = styled(Link)`
   text-transform: uppercase;
   font-size: 14px;
   cursor: pointer;
-  transition: transform 0.2s ease;
   text-decoration: none;
+   
+   transition: transform 0.2s ease;
 
   &:hover {
     transform: scale(1.05);
-    background-color: #e0961d;
+background-color: #e0961d;
   }
 `;

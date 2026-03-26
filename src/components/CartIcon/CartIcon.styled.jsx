@@ -22,7 +22,6 @@ export const CartLogo = styled.svg`
  fill: var(--white-color);
 `;
 
-// Обгортка іконки
 export const Wrapper = styled.div`
 
 width:30px;
@@ -32,11 +31,10 @@ height:30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px; /* розмір іконки */
+  font-size: 28px; 
   cursor: pointer;
 `;
 
-// Кружечок-бейдж
 export const Badge = styled.div`
   position: absolute;
   top: -6px;
@@ -44,13 +42,14 @@ export const Badge = styled.div`
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  background:var(--red-color); 
+  background:var(--orange-color); 
   color: white;
   border-radius: 999px;
-  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
+font-size: 13px;
   font-weight: 600;
+  font-family: var(--second-font); 
   box-shadow: 0 0 1px rgba(0,0,0,0.3);
 `;

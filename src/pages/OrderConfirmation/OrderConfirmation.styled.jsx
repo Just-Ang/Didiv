@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+font-family: var(--main-font);
   max-width: 800px;
   margin: 40px auto;
   padding: 40px 20px;
@@ -12,6 +13,7 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h1`
+font-family: var(--main-font);
   color: var(--orange-color); 
   font-size: 28px;
   font-weight: 800;
@@ -19,6 +21,7 @@ export const Title = styled.h1`
 `;
 
 export const Message = styled.p`
+font-family: var(--main-font);
   font-size: 16px;
   color: #555;
   line-height: 1.6;
@@ -30,6 +33,7 @@ export const Message = styled.p`
 `;
 
 export const OrderSummaryBox = styled.div`
+font-family: var(--main-font);
   background: #f8f9fa;
   border-radius: 12px;
   padding: 24px;
@@ -91,6 +95,7 @@ export const NextActions = styled.div`
 `;
 
 export const Button = styled.button`
+font-family: var(--second-font);
   padding: 12px 24px;
   border-radius: 8px;
   font-size: 15px;

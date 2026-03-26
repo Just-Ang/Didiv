@@ -21,7 +21,7 @@ export const GridWrapper = styled.div`
   gap: 15px;
 
   grid-template-columns: 1fr;
-      margin-bottom: 30px;
+  margin-bottom: 30px;
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -72,8 +72,19 @@ export const Card = styled.a`
     `}
   }
 `;
+export const TitleCatalog = styled.h2`
+  margin-top: 20px;
+  font-size: 30px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: #333;
+  @media screen and (min-width: 768px) {
+    font-size: 35px;
+  }
+`;
 
 export const CardTitle = styled.h3`
+  text-transform: uppercase;
   position: absolute;
   bottom: 15px;
   left: 15px;
@@ -82,7 +93,7 @@ export const CardTitle = styled.h3`
   font-family: var(--main-font);
   font-size: 1.1rem;
   font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.892);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.892);
   max-width: 80%;
 `;
 
@@ -90,7 +101,7 @@ export const CatalogButton = styled.a`
   display: flex;
   flex-direction: column;
   justify-content: center;
-    align-items: center;
+  align-items: center;
   padding: 30px;
   background-color: var(--orange-color);
   color: white;
@@ -99,7 +110,7 @@ export const CatalogButton = styled.a`
   font-family: var(--main-font);
   font-weight: bold;
   transition: background-color 0.2s;
-   text-align: center;
+  text-align: center;
   color: white;
 
   p {
@@ -109,8 +120,11 @@ export const CatalogButton = styled.a`
     margin-bottom: 12px;
   }
 
+  transition: transform 0.2s ease;
+
   &:hover {
-    background-color: #cd6113;
+    transform: scale(1.05);
+    background-color: #e0961d;
   }
 
   span {

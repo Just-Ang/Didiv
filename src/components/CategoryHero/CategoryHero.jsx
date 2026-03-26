@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { ArrowWrapper, Card, CardTitle, CatalogButton,  GridWrapper,} from "./CategoryHero.styled";
+import { ArrowWrapper, Card, CardTitle, CatalogButton,  GridWrapper, TitleCatalog,} from "./CategoryHero.styled";
  const categories = [
   { id: 'bikes', title: 'Велосипеди', image: import.meta.env.BASE_URL + 'catalog/bikes.jpeg', big: true },
   { id: 'saddles', title: 'Сідла', image: import.meta.env.BASE_URL + 'catalog/saddles.jpeg' },
@@ -10,7 +10,8 @@ import { ArrowWrapper, Card, CardTitle, CatalogButton,  GridWrapper,} from "./Ca
  
 ];
 const CategoryHero = () => {
-  return (
+  return (<>
+  <TitleCatalog>Каталог</TitleCatalog>
     <GridWrapper>
       {categories.map((cat) => (
     
@@ -26,6 +27,7 @@ const CategoryHero = () => {
             </ArrowWrapper>
       </CatalogButton>
     </GridWrapper>
+    </>
   );
 };
 

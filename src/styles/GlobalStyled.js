@@ -10,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
   --white-color: #f2ebd4; 
     --second-white: #f0eae7; 
   --orange-color: #f47920;
+  --yellow-color: #e0941a
   --red-color: #be2222d6;
   --main-font: Poiret One;
   --second-font: IBM Plex Sans;
