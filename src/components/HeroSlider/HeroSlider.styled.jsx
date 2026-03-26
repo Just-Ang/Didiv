@@ -1,6 +1,7 @@
 
 
 // Підключаємо базові стилі Swiper
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -12,13 +13,13 @@ export const StyledHeroSection = styled.section`
   margin: 20px auto;
   border-radius: 24;
   position: relative;
-  --swiper-theme-color: var(--orange-color); /* Колір активної крапки та стрілок */
+  --swiper-theme-color: var(--orange-color); 
 
 `;
 
 export const SlideInner = styled.div`
   height: 450px;
-  background-image: linear-gradient(90deg, rgba(44, 35, 16, 0.85) 0%, rgba(44, 35, 16, 0.2) 100%), 
+  background-image: linear-gradient(90deg, rgba(27, 26, 22, 0.85) 0%, rgba(44, 42, 37, 0.2) 100%), 
                     url(${props => props.bg});
   background-size: cover;
   background-position: center;
@@ -36,9 +37,11 @@ export const SlideInner = styled.div`
 `;
 
 export const Content = styled.div`
-  max-width: 500px;
+text-align: left;
+  max-width: 600px;
   
   h1 {
+    color:  #e6e5e2;
     font-family: var(--main-font);
     font-size: 25px;
     font-weight: 400;
@@ -62,7 +65,7 @@ export const Content = styled.div`
   }
 `;
 
-export const OrderButton = styled.a`
+export const OrderButton = styled(Link)`
   display: inline-block;
   background-color: var(--orange-color);
   color: #fff;

@@ -2,12 +2,18 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const FooterWrapper = styled.footer`
-  background: radial-gradient(circle at 50% 45%, #634e3f 0%, #4d392d 35%, #36241b 65%, #1e0f09 100%);
+  background: radial-gradient(
+    circle at 50% 45%,
+    #5c5149 0%,
+    #4b3c34 35%,
+    #352b25 65%,
+    #1b1412 100%
+  );
   color: #ffffff;
-  padding: 40px 20px; /* Трохи менші бокові відступи на мобільці */
+  padding: 40px 20px;
   display: flex;
-  flex-direction: column; 
-  gap: 40px; /* Збільшив відступ між секціями */
+  flex-direction: column;
+  gap: 40px;
   align-items: center;
   text-align: center;
 
@@ -46,7 +52,7 @@ export const Column = styled.div`
   flex-direction: column;
   gap: 12px;
   align-items: center; /* Центруємо контент всередині колонки */
-   
+
   @media screen and (min-width: 768px) {
     align-items: flex-start; /* На десктопі — по лівому краю */
     min-width: 150px;
@@ -76,7 +82,12 @@ export const ColumnTitle = styled.h3`
 `;
 
 export const FooterLink = styled(Link)`
-  color: rgba(255, 255, 255, 0.8); /* Робимо текст не таким яскравим, як заголовок */
+  color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Робимо текст не таким яскравим, як заголовок */
   text-decoration: none;
   font-size: 16px; /* Збільшено для зручного натискання пальцем */
   transition: color 0.3s ease;
@@ -92,7 +103,7 @@ export const SocialIcons = styled.div`
   gap: 20px;
   margin-top: 10px;
   justify-content: center;
-  
+
   @media screen and (min-width: 768px) {
     justify-content: flex-start;
   }
@@ -107,7 +118,9 @@ export const IconSocial = styled.a`
   align-items: center;
   justify-content: center;
   color: #4a332a;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 
   &:hover {
     transform: scale(1.1);
@@ -115,6 +128,6 @@ export const IconSocial = styled.a`
   }
 
   svg {
-    fill: currentColor; 
+    fill: currentColor;
   }
 `;

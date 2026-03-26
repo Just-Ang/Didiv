@@ -1,4 +1,5 @@
-import { Card, CardTitle, CatalogButton,  GridWrapper,} from "./CategoryHero.styled";
+import { ArrowRight } from "lucide-react";
+import { ArrowWrapper, Card, CardTitle, CatalogButton,  GridWrapper,} from "./CategoryHero.styled";
  const categories = [
   { id: 'bikes', title: 'Велосипеди', image: import.meta.env.BASE_URL + 'catalog/bikes.jpeg', big: true },
   { id: 'saddles', title: 'Сідла', image: import.meta.env.BASE_URL + 'catalog/saddles.jpeg' },
@@ -19,10 +20,10 @@ const CategoryHero = () => {
       ))}
 
       <CatalogButton href="catalog">
-        <span>Весь каталог</span>
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
+        <p>Весь каталог</p>
+        <ArrowWrapper>
+              <ArrowRight size={24} />
+            </ArrowWrapper>
       </CatalogButton>
     </GridWrapper>
   );

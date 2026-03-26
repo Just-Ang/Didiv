@@ -6,8 +6,8 @@ import {
   HeadeRight,
   HeaderSection,
   HeaderUp,
-  Logo,
-  LogoBig,
+
+
   MenuButton,
 
   MenuContent,
@@ -16,11 +16,12 @@ import {
 
   MobileMenu,
   Overlay,
+  StoreTitle,
   StyledLink,
-  StyledLinkBig,
+
   WrapperDev,
 } from './Header.styled';
-import logo from '../../img/logo.png';
+
 import { useState } from 'react';
 
 import { SearchBar } from '../SearchBar/SearchBar';
@@ -37,15 +38,17 @@ export const Header = () => {
   return ( 
     <HeaderSection>
     <HeaderContainer>
-      <StyledLinkBig to="/">
+      {/* <StyledLinkBig to="/">
           <LogoBig src={logo} alt="logo"></LogoBig>
-        </StyledLinkBig>
+        </StyledLinkBig> */}
+        
       
       <WrapperDev>
         <HeaderUp>
-        <StyledLink to="/">
+          <StoreTitle to="/">Дідів хлів</StoreTitle>
+        {/* <StyledLink to="/">
           <Logo src={logo} alt="logo"></Logo>
-        </StyledLink>
+        </StyledLink> */}
         <HeadeRight>
           <CartIcon></CartIcon>
 

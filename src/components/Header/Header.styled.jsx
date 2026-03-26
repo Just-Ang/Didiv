@@ -5,13 +5,15 @@ export const HeaderSection = styled.div`
 position: sticky;
   top: 0;
   z-index: 1000;
-  background: radial-gradient(
+      background: radial-gradient(circle at 50% 45%, #5c5149 0%, #4b3c34 35%, #352b25 65%, #1b1412 100%);
+
+  /* background: radial-gradient(
     circle at 50% 45%,
     #634e3f 0%,
     #4d392d 35%,
     #36241b 65%,
     #1e0f09 100%
-  );
+  );  */
 `;
 
 export const HeaderContainer = styled.div`
@@ -50,8 +52,7 @@ width: 100%;
   }
 `;
 export const HeaderUp = styled.div`
-  /* display: grid;
-grid-template-columns: 1fr auto 1fr; */
+
   display: flex;
   @media screen and (max-width: 768px) {
     justify-content: space-between;
@@ -70,7 +71,7 @@ export const HeadeRight = styled.div`
   }
 `;
 
-// export const StyledLink = styled(Link)`
+
 //   color: var(--main-brand-color);
 //   display: flex;
 //   align-items: center;
@@ -110,6 +111,19 @@ export const LogoBig = styled.img`
 
     justify-content: center;
     align-items: center;
+  }
+`;
+
+export const StoreTitle = styled(Link)`
+  font-size: 40px;
+  font-family: Poiret One;
+  font-weight: 800;
+  color: var(--white-color);
+
+  &::after {
+    content: '.';
+    color: var(--orange-color); 
+    margin-left: 2px;
   }
 `;
 

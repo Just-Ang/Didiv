@@ -3,14 +3,12 @@ import { SwiperSlide } from 'swiper/react';
 import { Content, OrderButton, SlideInner, StyledHeroSection } from './HeroSlider.styled';
 import { Swiper} from 'swiper/react';
 
-
-
 const slidesData = [
   {
     id: 1,
-    title: "Дуже важлива інформація для кліента",
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam reprehenderit obcaecati molestias est alias vitae laboriosam nulla perferendis officia incidunt aliquid voluptatem iste libero, officiis ex modi enim repellat. Consectetur!",
-    img: import.meta.env.BASE_URL + 'bar.webp'
+    title: "Найкращий вибір для вашого велосипеда",
+    desc: "Якісні запчастини, професійний серевіс та індивідуальний підхід. Створюйте ідеальний байк разом з нами",
+    img: import.meta.env.BASE_URL + 'bike2-hero.jpeg'
   },
   {
     id: 2,
@@ -37,7 +35,7 @@ export const HeroSlider = () => {
               <Content>
                 <h1>{slide.title}</h1>
                 <p>{slide.desc}</p>
-                <OrderButton href="#">Дивитись в каталозі</OrderButton>
+                <OrderButton to='/catalog'>До каталогу</OrderButton>
               </Content>
             </SlideInner>
           </SwiperSlide>

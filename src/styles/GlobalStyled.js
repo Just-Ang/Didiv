@@ -11,7 +11,8 @@ export const GlobalStyle = createGlobalStyle`
     --second-white: #f0eae7; 
   --orange-color: #f47920;
   --red-color: #be2222d6;
-  --main-font:  DMSerifDisplay;
+  --main-font: Poiret One;
+  --second-font: IBM Plex Sans;
   --background-color: #f6e1d338;
   --light-grey: #c1c1c1;
   --second-background: #f9f7f2;

@@ -90,7 +90,7 @@ export const CatalogButton = styled.a`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+    align-items: center;
   padding: 30px;
   background-color: var(--orange-color);
   color: white;
@@ -99,6 +99,15 @@ export const CatalogButton = styled.a`
   font-family: var(--main-font);
   font-weight: bold;
   transition: background-color 0.2s;
+   text-align: center;
+  color: white;
+
+  p {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
 
   &:hover {
     background-color: #cd6113;
@@ -113,4 +122,14 @@ export const CatalogButton = styled.a`
     width: 30px;
     height: 30px;
   }
+`;
+export const ArrowWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 `;
