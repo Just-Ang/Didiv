@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import 'swiper/css';
@@ -11,14 +10,36 @@ export const StyledHeroSection = styled.section`
   margin: 20px auto;
   border-radius: 24;
   position: relative;
-  --swiper-theme-color: var(--orange-color); 
+  --swiper-theme-color: var(--orange-color);
+  @media (max-width: 768px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+      width: 24px;
+      height: 24px;
+    }
 
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      font-size: 12px;
+    }
+    .swiper-button-next {
+      right: 1px;
+    }
+
+    .swiper-button-prev {
+      left: 1px;
+    }
+  }
 `;
 
 export const SlideInner = styled.div`
   height: 450px;
-  background-image: linear-gradient(90deg, rgba(27, 26, 22, 0.85) 0%, rgba(44, 42, 37, 0.2) 100%), 
-                    url(${props => props.bg});
+  background-image: linear-gradient(
+      90deg,
+      rgba(27, 26, 22, 0.85) 0%,
+      rgba(44, 42, 37, 0.2) 100%
+    ),
+    url(${(props) => props.bg});
   background-size: cover;
   background-position: center;
   display: flex;
@@ -37,28 +58,28 @@ export const SlideInner = styled.div`
 `;
 
 export const Content = styled.div`
-text-align: left;
+  text-align: left;
   max-width: 600px;
-  
+  padding-left:10px;
+
   h1 {
-    color:  #e6e5e2;
+    color: #e6e5e2;
     font-family: var(--main-font);
     font-size: 25px;
     font-weight: 400;
-     @media screen and (min-width: 768px) {
-  font-size: 42px;
-  font-weight: 700;
-  }
+    @media screen and (min-width: 768px) {
+      font-size: 42px;
+      font-weight: 700;
+    }
     line-height: 1.1;
     margin-bottom: 20px;
-    
   }
 
   p {
-     font-size: 15px;
-     @media screen and (min-width: 768px) {
-   font-size: 20px;
-  }
+    font-size: 15px;
+    @media screen and (min-width: 768px) {
+      font-size: 20px;
+    }
     font-size: 18px;
     margin-bottom: 30px;
     opacity: 0.9;
@@ -76,11 +97,11 @@ export const OrderButton = styled(Link)`
   font-size: 14px;
   cursor: pointer;
   text-decoration: none;
-   
-   transition: transform 0.2s ease;
+
+  transition: transform 0.2s ease;
 
   &:hover {
     transform: scale(1.05);
-background-color: #e0961d;
+    background-color: #e0961d;
   }
 `;
