@@ -12,7 +12,7 @@ const slidesData = [
   },
   {
     id: 2,
-     title: "Якісні комплектуючі. бла бла бла",
+     title: "Перевірені велодеталі з пробігом бла бла",
     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam reprehenderit obcaecati molestias est alias vitae laboriosam nulla perferendis officia incidunt aliquid voluptatem iste libero, officiis ex modi enim repellat. Consectetur!",
     img: import.meta.env.BASE_URL + 'inside.webp'
   }
