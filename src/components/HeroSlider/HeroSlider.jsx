@@ -6,13 +6,13 @@ import { Swiper} from 'swiper/react';
 const slidesData = [
   {
     id: 1,
-    title: "Дідів хлів - найкращий вибір для вашого велосипеда",
+    title: "Дідів хлів - найкращий вибір для Вашого велосипеда",
     desc: "Якісні запчастини, професійний серевіс та індивідуальний підхід. Створюйте ідеальний байк разом з нами",
     img: import.meta.env.BASE_URL + 'bike2-hero.jpeg'
   },
   {
     id: 2,
-     title: "Дуже важлива інформація для кліента",
+     title: "Якісні комплектуючі. бла бла бла",
     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam reprehenderit obcaecati molestias est alias vitae laboriosam nulla perferendis officia incidunt aliquid voluptatem iste libero, officiis ex modi enim repellat. Consectetur!",
     img: import.meta.env.BASE_URL + 'inside.webp'
   }

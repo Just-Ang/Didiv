@@ -1,6 +1,4 @@
 
-
-// Підключаємо базові стилі Swiper
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import 'swiper/css';
@@ -28,6 +26,7 @@ export const SlideInner = styled.div`
   padding: 0 60px;
   color: white;
   border-radius: 16px;
+  margin-bottom: 30px;
 
   @media (max-width: 768px) {
     height: 350px;

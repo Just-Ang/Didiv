@@ -1,3 +1,4 @@
+import Stats from '../../components/Stats/Stats';
 import {
   Container,
   ContentSection,
@@ -8,10 +9,6 @@ import {
   HeroSection,
   ImagePlaceholder,
   Section,
-  StatCard,
-  StatNumber,
-  StatsGrid,
-  StatText,
   Subtitle,
   Title,
 } from './About.styled';
@@ -33,20 +30,7 @@ const AboutUs = () => {
             від Shimano, Sram, Campagnolo та інших світових брендів.
           </Description>
 
-          <StatsGrid>
-            <StatCard>
-              <StatNumber>3000+</StatNumber>
-              <StatText>Перевірених деталей</StatText>
-            </StatCard>
-            <StatCard>
-              <StatNumber>6 років</StatNumber>
-              <StatText>Досвіду на ринку</StatText>
-            </StatCard>
-            <StatCard>
-              <StatNumber>100%</StatNumber>
-              <StatText>Контроль якості</StatText>
-            </StatCard>
-          </StatsGrid>
+          <Stats/>
         </ContentSection>
 
         <GallerySection>
