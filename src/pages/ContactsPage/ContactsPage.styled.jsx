@@ -44,6 +44,8 @@ export const Subtitle = styled.p`
 `;
 
 export const ContactWrapper = styled.div`
+font-family: var(--second-font);
+font-weight: 400;
   display: grid;
   gap: 40px;
   text-align: left;
