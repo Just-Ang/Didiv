@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
-   width: 100%;
+  width: 100%;
   max-width: 750px;
   margin: 0 auto;
   padding: 20px;
   font-family: var(--main-font);
-   @media screen and (min-width: 768px) {
+  @media screen and (min-width: 768px) {
     max-width: 994px;
     padding-left: 30px;
     padding-right: 30px;
@@ -19,22 +19,27 @@ export const Container = styled.div`
 `;
 
 export const Breadcrumbs = styled.div`
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 20px;
-  a { text-decoration: none; color: inherit; }
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: #8c8c8c;
+  margin-bottom: 15px;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 export const MainSection = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  @media (max-width: 768px) { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
-export const GallerySection = styled.div`
-
-`;
+export const GallerySection = styled.div``;
 
 export const Badge = styled.div`
   position: absolute;
@@ -73,6 +78,8 @@ export const Title = styled.h1`
   font-size: 28px;
   margin-bottom: 10px;
   color: #333;
+  font-family: var(--second-font);
+  font-weight: 500;
 `;
 
 export const RatingRow = styled.div`
@@ -82,8 +89,10 @@ export const RatingRow = styled.div`
   margin-bottom: 20px;
 `;
 
-
-export const Availability = styled.span`color: #27ae60; font-size: 14px;`;
+export const Availability = styled.span`
+  color: #27ae60;
+  font-size: 17px;
+`;
 
 export const PriceCard = styled.div`
   background: #fdfdfd;
@@ -93,6 +102,8 @@ export const PriceCard = styled.div`
 `;
 
 export const PriceWrapper = styled.div`
+  font-family: var(--second-font);
+  font-weight: 500;
   display: flex;
   align-items: baseline;
   gap: 15px;
@@ -114,6 +125,8 @@ export const ActionRow = styled.div`
   display: flex;
   gap: 15px;
   margin-bottom: 15px;
+  font-family: var(--second-font);
+  font-weight: 500;
 `;
 
 export const QuantitySelector = styled.div`
@@ -122,23 +135,45 @@ export const QuantitySelector = styled.div`
   border: 1px solid #ddd;
   border-radius: 20px;
   overflow: hidden;
+  font-family: var(--second-font);
+  font-weight: 500;
   button {
-    border: none; background: none; padding: 10px 15px; cursor: pointer;
-    &:hover { background: #eee; }
+    border: none;
+    background: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    &:hover {
+      background: #eee;
+    }
   }
-  span { padding: 0 10px; min-width: 30px; text-align: center; }
+  span {
+    padding: 0 10px;
+    min-width: 30px;
+    text-align: center;
+  }
 `;
 
 export const AddToCartBtn = styled.button`
   flex-grow: 1;
-  background: #f39c12;
+  background: var(--orange-color);
   color: white;
   border: none;
   border-radius: 20px;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
   transition: 0.3s;
-  &:hover { background: #e67e22; }
+  &:hover {
+    background:var(--yellow-color);
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    margin-left: 10px;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
 `;
 
 export const OneClickBtn = styled.button`
@@ -168,29 +203,34 @@ export const SizeGrid = styled.div`
 
 export const SizeBadge = styled.div`
   padding: 8px 15px;
-  border: 1px solid ${props => props.active ? '#27ae60' : '#ddd'};
+  border: 1px solid ${(props) => (props.active ? '#27ae60' : '#ddd')};
   border-radius: 4px;
   font-size: 13px;
   cursor: pointer;
-  background: ${props => props.active ? '#f0fff4' : 'white'};
+  background: ${(props) => (props.active ? '#f0fff4' : 'white')};
 `;
-
-
 
 export const SpecsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-top: 30px;
-  @media (max-width: 768px) { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const SpecItem = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  span { color: #888; margin-bottom: 4px; }
-  b { color: #333; }
+  span {
+    color: #888;
+    margin-bottom: 4px;
+  }
+  b {
+    color: #333;
+  }
 `;
 
 export const DeliveryInfo = styled.div`
@@ -199,9 +239,9 @@ export const DeliveryInfo = styled.div`
   color: #444;
 `;
 
-
-
 export const TabsWrapper = styled.div`
+  font-family: var(--second-font);
+  font-weight: 500;
   margin-top: 20px;
 `;
 
@@ -212,35 +252,38 @@ export const TabButtons = styled.div`
 `;
 
 export const TabButton = styled.button`
-      padding: 10px 0;
-    cursor: pointer;
-    font-weight: 500;
-       border: none;
-    background-color: transparent;
-    border-bottom: 2px solid #717171;
-
-  border-bottom: ${({ active }) => (active ? "2px solid var(--second-color)" : "none")};
-  color: ${({ active }) => (active ? "var(--second-color)" : "#717171")};
+  padding: 10px 0;
   cursor: pointer;
-  font-weight: ${({ active }) => (active ? "bold" : "normal")};
+  font-weight: 500;
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid #717171;
+
+  border-bottom: ${({ active }) =>
+    active ? '2px solid var(--second-color)' : 'none'};
+  color: ${({ active }) => (active ? 'var(--second-color)' : '#717171')};
+  cursor: pointer;
+  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
 `;
 
 export const TabContent = styled.div`
+  font-family: var(--second-font);
+  font-weight: 500;
   padding: 15px;
   background: #fff;
 `;
 
-export const  DescriptionText = styled.p`
-font-family: var(--main-font);
-font-size: 20px;
-
-
-`
+export const DescriptionText = styled.p`
+  font-size: 20px;
+  font-family: var(--second-font);
+  font-weight: 300;
+`;
 
 export const FavoriteButton = styled.button`
- background: ${({ $active }) => ($active ? "var(--red-color)" : "transparent")};
-    font-weight: bold;
- color: ${({ $active }) => ($active ? "white" : "black")};
+  background: ${({ $active }) =>
+    $active ? 'var(--red-color)' : 'transparent'};
+  font-weight: 500;
+  color: ${({ $active }) => ($active ? 'white' : 'black')};
 
   border: 1px solid #ddd;
   border-radius: 50px;
@@ -251,6 +294,11 @@ export const FavoriteButton = styled.button`
   gap: 8px;
   cursor: pointer;
   flex-grow: 1;
+  span {
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
 
   &:hover {
     border-color: #bbb;
@@ -260,6 +308,6 @@ export const FavoriteButton = styled.button`
 export const HeartIcon = styled.svg`
   width: 20px;
   height: 20px;
-  
-   fill: ${({ $active }) => ($active ? "white" : " var(--black-color)")};
+
+  fill: ${({ $active }) => ($active ? 'white' : ' var(--black-color)')};
 `;

@@ -38,6 +38,7 @@ import { toggleFavorite } from '../../redux/favoritesSlice';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Zoom from "yet-another-react-lightbox/plugins/zoom"; // Імпорт плагіна
+import { ShoppingCart } from 'lucide-react';
 
 
 
@@ -144,7 +145,7 @@ const handleMainImageClick = () => {
         <InfoSection>
           <Title>{product.name}</Title>
           <RatingRow>
-            <Availability>● В наявності</Availability>
+            <Availability>● Новий товар</Availability>
           </RatingRow>
 
           <PriceCard>
@@ -160,7 +161,7 @@ const handleMainImageClick = () => {
                 <span>{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </QuantitySelector>
-              <AddToCartBtn onClick={handleAdd}>В КОШИК</AddToCartBtn>
+              <AddToCartBtn onClick={handleAdd}> <ShoppingCart size={25} /><span>В&nbsp;КОШИК</span></AddToCartBtn>
 
               <FavoriteButton
                 $active={isFavorite}
@@ -170,7 +171,7 @@ const handleMainImageClick = () => {
                   {' '}
                   <use href={`${sprite}#icon-heart`} />
                 </HeartIcon>
-                В ОБРАНЕ
+                <span>В&nbsp;ОБРАНЕ</span>
               </FavoriteButton>
             </ActionRow>
           </PriceCard>
