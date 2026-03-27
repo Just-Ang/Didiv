@@ -32,9 +32,9 @@ export const HeaderContainer = styled.div`
     padding-right: 30px;
   }
   @media screen and (min-width: 1200px) {
- max-width: 1448px;
-    padding-left: 0px;
-    padding-right: 0px;
+    max-width: 1448px;
+    padding-left: 0;
+    padding-right: 0;
   }
 `;
 export const WrapperDev = styled.div`
@@ -113,8 +113,10 @@ export const LogoBig = styled.img`
 export const StoreTitle = styled(Link)`
   font-size: 40px;
   font-family: Poiret One;
+  /* font-family: 'MyFont'; */
   font-weight: 800;
   color: var(--white-color);
+  letter-spacing:0.2em;
 
   &::after {
     content: '.';

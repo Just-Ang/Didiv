@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import 'modern-normalize';
+import MyFont from '../../public/fonts/Ancient_Kyiv.ttf'
 
 export const GlobalStyle = createGlobalStyle`
 :root {
@@ -26,6 +27,12 @@ export const GlobalStyle = createGlobalStyle`
   /* overflow: hidden; */
 }
 
+@font-face {
+  font-family: 'MyFont';
+  src: url(${MyFont}) format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
 
 
 body {
