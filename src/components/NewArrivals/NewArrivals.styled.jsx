@@ -44,7 +44,7 @@ export const Grid = styled.div`
 `;
 
 export const ProductCard = styled.div`
-
+font-family: var(--second-font);
   display: flex;
   justify-content: space-between;
   flex-direction: column;

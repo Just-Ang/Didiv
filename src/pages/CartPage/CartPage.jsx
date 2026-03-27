@@ -112,7 +112,7 @@ const CartPage = () => {
                       />
                       <PriceWrapper>
                         <div className="current-price">
-                          {(item.price * (item.quantity || 1)).toLocaleString()} грн
+                          {(item.price * (item.quantity || 1)).toLocaleString()}&nbsp;грн
                         </div>
                       </PriceWrapper>
                     </CounterPrice>
@@ -150,14 +150,12 @@ const CartPage = () => {
             </CartItemsList>
 
             <SummaryCard>
-              <SummaryRow>
-          
-                
-              </SummaryRow>
 
-              <SummaryRow className="total">
-                <span>Всього </span>
-                <span> {total} грн</span>
+              <SummaryRow>
+                <span>Всього в обраному:</span>
+                <strong>{favorites.length} шт.</strong>
+                <span>На суму:</span>
+                <strong>{total} грн</strong>
               </SummaryRow>
               <OrderButton to='/checkout'>Оформити замовлення</OrderButton>
               <ClearButton onClick={handleClear}>Oчистити кошик</ClearButton>

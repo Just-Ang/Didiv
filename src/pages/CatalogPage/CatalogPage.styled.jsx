@@ -20,7 +20,9 @@ export const Container = styled.div`
     padding-right: 30px;
   }
   @media screen and (min-width: 1200px) {
-    max-width: 1440px;
+    max-width: 1448px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
   
 `;
@@ -140,8 +142,9 @@ export const ItemTitle = styled.p`
 color: var( --black-color);
   padding: 16px;
   font-size: 18px;
-  font-weight: 600;
-  font-family: var(--main-font);
+  
+  font-family: var(--second-font);
+font-weight: 400;
   text-align: center;
     @media screen and (max-width: 768px) {
  padding:10px;

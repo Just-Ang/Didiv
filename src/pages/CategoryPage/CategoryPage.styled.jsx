@@ -15,7 +15,9 @@ export const Container = styled.div`
     padding-right: 30px;
   }
   @media screen and (min-width: 1200px) {
-    max-width: 1440px;
+   max-width: 1448px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 `;
 
@@ -89,16 +91,12 @@ export const MobileFilterContent = styled.div`
   right: 0;
   width: 85%;
   max-width: 400px;
-  /* padding-left: 10px;
-  padding-right: 10px; */
   height: 100%;
   background: white;
   z-index: 1001;
   display: flex;
   flex-direction: column;
   box-shadow: -10px 0 25px rgba(0, 0, 0, 0.1);
-
-  /* Анімація виїзду справа */
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
 `;
@@ -123,7 +121,6 @@ export const FilterHeader = styled.div`
   }
 `;
 
-// Обгортка для самих фільтрів з прокруткою
 export const FilterBody = styled.div`
   flex: 1;
   padding: 20px;
@@ -133,7 +130,6 @@ export const FilterBody = styled.div`
   gap: 24px;
 `;
 
-// Фіксована кнопка знизу
 export const FilterFooter = styled.div`
   padding: 20px;
   border-top: 1px solid #eee;

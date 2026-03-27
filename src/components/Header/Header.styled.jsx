@@ -7,13 +7,7 @@ position: sticky;
   z-index: 1000;
       background: radial-gradient(circle at 50% 45%, #5c5149 0%, #4b3c34 35%, #352b25 65%, #1b1412 100%);
 
-  /* background: radial-gradient(
-    circle at 50% 45%,
-    #634e3f 0%,
-    #4d392d 35%,
-    #36241b 65%,
-    #1e0f09 100%
-  );  */
+
 `;
 
 export const HeaderContainer = styled.div`
@@ -38,7 +32,9 @@ export const HeaderContainer = styled.div`
     padding-right: 30px;
   }
   @media screen and (min-width: 1200px) {
-    max-width: 1440px;
+ max-width: 1448px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 `;
 export const WrapperDev = styled.div`

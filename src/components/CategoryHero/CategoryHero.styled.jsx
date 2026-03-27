@@ -84,20 +84,22 @@ export const TitleCatalog = styled.h2`
 `;
 
 export const CardTitle = styled.h3`
+
   text-transform: uppercase;
   position: absolute;
   bottom: 15px;
   left: 15px;
   color: #fff;
   margin: 0;
-  font-family: var(--main-font);
+font-family: var(--second-font);
   font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: 400;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.892);
   max-width: 80%;
 `;
 
 export const CatalogButton = styled.a`
+
   display: flex;
   flex-direction: column;
   justify-content: center;

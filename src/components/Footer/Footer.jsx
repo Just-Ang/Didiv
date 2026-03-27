@@ -2,6 +2,7 @@ import {
   Column,
   ColumnTitle,
   FooterLink,
+  FooterSection,
   FooterWrapper,
   IconSocial,
   SocialIcons,
@@ -11,6 +12,7 @@ import sprite from '../../img/symbol-defs.svg';
 
 export const Footer = () => {
   return (
+    <FooterSection>
     <FooterWrapper>
       <TopWrapper>
       <Column>
@@ -55,5 +57,6 @@ export const Footer = () => {
         </SocialIcons>
       </Column>
     </FooterWrapper>
+    </FooterSection>
   );
 };

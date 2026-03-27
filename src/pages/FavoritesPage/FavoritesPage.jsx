@@ -102,7 +102,7 @@ const FavoritesPage = () => {
                   <ProductName>{item.name}</ProductName>
 
                   <ActionsWrapper>
-                    <Price>{item.price} грн</Price>
+                    <Price>{item.price}&nbsp;грн</Price>
                     <IconGroup>
                       <IconButton onClick={() => handleAdd(item)}>
                         <ShoppingCart size={30} />

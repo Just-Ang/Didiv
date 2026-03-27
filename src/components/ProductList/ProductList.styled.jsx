@@ -37,6 +37,8 @@ export const GridWrapper = styled.div`
 `;
 
 export const Card = styled.div`
+font-family: var(--second-font);
+font-weight: 500;
   border-radius: 16px;
   overflow: hidden;
   background: #fff;
@@ -70,8 +72,10 @@ export const CardInfo = styled.div`
 `;
 
 export const CardTitle = styled.p`
+font-family: var(--second-font);
+font-weight: 500;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 8px;
 `;
 

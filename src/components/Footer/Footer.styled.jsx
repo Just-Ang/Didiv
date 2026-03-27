@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+export const FooterSection = styled.div`
 
-export const FooterWrapper = styled.footer`
-  background: radial-gradient(
+   background: radial-gradient(
     circle at 50% 45%,
     #5c5149 0%,
     #4b3c34 35%,
     #352b25 65%,
     #1b1412 100%
   );
+`
+
+
+export const FooterWrapper = styled.footer`
+ 
   color: #ffffff;
   padding: 40px 20px;
   display: flex;
@@ -16,6 +21,12 @@ export const FooterWrapper = styled.footer`
   gap: 40px;
   align-items: center;
   text-align: center;
+   width: 100%;
+  max-width: 750px;
+
+
+      margin-left: auto;
+    margin-right: auto;
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
@@ -23,11 +34,15 @@ export const FooterWrapper = styled.footer`
     justify-content: space-between;
     align-items: flex-start;
     text-align: left;
-    padding: 50px 40px;
+     max-width: 994px;
+    
+    padding: 50px 30px;
   }
 
   @media screen and (min-width: 1440px) {
-    padding: 60px 80px;
+    max-width: 1448px;
+    
+    padding: 60px 0px;
   }
 `;
 

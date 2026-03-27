@@ -1,24 +1,24 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
- 
-
   color: var(-black-color);
   font-family: var(--main-font);
   width: 100%;
   max-width: 750px;
-  padding: 10px;
+  padding: 20px;
+  margin: 0 auto;
+ 
   @media screen and (min-width: 768px) {
     max-width: 994px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 30px;
   }
   @media screen and (min-width: 1200px) {
-    max-width: 1440px;
+   max-width: 1448px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 
-  margin: 0 auto;
-  padding: 40px 20px;
+  
   
 `;
 
@@ -38,12 +38,22 @@ color: var(--black-color);
 `;
 
 export const Layout = styled.div`
-  display: grid;
+  /* display: grid;
   grid-template-columns: 1fr 350px;
   gap: 30px;
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
+  } */
+   display: flex;
+  flex-direction: column;
+  gap: 20px; 
+  width: 100%;
+  
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between; 
   }
 `;
 
@@ -55,6 +65,8 @@ export const ListContainer = styled.div`
 `;
 
 export const ItemCard = styled.div`
+font-family: var(--second-font);
+font-weight: 500;
 display: flex;
   flex-direction: column;
   padding: 20px;
@@ -90,7 +102,7 @@ export const Image = styled.img`
 
 export const ProductName = styled.h3`
  font-size: 20px;
-    font-weight: 500;
+    font-weight: 300;
     margin: 0;
     line-height: 1.4;
     @media screen and (max-width: 768px) {
@@ -110,9 +122,9 @@ export const ActionsWrapper = styled.div`
   }
 `;
 
-export const Price = styled.span`
-  font-size: 20px;
-  font-weight: 700;
+export const Price = styled.p`
+  font-size: 17px;
+  font-weight: 500;
   white-space: nowrap;
 `;
 
@@ -131,12 +143,30 @@ export const IconButton = styled.button`
 `;
 
 export const SummaryCard = styled.div`
+    font-family: var(--second-font);
+    font-weight: 400;
   background: #ffffff;
   border: 1px solid #f0f0f0;
   border-radius: 16px;
   padding: 30px;
   height: fit-content;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+   background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 24px;
+
+  top: 20px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 750px;
+    padding: 10px;
+  }
+   @media screen and (min-width: 768px) {
+    
+   max-width: 400px;
+  
+  }
 `;
 
 export const SummaryRow = styled.div`
@@ -149,7 +179,7 @@ export const SummaryRow = styled.div`
 
 export const CheckoutButton = styled.button`
   width: 100%;
-  background-color: #f37a20; // Помаранчевий з вашого скріншоту
+  background-color: var(--orange-color);
   color: white;
   border: none;
   padding: 16px;

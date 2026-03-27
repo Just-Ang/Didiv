@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
        
   
  @media screen and (min-width: 768px) {
-   max-width:  1400px;
+   max-width:  1448px;
    margin-left: auto;
    margin-right:auto;
   }
@@ -42,7 +42,7 @@ export const Input = styled.input`
   
 
   @media screen and (min-width: 768px) {
-max-width:  1400px;
+max-width:  1448px;
   }
 `;
 

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-// --- Styled Components ---
 
 export const PageContainer = styled.div`
   font-family: var(--main-font);
@@ -10,16 +9,17 @@ export const PageContainer = styled.div`
   padding: 10px;
   @media screen and (min-width: 768px) {
     max-width: 994px;
-    padding-left: 30px;
-    padding-right: 30px;
+     padding: 30px;
   }
   @media screen and (min-width: 1200px) {
-    max-width: 1440px;
+   max-width: 1448px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 
   margin: 0 auto;
-  padding: 40px 20px;
-  color: #333;
+
+  
 `;
 
 export const Breadcrumbs = styled.nav`
@@ -48,8 +48,8 @@ export const ContentWrapper = styled.div`
   
   @media screen and (min-width: 768px) {
     flex-direction: row;
-    align-items: flex-start; /* Щоб SummaryCard не розтягувалася по висоті */
-    justify-content: space-between; /* Розносить список і чек-аут */
+    align-items: flex-start;
+    justify-content: space-between; 
   }
 `;
 
@@ -61,6 +61,8 @@ export const CartItemsList = styled.div`
 `;
 
 export const CartItem = styled.div`
+font-family: var(--second-font);
+font-weight: 500;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -92,7 +94,7 @@ export const ProductImg = styled.img`
 export const ProductInfo = styled.div`
   h3 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 300;
     margin: 0;
     line-height: 1.4;
   }
@@ -138,15 +140,7 @@ export const Counter = styled.div`
 
 export const PriceWrapper = styled.div`
   text-align: right;
-  .current-price {
-    font-size: 18px;
-    font-weight: 700;
-  }
-  .old-price {
-    font-size: 14px;
-    color: #999;
-    text-decoration: line-through;
-  }
+ 
 `;
 export const ButtonDelete = styled.button`
   background: 'none';
@@ -177,11 +171,13 @@ export const SummaryCard = styled.div`
    @media screen and (min-width: 768px) {
     
    width: 400px;
-    
+  
   }
 `;
 
 export const SummaryRow = styled.div`
+font-family: var(--second-font);
+font-weight: 400;
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
@@ -194,7 +190,7 @@ export const SummaryRow = styled.div`
     border-top: 1px solid #eee;
     color: #000;
     font-size: 22px;
-    font-weight: 700;
+
   }
 `;
 

@@ -22,7 +22,9 @@ export const Container = styled.div`
   }
 
   @media screen and (min-width: 1200px) {
-    max-width: 1440px;
+   max-width: 1448px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 `;
 
@@ -45,6 +47,7 @@ export const Title = styled.h1`
 `;
 
 export const Subtitle = styled.p`
+
   font-size: 16px;
   color: #666;
 `;
@@ -54,7 +57,8 @@ export const ContentSection = styled.section`
 `;
 
 export const Description = styled.p`
-  font-family: var(--main-font);
+  font-family: var(--second-font);
+  font-weight:400;
   font-size: 18px;
   line-height: 1.6;
   max-width: 800px;
