@@ -32,7 +32,7 @@ function App() {
        <Suspense fallback={<Loader />}>
       <Routes>
   <Route path="/" element={<SharedLayout />}>
-    <Route index element={<HomePage />} /> {/* Головна */}
+    <Route index element={<HomePage />} />
     <Route path="catalog" element={<CatalogPage />} />
      
     <Route path="/catalog/:category" element={<CategoryPage />} />

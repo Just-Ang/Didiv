@@ -40,7 +40,6 @@ const CartPage = () => {
 
   const productsInCart = useSelector((state) => state.cart.items);
   const favorites = useSelector((state) => state.favorites.items);
-  console.log(favorites);
   const isCartEmpty = productsInCart.length === 0;
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();

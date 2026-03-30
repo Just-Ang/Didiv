@@ -9,7 +9,6 @@ import ContactForm from '../../components/checkout/ContactForm/ContactForm';
 import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
 import ukrposhtaData from '../../data/ukrposhta.json';
 
-
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
 const BASE_URL = 'https://api.novaposhta.ua/v2.0/json/';
 
@@ -38,10 +37,11 @@ const CheckoutPage = () => {
   const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
   const [ukrSearch, setUkrSearch] = useState('');
 
-  const totalAmount = cartItems.reduce((acc, i) => acc + i.price * i.quantity, 0);
+  const totalAmount = cartItems.reduce(
+    (acc, i) => acc + i.price * i.quantity,
+    0
+  );
   const totalQuantity = cartItems.reduce((acc, i) => acc + i.quantity, 0);
-
-
 
   const generateOrderNumber = () => {
     const year = new Date().getFullYear().toString().slice(-2);
@@ -107,23 +107,21 @@ const CheckoutPage = () => {
   }, [selectedCity, deliveryMethod]);
 
   // ---------------- УКРПОШТА (поки mock) ----------------
-useEffect(() => {
-  if (deliveryMethod !== 'ukr' || !selectedCity) return;
+  useEffect(() => {
+    if (deliveryMethod !== 'ukr' || !selectedCity) return;
 
-  const filtered = ukrposhtaData
-    .filter(o => o.city === selectedCity.label)
-    .filter(o =>
-      o.address.toLowerCase().includes(ukrSearch.toLowerCase())
-    )
-    .slice(0, 20); // обмеження
+    const filtered = ukrposhtaData
+      .filter((o) => o.city === selectedCity.label)
+      .filter((o) => o.address.toLowerCase().includes(ukrSearch.toLowerCase()))
+      .slice(0, 20); // обмеження
 
-  setUkrOfficeOptions(
-    filtered.map((o, index) => ({
-      value: index,
-      label: o.address,
-    }))
-  );
-}, [selectedCity, deliveryMethod, ukrSearch]);
+    setUkrOfficeOptions(
+      filtered.map((o, index) => ({
+        value: index,
+        label: o.address,
+      }))
+    );
+  }, [selectedCity, deliveryMethod, ukrSearch]);
 
   // ---------------- МІСТО CHANGE ----------------
   const handleCityChange = (option) => {
@@ -171,37 +169,76 @@ useEffect(() => {
     return errors;
   };
 
-  const errors = useMemo(validate, [formData, deliveryMethod, selectedOffice, selectedUkrOffice, selectedCity]);
+  const errors = useMemo(validate, [
+    formData,
+    deliveryMethod,
+    selectedOffice,
+    selectedUkrOffice,
+    selectedCity,
+  ]);
 
-  const isFormValid =
-    Object.keys(errors).length === 0 && cartItems.length > 0;
+  const isFormValid = Object.keys(errors).length === 0 && cartItems.length > 0;
 
   // ---------------- SUBMIT ----------------
- const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const finalOrder = {
-  ...formData,
-  city: selectedCity.label,
-  deliveryMethod: deliveryMethod === 'nova'
-      ? 'Нова Пошта'
-      : deliveryMethod === 'ukr'
-      ? 'УкрПошта'
-      : 'Самовивіз',
-  address:
-    deliveryMethod === 'nova'
-      ? selectedOffice?.label
-      : deliveryMethod === 'ukr'
-      ? selectedUkrOffice?.label
-      : 'Самовивіз',
-  items: cartItems,
-  total: totalAmount,
-  orderNumer: generateOrderNumber(),
-};
-   // Зберігаємо замовлення на сервері
-    navigate("/order-confirmation", { state: { order: finalOrder } });
+    const orderNumber = generateOrderNumber();
 
-    console.log('Замовлення готове до відправки:', finalOrder);
+    await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        data: {
+          name: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          city: formData.city,
+          products: cartItems.map((item) => ({
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+          })),
+          status_order: 'pending',
+          order_number: orderNumber,
+          delivery_method:
+            deliveryMethod === 'nova'
+              ? 'Нова Пошта'
+              : deliveryMethod === 'ukr'
+              ? 'УкрПошта'
+              : 'Самовивіз',
+          delivery_address:
+            deliveryMethod === 'nova'
+              ? selectedOffice?.label
+              : deliveryMethod === 'ukr'
+              ? selectedUkrOffice?.label
+              : 'Самовивіз',
+        },
+      }),
+    });
+
+    const finalOrder = {
+      ...formData,
+      city: selectedCity.label,
+      deliveryMethod:
+        deliveryMethod === 'nova'
+          ? 'Нова Пошта'
+          : deliveryMethod === 'ukr'
+          ? 'УкрПошта'
+          : 'Самовивіз',
+      address:
+        deliveryMethod === 'nova'
+          ? selectedOffice?.label
+          : deliveryMethod === 'ukr'
+          ? selectedUkrOffice?.label
+          : 'Самовивіз',
+      items: cartItems,
+      total: totalAmount,
+      orderNumer: generateOrderNumber(),
+    };
+    // Зберігаємо замовлення на сервері
+    navigate('/order-confirmation', { state: { order: finalOrder } });
   };
 
   // ---------------- DELIVERY OPTIONS ----------------
@@ -222,42 +259,45 @@ useEffect(() => {
     <Container>
       <CheckoutWrapper>
         <Section>
-      <ContactForm formData={formData} setFormData={setFormData} errors={errors} />
+          <ContactForm
+            formData={formData}
+            setFormData={setFormData}
+            errors={errors}
+          />
 
-      <CitySelect
-        cityOptions={cityOptions}
-        selectedCity={selectedCity}
-        onChange={handleCityChange}
-        onInputChange={setInputCity}
-      />
+          <CitySelect
+            cityOptions={cityOptions}
+            selectedCity={selectedCity}
+            onChange={handleCityChange}
+            onInputChange={setInputCity}
+          />
 
-      <DeliveryMethodSelect
-        options={deliveryOptions}
-        value={deliveryMethod}
-         onChange={setDeliveryMethod} 
-         selectedCity={selectedCity}   
-      />
+          <DeliveryMethodSelect
+            options={deliveryOptions}
+            value={deliveryMethod}
+            onChange={setDeliveryMethod}
+            selectedCity={selectedCity}
+          />
 
-      <OfficeSelect
-        deliveryMethod={deliveryMethod}
-        officeOptions={officeOptions}
-        ukrOfficeOptions={ukrOfficeOptions}
-        selectedOffice={selectedOffice}
-        selectedUkrOffice={selectedUkrOffice}
-        setSelectedOffice={setSelectedOffice}
-        setSelectedUkrOffice={setSelectedUkrOffice}
-        setUkrSearch={setUkrSearch}
-        
-      />
-      </Section>
+          <OfficeSelect
+            deliveryMethod={deliveryMethod}
+            officeOptions={officeOptions}
+            ukrOfficeOptions={ukrOfficeOptions}
+            selectedOffice={selectedOffice}
+            selectedUkrOffice={selectedUkrOffice}
+            setSelectedOffice={setSelectedOffice}
+            setSelectedUkrOffice={setSelectedUkrOffice}
+            setUkrSearch={setUkrSearch}
+          />
+        </Section>
 
-      <OrderSummary
-        cartItems={cartItems}
-        totalAmount={totalAmount}
-        totalQuantity={totalQuantity}
-        isFormValid={isFormValid}
-        handleSubmit={handleSubmit}
-      />
+        <OrderSummary
+          cartItems={cartItems}
+          totalAmount={totalAmount}
+          totalQuantity={totalQuantity}
+          isFormValid={isFormValid}
+          handleSubmit={handleSubmit}
+        />
       </CheckoutWrapper>
     </Container>
   );
