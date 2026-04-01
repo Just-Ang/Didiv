@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import sprite from '../../img/symbol-defs.svg';
-import { products } from '../../data/products';
+// import { products } from '../../data/products';
 import {
   ActionRow,
   AddToCartBtn,
@@ -35,39 +35,51 @@ import {
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
 import { toggleFavorite } from '../../redux/favoritesSlice';
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
-import Zoom from "yet-another-react-lightbox/plugins/zoom"; // Імпорт плагіна
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom'; // Імпорт плагіна
 import { ShoppingCart } from 'lucide-react';
-
-
 
 export const ProductPage = () => {
   const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
+  const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
-
-  const [activeImage, setActiveImage] = useState(product.image[0]);
- 
+  const [activeImage, setActiveImage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const product = products.find((p) => p.id === Number(id));
 
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*`)
+      .then((res) => res.json())
+      .then((data) => setProducts(data.data));
+  }, []);
+  console.log(products);
+  useEffect(() => {
+    if (product && product.images) {
+      setActiveImage(
+        product?.images?.[0]?.url
+          ? `${import.meta.env.VITE_API_URL}${product.images[0].url}`
+          : null
+      );
+    }
+  }, [product]);
 
-  const slides = product.image.map((src) => ({ src }));
+  const slides = product?.images.map((img) => ({
+    src: `${import.meta.env.VITE_API_URL}${img.url}`,
+  }));
+  console.log(product);
 
-const handleMainImageClick = () => {
-    const index = product.image.indexOf(activeImage);
+  const handleMainImageClick = () => {
+    const index = product.images.indexOf(activeImage);
     setPhotoIndex(index);
     setIsOpen(true);
   };
 
-
-
-
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
-  const isFavorite = favorites.some((favItem) => favItem.id === product.id);
+  const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
   const handleAdd = () => {
     dispatch(addToCart({ ...product, quantity }));
     toast.success(`${product.name} додано в кошик!`);
@@ -83,6 +95,7 @@ const handleMainImageClick = () => {
       toast.info(`${product.name} додано в обране`);
     }
   };
+  if (!product) return <div>Завантаження...</div>;
 
   if (!product) {
     return <Container>Товар не знайдено</Container>;
@@ -99,47 +112,57 @@ const handleMainImageClick = () => {
       <MainSection>
         {/* Ліва колонка: Галерея */}
         <GallerySection>
-          <MainImage src={activeImage} alt={product.name} onClick={handleMainImageClick} />
+          <MainImage
+            src={activeImage}
+            alt={product.name}
+            onClick={handleMainImageClick}
+          />
           <Thumbnails>
-            {product.image.map((img) => (
-              <Thumb
-                key={img}
-                src={img}
-                onClick={() => setActiveImage(img)}
-                style={{
-                  cursor: 'pointer',
-                  opacity: activeImage === img ? 1 : 0.4,
-                }}
-              />
-            ))}
+            {product.images.map((img) => {
+              const imageUrl = `${import.meta.env.VITE_API_URL}${img.url}`;
+
+              return (
+                <Thumb
+                  key={img.id}
+                  src={imageUrl}
+                  onClick={() => setActiveImage(imageUrl)}
+                  style={{
+                    cursor: 'pointer',
+                    opacity: activeImage === imageUrl ? 1 : 0.4,
+                  }}
+                />
+              );
+            })}
           </Thumbnails>
         </GallerySection>
 
-
-<Lightbox
-        open={isOpen}
-        close={() => setIsOpen(false)}
-        index={photoIndex}
-        slides={slides}
-        controller={{ closeOnBackdropClick: true }}
-        on={{
-          view: ({ index }) => {
-            setPhotoIndex(index);
-            setActiveImage(product.image[index]); 
-          }
-        }}
-        plugins={[Zoom]}
-         zoom={{
-    maxZoomPixelRatio: 3,
-    zoomInMultiplier: 2, 
-    doubleTapDelay: 300,  
-    doubleClickDelay: 300,
-    doubleClickEnabled: true,
-    pinchZoomDistanceFactor: 100, 
-    scrollToZoom: true,
-  }}
-      />
-
+        <Lightbox
+          open={isOpen}
+          close={() => setIsOpen(false)}
+          index={photoIndex}
+          slides={slides}
+          controller={{ closeOnBackdropClick: true }}
+          on={{
+            view: ({ index }) => {
+              setPhotoIndex(index);
+              if (product?.images?.[index]?.url) {
+                setActiveImage(
+                  `${import.meta.env.VITE_API_URL}${product.images[index].url}`
+                );
+              }
+            },
+          }}
+          plugins={[Zoom]}
+          zoom={{
+            maxZoomPixelRatio: 3,
+            zoomInMultiplier: 2,
+            doubleTapDelay: 300,
+            doubleClickDelay: 300,
+            doubleClickEnabled: true,
+            pinchZoomDistanceFactor: 100,
+            scrollToZoom: true,
+          }}
+        />
 
         {/* Права колонка: Інфо та покупка */}
         <InfoSection>
@@ -161,7 +184,11 @@ const handleMainImageClick = () => {
                 <span>{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </QuantitySelector>
-              <AddToCartBtn onClick={handleAdd}> <ShoppingCart size={25} /><span>В&nbsp;КОШИК</span></AddToCartBtn>
+              <AddToCartBtn onClick={handleAdd}>
+                {' '}
+                <ShoppingCart size={25} />
+                <span>В&nbsp;КОШИК</span>
+              </AddToCartBtn>
 
               <FavoriteButton
                 $active={isFavorite}
