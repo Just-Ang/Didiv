@@ -7,8 +7,8 @@ const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, hand
   <Summary>
     <h3>Ваше замовлення</h3>
     <CartPreviewList>
-      {cartItems.map(item => (
-        <CartPreviewItem key={item.id}>
+      {cartItems.map((item, index) => (
+        <CartPreviewItem key={`${item.id}-${index}`}>
           <PreviewImg src={item.image?.[0] || placeholder} alt={item.name} />
           <PreviewInfo>
             <p className="item-name">{item.name}</p>
