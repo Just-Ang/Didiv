@@ -10,7 +10,7 @@ import {
  
   GridWrapper,
 } from './ProductList.styled';
-import { products } from '../../data/products';
+// import { products } from '../../data/products';
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,12 +19,25 @@ import { toast, ToastContainer } from 'react-toastify';
 import { toggleFavorite } from '../../redux/favoritesSlice';
 import placeholder from '../../../public/nofoto.png';
 import { Heart, ShoppingCart } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export const ProductList = ({ category, selectedFilters = {} }) => {
-  let filteredProducts = products.filter((p) => p.category === category);
+   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*`)
+      .then(res => res.json())
+      .then(data =>  setProducts(data.data));
+  }, []);
+  console.log(products);
+  let filteredProducts = products.filter((p) => p.category?.id_title === category);
+  console.log(filteredProducts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
+
+
+  
 
   const handleAdd = (product, e) => {
     e.stopPropagation();
@@ -75,7 +88,9 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
               style={{ cursor: 'pointer' }}
             >
               <CardImg
-                src={product.image?.[0] || placeholder}
+               src={product.images && product.images.length > 0
+      ? `${import.meta.env.VITE_API_URL}${product.images[0].url}`
+      : placeholder}
                 alt={product.name}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
