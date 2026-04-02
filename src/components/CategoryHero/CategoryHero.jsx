@@ -16,7 +16,7 @@ const CategoryHero = () => {
   
     useEffect(() => {
       async function fetchCategories() {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/categories?populate=image`);
+        const res = await fetch("https://useful-authority-52fd526d2c.strapiapp.com/api/categories?populate=image");
         const data = await res.json();
         console.log(data);
         setCategories(
