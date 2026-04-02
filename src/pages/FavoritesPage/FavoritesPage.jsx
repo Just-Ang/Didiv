@@ -40,7 +40,10 @@ const FavoritesPage = () => {
   };
 
   console.log(favorites);
-  const total = favorites.reduce((sum, item) => sum + item.price, 0);
+  const total = favorites.reduce(
+    (sum, item) => sum + item.price * (item.quantity || 1),
+    0
+  );
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
     const exists = favorites.some((favItem) => favItem.id === product.id);
@@ -92,7 +95,7 @@ const FavoritesPage = () => {
                   className={removingIds.includes(item.id) ? 'removing' : ''}
                 >
                   <Image
-                    src={item.image?.[0] || placeholder}
+                   src={`${import.meta.env.VITE_API_URL}${item.images[0].url}` || placeholder}
                     alt={item.name}
                     onError={(e) => {
                       e.currentTarget.onerror = null;

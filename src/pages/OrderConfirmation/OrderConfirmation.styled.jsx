@@ -13,7 +13,7 @@ font-family: var(--main-font);
 `;
 
 export const Title = styled.h1`
-font-family: var(--main-font);
+font-family: var(--second-font);
   color: var(--orange-color); 
   font-size: 28px;
   font-weight: 800;
@@ -21,7 +21,7 @@ font-family: var(--main-font);
 `;
 
 export const Message = styled.p`
-font-family: var(--main-font);
+font-family: var(--second-font);
   font-size: 16px;
   color: #555;
   line-height: 1.6;
@@ -33,7 +33,7 @@ font-family: var(--main-font);
 `;
 
 export const OrderSummaryBox = styled.div`
-font-family: var(--main-font);
+font-family: var(--second-font);
   background: #f8f9fa;
   border-radius: 12px;
   padding: 24px;
@@ -44,7 +44,7 @@ font-family: var(--main-font);
 
 export const SummaryTitle = styled.h3`
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   color: #1a1a1a;
   margin-bottom: 16px;
   border-bottom: 2px solid #e2e8f0;

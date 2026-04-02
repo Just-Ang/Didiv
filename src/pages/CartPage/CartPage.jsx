@@ -33,14 +33,17 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const [removingIds, setRemovingIds] = useState([]);
   const cartItems = useSelector((state) => state.cart.items);
+
+  const items = useSelector((state) => state.cart.items);
+
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * (item.quantity || 1),
     0
   );
 
-  const productsInCart = useSelector((state) => state.cart.items);
   const favorites = useSelector((state) => state.favorites.items);
-  const isCartEmpty = productsInCart.length === 0;
+  const isCartEmpty = cartItems.length === 0;
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
     console.log(product);
@@ -90,18 +93,21 @@ const CartPage = () => {
           <ContentWrapper>
             <CartItemsList>
               {cartItems.map((item, index) => {
+                console.log(item);
                 const isFavorite = favorites.some((fav) => fav.id === item.id);
                 return (
                   <CartItem
                     key={`${item.id}-${index}`}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
-                    <ProductImg  src={item.image?.[0] || placeholder}
-                                        alt={item.name}
-                                        onError={(e) => {
-                                          e.currentTarget.onerror = null;
-                                          e.currentTarget.src = placeholder;
-                                        }} />
+                    <ProductImg
+                      src={`${import.meta.env.VITE_API_URL}${item.images[0].url}` || placeholder}
+                      alt={item.name}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = placeholder;
+                      }}
+                    />
                     <ProductInfo>
                       <h3>{item.name}</h3>
                     </ProductInfo>
@@ -111,7 +117,8 @@ const CartPage = () => {
                       />
                       <PriceWrapper>
                         <div className="current-price">
-                          {(item.price * (item.quantity || 1)).toLocaleString()}&nbsp;грн
+                          {(item.price * (item.quantity || 1)).toLocaleString()}
+                          &nbsp;грн
                         </div>
                       </PriceWrapper>
                     </CounterPrice>
@@ -149,14 +156,13 @@ const CartPage = () => {
             </CartItemsList>
 
             <SummaryCard>
-
               <SummaryRow>
                 <span>Всього в обраному:</span>
-                <strong>{favorites.length} шт.</strong>
+                <strong>{totalQuantity} шт.</strong>
                 <span>На суму:</span>
                 <strong>{total} грн</strong>
               </SummaryRow>
-              <OrderButton to='/checkout'>Оформити замовлення</OrderButton>
+              <OrderButton to="/checkout">Оформити замовлення</OrderButton>
               <ClearButton onClick={handleClear}>Oчистити кошик</ClearButton>
             </SummaryCard>
           </ContentWrapper>

@@ -9,7 +9,7 @@ const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, hand
     <CartPreviewList>
       {cartItems.map((item, index) => (
         <CartPreviewItem key={`${item.id}-${index}`}>
-          <PreviewImg src={item.image?.[0] || placeholder} alt={item.name} />
+          <PreviewImg   src={`${import.meta.env.VITE_API_URL}${item.images[0].url}` || placeholder} alt={item.name} />
           <PreviewInfo>
             <p className="item-name">{item.name}</p>
             <p className="item-details">{item.quantity} шт. × {item.price} грн</p>
