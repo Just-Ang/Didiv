@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 // export const GridContainer = styled.div`
@@ -34,7 +35,7 @@ export const GridWrapper = styled.div`
   }
 `;
 
-export const Card = styled.a`
+export const Card = styled(Link)`
   position: relative;
   display: block;
   width: 100%;
