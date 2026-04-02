@@ -101,7 +101,7 @@ const CartPage = () => {
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
                     <ProductImg
-                src={item.images[0]?.url || placeholder} 
+               src={item.images?.[0]?.url ||'/nofoto.png'}
                       alt={item.name}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
