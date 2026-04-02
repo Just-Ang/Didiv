@@ -56,12 +56,16 @@ export const MainImage = styled.img`
   width: 100%;
   border-radius: 4px;
   background: #f9f9f9;
+   @media screen and (max-width: 300px) {
+   width: 260px;
+  }
 `;
 
 export const Thumbnails = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 10px;
+      flex-wrap: wrap;
 `;
 
 export const Thumb = styled.img`
@@ -99,6 +103,9 @@ export const PriceCard = styled.div`
   border: 1px solid #eee;
   padding: 25px;
   border-radius: 8px;
+   @media screen and (max-width: 300px) {
+   width: 260px;
+  }
 `;
 
 export const PriceWrapper = styled.div`
