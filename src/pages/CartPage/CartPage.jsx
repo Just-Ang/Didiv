@@ -101,7 +101,7 @@ const CartPage = () => {
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
                     <ProductImg
-                      src={`${import.meta.env.VITE_API_URL}${item.images[0].url}` || placeholder}
+                src={item.images[0]?.url || placeholder} 
                       alt={item.name}
                       onError={(e) => {
                         e.currentTarget.onerror = null;

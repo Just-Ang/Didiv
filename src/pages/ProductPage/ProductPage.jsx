@@ -59,15 +59,14 @@ export const ProductPage = () => {
   useEffect(() => {
     if (product && product.images) {
       setActiveImage(
-        product?.images?.[0]?.url
-          ? `${import.meta.env.VITE_API_URL}${product.images[0].url}`
-          : null
+       product.images[0].url
+         
       );
     }
   }, [product]);
 
   const slides = product?.images.map((img) => ({
-    src: `${import.meta.env.VITE_API_URL}${img.url}`,
+    src: img.url,
   }));
   console.log(product);
 
@@ -119,7 +118,7 @@ export const ProductPage = () => {
           />
           <Thumbnails>
             {product.images.map((img) => {
-              const imageUrl = `${import.meta.env.VITE_API_URL}${img.url}`;
+              const imageUrl = img.url;
 
               return (
                 <Thumb
