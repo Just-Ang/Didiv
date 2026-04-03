@@ -95,7 +95,7 @@ const FavoritesPage = () => {
                   className={removingIds.includes(item.id) ? 'removing' : ''}
                 >
                   <Image
-                   src={item.images[0]?.url || placeholder} 
+                   src={item.images[0]?.url || '/nofoto.png'} 
                     alt={item.name}
                     onError={(e) => {
                       e.currentTarget.onerror = null;
