@@ -78,7 +78,7 @@ console.log(products);
             <ImageLink to={`/product/${item.id}`}>
               <NewBadge>Новинка</NewBadge>
               <img
-               src={`${import.meta.env.VITE_API_URL}${item.images[0].url}` || placeholder}
+               src={item.images?.[0]?.url || placeholder} 
                 
                 alt={item.name}
                 onError={(e) => {

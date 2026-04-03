@@ -24,7 +24,7 @@ import FavEmpty from '../../components/FavEmpty/FavEmty';
 import { addAllToCart, addToCart } from '../../redux/cartSlice';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import placeholder from '../../../public/nofoto.png';
+
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
@@ -99,7 +99,7 @@ const FavoritesPage = () => {
                     alt={item.name}
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = placeholder;
+                      e.currentTarget.src = '/nofoto.png';
                     }}
                   />
                   <ProductName>{item.name}</ProductName>
