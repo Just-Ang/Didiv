@@ -14,22 +14,43 @@ const CategoryHero = () => {
 
    const [categories, setCategories] = useState([]);
   
-    useEffect(() => {
-      async function fetchCategories() {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/categories?populate=image`);
-        const data = await res.json();
-        console.log(data);
-        setCategories(
-          data.data.map(cat => ({
-            id: cat.id_title,
-            title: cat.title,
-            image: cat.image.url,
-          }))
-        );
+   useEffect(() => {
+  async function fetchCategories() {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/categories?populate=image`,
+        {
+          credentials: "omit", // 🔥 ВАЖЛИВО
+        }
+      );
+
+      if (!res.ok) {
+        console.error("Server error:", res.status);
+        return;
       }
-  
-      fetchCategories();
-    }, []);
+
+      const data = await res.json();
+      console.log("API response:", data);
+
+      if (!data.data) {
+        console.error("No data field:", data);
+        return;
+      }
+
+      setCategories(
+        data.data.map(cat => ({
+          id: cat.id,
+          title: cat.title,
+          image: cat.image?.url,
+        }))
+      );
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  }
+
+  fetchCategories();
+}, []);
   
   return (<>
   <TitleCatalog>Каталог</TitleCatalog>
