@@ -71,10 +71,12 @@ export const ProductPage = () => {
   console.log(product);
 
   const handleMainImageClick = () => {
-    const index = product.images.indexOf(activeImage);
-    setPhotoIndex(index);
-    setIsOpen(true);
-  };
+  const index = product.images.findIndex(
+    (img) => `${import.meta.env.VITE_API_URL}${img.url}` === activeImage
+  );
+  setPhotoIndex(index >= 0 ? index : 0); // якщо не знайшло, ставимо 0
+  setIsOpen(true);
+};
 
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
