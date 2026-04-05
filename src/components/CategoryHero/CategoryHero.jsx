@@ -41,7 +41,7 @@ const CategoryHero = () => {
         data.data.map(cat => ({
           id: cat.id,
           title: cat.title,
-          image: cat.image?.url,
+          image: `${import.meta.env.VITE_API_URL}${cat.image.url}`,
         }))
       );
     } catch (err) {

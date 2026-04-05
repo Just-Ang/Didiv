@@ -31,9 +31,9 @@ const CatalogPage = () =>  {
 
       setCategories(
         data.data.map(cat => ({
-          id: cat.id_title, // ⚠️ виправив тут
+          id: cat.id_title, 
           title: cat.title,
-          image: cat.image?.url // ⚠️ щоб не падало якщо немає картинки
+       image: cat.image ? `${import.meta.env.VITE_API_URL}${cat.image.url}` : null
         }))
       );
     } catch (err) {
