@@ -39,11 +39,15 @@ const CategoryHero = () => {
 
       setCategories(
         data.data.map(cat => ({
+          
           id: cat.id,
           title: cat.title,
-          image: `${import.meta.env.VITE_API_URL}${cat.image.url}`,
+          image: cat.image.url,
         }))
       );
+
+
+      
     } catch (err) {
       console.error("Fetch error:", err);
     }
@@ -52,6 +56,7 @@ const CategoryHero = () => {
   fetchCategories();
 }, []);
   
+console.log(categories);
   return (<>
   <TitleCatalog>Каталог</TitleCatalog>
     <GridWrapper>

@@ -90,7 +90,7 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
               style={{ cursor: 'pointer' }}
             >
               <CardImg
-               src={`${import.meta.env.VITE_API_URL}${product.images[0].url}`}
+               src={product.images[0].url}
                 alt={product.name}
                 onError={(e) => {
                   e.currentTarget.onerror = null;

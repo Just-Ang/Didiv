@@ -95,7 +95,7 @@ const FavoritesPage = () => {
                   className={removingIds.includes(item.id) ? 'removing' : ''}
                 >
                   <Image
-                   src={`${import.meta.env.VITE_API_URL}${item.images?.[0]?.url}` ||'/nofoto.png'}
+                   src={item.images?.[0]?.url ||'/nofoto.png'}
                     alt={item.name}
                     onError={(e) => {
                       e.currentTarget.onerror = null;

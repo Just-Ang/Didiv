@@ -33,7 +33,7 @@ const CatalogPage = () =>  {
         data.data.map(cat => ({
           id: cat.id_title, 
           title: cat.title,
-       image: cat.image ? `${import.meta.env.VITE_API_URL}${cat.image.url}` : null
+       image: cat.image.url,
         }))
       );
     } catch (err) {
@@ -45,6 +45,7 @@ const CatalogPage = () =>  {
 
   fetchCategories();
 }, []);
+  
 if (loading) {
   return<div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
         <ThreeDots

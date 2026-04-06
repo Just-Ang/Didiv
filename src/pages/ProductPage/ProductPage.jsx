@@ -58,25 +58,20 @@ export const ProductPage = () => {
   console.log(product);
   useEffect(() => {
     if (product && product.images) {
-      setActiveImage(
-     `${import.meta.env.VITE_API_URL}${product.images?.[0]?.url}`
-         
-      );
+      setActiveImage(product.images?.[0]?.url);
     }
   }, [product]);
 
   const slides = product?.images.map((img) => ({
-    src: `${import.meta.env.VITE_API_URL}${img.url}` ,
+    src: img.url,
   }));
   console.log(product);
 
   const handleMainImageClick = () => {
-  const index = product.images.findIndex(
-    (img) => `${import.meta.env.VITE_API_URL}${img.url}` === activeImage
-  );
-  setPhotoIndex(index >= 0 ? index : 0); // якщо не знайшло, ставимо 0
-  setIsOpen(true);
-};
+    const index = product.images.findIndex((img) => img.url === activeImage);
+    setPhotoIndex(index >= 0 ? index : 0);
+    setIsOpen(true);
+  };
 
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
@@ -120,7 +115,7 @@ export const ProductPage = () => {
           />
           <Thumbnails>
             {product.images.map((img) => {
-              const imageUrl = `${import.meta.env.VITE_API_URL}${img.url}`;
+              const imageUrl = img.url;
 
               return (
                 <Thumb
@@ -147,9 +142,7 @@ export const ProductPage = () => {
             view: ({ index }) => {
               setPhotoIndex(index);
               if (product?.images?.[index]?.url) {
-                setActiveImage(
-                  `${import.meta.env.VITE_API_URL}${product.images[index].url}`
-                );
+                setActiveImage(product.images[index].url);
               }
             },
           }}
