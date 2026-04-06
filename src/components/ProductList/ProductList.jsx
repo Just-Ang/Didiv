@@ -75,12 +75,14 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
       }
     }
   });
+
   return (
     <>
       <ToastContainer autoClose={1500} />
       <GridWrapper>
         {filteredProducts.map((product) => {
           const isFavorite = favorites.some((fav) => fav.id === product.id);
+            console.log(`${import.meta.env.VITE_API_URL}${product.images[0].url}}`)
           return (
             <Card
               key={product.id}
@@ -88,7 +90,7 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
               style={{ cursor: 'pointer' }}
             >
               <CardImg
-               src={product.images[0].url}
+               src={`${import.meta.env.VITE_API_URL}${product.images[0].url}`}
                 alt={product.name}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
