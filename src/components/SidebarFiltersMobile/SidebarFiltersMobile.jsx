@@ -17,33 +17,37 @@ import {
 import { useEffect, useState } from 'react';
 
 export const SidebarFiltersMobile = ({
+ childValues,
   category,
   selectedFilters,
   setSelectedFilters,
+
+  setPriceRange,
 }) => {
 
   const [openFilters, setOpenFilters] = useState({});
    const [filters, setFilters] = useState([]);
     console.log(filters);
   
-  useEffect(() => {
-    const fetchFilters = async () => {
-      try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/categories?filters[id_title][$eq]=${category}&populate=filters`
-        );
-        const data = await res.json();
-        const apiFilters = data.data[0]?.filters || [];
-        setFilters(apiFilters);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-  
-    if (category) {
-      fetchFilters();
+useEffect(() => {
+  const fetchFilters = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/categories?filters[id_title][$eq]=${category}&populate=filters`
+      );
+      const data = await res.json();
+      const apiFilters = data.data[0]?.filters || [];
+      setFilters(apiFilters);
+    } catch (error) {
+      console.error(error);
     }
-  }, [category]); 
+  };
+
+  if (category) {
+    fetchFilters();
+  }
+}, [category]); 
+
   
 
 
@@ -91,7 +95,7 @@ export const SidebarFiltersMobile = ({
                   </Label>
                 ))}
               
-              {filter.type === "range" && <PriceRange />}
+              {filter.type === "range" && <PriceRange onChange={setPriceRange}  childValues={childValues} />}
             </FilterContent>
           </FilterBlock>
         );

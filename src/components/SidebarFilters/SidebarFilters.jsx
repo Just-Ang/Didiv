@@ -21,13 +21,13 @@ export const SidebarFilters = ({
   category,
   selectedFilters,
   setSelectedFilters,
-  priceRange,
+ 
   setPriceRange,
 }) => {
   // const filters = filtersConfig[category] || [];
   const [filters, setFilters] = useState([]);
   console.log(filters);
-  console.log(priceRange)
+
 
 
 useEffect(() => {

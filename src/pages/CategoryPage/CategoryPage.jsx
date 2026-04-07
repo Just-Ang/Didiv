@@ -98,6 +98,8 @@ export const CategoryPage = () => {
               category={category}
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
             />
             <FilterFooter>
               <ClearFilter onClick={handleClear} disabled={!hasFilters}>
