@@ -34,8 +34,8 @@ useEffect(() => {
 
       // Поточна дата
       const now = new Date();
-      const oneDayAgo = new Date(now);
-      oneDayAgo.setDate(now.getDate() - 1);
+      const oneWeekAgo = new Date(now);
+      oneWeekAgo.setDate(now.getDate() - 7);
       //   const oneWeekAgo = new Date(now);
       // oneWeekAgo.setDate(now.getDate() - 7);
 
@@ -44,7 +44,7 @@ useEffect(() => {
       //   (product) => new Date(product.attributes.createdAt) >= oneWeekAgo
       // );
       const recentProducts = allProducts.filter(
-        (product) => new Date(product.createdAt) >= oneDayAgo
+        (product) => new Date(product.createdAt) >= oneWeekAgo
       );
 
       setProducts(recentProducts);
@@ -78,7 +78,7 @@ console.log(products);
             <ImageLink to={`/product/${item.id}`}>
               <NewBadge>Новинка</NewBadge>
               <img
-               src={`${import.meta.env.VITE_API_URL}${item.images?.[0].url}` || placeholder} 
+               src={item.images?.[0].url || placeholder} 
                 
                 alt={item.name}
                 onError={(e) => {

@@ -40,7 +40,7 @@ const CategoryHero = () => {
       setCategories(
         data.data.map(cat => ({
           
-          id: cat.id,
+          id: cat.id_title,
           title: cat.title,
           image: cat.image.url,
         }))
@@ -62,6 +62,7 @@ console.log(categories);
     <GridWrapper>
       {categories.slice(0, 6).map((cat) => (
     
+  
         <Card to={`catalog/${cat.id}`}  key={cat.id} bg={cat.image} isBig={cat.big}>
           <CardTitle>{cat.title}</CardTitle>
         </Card> 
