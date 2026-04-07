@@ -20,18 +20,39 @@ import { toggleFavorite } from '../../redux/favoritesSlice';
 import placeholder from '../../../public/nofoto.png';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { BallTriangle } from 'react-loader-spinner';
 
 export const ProductList = ({ category, selectedFilters = {} }) => {
    const [products, setProducts] = useState([]);
+     const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*`)
-      .then(res => res.json())
-      .then(data =>  setProducts(data.data));
-  }, []);
-  console.log(products);
-  let filteredProducts = products.filter((p) => p.category?.id_title === category);
-  console.log(filteredProducts);
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+
+      // const res = await fetch(
+      //   `${import.meta.env.VITE_API_URL}/api/products?populate=*`
+      // );
+      const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[category][id_title][$eq]=${encodeURIComponent(category)}`
+);
+
+      const data = await res.json();
+      setProducts(data.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, [category]);
+
+  let filteredProducts = products;
+  // let filteredProducts = products.filter((p) => p.category?.id_title === category);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
@@ -75,6 +96,30 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
       }
     }
   });
+   if (loading) {
+      return (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100vw',
+            height: '100vh',
+          }}
+        >
+          <BallTriangle
+            height={100}
+            width={100}
+            radius={5}
+            color="var(--orange-color)"
+            ariaLabel="ball-triangle-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        </div>
+      );
+    }
 
   return (
     <>
@@ -82,7 +127,6 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
       <GridWrapper>
         {filteredProducts.map((product) => {
           const isFavorite = favorites.some((fav) => fav.id === product.id);
-            console.log(`${import.meta.env.VITE_API_URL}${product.images[0].url}}`)
           return (
             <Card
               key={product.id}

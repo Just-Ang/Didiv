@@ -39,6 +39,7 @@ import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'; // Імпорт плагіна
 import { ShoppingCart } from 'lucide-react';
+import { BallTriangle } from 'react-loader-spinner';
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -48,13 +49,30 @@ export const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
+
+    const [loading, setLoading] = useState(true);
   const product = products.find((p) => p.id === Number(id));
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*`)
-      .then((res) => res.json())
-      .then((data) => setProducts(data.data));
-  }, []);
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products?populate=*`
+      );
+
+      const data = await res.json();
+      setProducts(data.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, []);
   console.log(product);
   useEffect(() => {
     if (product && product.images) {
@@ -91,7 +109,30 @@ export const ProductPage = () => {
       toast.info(`${product.name} додано в обране`);
     }
   };
-  if (!product) return <div>Завантаження...</div>;
+if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100vw',
+          height: '100vh',
+        }}
+      >
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="var(--orange-color)"
+          ariaLabel="ball-triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </div>
+    );
+  }
 
   if (!product) {
     return <Container>Товар не знайдено</Container>;

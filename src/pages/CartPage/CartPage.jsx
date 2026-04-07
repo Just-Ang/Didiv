@@ -32,6 +32,7 @@ import placeholder from '../../../public/nofoto.png';
 const CartPage = () => {
   const dispatch = useDispatch();
   const [removingIds, setRemovingIds] = useState([]);
+  
   const cartItems = useSelector((state) => state.cart.items);
 
   const items = useSelector((state) => state.cart.items);
