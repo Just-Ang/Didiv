@@ -83,7 +83,7 @@ export const ProductPage = () => {
   const slides = product?.images.map((img) => ({
     src: img.url,
   }));
-  console.log(product);
+
 
   const handleMainImageClick = () => {
     const index = product.images.findIndex((img) => img.url === activeImage);

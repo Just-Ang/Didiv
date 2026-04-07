@@ -26,6 +26,11 @@ export const CategoryPage = () => {
   console.log(selectedFilters);
   const { category } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [childValues, setChildValues] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 0]); // [minPrice, maxPrice]
+
+  console.log(childValues);
+
   console.log(category);
   const hasFilters = Object.values(selectedFilters).some(
     (value) => Array.isArray(value) && value.length > 0
@@ -55,32 +60,53 @@ export const CategoryPage = () => {
         category={category}
         selectedFilters={selectedFilters}
         setSelectedFilters={setSelectedFilters}
+        childValues={childValues}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
       />
-      <ProductList category={category} selectedFilters={selectedFilters} />
+      <ProductList
+        priceRange={priceRange}
+        values={childValues}
+        setValues={setChildValues}
+        category={category}
+        selectedFilters={selectedFilters}
+      />
       {isFilterOpen && (
-        <MobileFilterOverlay onClick={() => setIsFilterOpen(false)} open={isFilterOpen}>
-          <MobileFilterContent onClick={(e) => e.stopPropagation()} open={isFilterOpen}>
+        <MobileFilterOverlay
+          onClick={() => setIsFilterOpen(false)}
+          open={isFilterOpen}
+        >
+          <MobileFilterContent
+            onClick={(e) => e.stopPropagation()}
+            open={isFilterOpen}
+          >
             <FilterHeader>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <SlidersHorizontal size={20} />
-            <h2>Фільтри</h2>
-          </div>
-          <X size={24}  onClick={() => setIsFilterOpen(false)} style={{ cursor: 'pointer' }} />
-        </FilterHeader>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <SlidersHorizontal size={20} />
+                <h2>Фільтри</h2>
+              </div>
+              <X
+                size={24}
+                onClick={() => setIsFilterOpen(false)}
+                style={{ cursor: 'pointer' }}
+              />
+            </FilterHeader>
             <SidebarFiltersMobile
+              childValues={childValues}
               category={category}
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
             />
             <FilterFooter>
-            <ClearFilter 
-    onClick={handleClear} 
-    disabled={!hasFilters} 
-  >
-    Скинути обрані фільтри
-  </ClearFilter>
-          <ApplyButton  onClick={() => setIsFilterOpen(false)}>Показати результати</ApplyButton>
-        </FilterFooter>
+              <ClearFilter onClick={handleClear} disabled={!hasFilters}>
+                Скинути обрані фільтри
+              </ClearFilter>
+              <ApplyButton onClick={() => setIsFilterOpen(false)}>
+                Показати результати
+              </ApplyButton>
+            </FilterFooter>
           </MobileFilterContent>
         </MobileFilterOverlay>
       )}

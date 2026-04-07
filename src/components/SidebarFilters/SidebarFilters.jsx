@@ -11,18 +11,46 @@ import {
   TitleSidebar,
 } from './SidebarFilters.styled';
 
-import { filtersConfig } from '../../data/FiltersConfig';
 import { PriceRange } from '../PriceRange/PriceRange';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClearFilter } from '../../pages/CategoryPage/CategoryPage.styled';
 import { SlidersHorizontal } from 'lucide-react';
 
 export const SidebarFilters = ({
+   childValues,
   category,
   selectedFilters,
   setSelectedFilters,
+  priceRange,
+  setPriceRange,
 }) => {
-  const filters = filtersConfig[category] || [];
+  // const filters = filtersConfig[category] || [];
+  const [filters, setFilters] = useState([]);
+  console.log(filters);
+  console.log(priceRange)
+
+
+useEffect(() => {
+  const fetchFilters = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/categories?filters[id_title][$eq]=${category}&populate=filters`
+      );
+      const data = await res.json();
+      const apiFilters = data.data[0]?.filters || [];
+      setFilters(apiFilters);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (category) {
+    fetchFilters();
+  }
+}, [category]); 
+
+
+
   const [openFilters, setOpenFilters] = useState({});
   const toggleFilter = (filterName) => {
     setOpenFilters((prev) => ({
@@ -52,6 +80,7 @@ export const SidebarFilters = ({
       setSelectedFilters({});
     }
   };
+  
 
   console.log(hasFilters);
   return (
@@ -81,7 +110,7 @@ export const SidebarFilters = ({
                   </Label>
                 ))}
 
-              {filter.type === 'range' && <PriceRange />}
+              {filter.type === 'range' && <PriceRange onChange={setPriceRange}  childValues={childValues} />}
             </FilterContent>
           </FilterBlock>
         );

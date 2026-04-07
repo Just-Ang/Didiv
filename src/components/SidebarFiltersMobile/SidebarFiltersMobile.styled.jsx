@@ -6,7 +6,8 @@ export const Aside = styled.aside`
   background: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+font-family: var(--main-font);
 `;
 
 export const Title = styled.h3`

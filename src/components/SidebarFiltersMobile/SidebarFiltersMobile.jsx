@@ -7,7 +7,6 @@ import {
   FilterLabel,
 } from './SidebarFiltersMobile.styled';
 
-import { filtersConfig } from '../../data/FiltersConfig';
 
 import { PriceRange } from '../PriceRange/PriceRange';
 import {
@@ -15,15 +14,39 @@ import {
   Label,
   Checkmark,
 } from '../SidebarFiltersMobile/SidebarFiltersMobile.styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const SidebarFiltersMobile = ({
   category,
   selectedFilters,
   setSelectedFilters,
 }) => {
-  const filters = filtersConfig[category] || [];
+
   const [openFilters, setOpenFilters] = useState({});
+   const [filters, setFilters] = useState([]);
+    console.log(filters);
+  
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/categories?filters[id_title][$eq]=${category}&populate=filters`
+        );
+        const data = await res.json();
+        const apiFilters = data.data[0]?.filters || [];
+        setFilters(apiFilters);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    if (category) {
+      fetchFilters();
+    }
+  }, [category]); 
+  
+
+
   const toggleFilter = (filterName) => {
     setOpenFilters((prev) => ({
       ...prev,

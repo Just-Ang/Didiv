@@ -7,7 +7,6 @@ import {
   CardPrice,
   CardTitle,
   CardWeight,
- 
   GridWrapper,
 } from './ProductList.styled';
 // import { products } from '../../data/products';
@@ -22,43 +21,54 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 
-export const ProductList = ({ category, selectedFilters = {} }) => {
-   const [products, setProducts] = useState([]);
-     const [loading, setLoading] = useState(true);
+export const ProductList = ({ values, setValues, category, selectedFilters = {},  priceRange }) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // const [values, setValues] = useState([]);
+  console.log(values);
 
   useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
 
-      // const res = await fetch(
-      //   `${import.meta.env.VITE_API_URL}/api/products?populate=*`
-      // );
-      const res = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[category][id_title][$eq]=${encodeURIComponent(category)}`
-);
+        const res = await fetch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/products?populate=*&filters[category][id_title][$eq]=${encodeURIComponent(
+            category
+          )}`
+        );
 
-      const data = await res.json();
-      setProducts(data.data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const data = await res.json();
+        setProducts(data.data);
 
-  fetchProducts();
-}, [category]);
+        const prices = data.data.map((p) => p.price);
 
-  let filteredProducts = products;
+        if (prices.length > 0) {
+          const MIN = Math.min(...prices);
+          const MAX = Math.max(...prices);
+
+          // Оновлюємо стан для повзунка
+          setValues([MIN, MAX]);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [category, setValues]);
+
+ 
   // let filteredProducts = products.filter((p) => p.category?.id_title === category);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
-
-
-  
 
   const handleAdd = (product, e) => {
     e.stopPropagation();
@@ -81,45 +91,48 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
       toast.info(`${product.name} додано в обране`);
     }
   };
+  let filteredProducts = products;
 
+  // Фільтри по чекбоксам
   Object.keys(selectedFilters).forEach((key) => {
     const value = selectedFilters[key];
     if (Array.isArray(value) && value.length > 0) {
       filteredProducts = filteredProducts.filter((p) => value.includes(p[key]));
     }
-    // фільтруємо по range
-    if (typeof value === 'string' || typeof value === 'number') {
-      if (key === 'price') {
-        filteredProducts = filteredProducts.filter(
-          (p) => p.price <= Number(value)
-        );
-      }
-    }
   });
-   if (loading) {
-      return (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100vw',
-            height: '100vh',
-          }}
-        >
-          <BallTriangle
-            height={100}
-            width={100}
-            radius={5}
-            color="var(--orange-color)"
-            ariaLabel="ball-triangle-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-          />
-        </div>
-      );
-    }
+
+  // Фільтрація по ціні тільки якщо priceRange завантажений
+  if (priceRange && priceRange.length === 2) {
+    const [minPrice, maxPrice] = priceRange;
+    console.log(minPrice, maxPrice)
+    filteredProducts = filteredProducts.filter(
+      (p) => p.price >= minPrice && p.price <= maxPrice
+    );
+  }
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100vw',
+          height: '100vh',
+        }}
+      >
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="var(--orange-color)"
+          ariaLabel="ball-triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -134,7 +147,7 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
               style={{ cursor: 'pointer' }}
             >
               <CardImg
-               src={product.images[0].url}
+                src={product.images[0].url}
                 alt={product.name}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
@@ -151,9 +164,7 @@ export const ProductList = ({ category, selectedFilters = {} }) => {
 
               <CardButtons>
                 <Button onClick={(e) => handleAdd(product, e)}>
-                  <ShoppingCart size={24}
-                  color='black'
-                   />
+                  <ShoppingCart size={24} color="black" />
                 </Button>
 
                 <Button onClick={(e) => HandleAddFavorite(product, e)}>

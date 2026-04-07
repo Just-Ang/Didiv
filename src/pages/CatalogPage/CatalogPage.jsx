@@ -30,7 +30,7 @@ const CatalogPage = () => {
         setLoading(true);
 
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/categories?populate=image`
+          `${import.meta.env.VITE_API_URL}/api/categories?populate=*`
         );
         const data = await res.json();
 
