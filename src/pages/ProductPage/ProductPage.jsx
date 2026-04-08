@@ -40,6 +40,7 @@ import 'yet-another-react-lightbox/styles.css';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'; // Імпорт плагіна
 import { ShoppingCart } from 'lucide-react';
 import { BallTriangle } from 'react-loader-spinner';
+import dayjs from 'dayjs';
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -52,6 +53,9 @@ export const ProductPage = () => {
 
     const [loading, setLoading] = useState(true);
   const product = products.find((p) => p.id === Number(id));
+  const isNew = product
+  ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
+  : false;
 
   useEffect(() => {
   const fetchProducts = async () => {
@@ -109,6 +113,9 @@ export const ProductPage = () => {
       toast.info(`${product.name} додано в обране`);
     }
   };
+
+
+
 if (loading) {
     return (
       <div
@@ -203,7 +210,7 @@ if (loading) {
         <InfoSection>
           <Title>{product.name}</Title>
           <RatingRow>
-            <Availability>● Новий товар</Availability>
+            {isNew && <Availability>● Новий товар</Availability>}
           </RatingRow>
 
           <PriceCard>

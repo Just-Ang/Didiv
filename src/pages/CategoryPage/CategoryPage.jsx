@@ -27,7 +27,7 @@ export const CategoryPage = () => {
   const { category } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [childValues, setChildValues] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 0]); // [minPrice, maxPrice]
+  const [priceRange, setPriceRange] = useState([0, 0]);
 
   console.log(childValues);
 

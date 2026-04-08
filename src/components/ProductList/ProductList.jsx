@@ -47,8 +47,11 @@ export const ProductList = ({ values, setValues, category, selectedFilters = {},
         const prices = data.data.map((p) => p.price);
 
         if (prices.length > 0) {
-          const MIN = Math.min(...prices);
-          const MAX = Math.max(...prices);
+          let MIN = Math.min(...prices);
+          let MAX = Math.max(...prices);
+            if (MIN === MAX) {
+    MAX = MIN + 1;
+  }
 
           // Оновлюємо стан для повзунка
           setValues([MIN, MAX]);
