@@ -18,7 +18,7 @@ const CategoryHero = () => {
   async function fetchCategories() {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/categories?populate=image`,
+        `${import.meta.env.VITE_API_URL}/api/categories?populate=image&sort=title:asc`,
         {
           credentials: "omit", 
         }
@@ -42,7 +42,7 @@ const CategoryHero = () => {
           
           id: cat.id_title,
           title: cat.title,
-          image: cat.image.url,
+          image: cat.image?.url,
         }))
       );
 
