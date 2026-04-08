@@ -49,9 +49,9 @@ export const ProductList = ({ values, setValues, category, selectedFilters = {},
         if (prices.length > 0) {
           let MIN = Math.min(...prices);
           let MAX = Math.max(...prices);
-            if (MIN === MAX) {
-    MAX = MIN + 1;
-  }
+  //           if (MIN === MAX) {
+  //   MAX = MIN + 1;
+  // }
 
           // Оновлюємо стан для повзунка
           setValues([MIN, MAX]);

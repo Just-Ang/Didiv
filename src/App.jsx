@@ -18,6 +18,7 @@ import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
 import AboutUs from './pages/About/About';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import ContactsPage from './pages/ContactsPage/ContactsPage';
+import { NewProductsPage } from './pages/NewProductsPage/NewProductsPage';
 
 
 const test = import.meta.env.VITE_API_TEST;
@@ -39,6 +40,7 @@ function App() {
     <Route path="/product/:id" element={<ProductPage />} />
     <Route path="cart" element={<CartPage />} />
     <Route path="favorite" element={<FavoritesPage/>} />
+    <Route path ="/catalog/new" element={<NewProductsPage/>} />
 
  <Route path="checkout" element={<CheckoutPage/>} />
   <Route path="/order-confirmation" element={<OrderConfirmation />} />

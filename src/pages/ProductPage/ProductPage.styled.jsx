@@ -165,7 +165,9 @@ export const AddToCartBtn = styled.button`
   background: var(--orange-color);
   color: white;
   border: none;
-  border-radius: 20px;
+  padding-left: 15px;
+    padding-right: 15px;
+  border-radius: 50px;
   font-weight: 500;
   cursor: pointer;
   transition: 0.3s;
@@ -183,15 +185,7 @@ export const AddToCartBtn = styled.button`
   }
 `;
 
-export const OneClickBtn = styled.button`
-  width: 100%;
-  background: none;
-  border: none;
-  color: #2980b9;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 14px;
-`;
+
 
 export const SizeSection = styled.div`
   margin-top: 30px;
@@ -294,7 +288,8 @@ export const FavoriteButton = styled.button`
 
   border: 1px solid #ddd;
   border-radius: 50px;
-  padding: 12px;
+ padding-left: 15px;
+    padding-right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;

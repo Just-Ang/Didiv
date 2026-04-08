@@ -9,14 +9,15 @@ import {
 } from './PriceRange.styled';
 
 export const PriceRange = ({ childValues, onChange }) => {
-  const DEFAULT_MIN = 1340;
-  const DEFAULT_MAX = 100340;
-  const STEP = 100;
+  const DEFAULT_MIN = 10;
+  const DEFAULT_MAX = 10000;
+  const STEP = 50;
 
 const MIN = childValues?.[0] ?? DEFAULT_MIN;
 const MAX = childValues?.[1] ?? DEFAULT_MAX;
-
+const hasRange = MIN !== MAX;
   const [values, setValues] = useState([MIN, MAX]);
+  
 
   // Щоб значення оновлювалось, якщо прийшли нові childValues
   useEffect(() => {
@@ -50,48 +51,51 @@ const MAX = childValues?.[1] ?? DEFAULT_MAX;
     handleValuesChange(newVals);
   };
 
-  return (
-    <Wrapper>
-      <InputsRow>
-        <PriceInput
-          type="number"
-          value={values[0]}
-          min={MIN}
-          max={values[1]}
-          onChange={(e) => handleInputChange(0, e.target.value)}
-          onBlur={() => handleInputBlur(0)}
-        />
-        <PriceInput
-          type="number"
-          value={values[1]}
-          min={values[0]}
-          max={MAX}
-          onChange={(e) => handleInputChange(1, e.target.value)}
-          onBlur={() => handleInputBlur(1)}
-        />
-      </InputsRow>
-
-      <Range
-        values={values}
-        step={STEP}
+  return ( <>
+    
+   {hasRange && (
+  <Wrapper>
+    <InputsRow>
+      <PriceInput
+        type="number"
+        value={values[0]}
         min={MIN}
-        max={MAX}
-        onChange={handleValuesChange} // повідомляємо батька
-        renderTrack={({ props, children }) => (
-          <Track
-            {...props}
-            background={getTrackBackground({
-              values,
-              colors: ['#ddd', '#85683d', '#ddd'],
-              min: MIN,
-              max: MAX,
-            })}
-          >
-            {children}
-          </Track>
-        )}
-        renderThumb={({ props }) => <Thumb {...props} />}
+        max={values[1]}
+        onChange={(e) => handleInputChange(0, e.target.value)}
+        onBlur={() => handleInputBlur(0)}
       />
-    </Wrapper>
-  );
+      <PriceInput
+        type="number"
+        value={values[1]}
+        min={values[0]}
+        max={MAX}
+        onChange={(e) => handleInputChange(1, e.target.value)}
+        onBlur={() => handleInputBlur(1)}
+      />
+    </InputsRow>
+
+    <Range
+      values={values}
+      step={STEP}
+      min={MIN}
+      max={MAX}
+      onChange={handleValuesChange}
+      renderTrack={({ props, children }) => (
+        <Track
+          {...props}
+          background={getTrackBackground({
+            values,
+            colors: ['#ddd', '#85683d', '#ddd'],
+            min: MIN,
+            max: MAX,
+          })}
+        >
+          {children}
+        </Track>
+      )}
+      renderThumb={({ props }) => <Thumb {...props} />}
+    />
+  </Wrapper>
+)}
+ </> );
 };

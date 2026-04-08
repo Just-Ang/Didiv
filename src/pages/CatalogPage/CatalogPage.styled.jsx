@@ -34,7 +34,7 @@ font-family: var(--main-font);
 color: var( --black-color);
 text-transform: uppercase;
 
- 
+
 `;
 export const CatalogBox = styled.div`
   display: grid;

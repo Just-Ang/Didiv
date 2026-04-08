@@ -27,28 +27,15 @@ export const NewArrivals = () => {
     const [products, setProducts] = useState([]);
   
 useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*`)
-    .then((res) => res.json())
-    .then((data) => {
-      const allProducts = data.data;
+  const now = new Date();
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(now.getDate() - 7);
+  const isoDate = oneWeekAgo.toISOString();
 
-      // Поточна дата
-      const now = new Date();
-      const oneWeekAgo = new Date(now);
-      oneWeekAgo.setDate(now.getDate() - 7);
-      //   const oneWeekAgo = new Date(now);
-      // oneWeekAgo.setDate(now.getDate() - 7);
-
-      // Фільтр товару за тиждень:
-      //   const recentProducts = allProducts.filter(
-      //   (product) => new Date(product.attributes.createdAt) >= oneWeekAgo
-      // );
-      const recentProducts = allProducts.filter(
-        (product) => new Date(product.createdAt) >= oneWeekAgo
-      );
-
-      setProducts(recentProducts);
-    });
+  fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[createdAt][$gte]=${isoDate}`)
+    .then(res => res.json())
+    .then(data => setProducts(data.data))
+    .catch(err => console.error('Помилка завантаження нових товарів:', err));
 }, []);
 
 console.log(products);
