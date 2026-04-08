@@ -13,14 +13,6 @@ import { useEffect, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 
 const CatalogPage = () => {
-  //  const [products, setProducts] = useState([]);
-
-  // useEffect(() => {
-  //   fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*`)
-  //     .then(res => res.json())
-  //     .then(data =>  setProducts(data.data));
-  // }, []);
-  // console.log(products);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 

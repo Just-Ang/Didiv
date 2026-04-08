@@ -8,7 +8,8 @@ export const Aside = styled.aside`
   width: 240px;
   padding: 16px;
   border-radius: 16px;
-  background: var(--second-background);
+  background: #fff;
+  height: fit-content;
   @media (min-width: 768px) {
   display: block;
 }

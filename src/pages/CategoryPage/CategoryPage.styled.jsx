@@ -21,6 +21,10 @@ export const Container = styled.div`
   }
 `;
 
+export const Section = styled.section`
+  background-color:  var(--second-background);
+`;
+
 export const TopBar = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;

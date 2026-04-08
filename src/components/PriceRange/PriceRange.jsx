@@ -25,7 +25,7 @@ const hasRange = MIN !== MAX;
       setValues(childValues);
       if (onChange) onChange(childValues); // одразу прокидаємо в CategoryPage
     }
-  }, [childValues]);
+  }, [childValues, onChange]);
 
   const handleValuesChange = (newValues) => {
     setValues(newValues);

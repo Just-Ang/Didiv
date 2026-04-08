@@ -127,7 +127,7 @@ export const ProductInfo = styled.div`
 export const ProductName = styled.h3`
   font-size: 15px;
   font-weight: 600;
-  margin-bottom: 8px;
+ 
   color: #333;
   white-space: nowrap;
   overflow: hidden;

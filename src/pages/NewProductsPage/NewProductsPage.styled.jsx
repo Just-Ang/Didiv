@@ -1,10 +1,27 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-  padding: 20px;
+export const Section = styled.section`
+  background-color:  var(--second-background);
+`;
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+    margin-left: auto;
+  margin-right: auto;
   align-items: center;
+  padding-top: 30px;
+ @media screen and (min-width: 768px) {
+    max-width: 994px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media screen and (min-width: 1200px) {
+    max-width: 1448px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  
 `;
 
 export const TitleNew = styled.h1`
@@ -70,10 +87,13 @@ export const CardImg = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
+  padding:20px;
+
 `;
 
 export const CardInfo = styled.div`
   padding: 16px;
+    
 `;
 
 export const CardTitle = styled.p`
@@ -116,16 +136,17 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   @media screen and (min-width: 768px) {
     position: absolute;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(15px);
     transition: all 0.3s;
   }
 `;
 
-export const Button = styled.button`
+export const ButtonC = styled.button`
   padding: 6px 5px;
-  border: none;
-  border-radius: 6px;
-  background-color: transparent;
+  border-radius: 50px;
+ border:none;
+ background-color: transparent; 
+  
   color: white;
   font-weight: 500;
   cursor: pointer;
@@ -139,5 +160,56 @@ export const Button = styled.button`
   &:hover {
     transform: scale(1.2);
     opacity: 0.8;
+  }
+`;
+export const ButtonF = styled.button`
+  padding: 6px 5px;
+  border-radius: 50px;
+ border:none;
+ background-color: transparent;
+   
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+`;
+
+export const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 15px;
+`;
+
+export const PageButton = styled.button`
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: ${(props) => (props.active ? '#ff7a00' : '#fff')};
+  color: ${(props) => (props.active ? '#fff' : '#000')};
+  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #ff9c3b;
+    color: #fff;
   }
 `;

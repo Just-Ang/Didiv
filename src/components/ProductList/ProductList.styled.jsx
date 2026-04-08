@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+export const ContainerProduct = styled.div`
+`;
+
 export const Wrapper = styled.div``;
 export const GridWrapper = styled.div`
   flex: 1;
@@ -65,6 +68,7 @@ export const CardImg = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
+  padding:20px;
 `;
 
 export const CardInfo = styled.div`
@@ -80,14 +84,12 @@ font-weight: 500;
 `;
 
 export const CardPrice = styled.p`
-  font-size: 16px;
-  color: #555;
+     font-size: 17px;
+    font-weight: 800;
+
 `;
 
-export const CardWeight = styled.p`
-  font-size: 16px;
-  color: #555;
-`;
+
 
 export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   position: static;
@@ -137,4 +139,33 @@ export const FavoriteLogo = styled.svg`
   width: 24px;
   height: 24px;
   fill: var(--white-color);
+`;
+
+export const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 5px;
+`;
+
+export const PageButton = styled.button`
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: ${(props) => (props.active ? '#ff7a00' : '#fff')};
+  color: ${(props) => (props.active ? '#fff' : '#000')};
+  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #ff9c3b;
+    color: #fff;
+  }
 `;

@@ -29,7 +29,7 @@ export const Container = styled.div`
 
 export const CatalogTitle = styled.h1`
 
-    font-size: 32px;
+font-size: 32px;
 font-family: var(--main-font);
 color: var( --black-color);
 text-transform: uppercase;

@@ -6,10 +6,12 @@ import {
   CardInfo,
   CardPrice,
   CardTitle,
-  CardWeight,
+  ContainerProduct,
   GridWrapper,
+  PageButton,
+  PaginationWrapper,
 } from './ProductList.styled';
-// import { products } from '../../data/products';
+
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,12 +23,18 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 
-export const ProductList = ({ values, setValues, category, selectedFilters = {},  priceRange }) => {
+export const ProductList = ({ setValues, category, selectedFilters = {},  priceRange }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // const [values, setValues] = useState([]);
-  console.log(values);
+  const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 12;
+let filteredProducts = products;
+ const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -66,8 +74,15 @@ export const ProductList = ({ values, setValues, category, selectedFilters = {},
     fetchProducts();
   }, [category, setValues]);
 
- 
-  // let filteredProducts = products.filter((p) => p.category?.id_title === category);
+useEffect(() => {
+  setCurrentPage(1);
+}, [category, selectedFilters, priceRange]);
+useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth', 
+  });
+}, [currentPage]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -94,7 +109,7 @@ export const ProductList = ({ values, setValues, category, selectedFilters = {},
       toast.info(`${product.name} додано в обране`);
     }
   };
-  let filteredProducts = products;
+  
 
   // Фільтри по чекбоксам
   Object.keys(selectedFilters).forEach((key) => {
@@ -138,10 +153,10 @@ export const ProductList = ({ values, setValues, category, selectedFilters = {},
   }
 
   return (
-    <>
+    <ContainerProduct>
       <ToastContainer autoClose={1500} />
       <GridWrapper>
-        {filteredProducts.map((product) => {
+        {currentProducts.map((product) => {
           const isFavorite = favorites.some((fav) => fav.id === product.id);
           return (
             <Card
@@ -160,9 +175,7 @@ export const ProductList = ({ values, setValues, category, selectedFilters = {},
               <CardInfo>
                 <CardTitle>{product.name}</CardTitle>
                 <CardPrice>{product.price} грн</CardPrice>
-                {product.weight && (
-                  <CardWeight>{product.weight} грам</CardWeight>
-                )}
+                
               </CardInfo>
 
               <CardButtons>
@@ -182,6 +195,32 @@ export const ProductList = ({ values, setValues, category, selectedFilters = {},
           );
         })}
       </GridWrapper>
-    </>
+
+       <PaginationWrapper>
+  <PageButton
+    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+    disabled={currentPage === 1}
+  >
+    Назад
+  </PageButton>
+
+  {Array.from({ length: totalPages }, (_, i) => (
+    <PageButton
+      key={i}
+      onClick={() => setCurrentPage(i + 1)}
+      active={currentPage === i + 1}
+    >
+      {i + 1}
+    </PageButton>
+  ))}
+
+  <PageButton
+    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+    disabled={currentPage === totalPages}
+  >
+    Вперед
+  </PageButton>
+</PaginationWrapper>  
+    </ContainerProduct>
   );
 };

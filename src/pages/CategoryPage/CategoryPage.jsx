@@ -9,6 +9,7 @@ import {
   FilterIcon,
   MobileFilterContent,
   MobileFilterOverlay,
+  Section,
   SortButton,
   SortIcon,
   TopBar,
@@ -41,6 +42,7 @@ export const CategoryPage = () => {
     }
   };
   return (
+    <Section>
     <Container>
       <TopBar>
         <FilterButton onClick={() => setIsFilterOpen(true)}>
@@ -112,6 +114,6 @@ export const CategoryPage = () => {
           </MobileFilterContent>
         </MobileFilterOverlay>
       )}
-    </Container>
+    </Container> </Section>
   );
 };
