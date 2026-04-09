@@ -3,6 +3,14 @@ import styled from 'styled-components';
 export const ContainerProduct = styled.div`
 `;
 
+export const NotFoundDiv = styled.div`
+width: 100vw;
+
+  @media screen and (min-width: 768px) {
+  width: 70vw;
+  }
+      
+`
 export const Wrapper = styled.div``;
 export const GridWrapper = styled.div`
   flex: 1;

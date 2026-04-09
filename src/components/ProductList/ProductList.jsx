@@ -8,6 +8,7 @@ import {
   CardTitle,
   ContainerProduct,
   GridWrapper,
+  NotFoundDiv,
   PageButton,
   PaginationWrapper,
 } from './ProductList.styled';
@@ -110,14 +111,25 @@ useEffect(() => {
   
 
   // Фільтри по чекбоксам
+  // Object.keys(selectedFilters).forEach((key) => {
+  //   const value = selectedFilters[key];
+  //   if (Array.isArray(value) && value.length > 0) {
+  //     filteredProducts = filteredProducts.filter((p) => value.includes(p.attributes?.[key]));
+  //   }
+  // });
   Object.keys(selectedFilters).forEach((key) => {
-    const value = selectedFilters[key];
-    if (Array.isArray(value) && value.length > 0) {
-      filteredProducts = filteredProducts.filter((p) => value.includes(p[key]));
-    }
-  });
+  const value = selectedFilters[key];
 
-  // Фільтрація по ціні тільки якщо priceRange завантажений
+  if (Array.isArray(value) && value.length > 0) {
+    filteredProducts = filteredProducts.filter((p) => {
+      const attr = p.attributes?.find((a) => a.label === key);
+
+      return attr && value.includes(attr.value);
+    });
+  }
+});
+
+
   if (priceRange && priceRange.length === 2) {
     const [minPrice, maxPrice] = priceRange;
     console.log(minPrice, maxPrice)
@@ -155,10 +167,21 @@ const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
       </div>
     );
   }
+  console.log(currentProducts);
 
+ 
+
+ 
   return (
     <ContainerProduct>
       <ToastContainer autoClose={1500} />
+      {filteredProducts.length === 0 ? (
+        <NotFoundDiv>
+  <p style={{ textAlign: 'center', fontSize:'30px', marginTop: '50px', marginLeft: 'auto', marginRight: 'auto' }}>
+    Нічого не знайдено 😢
+  </p></NotFoundDiv>
+) : (
+      
       <GridWrapper>
         {currentProducts.map((product) => {
           const isFavorite = favorites.some((fav) => fav.id === product.id);
@@ -198,33 +221,37 @@ const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
             </Card>
           );
         })}
-      </GridWrapper>
+      </GridWrapper>)}
 
-       <PaginationWrapper>
-  <PageButton
-    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-    disabled={currentPage === 1}
-  >
-    Назад
-  </PageButton>
-
-  {Array.from({ length: totalPages }, (_, i) => (
+       {filteredProducts.length > itemsPerPage && (
+  <PaginationWrapper>
     <PageButton
-      key={i}
-      onClick={() => setCurrentPage(i + 1)}
-      active={currentPage === i + 1}
+      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      disabled={currentPage === 1}
     >
-      {i + 1}
+      Назад
     </PageButton>
-  ))}
 
-  <PageButton
-    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-    disabled={currentPage === totalPages}
-  >
-    Вперед
-  </PageButton>
-</PaginationWrapper>  
+    {Array.from({ length: totalPages }, (_, i) => (
+      <PageButton
+        key={i}
+        onClick={() => setCurrentPage(i + 1)}
+        active={currentPage === i + 1}
+      >
+        {i + 1}
+      </PageButton>
+    ))}
+
+    <PageButton
+      onClick={() =>
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+      }
+      disabled={currentPage === totalPages}
+    >
+      Вперед
+    </PageButton>
+  </PaginationWrapper>
+)}
     </ContainerProduct>
   );
 };
