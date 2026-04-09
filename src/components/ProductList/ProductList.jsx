@@ -27,11 +27,12 @@ import { BallTriangle } from 'react-loader-spinner';
 export const ProductList = ({ setValues, category, selectedFilters = {},  priceRange }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(products)
+  console.log('товари всі', products)
 
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 24;
 let filteredProducts = products;
+ 
 
 
 
@@ -56,11 +57,7 @@ let filteredProducts = products;
         if (prices.length > 0) {
           let MIN = Math.min(...prices);
           let MAX = Math.max(...prices);
-  //           if (MIN === MAX) {
-  //   MAX = MIN + 1;
-  // }
-
-          // Оновлюємо стан для повзунка
+  
           setValues([MIN, MAX]);
         }
       } catch (error) {
@@ -110,33 +107,29 @@ useEffect(() => {
   };
   
 
-  // Фільтри по чекбоксам
-  // Object.keys(selectedFilters).forEach((key) => {
-  //   const value = selectedFilters[key];
-  //   if (Array.isArray(value) && value.length > 0) {
-  //     filteredProducts = filteredProducts.filter((p) => value.includes(p.attributes?.[key]));
-  //   }
-  // });
   Object.keys(selectedFilters).forEach((key) => {
   const value = selectedFilters[key];
 
   if (Array.isArray(value) && value.length > 0) {
-    filteredProducts = filteredProducts.filter((p) => {
-      const attr = p.attributes?.find((a) => a.label === key);
-
-      return attr && value.includes(attr.value);
-    });
+   filteredProducts = filteredProducts.filter((p) => {
+  const attr = p.attributes?.find(
+    (a) => a.label.toLowerCase() === key.toLowerCase()
+  );
+  return attr && value.includes(attr.value);
+});
   }
 });
+
 
 
   if (priceRange && priceRange.length === 2) {
     const [minPrice, maxPrice] = priceRange;
     console.log(minPrice, maxPrice)
-    filteredProducts = filteredProducts.filter(
-      (p) => p.price >= minPrice && p.price <= maxPrice
-    );
+    // filteredProducts = filteredProducts.filter(
+    //   (p) => p.price >= minPrice && p.price <= maxPrice
+    // );
   }
+  
  const indexOfLastItem = currentPage * itemsPerPage;
 const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
@@ -170,7 +163,8 @@ const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   console.log(currentProducts);
 
  
-
+console.log("filteredProducts.length:", filteredProducts.length);
+console.log("currentProducts.length:", currentProducts.length);
  
   return (
     <ContainerProduct>
