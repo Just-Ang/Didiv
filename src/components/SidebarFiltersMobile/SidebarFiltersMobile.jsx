@@ -27,7 +27,6 @@ export const SidebarFiltersMobile = ({
 
   const [openFilters, setOpenFilters] = useState({});
    const [filters, setFilters] = useState([]);
-    console.log(filters);
   
 useEffect(() => {
   const fetchFilters = async () => {

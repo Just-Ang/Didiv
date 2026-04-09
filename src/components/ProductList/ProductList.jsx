@@ -26,14 +26,12 @@ import { BallTriangle } from 'react-loader-spinner';
 export const ProductList = ({ setValues, category, selectedFilters = {},  priceRange }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log(products)
 
   const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 12;
+const itemsPerPage = 24;
 let filteredProducts = products;
- const indexOfLastItem = currentPage * itemsPerPage;
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
-const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
 
 
   useEffect(() => {
@@ -127,6 +125,12 @@ useEffect(() => {
       (p) => p.price >= minPrice && p.price <= maxPrice
     );
   }
+ const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+
   if (loading) {
     return (
       <div

@@ -28,7 +28,7 @@ export const NewProductsPage = () => {
     const [loading, setLoading] = useState(true);
 
     const [currentPage, setCurrentPage] = useState(1);
-  const PRODUCTS_PER_PAGE = 12;
+  const PRODUCTS_PER_PAGE = 24;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
