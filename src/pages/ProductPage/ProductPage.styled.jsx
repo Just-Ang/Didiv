@@ -212,25 +212,24 @@ export const SizeBadge = styled.div`
 `;
 
 export const SpecsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-top: 30px;
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-export const SpecItem = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+  gap: 12px;
+  /* max-width: 800px; */
+`;
+
+export const SpecRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+
   span {
-    color: #888;
-    margin-bottom: 4px;
+    color: #777;
   }
+
   b {
-    color: #333;
+    color: #222;
   }
 `;
 

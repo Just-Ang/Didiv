@@ -23,7 +23,7 @@ import {
   PriceWrapper,
   QuantitySelector,
   RatingRow,
-  SpecItem,
+  SpecRow,
   SpecsGrid,
   TabButton,
   TabButtons,
@@ -50,7 +50,7 @@ export const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-
+console.log('products', products)
     const [loading, setLoading] = useState(true);
   const product = products.find((p) => p.id === Number(id));
   const isNew = product
@@ -62,9 +62,9 @@ export const ProductPage = () => {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/products?populate=*`
-      );
+     const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/products?filters[id][$eq]=${id}&populate=*`
+);
 
       const data = await res.json();
       setProducts(data.data);
@@ -76,7 +76,7 @@ export const ProductPage = () => {
   };
 
   fetchProducts();
-}, []);
+}, [id]);
   console.log(product);
   useEffect(() => {
     if (product && product.images) {
@@ -275,19 +275,17 @@ if (loading) {
           )}
           {activeTab === 'attributes' && (
             <SpecsGrid>
-              <SpecItem>
-                <span>Розміри, мм</span> <b>{product.size || ''}</b>
-              </SpecItem>
-              <SpecItem>
-                <span>Тип</span> <b>{product.type || ''}</b>
-              </SpecItem>
-              <SpecItem>
-                <span>Колір</span> <b>{product.color || ''}</b>
-              </SpecItem>
-              <SpecItem>
-                <span>Колір</span> <b>{product.color || ''}</b>
-              </SpecItem>
-            </SpecsGrid>
+  {product.attributes?.length ? (
+    product.attributes.map((attr) => (
+      <SpecRow key={attr.id}>
+        <span>{attr.label}</span>
+        <b>{attr.value}</b>
+      </SpecRow>
+    ))
+  ) : (
+    <p>Характеристики відсутні</p>
+  )}
+</SpecsGrid>
           )}
         </TabContent>
       </TabsWrapper>
