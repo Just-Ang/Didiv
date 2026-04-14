@@ -49,6 +49,9 @@ const CheckoutPage = () => {
     const random = Math.floor(100 + Math.random() * 900);
     return `${year}${time}${random}`;
   };
+
+  const orderNumber = generateOrderNumber();
+  console.log(orderNumber);
   // ---------------- МІСТА ----------------
   useEffect(() => {
     if (inputCity.length < 2) return;
@@ -184,7 +187,6 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(false);
 
   const handlePay = async () => {
-    const orderNumber = generateOrderNumber();
     try {
       setLoading(true);
 
@@ -221,21 +223,24 @@ const CheckoutPage = () => {
           },
         }),
       });
-
+console.log('ORDER:', orderNumber);
+console.log('AMOUNT:', totalAmount);
       const res = await fetch(
         'https://backenddidiv-production.up.railway.app/api/liqpay/create',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: 2, order_number: orderNumber, }),
+          body: JSON.stringify({ amount: totalAmount, order_number: orderNumber, }),
         }
       );
-
+console.log('ORDER:', orderNumber);
+console.log('AMOUNT:', totalAmount);
       const { data, signature } = await res.json();
 
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = 'https://www.liqpay.ua/api/3/checkout';
+      form.target = '_blank';
 
       form.innerHTML = `
       <input type="hidden" name="data" value="${data}" />
@@ -255,7 +260,7 @@ const CheckoutPage = () => {
   // ---------------- SUBMIT ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const orderNumber = generateOrderNumber();
+    // const orderNumber = generateOrderNumber();
 
     await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
       method: 'POST',
@@ -327,6 +332,7 @@ const CheckoutPage = () => {
 
     return base;
   }, [selectedCity]);
+  
 
   return (
     <Container>
