@@ -6,7 +6,7 @@ import DeliveryMethodSelect from '../../components/checkout/DeliveryMethodSelect
 import OfficeSelect from '../../components/checkout/OfficeSelect/OfficeSelect';
 import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
-import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
+import { ButtonPay, CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
 import ukrposhtaData from '../../data/ukrposhta.json';
 
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
@@ -179,6 +179,79 @@ const CheckoutPage = () => {
 
   const isFormValid = Object.keys(errors).length === 0 && cartItems.length > 0;
 
+  // -------ОПЛАТА---------
+
+  const [loading, setLoading] = useState(false);
+
+  const handlePay = async () => {
+    const orderNumber = generateOrderNumber();
+    try {
+      setLoading(true);
+
+      await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            name: formData.fullName,
+            phone: formData.phone,
+            email: formData.email,
+            city: formData.city,
+            products: cartItems.map((item) => ({
+              id: item.id,
+              name: item.name,
+              quantity: item.quantity,
+            })),
+            status_order: 'pending',
+            order_number: orderNumber,
+            delivery_method:
+              deliveryMethod === 'nova'
+                ? 'Нова Пошта'
+                : deliveryMethod === 'ukr'
+                ? 'УкрПошта'
+                : 'Самовивіз',
+            delivery_address:
+              deliveryMethod === 'nova'
+                ? selectedOffice?.label
+                : deliveryMethod === 'ukr'
+                ? selectedUkrOffice?.label
+                : 'Самовивіз',
+          },
+        }),
+      });
+
+      const res = await fetch(
+        'https://backenddidiv-production.up.railway.app/api/liqpay/create',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: 2, order_number: orderNumber, }),
+        }
+      );
+
+      const { data, signature } = await res.json();
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://www.liqpay.ua/api/3/checkout';
+
+      form.innerHTML = `
+      <input type="hidden" name="data" value="${data}" />
+      <input type="hidden" name="signature" value="${signature}" />
+    `;
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (e) {
+      console.error(e);
+      alert('Помилка оплати');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // ---------------- SUBMIT ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -298,6 +371,19 @@ const CheckoutPage = () => {
           isFormValid={isFormValid}
           handleSubmit={handleSubmit}
         />
+        <form method="POST" action="https://www.liqpay.ua/api/3/checkout">
+          <input type="hidden" name="data" value="...base64..." />
+          <input type="hidden" name="signature" value="...signature..." />
+          <ButtonPay
+          
+            onClick={handlePay}
+        
+            disabled={!isFormValid}
+            style={{ opacity: isFormValid ? 1 : 0.5, cursor: isFormValid ? 'pointer' : 'not-allowed'}}
+          >
+            {loading ? 'Переходимо до оплати...' : 'Оплатити'}
+          </ButtonPay>
+        </form>
       </CheckoutWrapper>
     </Container>
   );

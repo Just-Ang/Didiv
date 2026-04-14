@@ -220,3 +220,8 @@ export const PreviewInfo = styled.div`
     margin: 0;
   }
 `;
+
+
+
+export const ButtonPay = styled.button `
+`
