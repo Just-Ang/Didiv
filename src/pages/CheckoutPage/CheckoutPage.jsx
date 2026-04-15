@@ -238,8 +238,7 @@ const CheckoutPage = () => {
           body: JSON.stringify({
             amount: totalAmount,
             order_number: orderNumber,
-            server_url:
-              'https://backenddidiv-production.up.railway.app/api/liqpay/handle',
+    
           }),
         }
       );
