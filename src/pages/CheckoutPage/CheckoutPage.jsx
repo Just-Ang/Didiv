@@ -241,6 +241,7 @@ console.log('AMOUNT:', totalAmount);
       form.method = 'POST';
       form.action = 'https://www.liqpay.ua/api/3/checkout';
       form.target = '_blank';
+      form.rel="noopener";
 
       form.innerHTML = `
       <input type="hidden" name="data" value="${data}" />
@@ -248,7 +249,7 @@ console.log('AMOUNT:', totalAmount);
     `;
 
       document.body.appendChild(form);
-      form.submit();
+  form.requestSubmit();
     } catch (e) {
       console.error(e);
       alert('Помилка оплати');
@@ -377,10 +378,8 @@ console.log('AMOUNT:', totalAmount);
           isFormValid={isFormValid}
           handleSubmit={handleSubmit}
         />
-        <form method="POST" action="https://www.liqpay.ua/api/3/checkout">
-          <input type="hidden" name="data" value="...base64..." />
-          <input type="hidden" name="signature" value="...signature..." />
-          <ButtonPay
+        
+        <ButtonPay
           
             onClick={handlePay}
         
@@ -389,7 +388,6 @@ console.log('AMOUNT:', totalAmount);
           >
             {loading ? 'Переходимо до оплати...' : 'Оплатити'}
           </ButtonPay>
-        </form>
       </CheckoutWrapper>
     </Container>
   );
