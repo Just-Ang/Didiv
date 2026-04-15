@@ -67,7 +67,7 @@ if (!order) {
       <Title>Дякуємо за ваше замовлення!</Title>
       
       <Message>
-        Ваше замовлення <strong>№{order.orderNumer}</strong> успішно прийняте.
+        Ваше замовлення <strong>№{order.order_number}</strong> успішно прийняте.
       </Message>
       <Message>
        Ми зв&rsquo;яжемось з Вами в найближчий час
@@ -77,14 +77,14 @@ if (!order) {
         <SummaryTitle>Деталі замовлення:</SummaryTitle>
 
         <List>
-          {order.items.map((item) => (
+          {order.products?.map((item) => (
             <ListItem key={item.id}>
               <span className="item-info">
                 {item.name} (x{item.quantity})
               </span>
-              <span className="item-price">
+              {/* <span className="item-price">
                 {item.price * item.quantity} грн
-              </span>
+              </span> */}
             </ListItem>
           ))}
         </List>
@@ -93,7 +93,7 @@ if (!order) {
           <strong>Спосіб доставки:</strong> {order.deliveryMethod}
         </Message>
         <Message>
-          <strong>Адреса отримання:</strong> {order.city}, {order.address}
+          <strong>Адреса отримання:</strong> {order.city}, {order.delivery_address}
         </Message>
       </OrderSummaryBox>
 
