@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -11,20 +11,56 @@ import {
   SummaryTitle,
   Title,
 } from './OrderConfirmation.styled';
+import { useEffect, useState } from 'react';
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const order = location.state?.order;
 
-  if (!order) {
+
+  const [searchParams] = useSearchParams();
+  const orderId = searchParams.get('orderId'); // Беремо ID з URL
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+ console.log(order)
+useEffect(() => {
+  console.log("Отриманий orderId з URL:", orderId);
+    if (orderId) {
+      // Завантажуємо дані замовлення з вашого Strapi за номером
+      fetch(`${import.meta.env.VITE_API_URL}/api/orders?filters[order_number][$eq]=${orderId}&populate=*`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.data && data.data.length > 0) {
+            setOrder(data.data[0]);
+          }
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+  }, [orderId]);
+  console.log(order)
+
+
+
+
+  // if (!order) {
+  //   return (
+  //     <Container>
+  //       <Message>Завантаження даних замовлення...</Message>
+  //       <Button onClick={() => navigate('/')}>На головну</Button>
+  //     </Container>
+  //   );
+  // }
+if (loading) return <Container><Message>Завантаження...</Message></Container>;
+
+if (!order) {
     return (
       <Container>
-        <Message>Завантаження даних замовлення...</Message>
+        <Message>Замовлення не знайдено або виникла помилка.</Message>
         <Button onClick={() => navigate('/')}>На головну</Button>
       </Container>
     );
   }
+
 
   return (
     <Container>

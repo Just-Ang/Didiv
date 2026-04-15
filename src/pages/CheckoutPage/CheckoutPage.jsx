@@ -249,8 +249,8 @@ const CheckoutPage = () => {
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = 'https://www.liqpay.ua/api/3/checkout';
-      form.target = '_blank';
-      form.rel = 'noopener';
+      // form.target = '_blank';
+      // form.rel = 'noopener';
 
       form.innerHTML = `
       <input type="hidden" name="data" value="${data}" />
