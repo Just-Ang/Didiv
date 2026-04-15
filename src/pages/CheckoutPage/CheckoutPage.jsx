@@ -6,7 +6,12 @@ import DeliveryMethodSelect from '../../components/checkout/DeliveryMethodSelect
 import OfficeSelect from '../../components/checkout/OfficeSelect/OfficeSelect';
 import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
-import { ButtonPay, CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
+import {
+  ButtonPay,
+  CheckoutWrapper,
+  Container,
+  Section,
+} from './CheckoutPage.styled';
 import ukrposhtaData from '../../data/ukrposhta.json';
 
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
@@ -223,25 +228,30 @@ const CheckoutPage = () => {
           },
         }),
       });
-console.log('ORDER:', orderNumber);
-console.log('AMOUNT:', totalAmount);
+      console.log('ORDER:', orderNumber);
+      console.log('AMOUNT:', totalAmount);
       const res = await fetch(
         'https://backenddidiv-production.up.railway.app/api/liqpay/create',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: totalAmount, order_number: orderNumber, }),
+          body: JSON.stringify({
+            amount: totalAmount,
+            order_number: orderNumber,
+            server_url:
+              'https://backenddidiv-production.up.railway.app/api/liqpay/handle',
+          }),
         }
       );
-console.log('ORDER:', orderNumber);
-console.log('AMOUNT:', totalAmount);
+      console.log('ORDER:', orderNumber);
+      console.log('AMOUNT:', totalAmount);
       const { data, signature } = await res.json();
 
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = 'https://www.liqpay.ua/api/3/checkout';
       form.target = '_blank';
-      form.rel="noopener";
+      form.rel = 'noopener';
 
       form.innerHTML = `
       <input type="hidden" name="data" value="${data}" />
@@ -249,7 +259,7 @@ console.log('AMOUNT:', totalAmount);
     `;
 
       document.body.appendChild(form);
-  form.requestSubmit();
+      form.requestSubmit();
     } catch (e) {
       console.error(e);
       alert('Помилка оплати');
@@ -333,7 +343,6 @@ console.log('AMOUNT:', totalAmount);
 
     return base;
   }, [selectedCity]);
-  
 
   return (
     <Container>
@@ -378,16 +387,17 @@ console.log('AMOUNT:', totalAmount);
           isFormValid={isFormValid}
           handleSubmit={handleSubmit}
         />
-        
+
         <ButtonPay
-          
-            onClick={handlePay}
-        
-            disabled={!isFormValid}
-            style={{ opacity: isFormValid ? 1 : 0.5, cursor: isFormValid ? 'pointer' : 'not-allowed'}}
-          >
-            {loading ? 'Переходимо до оплати...' : 'Оплатити'}
-          </ButtonPay>
+          onClick={handlePay}
+          disabled={!isFormValid}
+          style={{
+            opacity: isFormValid ? 1 : 0.5,
+            cursor: isFormValid ? 'pointer' : 'not-allowed',
+          }}
+        >
+          {loading ? 'Переходимо до оплати...' : 'Оплатити'}
+        </ButtonPay>
       </CheckoutWrapper>
     </Container>
   );
