@@ -83,17 +83,18 @@ useEffect(() => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
+  const cartItems = useSelector((state) => state.cart.items); // Додаємо це
 
-  const handleAdd = (product, e) => {
-    e.stopPropagation();
-    dispatch(
-      addToCart({
-        ...product,
-        quantity: 1,
-      })
-    );
-    toast.success(`${product.name} додано в кошик!`);
-  };
+  // const handleAdd = (product, e) => {
+  //   e.stopPropagation();
+  //   dispatch(
+  //     addToCart({
+  //       ...product,
+  //       quantity: 1,
+  //     })
+  //   );
+  //   toast.success(`${product.name} додано в кошик!`);
+  // };
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
     const exists = favorites.some((favItem) => favItem.id === product.id);
@@ -179,6 +180,30 @@ console.log("currentProducts.length:", currentProducts.length);
       <GridWrapper>
         {currentProducts.map((product) => {
           const isFavorite = favorites.some((fav) => fav.id === product.id);
+
+const inCart = cartItems.find((c) => c.id === product.id);
+  const currentQty = inCart ? inCart.quantity : 0;
+
+  // 2. Перевіряємо, чи досягнуто ліміту (якщо stock є в об'єкті product)
+  const isOutOfStock = currentQty >= (product.stock || 0);
+
+   const handleAdd = (product, e) => {
+    e.stopPropagation();
+     if (isOutOfStock) {
+     toast.error(`Вибачте, доступно лише ${product.stock} шт.`);
+      return;
+    }
+    dispatch(
+      addToCart({
+        ...product,
+        quantity: 1,
+      })
+    );
+    toast.success(`${product.name} додано в кошик!`);
+  };
+
+
+
           return (
             <Card
               key={product.id}

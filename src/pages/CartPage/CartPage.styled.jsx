@@ -77,7 +77,7 @@ font-weight: 500;
 
   @media screen and (min-width: 768px) {
     display: grid;
-    grid-template-columns: 100px 1.5fr 1.2fr 80px; 
+    grid-template-columns: 100px 1.5fr 230px 80px; 
     align-items: center;
     gap: 20px;
   }
@@ -139,7 +139,8 @@ export const Counter = styled.div`
 `;
 
 export const PriceWrapper = styled.div`
-  text-align: right;
+  text-align: center;
+  width: 100px;
  
 `;
 export const ButtonDelete = styled.button`

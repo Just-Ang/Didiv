@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import sprite from '../../img/symbol-defs.svg';
-// import { products } from '../../data/products';
+
 import {
   ActionRow,
   AddToCartBtn,
@@ -32,6 +32,8 @@ import {
   Thumb,
   Thumbnails,
   Title,
+  TooltipText,
+  TooltipWrapper,
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
 import { toggleFavorite } from '../../redux/favoritesSlice';
@@ -50,33 +52,35 @@ export const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-console.log('products', products)
-    const [loading, setLoading] = useState(true);
+  console.log('products', products);
+  const [loading, setLoading] = useState(true);
   const product = products.find((p) => p.id === Number(id));
   const isNew = product
-  ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
-  : false;
+    ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
+    : false;
 
   useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
 
-     const res = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/products?filters[id][$eq]=${id}&populate=*`
-);
+        const res = await fetch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/products?filters[id][$eq]=${id}&populate=*`
+        );
 
-      const data = await res.json();
-      setProducts(data.data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const data = await res.json();
+        setProducts(data.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchProducts();
-}, [id]);
+    fetchProducts();
+  }, [id]);
   console.log(product);
   useEffect(() => {
     if (product && product.images) {
@@ -87,7 +91,6 @@ console.log('products', products)
   const slides = product?.images.map((img) => ({
     src: img.url,
   }));
-
 
   const handleMainImageClick = () => {
     const index = product.images.findIndex((img) => img.url === activeImage);
@@ -114,9 +117,7 @@ console.log('products', products)
     }
   };
 
-
-
-if (loading) {
+  if (loading) {
     return (
       <div
         style={{
@@ -224,8 +225,25 @@ if (loading) {
                   -
                 </button>
                 <span>{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)}>+</button>
+            <TooltipWrapper $active={quantity >= product.stock}>
+  <button
+    onClick={() =>
+      setQuantity(Math.min(product.stock, quantity + 1))
+    }
+    disabled={quantity >= product.stock}
+  >
+    +
+  </button>
+
+ 
+    <TooltipText>
+      Максимум: {product.stock}
+    </TooltipText>
+
+</TooltipWrapper>
+                
               </QuantitySelector>
+              
               <AddToCartBtn onClick={handleAdd}>
                 {' '}
                 <ShoppingCart size={25} />
@@ -275,17 +293,17 @@ if (loading) {
           )}
           {activeTab === 'attributes' && (
             <SpecsGrid>
-  {product.attributes?.length ? (
-    product.attributes.map((attr) => (
-      <SpecRow key={attr.id}>
-        <span>{attr.label}</span>
-        <b>{attr.value}</b>
-      </SpecRow>
-    ))
-  ) : (
-    <p>Характеристики відсутні</p>
-  )}
-</SpecsGrid>
+              {product.attributes?.length ? (
+                product.attributes.map((attr) => (
+                  <SpecRow key={attr.id}>
+                    <span>{attr.label}</span>
+                    <b>{attr.value}</b>
+                  </SpecRow>
+                ))
+              ) : (
+                <p>Характеристики відсутні</p>
+              )}
+            </SpecsGrid>
           )}
         </TabContent>
       </TabsWrapper>

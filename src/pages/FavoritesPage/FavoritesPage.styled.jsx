@@ -38,13 +38,7 @@ color: var(--black-color);
 `;
 
 export const Layout = styled.div`
-  /* display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: 30px;
 
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr;
-  } */
    display: flex;
   flex-direction: column;
   gap: 20px; 
@@ -126,6 +120,8 @@ export const Price = styled.p`
   font-size: 17px;
   font-weight: 500;
   white-space: nowrap;
+  width: 100px;
+  text-align: center;
 `;
 
 export const IconGroup = styled.div`

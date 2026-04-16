@@ -13,9 +13,10 @@ const Counter = ({ item }) => {
 
       <span>{item.quantity}</span>
 
-      <button onClick={() => dispatch(incrementQuantity(item.id))}>
-        +
-      </button>
+      <button onClick={() => dispatch(incrementQuantity({ id: item.id, stock: item.stock }))}
+         disabled={item.quantity >= item.stock}>
+  +
+</button>
     </CounterWrapper>
   );
 };

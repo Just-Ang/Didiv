@@ -312,3 +312,46 @@ export const HeartIcon = styled.svg`
 
   fill: ${({ $active }) => ($active ? 'white' : ' var(--black-color)')};
 `;
+
+export const TooltipText = styled.span`
+
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+
+  transform: translateX(-50%) translateY(5px);
+
+  background: black;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+`;
+
+export const TooltipWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+
+  &:hover ${TooltipText} {
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+    transform: translateX(-50%) translateY(0);
+  }
+`;
+

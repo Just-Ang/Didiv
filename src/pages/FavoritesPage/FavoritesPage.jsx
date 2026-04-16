@@ -30,10 +30,16 @@ const FavoritesPage = () => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const [removingIds, setRemovingIds] = useState([]);
-  const handleAdd = (item) => {
-    dispatch(addToCart(item));
-    toast.success(`${item.name} додано в кошик!`);
-  };
+
+const cartItems = useSelector((state) => state.cart.items);
+
+
+  
+  // const handleAdd = (item) => {
+     
+  //   dispatch(addToCart(item));
+  //   toast.success(`${item.name} додано в кошик!`);
+  // };
   const handleAllAdd = () => {
     dispatch(addAllToCart(favorites));
     toast.success(`Товари додано в кошик!`);
@@ -65,6 +71,9 @@ const FavoritesPage = () => {
   };
   const isFavEmpty = favorites.length === 0;
 
+
+
+
   return (
     <>
       {isFavEmpty ? (
@@ -89,7 +98,27 @@ const FavoritesPage = () => {
 
           <Layout>
             <ListContainer>
-              {favorites.map((item) => (
+              {favorites.map((item) => {
+                
+ const itemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
+const currentInCartQuantity = itemInCart ? itemInCart.quantity : 0;
+
+// Припустимо, що в item.stock приходить загальна кількість з Strapi
+const isMaxReached = currentInCartQuantity >= item.stock;
+
+const handleAdd = (item) => {
+  if (isMaxReached) {
+    toast.error(`Вибачте, доступно лише ${item.stock} шт.`);
+    return;
+  }
+  
+  dispatch(addToCart(item));
+  toast.success(`${item.name} додано в кошик!`);
+};
+
+
+                return (
+                  (
                 <ItemCard
                   key={item.id}
                   className={removingIds.includes(item.id) ? 'removing' : ''}
@@ -107,16 +136,21 @@ const FavoritesPage = () => {
                   <ActionsWrapper>
                     <Price>{item.price}&nbsp;грн</Price>
                     <IconGroup>
-                      <IconButton onClick={() => handleAdd(item)}>
+                      <IconButton onClick={() => handleAdd(item)}
+                          // disabled={isMax || item.stock === 0}
+>
                         <ShoppingCart size={30} />
                       </IconButton>
+                      
                       <IconButton onClick={(e) => HandleAddFavorite(item, e)}>
                         <Trash2 size={30} />
                       </IconButton>
                     </IconGroup>
                   </ActionsWrapper>
                 </ItemCard>
-              ))}
+              )
+                )
+              })}
             </ListContainer>
 
             <SummaryCard>
