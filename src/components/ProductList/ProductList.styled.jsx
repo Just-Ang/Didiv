@@ -85,9 +85,19 @@ export const CardInfo = styled.div`
 
 export const CardTitle = styled.p`
 font-family: var(--second-font);
-font-weight: 500;
-  font-size: 18px;
   font-weight: 400;
+  font-size: 18px;
+  line-height: 1.2; /* Додаємо чіткий інтервал */
+  
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Обрізати після 2-го рядка */
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  text-overflow: ellipsis; /* Ось ця властивість додає трикрапку */
+  
+  /* Замість height використовуємо min-height, щоб порожні місця 
+     в коротких назвах займали простір, але не заважали clamp */
+  min-height: 2.4em; /* 2 рядки * line-height (1.2) */
   margin-bottom: 8px;
 `;
 

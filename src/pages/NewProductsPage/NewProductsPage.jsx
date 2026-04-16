@@ -26,6 +26,10 @@ export const NewProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const favorites = useSelector((state) => state.favorites.items);
+    const cartItems = useSelector((state) => state.cart.items); // Додаємо це
+  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   // const PRODUCTS_PER_PAGE = 24;
@@ -77,10 +81,20 @@ export const NewProductsPage = () => {
     fetchProducts();
   }, [currentPage]);
 
-  const favorites = useSelector((state) => state.favorites.items);
 
   const handleAdd = (product, e) => {
     e.stopPropagation();
+// 2. Перевірка залишку перед додаванням
+    const inCart = cartItems.find((c) => c.id === product.id);
+    const currentQty = inCart ? inCart.quantity : 0;
+    
+    // Перевіряємо, чи є поле stock у продукті
+    if (currentQty >= product.stock) {
+      toast.error(`Вибачте, доступно лише ${product.stock} шт.`);
+      return;
+    }
+
+
     dispatch(
       addToCart({
         ...product,
@@ -135,10 +149,15 @@ export const NewProductsPage = () => {
           {products.map((product) => {
             const isFavorite = favorites.some((fav) => fav.id === product.id);
 
+            // const inCart = cartItems.find((c) => c.id === product.id);
+            // const currentQty = inCart ? inCart.quantity : 0;
+            // const isMaxReached = currentQty >= product.stock;
+
             return (
               <Card
                 key={product.id}
                 onClick={() => navigate(`/product/${product.id}`)}
+            
               >
                 <CardImg src={product.images?.[0]?.url} alt={product.name} />
                 <CardInfo>
@@ -146,7 +165,8 @@ export const NewProductsPage = () => {
                   <CardPrice>{product.price} грн</CardPrice>
                 </CardInfo>
                 <CardButtons>
-                  <ButtonC onClick={(e) => handleAdd(product, e)}>
+                  <ButtonC onClick={(e) => handleAdd(product, e)}
+                    >
                     <ShoppingCart size={24} color="black" />
                   </ButtonC>
 
