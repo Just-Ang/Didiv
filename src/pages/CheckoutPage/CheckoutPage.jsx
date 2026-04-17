@@ -7,7 +7,7 @@ import OfficeSelect from '../../components/checkout/OfficeSelect/OfficeSelect';
 import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
 import {
-  ButtonPay,
+
   CheckoutWrapper,
   Container,
   Section,
@@ -194,7 +194,6 @@ const CheckoutPage = () => {
 
   // -------ОПЛАТА---------
 
-  const [loading, setLoading] = useState(false);
 
   // const handlePay = async () => {
   //   try {
@@ -349,7 +348,7 @@ const handleOrder = async (e) => {
   }
 
   try {
-    setLoading(true);
+  
 
     // 1. Створюємо замовлення (ОДИН раз)
     await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
@@ -368,6 +367,8 @@ const handleOrder = async (e) => {
             id: item.id,
             name: item.name,
             quantity: item.quantity,
+            price:item.price,
+
           })),
 
           status_order: 'pending',
@@ -445,10 +446,25 @@ const handleOrder = async (e) => {
           : deliveryMethod === 'ukr'
           ? selectedUkrOffice?.label
           : 'Самовивіз',
-      items: cartItems,
+  products: cartItems?.map((item) => ({
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price:item.price,
+            
+          })),
       total: totalAmount,
-      orderNumber: orderNumber,
-      paymentMethod,
+      order_number: orderNumber,
+      delivery_address:
+            deliveryMethod === 'nova'
+              ? selectedOffice?.label
+              : deliveryMethod === 'ukr'
+              ? selectedUkrOffice?.label
+              : 'Самовивіз',
+              payment_method:
+            paymentMethod === 'liqpay'
+              ? 'Онлайн (LiqPay)'
+              : 'Післяплата',
     };
 
     navigate('/order-confirmation', { state: { order: finalOrder } });
@@ -456,9 +472,7 @@ const handleOrder = async (e) => {
   } catch (e) {
     console.error(e);
     alert('Помилка оформлення');
-  } finally {
-    setLoading(false);
-  }
+  } 
 };
 
 
@@ -535,7 +549,7 @@ const handleOrder = async (e) => {
           handleSubmit={handleOrder}
         />
 
-        <ButtonPay
+        {/* <ButtonPay
           onClick={handleOrder}
           disabled={!isFormValid}
           style={{
@@ -544,7 +558,7 @@ const handleOrder = async (e) => {
           }}
         >
           {loading ? 'Переходимо до оплати...' : 'Оплатити'}
-        </ButtonPay>
+        </ButtonPay> */}
       </CheckoutWrapper>
     </Container>
   );
