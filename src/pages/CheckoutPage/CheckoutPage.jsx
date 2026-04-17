@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CitySelect from '../../components/checkout/CitySelect/CitySelect';
@@ -14,6 +14,7 @@ import {
 } from './CheckoutPage.styled';
 import ukrposhtaData from '../../data/ukrposhta.json';
 import PaymentMethodSelect from '../../components/checkout/PaymentMethodSelect/PaymentMethodSelect';
+import { clearCart } from '../../redux/cartSlice';
 
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
 const BASE_URL = 'https://api.novaposhta.ua/v2.0/json/';
@@ -21,6 +22,7 @@ const BASE_URL = 'https://api.novaposhta.ua/v2.0/json/';
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -349,7 +351,7 @@ const handleOrder = async (e) => {
 
   try {
 
-    // 1. Створюємо замовлення (ОДИН раз)
+    // cтворення замовлення 
     await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
       method: 'POST',
       headers: {
@@ -395,10 +397,10 @@ const handleOrder = async (e) => {
       }),
     });
 
-    console.log('ORDER:', orderNumber);
-    console.log('AMOUNT:', totalAmount);
+    // console.log('ORDER:', orderNumber);
+    // console.log('AMOUNT:', totalAmount);
 
-    // 2. Якщо LiqPay → редірект
+    // Якщо LiqPay 
     if (paymentMethod === 'liqpay') {
       const res = await fetch(
         'https://backenddidiv-production.up.railway.app/api/liqpay/create',
@@ -426,10 +428,10 @@ const handleOrder = async (e) => {
       document.body.appendChild(form);
       form.requestSubmit();
 
-      return; // ❗ критично
+      return; 
     }
 
-    // 3. Якщо післяплата → просто success page
+    //  Якщо післяплата прост
     const finalOrder = {
       ...formData,
       name: formData.fullName,
@@ -466,8 +468,9 @@ const handleOrder = async (e) => {
               ? 'Онлайн (LiqPay)'
               : 'Післяплата',
     };
-
+ dispatch(clearCart());
     navigate('/order-confirmation', { state: { order: finalOrder } });
+   
 
   } catch (e) {
     console.error(e);

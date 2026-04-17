@@ -6,37 +6,43 @@ import {
   Message,
   NextActions,
   OrderSummaryBox,
-
   SummaryTitle,
   Title,
 } from './OrderConfirmation.styled';
 
-
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearCart } from '../../redux/cartSlice';
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
 
   const stateOrder = location.state?.order;
   const orderId = searchParams.get('orderId');
 
   const [order, setOrder] = useState(stateOrder || null);
   const [loading, setLoading] = useState(!stateOrder);
+  useEffect(() => {
+    dispatch(clearCart());
+  }, [dispatch]);
 
   useEffect(() => {
-    // якщо вже є order зі state — нічого не робимо
+  //якщо є ордер
     if (stateOrder) return;
 
-    // якщо нема — пробуємо з URL (LiqPay case)
+   //якщо немає
     if (orderId) {
       fetch(
-        `${import.meta.env.VITE_API_URL}/api/orders?filters[order_number][$eq]=${orderId}&populate=*`
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/orders?filters[order_number][$eq]=${orderId}&populate=*`
       )
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           if (data.data?.length > 0) {
             setOrder(data.data[0]);
           }
@@ -49,9 +55,11 @@ const OrderConfirmation = () => {
   }, [orderId, stateOrder]);
   console.log(order);
 
- const totalPrice = order?.products?.reduce((sum, item) => {
-  return sum + Number(item.price) * item.quantity;
-}, 0) || 0;
+  const products = order?.products ?? [];
+
+  const totalPrice = products.reduce((sum, item) => {
+    return sum + Number(item.price || 0) * (item.quantity || 1);
+  }, 0);
 
   if (loading) return <div>Завантаження...</div>;
 
@@ -67,13 +75,11 @@ const OrderConfirmation = () => {
   return (
     <Container>
       <Title>Дякуємо за ваше замовлення!</Title>
-      
+
       <Message>
         Ваше замовлення <strong>№{order.order_number}</strong> успішно прийняте.
       </Message>
-      <Message>
-       Ми зв&rsquo;яжемось з Вами в найближчий час
-      </Message>
+      <Message>Ми зв&rsquo;яжемось з Вами в найближчий час</Message>
 
       <OrderSummaryBox>
         <SummaryTitle>Деталі замовлення:</SummaryTitle>
@@ -90,28 +96,28 @@ const OrderConfirmation = () => {
             </ListItem>
           ))}
         </List>
-         <Message>
+        <Message>
           <strong>На суму:</strong> {totalPrice} грн.
         </Message>
- <Message>
+        <Message>
           <strong>Отрмувач:</strong> {order.name}, {order.phone}.
         </Message>
         <Message>
           <strong>Спосіб доставки:</strong> {order.deliveryMethod}.
         </Message>
         <Message>
-          <strong>Адреса отримання:</strong> {order.city}, {order.delivery_address}.
+          <strong>Адреса отримання:</strong> {order.city},{' '}
+          {order.delivery_address}.
         </Message>
         <Message>
           <strong>Спосіб оплати:</strong> {order.payment_method}.
         </Message>
       </OrderSummaryBox>
-    
-
-    
 
       <NextActions>
-        <Button primary onClick={() => navigate('/')}>Повернутися на головну</Button>
+        <Button primary onClick={() => navigate('/')}>
+          Повернутися на головну
+        </Button>
         <Button onClick={() => navigate('/catalog')}>Продовжити покупки</Button>
       </NextActions>
     </Container>
