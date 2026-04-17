@@ -11,6 +11,9 @@ export const Container = styled.div`
   margin-right: auto;
   align-items: center;
   padding-top: 30px;
+  padding-left: 20px;
+    padding-right: 20px;
+
  @media screen and (min-width: 768px) {
     max-width: 994px;
     padding-left: 30px;
@@ -34,27 +37,22 @@ margin-bottom: 20px;
 `;
 
 export const GridWrapper = styled.div`
-  flex: 1;
+ width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: start;
-  gap: 24px;
-  width: 100%;
-  max-width: 750px;
-  padding: 10px;
+  gap: 15px;
 
-  @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 10px;
+  grid-template-columns: 1fr;
+      margin-bottom: 30px;
+
+  @media screen and (min-width: 768px) {
+ 
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
   }
 
   @media screen and (min-width: 1440px) {
+
     grid-template-columns: repeat(4, 1fr);
-    max-width: 1340px;
-    margin-left: 30px;
-    padding-left: 0;
-    padding-right: 0;
   }
 `;
 

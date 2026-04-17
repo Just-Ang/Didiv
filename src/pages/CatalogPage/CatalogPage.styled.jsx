@@ -2,85 +2,56 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 export const Section = styled.section`
-  background-color:  var(--second-background);
- 
- 
+  background-color: var(--second-background);
 `;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-    margin-left: auto;
+  margin-left: auto;
   margin-right: auto;
   align-items: center;
   padding-top: 30px;
- @media screen and (min-width: 768px) {
+   padding-left: 20px;
+    padding-right: 20px;
+  @media screen and (min-width: 768px) {
     max-width: 994px;
     padding-left: 30px;
     padding-right: 30px;
   }
   @media screen and (min-width: 1200px) {
     max-width: 1448px;
-   
   }
-  
+`;
+
+export const WrapperNew = styled.div`
+
 `;
 
 export const CatalogTitle = styled.h1`
-
-font-size: 32px;
-font-family: var(--main-font);
-color: var( --black-color);
-text-transform: uppercase;
-
-
+  font-size: 32px;
+  font-family: var(--main-font);
+  color: var(--black-color);
+  text-transform: uppercase;
+  margin-bottom: 20px;
 `;
 export const CatalogBox = styled.div`
+   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  gap: 15px;
 
-  width: 100%;
-        max-width: 750px;
-        padding:10px;
-  
+  grid-template-columns: 1fr;
+      margin-bottom: 30px;
 
-  gap: 24px; 
-  padding-top:30px;
-  padding-bottom:30px;
-   max-height: 600px;   
-  overflow-y: auto;  
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  scrollbar-width: none;
-
-  -ms-overflow-style: none;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr); 
-     padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  @media (max-width: 768px) {
-  grid-template-columns: repeat(2, 1fr);
-      padding-left: 20px;
-    padding-right: 20px;
-    gap: 20px;
-}
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 768px) {
+ 
     grid-template-columns: repeat(4, 1fr);
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 30px;
-    max-width: 1000px;
+    gap: 20px;
   }
- @media screen and (min-width: 1440px) {
-     grid-template-columns: repeat(4, 1fr); 
-     padding-left: 30px;
-    padding-right: 30px;
-    max-width: 1340px
+
+  @media screen and (min-width: 1440px) {
+
+    grid-template-columns: repeat(4, 1fr);
   }
 `;
 export const Overlay = styled.div`
@@ -108,8 +79,6 @@ export const StyledLink = styled(Link)`
   }
 `;
 
-
-
 export const ImgWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -117,45 +86,40 @@ export const ImgWrapper = styled.div`
   overflow: hidden;
 
   @media screen and (max-width: 768px) {
-    height: 100px;
+    height: 250px;
   }
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.309);
     z-index: 1;
   }
 `;
-  
 
 export const ItemImg = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
- 
 
   display: block;
-   @media screen and (max-width: 768px) {
-  height: 100px;
+  @media screen and (max-width: 768px) {
+    height: 250px;
   }
-
 `;
 
-
 export const ItemTitle = styled.p`
-color: var( --black-color);
+  color: var(--black-color);
   padding: 16px;
   font-size: 18px;
-  
-  font-family: var(--second-font);
-font-weight: 400;
-  text-align: center;
-    @media screen and (max-width: 768px) {
- padding:10px;
-   font-size: 15px;
-  font-weight: 400;
-  }
 
+  font-family: var(--second-font);
+  font-weight: 400;
+  text-align: center;
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 400;
+  }
 `;

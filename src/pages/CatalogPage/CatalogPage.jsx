@@ -1,3 +1,4 @@
+import { NewArrivals } from '../../components/NewArrivals/NewArrivals';
 import {
   CatalogBox,
   CatalogTitle,
@@ -6,6 +7,7 @@ import {
   ItemTitle,
   Section,
   StyledLink,
+  WrapperNew,
 } from './CatalogPage.styled';
 import { Container } from './CatalogPage.styled';
 // import { categories } from "../..//data/categories";
@@ -73,6 +75,10 @@ const CatalogPage = () => {
   return (
     <Section>
       <Container>
+        <WrapperNew>
+<NewArrivals/>
+        </WrapperNew>
+         
         <CatalogTitle>Каталог</CatalogTitle>
         <CatalogBox>
           {categories.map((cat) => (

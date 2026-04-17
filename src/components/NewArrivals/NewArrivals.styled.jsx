@@ -17,8 +17,11 @@ export const Title = styled.h2`
   font-weight: 700;
   margin-bottom: 20px;
   color: #333;
+      text-align: center;
+
   @media screen and (min-width: 768px) {
  font-size: 35px;
+
   }
 
 `;
