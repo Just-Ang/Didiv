@@ -38,6 +38,7 @@ const OrderConfirmation = () => {
         .then(res => res.json())
         .then(data => {
           if (data.data?.length > 0) {
+            console.log(data.data)
             setOrder(data.data[0]);
           }
           setLoading(false);
@@ -49,9 +50,9 @@ const OrderConfirmation = () => {
   }, [orderId, stateOrder]);
   console.log(order);
 
-  const totalPrice = order.products?.reduce((sum, item) => {
-  return sum + item.price * item.quantity;
-}, 0);
+ const totalPrice = order?.products?.reduce((sum, item) => {
+  return sum + Number(item.price) * item.quantity;
+}, 0) || 0;
 
   if (loading) return <div>Завантаження...</div>;
 

@@ -348,7 +348,6 @@ const handleOrder = async (e) => {
   }
 
   try {
-  
 
     // 1. Створюємо замовлення (ОДИН раз)
     await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
