@@ -21,8 +21,7 @@ export const Container = styled.div`
   }
   @media screen and (min-width: 1200px) {
     max-width: 1448px;
-    padding-left: 0px;
-    padding-right: 0px;
+   
   }
   
 `;
@@ -70,6 +69,13 @@ export const CatalogBox = styled.div`
     padding-right: 20px;
     gap: 20px;
 }
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 30px;
+    max-width: 1000px;
+  }
  @media screen and (min-width: 1440px) {
      grid-template-columns: repeat(4, 1fr); 
      padding-left: 30px;

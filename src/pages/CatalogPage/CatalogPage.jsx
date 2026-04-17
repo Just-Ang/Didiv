@@ -76,7 +76,7 @@ const CatalogPage = () => {
         <CatalogTitle>Каталог</CatalogTitle>
         <CatalogBox>
           {categories.map((cat) => (
-            <StyledLink key={cat.id} to={`/catalog/${cat.id}`}>
+            <StyledLink key={cat.id} to={`/catalog/${cat.title}`}>
               <ImgWrapper>
                 <ItemImg src={cat.image} alt={cat.title}></ItemImg>
               </ImgWrapper>

@@ -88,9 +88,9 @@ export const ProductPage = () => {
     }
   }, [product]);
 
-  const slides = product?.images.map((img) => ({
-    src: img.url,
-  }));
+  const slides = (product?.images ?? []).map((img) => ({
+  src: img.url,
+}));
 
   const handleMainImageClick = () => {
     const index = product.images.findIndex((img) => img.url === activeImage);
@@ -163,7 +163,7 @@ export const ProductPage = () => {
             onClick={handleMainImageClick}
           />
           <Thumbnails>
-            {product.images.map((img) => {
+            {(product.images ?? []).map((img) => {
               const imageUrl = img.url;
 
               return (

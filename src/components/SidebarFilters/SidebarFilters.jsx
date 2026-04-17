@@ -24,28 +24,27 @@ export const SidebarFilters = ({
  
   setPriceRange,
 }) => {
-  // const filters = filtersConfig[category] || [];
+
   const [filters, setFilters] = useState([]);
-  console.log(filters);
+ 
 
 
 useEffect(() => {
   const fetchFilters = async () => {
     try {
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/products?populate=*&filters[category][id_title][$eq]=${encodeURIComponent(
-            category
-          )}`
-        );
+       const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
+    category
+  )}&pagination[pageSize]=200`
+);
+        console.log(category)
       const data = await res.json();
       console.log('dataaaa',data.data)
       const products = data.data || [];
 
 const aggregated = {};
 
-// Проходимо по всіх товарах і їх атрибутах
+
 products.forEach(product => {
   product.attributes?.forEach(attr => {
     if (!aggregated[attr.label]) aggregated[attr.label] = new Set();
@@ -55,9 +54,9 @@ products.forEach(product => {
 
 // Створюємо масив об’єктів для SidebarFilters
 const apiFilters = Object.entries(aggregated).map(([label, optionsSet]) => ({
-  type: 'checkbox',          // усі будуть чекбокси
-  label,                     // беремо label з атрибутів
-  name: label.toLowerCase(), // або будь-яка інша логіка для name
+  type: 'checkbox',
+  label,                     
+  name: label.toLowerCase(), 
   options: Array.from(optionsSet),
 }));
 

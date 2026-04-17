@@ -32,7 +32,7 @@ useEffect(() => {
   const fetchFilters = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/categories?filters[id_title][$eq]=${category}&populate=filters`
+        `${import.meta.env.VITE_API_URL}/api/categories?filters[title][$eq]=${category}&populate=filters`
       );
       const data = await res.json();
       const apiFilters = data.data[0]?.filters || [];

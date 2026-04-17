@@ -2,6 +2,12 @@ import styled from 'styled-components';
 
 export const ContainerProduct = styled.div`
 `;
+export const TitleCategory = styled.h2`
+  text-align: center;
+  font-size:34px;
+  font-weight:600px;
+`;
+
 
 export const NotFoundDiv = styled.div`
 width: 100vw;
@@ -32,10 +38,17 @@ export const GridWrapper = styled.div`
   }
 
   @media (min-width: 768px) {
-    margin-top: 32px;
+    
     grid-template-columns: repeat(3, 1fr);
     padding-left: 20px;
     padding-right: 20px;
+  }
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 30px;
+    max-width: 950px;
   }
 
   @media screen and (min-width: 1440px) {
@@ -57,7 +70,8 @@ font-weight: 500;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  padding-bottom: 30px;
+    height: 100%;
+
 
   &:hover {
     @media screen and (min-width: 768px) {
@@ -79,25 +93,31 @@ export const CardImg = styled.img`
   padding:20px;
 `;
 
-export const CardInfo = styled.div`
+export const CardBottom = styled.div`
   padding: 16px;
+      display: flex;
+    align-content: center;
+    align-items: center;
+        justify-content: space-between;
 `;
+
+
 
 export const CardTitle = styled.p`
 font-family: var(--second-font);
   font-weight: 400;
   font-size: 18px;
-  line-height: 1.2; /* Додаємо чіткий інтервал */
+  line-height: 1.2; 
+  padding-left:16px;
+  padding-right: 16px;
   
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Обрізати після 2-го рядка */
+  -webkit-line-clamp: 3; 
   -webkit-box-orient: vertical;  
   overflow: hidden;
-  text-overflow: ellipsis; /* Ось ця властивість додає трикрапку */
-  
-  /* Замість height використовуємо min-height, щоб порожні місця 
-     в коротких назвах займали простір, але не заважали clamp */
-  min-height: 2.4em; /* 2 рядки * line-height (1.2) */
+  text-overflow: ellipsis; 
+
+  min-height: 2.4em; 
   margin-bottom: 8px;
 `;
 
@@ -120,10 +140,7 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   opacity: 1;
 
   @media screen and (min-width: 768px) {
-    position: absolute;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s;
+
   }
 `;
 

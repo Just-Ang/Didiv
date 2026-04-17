@@ -3,10 +3,10 @@ import {
   GridWrapper,
   Card,
   CardImg,
-  CardInfo,
   CardTitle,
   CardPrice,
   CardButtons,
+  CardBottom,
 } from './NewProductsPage.styled';
 import { useNavigate } from 'react-router-dom';
 import { Heart, ShoppingCart } from 'lucide-react';
@@ -160,24 +160,24 @@ export const NewProductsPage = () => {
             
               >
                 <CardImg src={product.images?.[0]?.url} alt={product.name} />
-                <CardInfo>
-                  <CardTitle>{product.name}</CardTitle>
-                  <CardPrice>{product.price} грн</CardPrice>
-                </CardInfo>
-                <CardButtons>
-                  <ButtonC onClick={(e) => handleAdd(product, e)}
-                    >
-                    <ShoppingCart size={24} color="black" />
-                  </ButtonC>
-
-                  <ButtonF onClick={(e) => HandleAddFavorite(product, e)}>
-                    <Heart
-                      size={24}
-                      fill={isFavorite ? '#ff4d4f' : 'none'}
-                      color={isFavorite ? '#ff4d4f' : '#000000'}
-                    />
-                  </ButtonF>
-                </CardButtons>
+               <CardTitle>{product.name}</CardTitle>
+               
+                               <CardBottom>
+                                 <CardPrice>{product.price} грн</CardPrice>
+                                 <CardButtons>
+                                   <ButtonC onClick={(e) => handleAdd(product, e)}>
+                                     <ShoppingCart size={24} color="black" />
+                                   </ButtonC>
+               
+                                   <ButtonF onClick={(e) => HandleAddFavorite(product, e)}>
+                                     <Heart
+                                       size={24}
+                                       fill={isFavorite ? '#ff4d4f' : 'none'}
+                                       color={isFavorite ? '#ff4d4f' : '#000000'}
+                                     />
+                                   </ButtonF>
+                                 </CardButtons>
+                               </CardBottom>
               </Card>
             );
           })}

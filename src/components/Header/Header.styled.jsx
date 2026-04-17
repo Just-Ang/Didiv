@@ -33,8 +33,7 @@ export const HeaderContainer = styled.div`
   }
   @media screen and (min-width: 1200px) {
     max-width: 1448px;
-    padding-left: 0;
-    padding-right: 0;
+   
   }
 `;
 export const WrapperDev = styled.div`

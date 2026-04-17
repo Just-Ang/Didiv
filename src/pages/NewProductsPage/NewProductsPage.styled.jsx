@@ -18,8 +18,7 @@ export const Container = styled.div`
   }
   @media screen and (min-width: 1200px) {
     max-width: 1448px;
-    padding-left: 0px;
-    padding-right: 0px;
+   
   }
   
 `;
@@ -67,7 +66,7 @@ export const Card = styled.div`
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  padding-bottom: 30px;
+
   position: relative;
   height: 100%;
 
@@ -92,29 +91,32 @@ export const CardImg = styled.img`
 
 `;
 
-export const CardInfo = styled.div`
+
+export const CardBottom = styled.div`
   padding: 16px;
-  display: flex;
-  flex-direction:column;
-    
+      display: flex;
+    align-content: center;
+    align-items: center;
+        justify-content: space-between;
 `;
+
 
 export const CardTitle = styled.p`
 flex-grow: 1;
 font-family: var(--second-font);
   font-weight: 400;
   font-size: 18px;
-  line-height: 1.2; /* Додаємо чіткий інтервал */
+  line-height: 1.2; 
+    padding-left:16px;
+  padding-right: 16px;
   
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Обрізати після 2-го рядка */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;
-  text-overflow: ellipsis; /* Ось ця властивість додає трикрапку */
-  
-  /* Замість height використовуємо min-height, щоб порожні місця 
-     в коротких назвах займали простір, але не заважали clamp */
-  min-height: 2.4em; /* 2 рядки * line-height (1.2) */
+  text-overflow: ellipsis; 
+
+  min-height: 2.4em; 
   margin-bottom: 8px;
  
 `;
@@ -139,7 +141,6 @@ export const FavoriteLogo = styled.svg`
   height: 24px;
   fill: var(--white-color);
 `;
-
 export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   position: static;
   bottom: 10px;
@@ -151,10 +152,7 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   opacity: 1;
 
   @media screen and (min-width: 768px) {
-    position: absolute;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: all 0.3s;
+
   }
 `;
 

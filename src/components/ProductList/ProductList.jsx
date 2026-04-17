@@ -1,9 +1,9 @@
 import {
   Button,
   Card,
+  CardBottom,
   CardButtons,
   CardImg,
-  CardInfo,
   CardPrice,
   CardTitle,
   ContainerProduct,
@@ -11,8 +11,8 @@ import {
   NotFoundDiv,
   PageButton,
   PaginationWrapper,
+  TitleCategory,
 } from './ProductList.styled';
-
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,30 +24,30 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 
-export const ProductList = ({ setValues, category, selectedFilters = {},  priceRange }) => {
+export const ProductList = ({
+  setValues,
+  category,
+  selectedFilters = {},
+  priceRange,
+}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log('товари всі', products)
+  console.log(category)
 
   const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 24;
-let filteredProducts = products;
- 
-
-
+  const itemsPerPage = 24;
+  let filteredProducts = products;
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
 
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/products?populate=*&filters[category][id_title][$eq]=${encodeURIComponent(
-            category
-          )}`
-        );
+       const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
+    category
+  )}&pagination[pageSize]=500`
+);
 
         const data = await res.json();
         setProducts(data.data);
@@ -57,7 +57,7 @@ let filteredProducts = products;
         if (prices.length > 0) {
           let MIN = Math.min(...prices);
           let MAX = Math.max(...prices);
-  
+
           setValues([MIN, MAX]);
         }
       } catch (error) {
@@ -70,31 +70,21 @@ let filteredProducts = products;
     fetchProducts();
   }, [category, setValues]);
 
-useEffect(() => {
-  setCurrentPage(1);
-}, [category, selectedFilters, priceRange]);
-useEffect(() => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth', 
-  });
-}, [currentPage]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [category, selectedFilters, priceRange]);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [currentPage]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
-  const cartItems = useSelector((state) => state.cart.items); // Додаємо це
+  const cartItems = useSelector((state) => state.cart.items);
 
-  // const handleAdd = (product, e) => {
-  //   e.stopPropagation();
-  //   dispatch(
-  //     addToCart({
-  //       ...product,
-  //       quantity: 1,
-  //     })
-  //   );
-  //   toast.success(`${product.name} додано в кошик!`);
-  // };
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
     const exists = favorites.some((favItem) => favItem.id === product.id);
@@ -106,36 +96,33 @@ useEffect(() => {
       toast.info(`${product.name} додано в обране`);
     }
   };
-  
 
   Object.keys(selectedFilters).forEach((key) => {
-  const value = selectedFilters[key];
+    const value = selectedFilters[key];
 
-  if (Array.isArray(value) && value.length > 0) {
-   filteredProducts = filteredProducts.filter((p) => {
-  const attr = p.attributes?.find(
-    (a) => a.label.toLowerCase() === key.toLowerCase()
-  );
-  return attr && value.includes(attr.value);
-});
-  }
-});
-
-
+    if (Array.isArray(value) && value.length > 0) {
+      filteredProducts = filteredProducts.filter((p) => {
+        const attr = p.attributes?.find(
+          (a) => a.label.toLowerCase() === key.toLowerCase()
+        );
+        return attr && value.includes(attr.value);
+      });
+    }
+  });
 
   if (priceRange && priceRange.length === 2) {
     const [minPrice, maxPrice] = priceRange;
-    console.log(minPrice, maxPrice)
-    // filteredProducts = filteredProducts.filter(
-    //   (p) => p.price >= minPrice && p.price <= maxPrice
-    // );
+    console.log(minPrice, maxPrice);
+   
   }
-  
- const indexOfLastItem = currentPage * itemsPerPage;
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
-const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   if (loading) {
     return (
@@ -163,114 +150,122 @@ const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   }
   console.log(currentProducts);
 
- 
-console.log("filteredProducts.length:", filteredProducts.length);
-console.log("currentProducts.length:", currentProducts.length);
- 
+  console.log('filteredProducts.length:', filteredProducts.length);
+  console.log('currentProducts.length:', currentProducts.length);
+
   return (
     <ContainerProduct>
+<TitleCategory>
+  {category}
+</TitleCategory>
+
       <ToastContainer autoClose={1500} />
       {filteredProducts.length === 0 ? (
         <NotFoundDiv>
-  <p style={{ textAlign: 'center', fontSize:'30px', marginTop: '50px', marginLeft: 'auto', marginRight: 'auto' }}>
-    Нічого не знайдено 😢
-  </p></NotFoundDiv>
-) : (
-      
-      <GridWrapper>
-        {currentProducts.map((product) => {
-          const isFavorite = favorites.some((fav) => fav.id === product.id);
+          <p
+            style={{
+              textAlign: 'center',
+              fontSize: '30px',
+              marginTop: '50px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
+          >
+            Нічого не знайдено 😢
+          </p>
+        </NotFoundDiv>
+      ) : (
+        <GridWrapper>
+          {currentProducts.map((product) => {
+            const isFavorite = favorites.some((fav) => fav.id === product.id);
 
-const inCart = cartItems.find((c) => c.id === product.id);
-  const currentQty = inCart ? inCart.quantity : 0;
+            const inCart = cartItems.find((c) => c.id === product.id);
+            const currentQty = inCart ? inCart.quantity : 0;
 
-  // 2. Перевіряємо, чи досягнуто ліміту (якщо stock є в об'єкті product)
-  const isOutOfStock = currentQty >= (product.stock || 0);
+            const isOutOfStock = currentQty >= (product.stock || 0);
 
-   const handleAdd = (product, e) => {
-    e.stopPropagation();
-     if (isOutOfStock) {
-     toast.error(`Вибачте, доступно лише ${product.stock} шт.`);
-      return;
-    }
-    dispatch(
-      addToCart({
-        ...product,
-        quantity: 1,
-      })
-    );
-    toast.success(`${product.name} додано в кошик!`);
-  };
+            const handleAdd = (product, e) => {
+              e.stopPropagation();
+              if (isOutOfStock) {
+                toast.error(`Вибачте, доступно лише ${product.stock} шт.`);
+                return;
+              }
+              dispatch(
+                addToCart({
+                  ...product,
+                  quantity: 1,
+                })
+              );
+              toast.success(`${product.name} додано в кошик!`);
+            };
 
-
-
-          return (
-            <Card
-              key={product.id}
-              onClick={() => navigate(`/product/${product.id}`)}
-              style={{ cursor: 'pointer' }}
-            >
-              <CardImg
-                src={product.images[0].url}
-                alt={product.name}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = placeholder;
-                }}
-              />
-              <CardInfo>
+            return (
+              <Card
+                key={product.id}
+                onClick={() => navigate(`/product/${product.id}`)}
+                style={{ cursor: 'pointer' }}
+              >
+                <CardImg
+                 src={product.images?.[0]?.url || "/placeholder.jpg"}
+                  alt={product.name}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = placeholder;
+                  }}
+                />
                 <CardTitle>{product.name}</CardTitle>
-                <CardPrice>{product.price} грн</CardPrice>
-                
-              </CardInfo>
 
-              <CardButtons>
-                <Button onClick={(e) => handleAdd(product, e)}>
-                  <ShoppingCart size={24} color="black" />
-                </Button>
+                <CardBottom>
+                  <CardPrice>{product.price} грн</CardPrice>
+                  <CardButtons>
+                    <Button onClick={(e) => handleAdd(product, e)}>
+                      <ShoppingCart size={24} color="black" />
+                    </Button>
 
-                <Button onClick={(e) => HandleAddFavorite(product, e)}>
-                  <Heart
-                    size={24}
-                    fill={isFavorite ? '#ff4d4f' : 'none'}
-                    color={isFavorite ? '#ff4d4f' : '#000000'}
-                  />
-                </Button>
-              </CardButtons>
-            </Card>
-          );
-        })}
-      </GridWrapper>)}
+                    <Button onClick={(e) => HandleAddFavorite(product, e)}>
+                      <Heart
+                        size={24}
+                        fill={isFavorite ? '#ff4d4f' : 'none'}
+                        color={isFavorite ? '#ff4d4f' : '#000000'}
+                      />
+                    </Button>
+                  </CardButtons>
+                </CardBottom>
+              </Card>
+            );
+          })}
+        </GridWrapper>
+      )}
 
-       {filteredProducts.length > itemsPerPage && (
-  <PaginationWrapper>
-    <PageButton
-      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-      disabled={currentPage === 1}
-    >
-      Назад
-    </PageButton>
+      {filteredProducts.length > itemsPerPage && (
+        <PaginationWrapper>
+          <PageButton
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Назад
+          </PageButton>
 
-    {Array.from({ length: totalPages }, (_, i) => (
-      <PageButton
-        key={i}
-        onClick={() => setCurrentPage(i + 1)}
-        active={currentPage === i + 1}
-      >
-        {i + 1}
-      </PageButton>
-    ))}
+          {Array.from({ length: totalPages }, (_, i) => (
+            <PageButton
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              active={currentPage === i + 1}
+            >
+              {i + 1}
+            </PageButton>
+          ))}
 
-    <PageButton
-      onClick={() =>
-        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-      }
-      disabled={currentPage === totalPages}
-    >
-      Вперед
-    </PageButton>
-  </PaginationWrapper>
-)}
+          <PageButton
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+          >
+            Вперед
+          </PageButton>
+        </PaginationWrapper>
+      )}
     </ContainerProduct>
   );
 };
