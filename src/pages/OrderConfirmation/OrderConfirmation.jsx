@@ -38,7 +38,6 @@ const OrderConfirmation = () => {
         .then(res => res.json())
         .then(data => {
           if (data.data?.length > 0) {
-            console.log(data.data)
             setOrder(data.data[0]);
           }
           setLoading(false);
@@ -95,7 +94,7 @@ const OrderConfirmation = () => {
           <strong>На суму:</strong> {totalPrice} грн.
         </Message>
  <Message>
-          <strong>Отрмувач:</strong> {order.fullName}, {order.phone}.
+          <strong>Отрмувач:</strong> {order.name}, {order.phone}.
         </Message>
         <Message>
           <strong>Спосіб доставки:</strong> {order.deliveryMethod}.

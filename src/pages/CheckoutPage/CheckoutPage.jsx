@@ -432,6 +432,7 @@ const handleOrder = async (e) => {
     // 3. Якщо післяплата → просто success page
     const finalOrder = {
       ...formData,
+      name: formData.fullName,
       city: selectedCity.label,
       deliveryMethod:
         deliveryMethod === 'nova'
