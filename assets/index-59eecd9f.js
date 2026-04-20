@@ -709,8 +709,7 @@ height:30px;
  width: 100%;
   display: grid;
   gap: 15px;
-
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
       margin-bottom: 30px;
 
   @media screen and (min-width: 768px) {
@@ -748,8 +747,8 @@ font-family: var(--second-font);
 `,sO=T(Me)`
   position: relative;
   display: block;
-
-  border-radius: 15px;
+/* 
+  border-radius: 15px; */
   overflow: hidden;
   background: #f0f0f0;
 
@@ -917,8 +916,7 @@ display: flex;
    width: 100%;
   display: grid;
   gap: 15px;
-
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
       margin-bottom: 30px;
 
   @media screen and (min-width: 768px) {
@@ -1274,7 +1272,7 @@ dd {
   display: grid;
   gap: 15px;
 
-  grid-template-columns: 1fr;
+ grid-template-columns: repeat(2, 1fr);
   margin-bottom: 30px;
 
   @media screen and (min-width: 768px) {
