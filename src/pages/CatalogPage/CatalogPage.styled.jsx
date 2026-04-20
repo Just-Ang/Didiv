@@ -39,8 +39,7 @@ export const CatalogBox = styled.div`
    width: 100%;
   display: grid;
   gap: 15px;
-
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
       margin-bottom: 30px;
 
   @media screen and (min-width: 768px) {

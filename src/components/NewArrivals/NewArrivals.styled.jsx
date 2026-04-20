@@ -30,8 +30,7 @@ export const Grid = styled.div`
  width: 100%;
   display: grid;
   gap: 15px;
-
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
       margin-bottom: 30px;
 
   @media screen and (min-width: 768px) {
@@ -73,8 +72,8 @@ font-family: var(--second-font);
 export const ImageLink = styled(Link)`
   position: relative;
   display: block;
-
-  border-radius: 15px;
+/* 
+  border-radius: 15px; */
   overflow: hidden;
   background: #f0f0f0;
 
