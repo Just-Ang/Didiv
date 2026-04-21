@@ -54,6 +54,7 @@ export const FilterIcon = styled.svg`
   fill: var(--white-color);
 `;
 export const SortButton = styled.button`
+  width: 100%;
   height: 30px;
   padding: 10px 10px;
   background: var(--second-color);
@@ -175,5 +176,33 @@ export const ClearFilter = styled.button`
     cursor: not-allowed;
     pointer-events: none;
     opacity: 0.7;
+  }
+`;
+export const Wrapper = styled.div`
+  position: relative;
+  display: inline-block;
+
+`;
+export const Dropdown = styled.div`
+  position: absolute;
+  top: 110%;
+  right: 0;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  min-width: 160px;
+  padding: 6px 0;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+`;
+export const Item = styled.div`
+  padding: 10px 12px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f0f0f0;
   }
 `;

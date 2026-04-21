@@ -21,7 +21,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { toggleFavorite } from '../../redux/favoritesSlice';
 import placeholder from '../../../public/nofoto.png';
 import { Heart, ShoppingCart } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 
 export const ProductList = ({
@@ -29,6 +29,7 @@ export const ProductList = ({
   category,
   selectedFilters = {},
   priceRange,
+  sortType,
 }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ export const ProductList = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 24;
   let filteredProducts = products;
+  
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -116,14 +118,32 @@ export const ProductList = ({
    
   }
 
+
+   const sortedProducts = useMemo(() => {
+const arr = [...filteredProducts];
+
+  switch (sortType) {
+    case "name":
+      return arr.sort((a, b) => a.name.localeCompare(b.name));
+
+    case "price":
+      return arr.sort((a, b) => a.price - b.price);
+
+    case "date":
+      return arr.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    default:
+      return arr;
+  }
+}, [sortType, filteredProducts]);
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+ const currentProducts = sortedProducts.slice(
+  indexOfFirstItem,
+  indexOfLastItem
+);
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
   if (loading) {
     return (
       <div
@@ -152,6 +172,7 @@ export const ProductList = ({
 
   console.log('filteredProducts.length:', filteredProducts.length);
   console.log('currentProducts.length:', currentProducts.length);
+ 
 
   return (
     <ContainerProduct>

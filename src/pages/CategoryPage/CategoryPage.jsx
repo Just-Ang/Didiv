@@ -3,16 +3,19 @@ import {
   ApplyButton,
   ClearFilter,
   Container,
+  Dropdown,
   FilterButton,
   FilterFooter,
   FilterHeader,
   FilterIcon,
+  Item,
   MobileFilterContent,
   MobileFilterOverlay,
   Section,
   SortButton,
-  SortIcon,
+
   TopBar,
+  Wrapper,
 } from './CategoryPage.styled';
 import { SidebarFilters } from '../../components/SidebarFilters/SidebarFilters';
 import { SidebarFiltersMobile } from '../../components/SidebarFiltersMobile/SidebarFiltersMobile';
@@ -27,6 +30,10 @@ export const CategoryPage = () => {
   console.log(selectedFilters);
   const { category } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+const [sortType, setSortType] = useState("name");
+    console.log(sortType)
+
   const [childValues, setChildValues] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 0]);
 
@@ -51,12 +58,30 @@ export const CategoryPage = () => {
             <use href={`${sprite}#icon-filter`} />
           </FilterIcon>
         </FilterButton>
-        <SortButton onClick={() => setIsFilterOpen(true)}>
-          Сортування
-          <SortIcon>
-            <use href={`${sprite}#icon-sort`} />
-          </SortIcon>
-        </SortButton>
+          <Wrapper>
+      <SortButton onClick={() => setIsSortOpen(prev => !prev)}>
+        Сортування
+        <svg width="16" height="16">
+          <use href={`${sprite}#icon-sort`} />
+        </svg>
+      </SortButton>
+
+      {isSortOpen && (
+        <Dropdown>
+          <Item onClick={() => { setSortType("name"); setIsSortOpen(false); }}>
+            За алфавітом
+          </Item>
+
+          <Item onClick={() => { setSortType("price"); setIsSortOpen(false); }}>
+            За ціною
+          </Item>
+
+          <Item onClick={() => { setSortType("date"); setIsSortOpen(false); }}>
+            За датою
+          </Item>
+        </Dropdown>
+      )}
+    </Wrapper>
       </TopBar>
       <SidebarFilters
         category={category}
@@ -72,6 +97,7 @@ export const CategoryPage = () => {
         setValues={setChildValues}
         category={category}
         selectedFilters={selectedFilters}
+        sortType={sortType}
       />
       {isFilterOpen && (
         <MobileFilterOverlay
