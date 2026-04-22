@@ -30,8 +30,8 @@ export const CategoryPage = () => {
   const { category } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
-  const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState('asc'); // asc | desc
+  const [sortType, setSortType] = useState('date');
+  const [sortOrder, setSortOrder] = useState('desc'); // asc | desc
 
   const [childValues, setChildValues] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 0]);

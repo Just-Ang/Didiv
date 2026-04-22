@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   GridWrapper,
   Card,
@@ -7,9 +7,14 @@ import {
   CardPrice,
   CardButtons,
   CardBottom,
+  WrapperSort,
+  SortButton,
+  Dropdown,
+  Item,
+  WrapperTop,
 } from './NewProductsPage.styled';
 import { useNavigate } from 'react-router-dom';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { ArrowDownNarrowWide, Heart, ShoppingCart } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
@@ -27,7 +32,11 @@ export const NewProductsPage = () => {
   const [loading, setLoading] = useState(true);
 
   const favorites = useSelector((state) => state.favorites.items);
-    const cartItems = useSelector((state) => state.cart.items); // Додаємо це
+    const cartItems = useSelector((state) => state.cart.items); 
+
+      const [isSortOpen, setIsSortOpen] = useState(false);
+      const [sortType, setSortType] = useState('date');
+      const [sortOrder, setSortOrder] = useState('asc'); // asc | desc
   
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,6 +89,38 @@ export const NewProductsPage = () => {
 
     fetchProducts();
   }, [currentPage]);
+
+
+  const sortedProducts = useMemo(() => {
+  const arr = [...products];
+  
+   
+    switch (sortType) {
+      case "name":
+        return arr.sort((a, b) =>
+          sortOrder === "asc"
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name)
+        );
+  
+      case "price":
+        return arr.sort((a, b) =>
+          sortOrder === "asc"
+            ? a.price - b.price
+            : b.price - a.price
+        );
+  
+      case "date":
+        return arr.sort((a, b) =>
+          sortOrder === "asc"
+            ? new Date(a.createdAt) - new Date(b.createdAt)
+            : new Date(b.createdAt) - new Date(a.createdAt)
+        );
+  
+      default:
+        return arr;
+    }
+  }, [sortType, products, sortOrder]);
 
 
   const handleAdd = (product, e) => {
@@ -144,9 +185,80 @@ export const NewProductsPage = () => {
     <Section>
       <Container>
         <ToastContainer autoClose={1500} />
-        <TitleNew>Нові товари</TitleNew>
+       <WrapperTop>
+         <TitleNew>Нові товари</TitleNew>
+         <WrapperSort>
+              <SortButton onClick={() => setIsSortOpen(prev => !prev)}>
+                Сортування
+                  <ArrowDownNarrowWide strokeWidth={0.9} size={22}/>
+              </SortButton>
+        
+              {isSortOpen && (
+                 <Dropdown>
+                                <Item
+                                  onClick={() => {
+                                    setSortType('name');
+                                    setSortOrder('asc');
+                                    setIsSortOpen(false);
+                                  }}
+                                >
+                                  А-Я
+                                </Item>
+                
+                                <Item
+                                  onClick={() => {
+                                    setSortType('name');
+                                    setSortOrder('desc');
+                                    setIsSortOpen(false);
+                                  }}
+                                >
+                                  Я-А
+                                </Item>
+                
+                                <Item
+                                  onClick={() => {
+                                    setSortType('price');
+                                    setSortOrder('asc');
+                                    setIsSortOpen(false);
+                                  }}
+                                >
+                                  Ціна ↑
+                                </Item>
+                
+                                <Item
+                                  onClick={() => {
+                                    setSortType('price');
+                                    setSortOrder('desc');
+                                    setIsSortOpen(false);
+                                  }}
+                                >
+                                  Ціна ↓
+                                </Item>
+                
+                                <Item
+                                  onClick={() => {
+                                    setSortType('date');
+                                    setSortOrder('desc');
+                                    setIsSortOpen(false);
+                                  }}
+                                >
+                                  Спочатку новіші
+                                </Item>
+                                <Item
+                                  onClick={() => {
+                                    setSortType('date');
+                                    setSortOrder('asc');
+                                    setIsSortOpen(false);
+                                  }}
+                                >
+                                  Спочатку старіші
+                                </Item>
+                              </Dropdown>
+              )}
+            </WrapperSort>
+       </WrapperTop>
         <GridWrapper>
-          {products.map((product) => {
+          {sortedProducts.map((product) => {
             const isFavorite = favorites.some((fav) => fav.id === product.id);
 
             // const inCart = cartItems.find((c) => c.id === product.id);

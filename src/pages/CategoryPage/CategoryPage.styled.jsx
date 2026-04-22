@@ -66,6 +66,17 @@ export const SortButton = styled.button`
   justify-content: space-evenly;
   align-items: center;
   align-content: center;
+  transition: all 0.2s ease, transform 0.1s ease;
+
+  &:hover {
+  background: #4e4136;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+  &:active {
+    transform: scale(0.97);
+  }
 `;
 export const SortIcon = styled.svg`
   width: 20px;

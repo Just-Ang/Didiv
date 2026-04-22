@@ -25,14 +25,28 @@ export const Container = styled.div`
   }
   
 `;
-
+export const WrapperTop =styled.div`
+      display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: space-between;
+  
+`
 export const TitleNew = styled.h1`
 
-    font-size: 32px;
+    font-size: 25px;
 font-family: var(--main-font);
 color: var( --black-color);
 text-transform: uppercase;
-margin-bottom: 20px;
+ @media screen and (min-width: 360px) {
+  font-size: 32px;
+  }
+
+
+@media screen and (min-width: 768px) {
+   margin-left: 40%;
+  }
 
 `;
 
@@ -224,5 +238,71 @@ export const PageButton = styled.button`
   &:hover:not(:disabled) {
     background-color: #ff9c3b;
     color: #fff;
+  }
+`;
+
+
+export const WrapperSort = styled.div`
+  position: relative;
+  display: inline-block;
+  
+
+`;
+export const SortButton = styled.button`
+  width: 100%;
+      min-width: 130px;
+      @media screen and (min-width: 360px) {
+  min-width: 160px;
+  }
+  height: 30px;
+  padding: 10px 10px;
+  background: #625244;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--main-font);
+  font-weight: 900;
+  display: flex;
+  gap:15px;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
+
+   transition: all 0.2s ease, transform 0.1s ease;
+
+  &:hover {
+  background: #4e4136;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+  &:active {
+    transform: scale(0.97);
+  }
+`;
+export const Dropdown = styled.div`
+  position: absolute;
+  top: 110%;
+  right: 0;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  min-width: 130px;
+      @media screen and (min-width: 360px) {
+  min-width: 160px;
+  }
+  padding: 6px 0;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+`;
+export const Item = styled.div`
+  padding: 10px 12px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f0f0f0;
   }
 `;
