@@ -2,10 +2,20 @@ import styled from 'styled-components';
 
 export const ContainerProduct = styled.div`
 `;
+export const WrapperTop = styled.div`
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+`;
+
+
 export const TitleCategory = styled.h2`
   text-align: center;
   font-size:34px;
   font-weight:600px;
+      margin-left: 40%;
+
 `;
 
 
@@ -41,7 +51,7 @@ export const GridWrapper = styled.div`
     
     grid-template-columns: repeat(3, 1fr);
     padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 0px;
   }
   @media screen and (min-width: 1200px) {
     grid-template-columns: repeat(4, 1fr);
@@ -202,5 +212,54 @@ export const PageButton = styled.button`
   &:hover:not(:disabled) {
     background-color: #ff9c3b;
     color: #fff;
+  }
+`;
+
+
+export const WrapperSort = styled.div`
+  position: relative;
+  display: inline-block;
+   @media screen and (max-width: 768px) {
+  display:none;
+  }
+
+`;
+export const SortButton = styled.button`
+  width: 100%;
+  height: 30px;
+  padding: 10px 10px;
+  background: #625244;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--main-font);
+  font-weight: 900;
+  display: flex;
+  gap:15px;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
+`;
+export const Dropdown = styled.div`
+  position: absolute;
+  top: 110%;
+  right: 0;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  min-width: 160px;
+  padding: 6px 0;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+`;
+export const Item = styled.div`
+  padding: 10px 12px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f0f0f0;
   }
 `;

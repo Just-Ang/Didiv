@@ -31,21 +31,50 @@ export const SidebarFiltersMobile = ({
 useEffect(() => {
   const fetchFilters = async () => {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/categories?filters[title][$eq]=${category}&populate=filters`
-      );
+       const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
+    category
+  )}&pagination[pageSize]=200`
+);
+        console.log(category)
       const data = await res.json();
-      const apiFilters = data.data[0]?.filters || [];
-      setFilters(apiFilters);
+      console.log('dataaaa',data.data)
+      const products = data.data || [];
+
+const aggregated = {};
+
+
+products.forEach(product => {
+  product.attributes?.forEach(attr => {
+    if (!aggregated[attr.label]) aggregated[attr.label] = new Set();
+    aggregated[attr.label].add(attr.value);
+  });
+});
+
+// Створюємо масив об’єктів для SidebarFilters
+const apiFilters = Object.entries(aggregated).map(([label, optionsSet]) => ({
+  type: 'checkbox',
+  label,                     
+  name: label.toLowerCase(), 
+  options: Array.from(optionsSet),
+}));
+
+
+
+console.log('fillltr',apiFilters);
+setFilters(apiFilters);
     } catch (error) {
       console.error(error);
     }
   };
 
+
+
   if (category) {
     fetchFilters();
   }
 }, [category]); 
+
 
   
 

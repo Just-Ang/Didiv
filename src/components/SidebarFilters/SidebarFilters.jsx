@@ -26,6 +26,8 @@ export const SidebarFilters = ({
 }) => {
 
   const [filters, setFilters] = useState([]);
+    const [openFilters, setOpenFilters] = useState({});
+
  
 
 
@@ -78,7 +80,6 @@ setFilters(apiFilters);
 
 
 
-  const [openFilters, setOpenFilters] = useState({});
   const toggleFilter = (filterName) => {
     setOpenFilters((prev) => ({
       ...prev,

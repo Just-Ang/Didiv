@@ -7,11 +7,16 @@ import {
   CardPrice,
   CardTitle,
   ContainerProduct,
+  Dropdown,
   GridWrapper,
+  Item,
   NotFoundDiv,
   PageButton,
   PaginationWrapper,
+  SortButton,
   TitleCategory,
+  WrapperSort,
+  WrapperTop,
 } from './ProductList.styled';
 
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +25,10 @@ import { addToCart } from '../../redux/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import { toggleFavorite } from '../../redux/favoritesSlice';
 import placeholder from '../../../public/nofoto.png';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { ArrowDownNarrowWide, Heart, ShoppingCart } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
+
 
 export const ProductList = ({
   setValues,
@@ -30,6 +36,10 @@ export const ProductList = ({
   selectedFilters = {},
   priceRange,
   sortType,
+  setIsSortOpen,
+  isSortOpen,
+  setSortType,
+
 }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -176,9 +186,33 @@ const arr = [...filteredProducts];
 
   return (
     <ContainerProduct>
-<TitleCategory>
+<WrapperTop>
+  <TitleCategory>
   {category}
 </TitleCategory>
+ <WrapperSort>
+      <SortButton onClick={() => setIsSortOpen(prev => !prev)}>
+        Сортування
+          <ArrowDownNarrowWide strokeWidth={0.9} size={22}/>
+      </SortButton>
+
+      {isSortOpen && (
+        <Dropdown>
+          <Item onClick={() => { setSortType("name"); setIsSortOpen(false); }}>
+            За алфавітом
+          </Item>
+
+          <Item onClick={() => { setSortType("price"); setIsSortOpen(false); }}>
+            За ціною
+          </Item>
+
+          <Item onClick={() => { setSortType("date"); setIsSortOpen(false); }}>
+            За датою
+          </Item>
+        </Dropdown>
+      )}
+    </WrapperSort>
+</WrapperTop>
 
       <ToastContainer autoClose={1500} />
       {filteredProducts.length === 0 ? (

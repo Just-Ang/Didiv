@@ -38,7 +38,7 @@ export const TopBar = styled.div`
 export const FilterButton = styled.button`
   height: 30px;
   padding: 5px;
-  background: var(--second-color);
+  background: #625244;
   color: white;
   border: none;
   border-radius: 8px;
@@ -57,7 +57,7 @@ export const SortButton = styled.button`
   width: 100%;
   height: 30px;
   padding: 10px 10px;
-  background: var(--second-color);
+  background: #625244;
   color: white;
   border: none;
   border-radius: 8px;

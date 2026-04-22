@@ -23,7 +23,7 @@ import { ProductList } from '../../components/ProductList/ProductList';
 import { useState } from 'react';
 
 import sprite from '../../img/symbol-defs.svg';
-import { SlidersHorizontal, X } from 'lucide-react';
+import { ArrowDownNarrowWide, SlidersHorizontal, X } from 'lucide-react';
 
 export const CategoryPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -61,9 +61,7 @@ const [sortType, setSortType] = useState("name");
           <Wrapper>
       <SortButton onClick={() => setIsSortOpen(prev => !prev)}>
         Сортування
-        <svg width="16" height="16">
-          <use href={`${sprite}#icon-sort`} />
-        </svg>
+     <ArrowDownNarrowWide strokeWidth={0.9} size={22}/>
       </SortButton>
 
       {isSortOpen && (
@@ -98,6 +96,9 @@ const [sortType, setSortType] = useState("name");
         category={category}
         selectedFilters={selectedFilters}
         sortType={sortType}
+        setIsSortOpen={setIsSortOpen}
+        isSortOpen={isSortOpen}
+        setSortType={setSortType}
       />
       {isFilterOpen && (
         <MobileFilterOverlay
