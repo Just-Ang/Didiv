@@ -14,7 +14,16 @@ export const TitleCategory = styled.h2`
   text-align: center;
   font-size:34px;
   font-weight:600px;
-      margin-left: 40%;
+      margin-right: auto;
+    margin-left: auto;
+     
+          @media screen and (min-width: 768px) {
+ margin-left: 20%;
+   font-size:40px;
+  }
+       @media screen and (min-width: 890px) {
+ margin-left: 40%;
+  }
 
 `;
 
@@ -64,7 +73,7 @@ export const GridWrapper = styled.div`
   @media screen and (min-width: 1440px) {
     grid-template-columns: repeat(4, 1fr);
     padding-left: 0;
-    padding-right: 0;
+    padding-right: 30px;
     margin-left: 30px;
     max-width: 1340px;
   }
@@ -226,6 +235,7 @@ export const WrapperSort = styled.div`
 `;
 export const SortButton = styled.button`
   width: 100%;
+      min-width: 160px;
   height: 30px;
   padding: 10px 10px;
   background: #625244;

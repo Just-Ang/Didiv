@@ -39,12 +39,12 @@ export const ProductList = ({
   setIsSortOpen,
   isSortOpen,
   setSortType,
+  sortOrder,
+  setSortOrder,
 
 }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(category)
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 24;
   let filteredProducts = products;
@@ -129,23 +129,36 @@ export const ProductList = ({
   }
 
 
-   const sortedProducts = useMemo(() => {
+const sortedProducts = useMemo(() => {
 const arr = [...filteredProducts];
 
+ 
   switch (sortType) {
     case "name":
-      return arr.sort((a, b) => a.name.localeCompare(b.name));
+      return arr.sort((a, b) =>
+        sortOrder === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      );
 
     case "price":
-      return arr.sort((a, b) => a.price - b.price);
+      return arr.sort((a, b) =>
+        sortOrder === "asc"
+          ? a.price - b.price
+          : b.price - a.price
+      );
 
     case "date":
-      return arr.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return arr.sort((a, b) =>
+        sortOrder === "asc"
+          ? new Date(a.createdAt) - new Date(b.createdAt)
+          : new Date(b.createdAt) - new Date(a.createdAt)
+      );
 
     default:
       return arr;
   }
-}, [sortType, filteredProducts]);
+}, [sortType, filteredProducts, sortOrder]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -197,19 +210,66 @@ const arr = [...filteredProducts];
       </SortButton>
 
       {isSortOpen && (
-        <Dropdown>
-          <Item onClick={() => { setSortType("name"); setIsSortOpen(false); }}>
-            За алфавітом
-          </Item>
-
-          <Item onClick={() => { setSortType("price"); setIsSortOpen(false); }}>
-            За ціною
-          </Item>
-
-          <Item onClick={() => { setSortType("date"); setIsSortOpen(false); }}>
-            За датою
-          </Item>
-        </Dropdown>
+         <Dropdown>
+                        <Item
+                          onClick={() => {
+                            setSortType('name');
+                            setSortOrder('asc');
+                            setIsSortOpen(false);
+                          }}
+                        >
+                          А-Я
+                        </Item>
+        
+                        <Item
+                          onClick={() => {
+                            setSortType('name');
+                            setSortOrder('desc');
+                            setIsSortOpen(false);
+                          }}
+                        >
+                          Я-А
+                        </Item>
+        
+                        <Item
+                          onClick={() => {
+                            setSortType('price');
+                            setSortOrder('asc');
+                            setIsSortOpen(false);
+                          }}
+                        >
+                          Ціна ↑
+                        </Item>
+        
+                        <Item
+                          onClick={() => {
+                            setSortType('price');
+                            setSortOrder('desc');
+                            setIsSortOpen(false);
+                          }}
+                        >
+                          Ціна ↓
+                        </Item>
+        
+                        <Item
+                          onClick={() => {
+                            setSortType('date');
+                            setSortOrder('desc');
+                            setIsSortOpen(false);
+                          }}
+                        >
+                          Спочатку новіші
+                        </Item>
+                        <Item
+                          onClick={() => {
+                            setSortType('date');
+                            setSortOrder('asc');
+                            setIsSortOpen(false);
+                          }}
+                        >
+                          Спочатку старіші
+                        </Item>
+                      </Dropdown>
       )}
     </WrapperSort>
 </WrapperTop>

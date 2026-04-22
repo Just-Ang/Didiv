@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export const Aside = styled.aside`
 
-        margin-top: 42px;
+        margin-top: 56px;
   width: 240px;
   padding: 16px;
   border-radius: 16px;
