@@ -12,9 +12,11 @@ import {
   Dropdown,
   Item,
   WrapperTop,
+  CatalogButton,
+  WrapperNone,
 } from './NewProductsPage.styled';
 import { useNavigate } from 'react-router-dom';
-import { ArrowDownNarrowWide, Heart, ShoppingCart } from 'lucide-react';
+import { ArrowDownNarrowWide, ArrowRight, Heart, ShoppingCart } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
@@ -32,12 +34,11 @@ export const NewProductsPage = () => {
   const [loading, setLoading] = useState(true);
 
   const favorites = useSelector((state) => state.favorites.items);
-    const cartItems = useSelector((state) => state.cart.items); 
+  const cartItems = useSelector((state) => state.cart.items);
 
-      const [isSortOpen, setIsSortOpen] = useState(false);
-      const [sortType, setSortType] = useState('date');
-      const [sortOrder, setSortOrder] = useState('asc'); // asc | desc
-  
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortType, setSortType] = useState('date');
+  const [sortOrder, setSortOrder] = useState('asc'); // asc | desc
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -83,58 +84,52 @@ export const NewProductsPage = () => {
       } catch (error) {
         console.error('Помилка при завантаженні продуктів:', error);
       } finally {
-        setLoading(false); // завжди вимикаємо лоадер
+        setLoading(false);
       }
     };
 
     fetchProducts();
   }, [currentPage]);
 
-
   const sortedProducts = useMemo(() => {
-  const arr = [...products];
-  
-   
+    const arr = [...products];
+
     switch (sortType) {
-      case "name":
+      case 'name':
         return arr.sort((a, b) =>
-          sortOrder === "asc"
+          sortOrder === 'asc'
             ? a.name.localeCompare(b.name)
             : b.name.localeCompare(a.name)
         );
-  
-      case "price":
+
+      case 'price':
         return arr.sort((a, b) =>
-          sortOrder === "asc"
-            ? a.price - b.price
-            : b.price - a.price
+          sortOrder === 'asc' ? a.price - b.price : b.price - a.price
         );
-  
-      case "date":
+
+      case 'date':
         return arr.sort((a, b) =>
-          sortOrder === "asc"
+          sortOrder === 'asc'
             ? new Date(a.createdAt) - new Date(b.createdAt)
             : new Date(b.createdAt) - new Date(a.createdAt)
         );
-  
+
       default:
         return arr;
     }
   }, [sortType, products, sortOrder]);
 
-
   const handleAdd = (product, e) => {
     e.stopPropagation();
-// 2. Перевірка залишку перед додаванням
+    // 2. Перевірка залишку перед додаванням
     const inCart = cartItems.find((c) => c.id === product.id);
     const currentQty = inCart ? inCart.quantity : 0;
-    
+
     // Перевіряємо, чи є поле stock у продукті
     if (currentQty >= product.stock) {
       toast.error(`Вибачте, доступно лише ${product.stock} шт.`);
       return;
     }
-
 
     dispatch(
       addToCart({
@@ -181,82 +176,103 @@ export const NewProductsPage = () => {
     );
   }
 
+  if (sortedProducts.length === 0) {
+    return (
+      <WrapperNone
+      >
+        <p
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          Нажаль, нічого нового за останній тиждень
+        </p>
+        <CatalogButton href="catalog">
+                <p>Весь каталог</p>
+               
+                      <ArrowRight size={24} />
+                 
+              </CatalogButton>
+      </WrapperNone>
+    );
+  }
+
   return (
     <Section>
       <Container>
         <ToastContainer autoClose={1500} />
-       <WrapperTop>
-         <TitleNew>Нові товари</TitleNew>
-         <WrapperSort>
-              <SortButton onClick={() => setIsSortOpen(prev => !prev)}>
-                Сортування
-                  <ArrowDownNarrowWide strokeWidth={0.9} size={22}/>
-              </SortButton>
-        
-              {isSortOpen && (
-                 <Dropdown>
-                                <Item
-                                  onClick={() => {
-                                    setSortType('name');
-                                    setSortOrder('asc');
-                                    setIsSortOpen(false);
-                                  }}
-                                >
-                                  А-Я
-                                </Item>
-                
-                                <Item
-                                  onClick={() => {
-                                    setSortType('name');
-                                    setSortOrder('desc');
-                                    setIsSortOpen(false);
-                                  }}
-                                >
-                                  Я-А
-                                </Item>
-                
-                                <Item
-                                  onClick={() => {
-                                    setSortType('price');
-                                    setSortOrder('asc');
-                                    setIsSortOpen(false);
-                                  }}
-                                >
-                                  Ціна ↑
-                                </Item>
-                
-                                <Item
-                                  onClick={() => {
-                                    setSortType('price');
-                                    setSortOrder('desc');
-                                    setIsSortOpen(false);
-                                  }}
-                                >
-                                  Ціна ↓
-                                </Item>
-                
-                                <Item
-                                  onClick={() => {
-                                    setSortType('date');
-                                    setSortOrder('desc');
-                                    setIsSortOpen(false);
-                                  }}
-                                >
-                                  Спочатку новіші
-                                </Item>
-                                <Item
-                                  onClick={() => {
-                                    setSortType('date');
-                                    setSortOrder('asc');
-                                    setIsSortOpen(false);
-                                  }}
-                                >
-                                  Спочатку старіші
-                                </Item>
-                              </Dropdown>
-              )}
-            </WrapperSort>
-       </WrapperTop>
+        <WrapperTop>
+          <TitleNew>Нові товари</TitleNew>
+          <WrapperSort>
+            <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
+              Сортування
+              <ArrowDownNarrowWide strokeWidth={0.9} size={22} />
+            </SortButton>
+
+            {isSortOpen && (
+              <Dropdown>
+                <Item
+                  onClick={() => {
+                    setSortType('name');
+                    setSortOrder('asc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  А-Я
+                </Item>
+
+                <Item
+                  onClick={() => {
+                    setSortType('name');
+                    setSortOrder('desc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Я-А
+                </Item>
+
+                <Item
+                  onClick={() => {
+                    setSortType('price');
+                    setSortOrder('asc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Ціна ↑
+                </Item>
+
+                <Item
+                  onClick={() => {
+                    setSortType('price');
+                    setSortOrder('desc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Ціна ↓
+                </Item>
+
+                <Item
+                  onClick={() => {
+                    setSortType('date');
+                    setSortOrder('desc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Спочатку новіші
+                </Item>
+                <Item
+                  onClick={() => {
+                    setSortType('date');
+                    setSortOrder('asc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Спочатку старіші
+                </Item>
+              </Dropdown>
+            )}
+          </WrapperSort>
+        </WrapperTop>
         <GridWrapper>
           {sortedProducts.map((product) => {
             const isFavorite = favorites.some((fav) => fav.id === product.id);
@@ -269,27 +285,26 @@ export const NewProductsPage = () => {
               <Card
                 key={product.id}
                 onClick={() => navigate(`/product/${product.id}`)}
-            
               >
                 <CardImg src={product.images?.[0]?.url} alt={product.name} />
-               <CardTitle>{product.name}</CardTitle>
-               
-                               <CardBottom>
-                                 <CardPrice>{product.price} грн</CardPrice>
-                                 <CardButtons>
-                                   <ButtonC onClick={(e) => handleAdd(product, e)}>
-                                     <ShoppingCart size={24} color="black" />
-                                   </ButtonC>
-               
-                                   <ButtonF onClick={(e) => HandleAddFavorite(product, e)}>
-                                     <Heart
-                                       size={24}
-                                       fill={isFavorite ? '#ff4d4f' : 'none'}
-                                       color={isFavorite ? '#ff4d4f' : '#000000'}
-                                     />
-                                   </ButtonF>
-                                 </CardButtons>
-                               </CardBottom>
+                <CardTitle>{product.name}</CardTitle>
+
+                <CardBottom>
+                  <CardPrice>{product.price} грн</CardPrice>
+                  <CardButtons>
+                    <ButtonC onClick={(e) => handleAdd(product, e)}>
+                      <ShoppingCart size={24} color="black" />
+                    </ButtonC>
+
+                    <ButtonF onClick={(e) => HandleAddFavorite(product, e)}>
+                      <Heart
+                        size={24}
+                        fill={isFavorite ? '#ff4d4f' : 'none'}
+                        color={isFavorite ? '#ff4d4f' : '#000000'}
+                      />
+                    </ButtonF>
+                  </CardButtons>
+                </CardBottom>
               </Card>
             );
           })}

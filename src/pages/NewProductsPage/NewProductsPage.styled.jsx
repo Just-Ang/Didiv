@@ -306,3 +306,29 @@ export const Item = styled.div`
     background: #f0f0f0;
   }
 `;
+
+export const WrapperNone = styled.div`
+  height: 80vh;
+          display: flex;
+          flex-direction:
+          column;
+          justify-content: center;
+          align-items: center;
+          font-size: 30px;
+`
+export const CatalogButton = styled.button`
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    background: #f47920;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.2s;
+  
+`
