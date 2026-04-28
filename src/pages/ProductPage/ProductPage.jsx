@@ -59,6 +59,15 @@ export const ProductPage = () => {
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;
 
+
+    const cartItems = useSelector((state) => state.cart.items);
+
+const cartItem = product
+  ? cartItems.find((item) => item.id === product.id)
+  : null;
+
+const alreadyInCartQty = cartItem?.quantity || 0;
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -101,10 +110,24 @@ export const ProductPage = () => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
-  const handleAdd = () => {
-    dispatch(addToCart({ ...product, quantity }));
-    toast.success(`${product.name} додано в кошик!`);
-  };
+const handleAdd = () => {
+ 
+
+  // якщо вже максимум
+  if (alreadyInCartQty >= product.stock) {
+    toast.warning('Товар вже в кошику (досягнуто максимум)');
+    return;
+  }
+
+  // якщо додаємо більше ніж можна
+  if (alreadyInCartQty + quantity > product.stock) {
+    toast.warning(`Доступно лише ${product.stock} шт.`);
+    return;
+  }
+
+  dispatch(addToCart({ ...product, quantity }));
+  toast.success(`${product.name} додано в кошик!`);
+};
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
 

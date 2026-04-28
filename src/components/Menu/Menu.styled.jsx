@@ -10,9 +10,14 @@ export const MenuNav = styled.nav`
   }
    @media (min-width: 768px) {
    order:1;
-    gap: 80px;
+    gap: 30px;
     margin-right: auto;
     margin-left: auto;
+ 
+  }
+  @media (min-width: 920px) {
+ 
+    gap: 80px;
  
   }
 `;

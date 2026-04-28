@@ -302,7 +302,7 @@ const arr = [...filteredProducts];
             const handleAdd = (product, e) => {
               e.stopPropagation();
               if (isOutOfStock) {
-                toast.error(`Вибачте, доступно лише ${product.stock} шт.`);
+                toast.error(`Товар уже у кошику`);
                 return;
               }
               dispatch(
@@ -334,7 +334,12 @@ const arr = [...filteredProducts];
                   <CardPrice>{product.price} грн</CardPrice>
                   <CardButtons>
                     <Button onClick={(e) => handleAdd(product, e)}>
-                      <ShoppingCart size={24} color="black" />
+                      <ShoppingCart size={24} 
+    color={inCart ? 'var(--orange-color)' : 'black'} 
+  
+    fill={inCart ? 'var(--orange-color)' : 'none'}
+        strokeWidth={inCart ? 1 : 2}
+/>
                     </Button>
 
                     <Button onClick={(e) => HandleAddFavorite(product, e)}>
@@ -342,6 +347,7 @@ const arr = [...filteredProducts];
                         size={24}
                         fill={isFavorite ? '#ff4d4f' : 'none'}
                         color={isFavorite ? '#ff4d4f' : '#000000'}
+                        strokeWidth={isFavorite ? 1 : 2}
                       />
                     </Button>
                   </CardButtons>

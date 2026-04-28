@@ -3,7 +3,6 @@ import { InputGroup, Label } from './OfficeSelect.styled';
 const OfficeSelect = ({
   deliveryMethod,
   officeOptions,
-  ukrOfficeOptions,
   selectedOffice,
   selectedUkrOffice,
   setSelectedOffice,
@@ -24,42 +23,47 @@ const OfficeSelect = ({
     );
   }
 
- if (deliveryMethod === 'ukr') {
+if (deliveryMethod === 'ukr') {
   return (
     <InputGroup>
-      <Label>Відділення Укрпошти</Label>
+      <Label>Адреса доставки (Укрпошта)</Label>
 
-      <Select
-        options={ukrOfficeOptions}
-        onChange={(option) => setSelectedUkrOffice(option)}
+      <input
+        type="text"
         value={selectedUkrOffice}
-        placeholder="Оберіть відділення..."
+        onChange={(e) => setSelectedUkrOffice(e.target.value)}
+        placeholder="Наприклад:  вул. Шевченка, 10, індекс 01001"
+          style={{ padding: '8px 12px',
+             border: '1px solid #c6c5c5',
+    borderRadius: '4px',
+    outline: 'none'
+           }}
       />
     </InputGroup>
   );
 }
 
-  if (deliveryMethod === 'pickup') {
-    return (
-      <InputGroup>
-        <Label>Самовивіз</Label>
-        <div style={{
-      backgroundColor: '#f9f9f9',
-      padding: '10px',
-      borderRadius: '6px',
-      border: '1px solid #ddd',
-      fontSize: '14px',
-      color: '#333',
-      lineHeight: '1.4',
-    }}>
-      <p>Ви обрали самовивіз.</p>
-      <p>Адреса магазину: вул. Казармена 6Г, Київ</p>
-      <p>Графік роботи: Вт, Ср, Пт, Сб, Нд — 11:00–20:00; вихідні: Пн, Чт</p>
-      <p>Телефон: +380 99 999 99</p>
-    </div>
-      </InputGroup>
-    );
-  }
+  // if (deliveryMethod === 'pickup') {
+  //   return (
+  //     <InputGroup>
+  //       <Label>Самовивіз</Label>
+  //       <div style={{
+  //     backgroundColor: '#f9f9f9',
+  //     padding: '10px',
+  //     borderRadius: '6px',
+  //     border: '1px solid #ddd',
+  //     fontSize: '14px',
+  //     color: '#333',
+  //     lineHeight: '1.4',
+  //   }}>
+  //     <p>Ви обрали самовивіз.</p>
+  //     <p>Адреса магазину: вул. Казармена 6Г, Київ</p>
+  //     <p>Графік роботи: Вт, Ср, Пт, Сб, Нд — 11:00–20:00; вихідні: Пн, Чт</p>
+  //     <p>Телефон: +380 99 999 99</p>
+  //   </div>
+  //     </InputGroup>
+  //   );
+  // }
 
   return null;
 };

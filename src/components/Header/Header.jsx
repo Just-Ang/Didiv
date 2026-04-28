@@ -38,17 +38,11 @@ export const Header = () => {
   return ( 
     <HeaderSection>
     <HeaderContainer>
-      {/* <StyledLinkBig to="/">
-          <LogoBig src={logo} alt="logo"></LogoBig>
-        </StyledLinkBig> */}
-        
-      
+  
       <WrapperDev>
         <HeaderUp>
           <StoreTitle to="/">Дідів хлів</StoreTitle>
-        {/* <StyledLink to="/">
-          <Logo src={logo} alt="logo"></Logo>
-        </StyledLink> */}
+       
         <HeadeRight>
           <CartIcon></CartIcon>
 

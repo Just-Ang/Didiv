@@ -6,13 +6,7 @@ import DeliveryMethodSelect from '../../components/checkout/DeliveryMethodSelect
 import OfficeSelect from '../../components/checkout/OfficeSelect/OfficeSelect';
 import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
-import {
-
-  CheckoutWrapper,
-  Container,
-  Section,
-} from './CheckoutPage.styled';
-import ukrposhtaData from '../../data/ukrposhta.json';
+import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
 import PaymentMethodSelect from '../../components/checkout/PaymentMethodSelect/PaymentMethodSelect';
 import { clearCart } from '../../redux/cartSlice';
 
@@ -42,9 +36,10 @@ const CheckoutPage = () => {
 
   const [cityOptions, setCityOptions] = useState([]);
   const [officeOptions, setOfficeOptions] = useState([]);
-  const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
-  const [ukrSearch, setUkrSearch] = useState('');
+  // const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
+  // const [ukrSearch, setUkrSearch] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(null);
+  console.log(paymentMethod)
 
   const totalAmount = cartItems.reduce(
     (acc, i) => acc + i.price * i.quantity,
@@ -118,22 +113,22 @@ const CheckoutPage = () => {
     fetchOffices();
   }, [selectedCity, deliveryMethod]);
 
-  // ---------------- УКРПОШТА (поки mock) ----------------
-  useEffect(() => {
-    if (deliveryMethod !== 'ukr' || !selectedCity) return;
+  // ---------------- УКРПОШТА ----------------
+  // useEffect(() => {
+  //   if (deliveryMethod !== 'ukr' || !selectedCity) return;
 
-    const filtered = ukrposhtaData
-      .filter((o) => o.city === selectedCity.label)
-      .filter((o) => o.address.toLowerCase().includes(ukrSearch.toLowerCase()))
-      .slice(0, 20); // обмеження
+  //   const filtered = ukrposhtaData
+  //     .filter((o) => o.city === selectedCity.label)
+  //     .filter((o) => o.address.toLowerCase().includes(ukrSearch.toLowerCase()))
+  //     .slice(0, 20); // обмеження
 
-    setUkrOfficeOptions(
-      filtered.map((o, index) => ({
-        value: index,
-        label: o.address,
-      }))
-    );
-  }, [selectedCity, deliveryMethod, ukrSearch]);
+  //   setUkrOfficeOptions(
+  //     filtered.map((o, index) => ({
+  //       value: index,
+  //       label: o.address,
+  //     }))
+  //   );
+  // }, [selectedCity, deliveryMethod, ukrSearch]);
 
   // ---------------- МІСТО CHANGE ----------------
   const handleCityChange = (option) => {
@@ -194,293 +189,145 @@ const CheckoutPage = () => {
 
   const isFormValid = Object.keys(errors).length === 0 && cartItems.length > 0;
 
-  // -------ОПЛАТА---------
+  const handleOrder = async (e) => {
+    e.preventDefault();
 
+    if (!paymentMethod) {
+      alert('Оберіть спосіб оплати');
+      return;
+    }
 
-  // const handlePay = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         data: {
-  //           name: formData.fullName,
-  //           phone: formData.phone,
-  //           email: formData.email,
-  //           city: formData.city,
-  //           products: cartItems.map((item) => ({
-  //             id: item.id,
-  //             name: item.name,
-  //             quantity: item.quantity,
-  //           })),
-  //           status_order: 'pending',
-  //           order_number: orderNumber,
-  //           delivery_method:
-  //             deliveryMethod === 'nova'
-  //               ? 'Нова Пошта'
-  //               : deliveryMethod === 'ukr'
-  //               ? 'УкрПошта'
-  //               : 'Самовивіз',
-  //           delivery_address:
-  //             deliveryMethod === 'nova'
-  //               ? selectedOffice?.label
-  //               : deliveryMethod === 'ukr'
-  //               ? selectedUkrOffice?.label
-  //               : 'Самовивіз',
-
-  //           payment_method:
-  //             paymentMethod === 'liqpay' ? 'Онлайн (LiqPay)' : 'Післяплата',
-  //         },
-  //       }),
-  //     });
-  //     console.log('ORDER:', orderNumber);
-  //     console.log('AMOUNT:', totalAmount);
-  //     const res = await fetch(
-  //       'https://backenddidiv-production.up.railway.app/api/liqpay/create',
-  //       {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({
-  //           amount: totalAmount,
-  //           order_number: orderNumber,
-  //         }),
-  //       }
-  //     );
-  //     console.log('ORDER:', orderNumber);
-  //     console.log('AMOUNT:', totalAmount);
-  //     const { data, signature } = await res.json();
-
-  //     const form = document.createElement('form');
-  //     form.method = 'POST';
-  //     form.action = 'https://www.liqpay.ua/api/3/checkout';
-  //     // form.target = '_blank';
-  //     // form.rel = 'noopener';
-
-  //     form.innerHTML = `
-  //     <input type="hidden" name="data" value="${data}" />
-  //     <input type="hidden" name="signature" value="${signature}" />
-  //   `;
-
-  //     document.body.appendChild(form);
-  //     form.requestSubmit();
-  //   } catch (e) {
-  //     console.error(e);
-  //     alert('Помилка оплати');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // ---------------- SUBMIT ----------------
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // const orderNumber = generateOrderNumber();
-
-  //   await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       data: {
-  //         name: formData.fullName,
-  //         phone: formData.phone,
-  //         email: formData.email,
-  //         city: formData.city,
-  //         products: cartItems.map((item) => ({
-  //           id: item.id,
-  //           name: item.name,
-  //           quantity: item.quantity,
-  //         })),
-  //         status_order: 'pending',
-  //         order_number: orderNumber,
-  //         delivery_method:
-  //           deliveryMethod === 'nova'
-  //             ? 'Нова Пошта'
-  //             : deliveryMethod === 'ukr'
-  //             ? 'УкрПошта'
-  //             : 'Самовивіз',
-  //         delivery_address:
-  //           deliveryMethod === 'nova'
-  //             ? selectedOffice?.label
-  //             : deliveryMethod === 'ukr'
-  //             ? selectedUkrOffice?.label
-  //             : 'Самовивіз',
-
-  //         payment_method:
-  //           paymentMethod === 'liqpay' ? 'Онлайн (LiqPay)' : 'Післяплата',
-  //       },
-  //     }),
-  //   });
-
-  //   const finalOrder = {
-  //     ...formData,
-  //     city: selectedCity.label,
-  //     deliveryMethod:
-  //       deliveryMethod === 'nova'
-  //         ? 'Нова Пошта'
-  //         : deliveryMethod === 'ukr'
-  //         ? 'УкрПошта'
-  //         : 'Самовивіз',
-  //     address:
-  //       deliveryMethod === 'nova'
-  //         ? selectedOffice?.label
-  //         : deliveryMethod === 'ukr'
-  //         ? selectedUkrOffice?.label
-  //         : 'Самовивіз',
-  //     items: cartItems,
-  //     total: totalAmount,
-  //     orderNumer: generateOrderNumber(),
-  //   };
-  //   // Зберігаємо замовлення на сервері
-  //   navigate('/order-confirmation', { state: { order: finalOrder } });
-  // };
-
-
-const handleOrder = async (e) => {
-  e.preventDefault();
-
-  if (!paymentMethod) {
-    alert('Оберіть спосіб оплати');
-    return;
-  }
-
-  try {
-
-    // cтворення замовлення 
-    await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        data: {
-          name: formData.fullName,
-          phone: formData.phone,
-          email: formData.email,
-          city: formData.city,
-
-          products: cartItems?.map((item) => ({
-            id: item.id,
-            name: item.name,
-            quantity: item.quantity,
-            price:item.price,
-
-          })),
-
-          status_order: 'pending',
-          order_number: orderNumber,
-
-          payment_method:
-            paymentMethod === 'liqpay'
-              ? 'Онлайн (LiqPay)'
-              : 'Післяплата',
-
-          delivery_method:
-            deliveryMethod === 'nova'
-              ? 'Нова Пошта'
-              : deliveryMethod === 'ukr'
-              ? 'УкрПошта'
-              : 'Самовивіз',
-
-          delivery_address:
-            deliveryMethod === 'nova'
-              ? selectedOffice?.label
-              : deliveryMethod === 'ukr'
-              ? selectedUkrOffice?.label
-              : 'Самовивіз',
+    try {
+      // cтворення замовлення
+      await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      }),
-    });
+        body: JSON.stringify({
+          data: {
+            name: formData.fullName,
+            phone: formData.phone,
+            email: formData.email,
+            city: formData.city,
 
-    // console.log('ORDER:', orderNumber);
-    // console.log('AMOUNT:', totalAmount);
+            products: cartItems?.map((item) => ({
+              id: item.id,
+              name: item.name,
+              quantity: item.quantity,
+              price: item.price,
+            })),
 
-    // Якщо LiqPay 
-    if (paymentMethod === 'liqpay') {
-      const res = await fetch(
-        'https://backenddidiv-production.up.railway.app/api/liqpay/create',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: totalAmount,
+            status_order: 'pending',
             order_number: orderNumber,
-          }),
-        }
-      );
 
-      const { data, signature } = await res.json();
+            payment_method:
+  paymentMethod === 'liqpay'
+    ? 'Онлайн (LiqPay)'
+    : paymentMethod === 'cod'
+    ? 'Післяплата'
+    : paymentMethod === 'bank_transfer'
+    ? 'Оплата за реквізитами'
+    : '',
 
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = 'https://www.liqpay.ua/api/3/checkout';
+            delivery_method:
+              deliveryMethod === 'nova'
+                ? 'Нова Пошта'
+                : deliveryMethod === 'ukr'
+                ? 'УкрПошта'
+                : 'Самовивіз',
 
-      form.innerHTML = `
+            delivery_address:
+              deliveryMethod === 'nova'
+                ? selectedOffice?.label
+                : deliveryMethod === 'ukr'
+                ? selectedUkrOffice
+                : 'Самовивіз',
+          },
+        }),
+      });
+
+      // console.log('ORDER:', orderNumber);
+      // console.log('AMOUNT:', totalAmount);
+
+      // Якщо LiqPay
+      if (paymentMethod === 'liqpay') {
+        const res = await fetch(
+          'https://backenddidiv-production.up.railway.app/api/liqpay/create',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: totalAmount,
+              order_number: orderNumber,
+            }),
+          }
+        );
+
+        const { data, signature } = await res.json();
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://www.liqpay.ua/api/3/checkout';
+
+        form.innerHTML = `
         <input type="hidden" name="data" value="${data}" />
         <input type="hidden" name="signature" value="${signature}" />
       `;
 
-      document.body.appendChild(form);
-      form.requestSubmit();
+        document.body.appendChild(form);
+        form.requestSubmit();
 
-      return; 
+        return;
+      }
+
+      //  Якщо післяплата прост
+      const finalOrder = {
+        ...formData,
+        name: formData.fullName,
+        city: selectedCity.label,
+        deliveryMethod:
+          deliveryMethod === 'nova'
+            ? 'Нова Пошта'
+            : deliveryMethod === 'ukr'
+            ? 'УкрПошта'
+            : 'Самовивіз',
+        address:
+          deliveryMethod === 'nova'
+            ? selectedOffice?.label
+            : deliveryMethod === 'ukr'
+            ? selectedUkrOffice
+            : 'Самовивіз',
+        products: cartItems?.map((item) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        total: totalAmount,
+        order_number: orderNumber,
+        delivery_address:
+          deliveryMethod === 'nova'
+            ? selectedOffice?.label
+            : deliveryMethod === 'ukr'
+            ? selectedUkrOffice
+            : 'Самовивіз',
+      payment_method:
+  paymentMethod === 'liqpay'
+    ? 'Онлайн (LiqPay)'
+    : paymentMethod === 'cod'
+    ? 'Післяплата'
+    : paymentMethod === 'bank_transfer'
+    ? 'Оплата за реквізитами'
+    : '',
+      };
+      dispatch(clearCart());
+      navigate('/order-confirmation', { state: { order: finalOrder } });
+    } catch (e) {
+      console.error(e);
+      alert('Помилка оформлення');
     }
-
-    //  Якщо післяплата прост
-    const finalOrder = {
-      ...formData,
-      name: formData.fullName,
-      city: selectedCity.label,
-      deliveryMethod:
-        deliveryMethod === 'nova'
-          ? 'Нова Пошта'
-          : deliveryMethod === 'ukr'
-          ? 'УкрПошта'
-          : 'Самовивіз',
-      address:
-        deliveryMethod === 'nova'
-          ? selectedOffice?.label
-          : deliveryMethod === 'ukr'
-          ? selectedUkrOffice?.label
-          : 'Самовивіз',
-  products: cartItems?.map((item) => ({
-            id: item.id,
-            name: item.name,
-            quantity: item.quantity,
-            price:item.price,
-            
-          })),
-      total: totalAmount,
-      order_number: orderNumber,
-      delivery_address:
-            deliveryMethod === 'nova'
-              ? selectedOffice?.label
-              : deliveryMethod === 'ukr'
-              ? selectedUkrOffice?.label
-              : 'Самовивіз',
-              payment_method:
-            paymentMethod === 'liqpay'
-              ? 'Онлайн (LiqPay)'
-              : 'Післяплата',
-    };
- dispatch(clearCart());
-    navigate('/order-confirmation', { state: { order: finalOrder } });
-   
-
-  } catch (e) {
-    console.error(e);
-    alert('Помилка оформлення');
-  } 
-};
-
-
-
-
+  };
 
   // ---------------- DELIVERY OPTIONS ----------------
   const deliveryOptions = useMemo(() => {
@@ -489,16 +336,17 @@ const handleOrder = async (e) => {
       { value: 'ukr', label: 'Укрпошта' },
     ];
 
-    if (selectedCity?.label === 'Київ') {
-      base.push({ value: 'pickup', label: 'Самовивіз' });
-    }
+    // if (selectedCity?.label === 'Київ') {
+    //   base.push({ value: 'pickup', label: 'Самовивіз' });
+    // }
 
     return base;
-  }, [selectedCity]);
+  }, []);
 
   const paymentOptions = [
     { value: 'liqpay', label: 'Онлайн оплата (LiqPay)' },
     { value: 'cod', label: 'Післяплата' },
+       { value: 'bank_transfer', label: 'Оплата за реквізитами' },
   ];
 
   return (
@@ -528,12 +376,12 @@ const handleOrder = async (e) => {
           <OfficeSelect
             deliveryMethod={deliveryMethod}
             officeOptions={officeOptions}
-            ukrOfficeOptions={ukrOfficeOptions}
+            // ukrOfficeOptions={ukrOfficeOptions}
             selectedOffice={selectedOffice}
             selectedUkrOffice={selectedUkrOffice}
             setSelectedOffice={setSelectedOffice}
             setSelectedUkrOffice={setSelectedUkrOffice}
-            setUkrSearch={setUkrSearch}
+            // setUkrSearch={setUkrSearch}
           />
 
           <PaymentMethodSelect
