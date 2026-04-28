@@ -125,7 +125,7 @@ export const SocialIcons = styled.div`
 `;
 
 export const IconSocial = styled.a`
-  width: 44px; /* Збільшено (стандарт Apple/Google для тач-зон) */
+  width: 44px; 
   height: 44px;
   background-color: #ffffff;
   border-radius: 50%;

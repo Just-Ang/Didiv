@@ -9,9 +9,10 @@ const HomePage = () => {
     <HomeSection>
       <Container>
         <HeroSlider></HeroSlider>
-         <Stats/>
+        
         <NewArrivals/>
         <CategoryHero></CategoryHero>
+         <Stats/>
       </Container>
     </HomeSection>
   );

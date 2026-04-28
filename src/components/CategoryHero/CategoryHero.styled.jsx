@@ -74,7 +74,7 @@ export const Card = styled(Link)`
   }
 `;
 export const TitleCatalog = styled.h2`
-  margin-top: 20px;
+
   font-size: 30px;
   text-transform: uppercase;
   margin-bottom: 20px;

@@ -54,6 +54,19 @@ export const Footer = () => {
               <use href={`${sprite}#icon-telegram`} />
             </svg>
           </IconSocial>
+           <IconSocial
+            href="https://www.olx.ua/uk/hobbi-otdyh-i-sport/velo/q-%D0%B4%D1%96%D0%B4%D1%96%D0%B2-%D1%85%D0%BB%D1%96%D0%B2/?srsltid=AfmBOoqjzHkKNGxhNyAXVf2_KVV6h3JQFklEk0AjrDFh7tlO2-HZJPSS"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="27px"
+            height="27px"
+            style={{ marginTop: '5px' }}
+            >
+              <use href={`${sprite}#icon-olx`} />
+            </svg>
+          </IconSocial>
+          
         </SocialIcons>
       </Column>
     </FooterWrapper>

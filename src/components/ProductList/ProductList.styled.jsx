@@ -30,9 +30,15 @@ export const TitleCategory = styled.h2`
 
 export const NotFoundDiv = styled.div`
 width: 100vw;
+height:30vw;
 
   @media screen and (min-width: 768px) {
-  width: 70vw;
+  width: 60vw;
+  height:80vw;
+  }
+   @media screen and (min-width: 1200px) {
+ 
+  height:40vw;
   }
       
 `
