@@ -43,6 +43,7 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'; // Імпорт пл
 import { ShoppingCart } from 'lucide-react';
 import { BallTriangle } from 'react-loader-spinner';
 import dayjs from 'dayjs';
+import FAQSection from '../../components/FAQSection/FAQSection';
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -308,6 +309,12 @@ const handleAdd = () => {
           >
             Характеристики
           </TabButton>
+          <TabButton
+            active={activeTab === 'FAQ'}
+            onClick={() => setActiveTab('FAQ')}
+          >
+            Питання та відповіді
+          </TabButton>
         </TabButtons>
 
         <TabContent>
@@ -327,6 +334,10 @@ const handleAdd = () => {
                 <p>Характеристики відсутні</p>
               )}
             </SpecsGrid>
+          )}
+          {activeTab === 'FAQ' && (
+            <FAQSection productId = {product.documentId}
+            questions={product.questions}></FAQSection>
           )}
         </TabContent>
       </TabsWrapper>
