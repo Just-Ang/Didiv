@@ -23,11 +23,13 @@ import { clearFavorite, toggleFavorite } from '../../redux/favoritesSlice';
 import FavEmpty from '../../components/FavEmpty/FavEmty';
 import { addAllToCart, addToCart } from '../../redux/cartSlice';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
+  
   const favorites = useSelector((state) => state.favorites.items);
   const [removingIds, setRemovingIds] = useState([]);
 
@@ -103,7 +105,7 @@ const cartItems = useSelector((state) => state.cart.items);
  const itemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
 const currentInCartQuantity = itemInCart ? itemInCart.quantity : 0;
 
-// Припустимо, що в item.stock приходить загальна кількість з Strapi
+
 const isMaxReached = currentInCartQuantity >= item.stock;
 
 const handleAdd = (item) => {
@@ -126,6 +128,8 @@ const handleAdd = (item) => {
                   <Image
                    src={item.images?.[0]?.url ||'/nofoto.png'}
                     alt={item.name}
+                      onClick={() => navigate(`/product/${item.id}`)}
+
                     onError={(e) => {
                       e.currentTarget.onerror = null;
                       e.currentTarget.src = '/nofoto.png';

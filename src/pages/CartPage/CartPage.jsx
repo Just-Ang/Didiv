@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Breadcrumbs,
@@ -31,6 +31,7 @@ import placeholder from '../../../public/nofoto.png';
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [removingIds, setRemovingIds] = useState([]);
   
   const cartItems = useSelector((state) => state.cart.items);
@@ -102,13 +103,14 @@ const CartPage = () => {
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
                     <ProductImg
-               src={item.images?.[0]?.url ||'/nofoto.png'}
-                      alt={item.name}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = placeholder;
-                      }}
-                    />
+  src={item.images?.[0]?.url || '/nofoto.png'}
+  alt={item.name}
+  onClick={() => navigate(`/product/${item.id}`)}
+  onError={(e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = placeholder;
+  }}
+/>
                     <ProductInfo>
                       <h3>{item.name}</h3>
                     </ProductInfo>
