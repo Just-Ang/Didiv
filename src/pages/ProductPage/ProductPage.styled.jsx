@@ -215,7 +215,17 @@ export const SpecsGrid = styled.div`
   flex-direction: column;
   gap: 12px;
   /* max-width: 800px; */
+   @media (min-width: 767px) {
+    padding-top:18px;
+  }
 `;
+export const TitleSpecs = styled.h3`
+font-family: var(--second-font);
+      border-bottom: 2px solid #717171;
+    border-bottom: 2px solid var(--second-color);
+    color: var(--second-color);
+      padding: 10px 0;
+`
 
 export const SpecRow = styled.div`
   display: flex;
@@ -236,6 +246,16 @@ export const DeliveryInfo = styled.div`
   margin: 20px 0;
   font-size: 14px;
   color: #444;
+`;
+export const DesktopWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
 `;
 
 export const TabsWrapper = styled.div`

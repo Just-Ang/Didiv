@@ -13,6 +13,7 @@ import {
   CurrentPrice,
   DeliveryInfo,
   DescriptionText,
+  DesktopWrapper,
   FavoriteButton,
   GallerySection,
   HeartIcon,
@@ -32,6 +33,7 @@ import {
   Thumb,
   Thumbnails,
   Title,
+  TitleSpecs,
   TooltipText,
   TooltipWrapper,
 } from './ProductPage.styled';
@@ -59,6 +61,26 @@ export const ProductPage = () => {
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;
+
+
+
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+
+    update();
+    media.addEventListener('change', update);
+
+    return () => media.removeEventListener('change', update);
+  }, [query]);
+
+  return matches;
+};
+const isDesktop = useMediaQuery('(min-width: 768px)');
+    
 
 
     const cartItems = useSelector((state) => state.cart.items);
@@ -295,6 +317,7 @@ const handleAdd = () => {
           </DeliveryInfo>
         </InfoSection>
       </MainSection>
+      {!isDesktop && (
       <TabsWrapper>
         <TabButtons>
           <TabButton
@@ -340,7 +363,62 @@ const handleAdd = () => {
             questions={product.questions}></FAQSection>
           )}
         </TabContent>
-      </TabsWrapper>
+      </TabsWrapper>)}
+
+      {isDesktop && (
+  <DesktopWrapper>
+    
+    {/* ЛІВА КОЛОНКА */}
+  
+    <TabsWrapper>
+      <TabButtons>
+        <TabButton
+          active={activeTab === 'description'}
+          onClick={() => setActiveTab('description')}
+        >
+          Опис
+        </TabButton>
+
+        <TabButton
+          active={activeTab === 'FAQ'}
+          onClick={() => setActiveTab('FAQ')}
+        >
+          Питання та відповіді
+        </TabButton>
+      </TabButtons>
+
+      <TabContent>
+        {activeTab === 'description' && (
+          <DescriptionText>{product.description}</DescriptionText>
+        )}
+
+        {activeTab === 'FAQ' && (
+          <FAQSection
+            productId={product.documentId}
+            questions={product.questions}
+          />
+        )}
+      </TabContent>
+    </TabsWrapper>
+
+    {/* ПРАВА КОЛОНКА  */}
+     <SpecsGrid>
+
+      <TitleSpecs> Характеристики</TitleSpecs>
+      {product.attributes?.length ? (
+        product.attributes.map((attr) => (
+          <SpecRow key={attr.id}>
+            <span>{attr.label}</span>
+            <b>{attr.value}</b>
+          </SpecRow>
+        ))
+      ) : (
+        <p>Характеристики відсутні</p>
+      )}
+    </SpecsGrid>
+
+  </DesktopWrapper>
+)}
     </Container>
   );
 };

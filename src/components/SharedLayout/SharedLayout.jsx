@@ -6,7 +6,7 @@ const SharedLayout = () => {
   return (
     <>
       <Header />
-      <main className="main-content">
+       <main style={{ flex: 1 }}>
         <Outlet />
       </main>
 
