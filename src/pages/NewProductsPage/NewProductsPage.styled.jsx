@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Section = styled.section`
@@ -316,7 +317,7 @@ export const WrapperNone = styled.div`
           align-items: center;
           font-size: 30px;
 `
-export const CatalogButton = styled.button`
+export const CatalogButton = styled(Link)`
     display: flex;
     justify-content: center;
     width: 200px;

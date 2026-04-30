@@ -49,7 +49,7 @@ width: 100%;
 export const HeaderUp = styled.div`
 
   display: flex;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1023px) {
     justify-content: space-between;
   }
 `;
@@ -57,7 +57,7 @@ export const HeadeRight = styled.div`
   display: flex;
   justify-content: space-around;
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 1023px) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,16 +112,17 @@ export const LogoBig = styled.img`
 export const StoreTitle = styled(Link)`
   font-size: 40px;
   font-family: Poiret One;
-  /* font-family: 'MyFont'; */
-  font-weight: 800;
+  font-family: 'MyFont'; 
+  
+  font-weight: 400;
   color: var(--white-color);
   letter-spacing:0.2em;
 
-  &::after {
+  /* &::after {
     content: '.';
     color: var(--orange-color); 
     margin-left: 2px;
-  }
+  } */
 `;
 
 export const TitleLogo = styled.h1`
@@ -149,8 +150,8 @@ export const MenuButton = styled.button`
   display: none;
   cursor: pointer;
 
-  @media (max-width: 768px) {
-    display: block; // показуємо тільки на мобільних
+  @media (max-width: 1023px) {
+    display: block;
   }
 
   cursor: pointer;

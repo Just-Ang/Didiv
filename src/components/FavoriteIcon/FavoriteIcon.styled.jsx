@@ -12,7 +12,7 @@ export const  StyledLink =styled(Link)`
     align-content: center;
     justify-content: center;
     
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 1023px) {
    order: 2;
  
   }

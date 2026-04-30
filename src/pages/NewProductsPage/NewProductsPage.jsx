@@ -187,7 +187,7 @@ export const NewProductsPage = () => {
         >
           Нажаль, нічого нового за останній тиждень
         </p>
-        <CatalogButton href="catalog">
+        <CatalogButton to="/catalog">
                 <p>Весь каталог</p>
                
                       <ArrowRight size={24} />

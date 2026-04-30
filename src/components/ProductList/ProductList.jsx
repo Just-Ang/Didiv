@@ -337,8 +337,8 @@ const arr = [...filteredProducts];
                       <ShoppingCart size={24} 
     color={inCart ? 'var(--orange-color)' : 'black'} 
   
-    fill={inCart ? 'var(--orange-color)' : 'none'}
-        strokeWidth={inCart ? 1 : 2}
+    // fill={inCart ? 'var(--orange-color)' : 'none'}
+        strokeWidth={inCart ? 2 : 2}
 />
                     </Button>
 
