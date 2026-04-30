@@ -119,12 +119,22 @@ export const PriceWrapper = styled.div`
 export const CurrentPrice = styled.span`
   font-size: 32px;
   font-weight: 700;
+    color: ${({ $discount }) => ($discount ? 'var(--red-color)' : '#111')};
 `;
 
+
 export const OldPrice = styled.span`
+  font-size: 14px;
   text-decoration: line-through;
   color: #999;
-  font-size: 18px;
+`;
+
+export const DiscountBadge = styled.span`
+  background:var(--red-color);
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
 `;
 
 export const ActionRow = styled.div`

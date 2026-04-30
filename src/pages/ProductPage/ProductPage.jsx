@@ -14,12 +14,14 @@ import {
   DeliveryInfo,
   DescriptionText,
   DesktopWrapper,
+  DiscountBadge,
   FavoriteButton,
   GallerySection,
   HeartIcon,
   InfoSection,
   MainImage,
   MainSection,
+  OldPrice,
   PriceCard,
   PriceWrapper,
   QuantitySelector,
@@ -62,34 +64,30 @@ export const ProductPage = () => {
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;
 
+  const useMediaQuery = (query) => {
+    const [matches, setMatches] = useState(false);
 
+    useEffect(() => {
+      const media = window.matchMedia(query);
+      const update = () => setMatches(media.matches);
 
-const useMediaQuery = (query) => {
-  const [matches, setMatches] = useState(false);
+      update();
+      media.addEventListener('change', update);
 
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    const update = () => setMatches(media.matches);
+      return () => media.removeEventListener('change', update);
+    }, [query]);
 
-    update();
-    media.addEventListener('change', update);
+    return matches;
+  };
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
-    return () => media.removeEventListener('change', update);
-  }, [query]);
+  const cartItems = useSelector((state) => state.cart.items);
 
-  return matches;
-};
-const isDesktop = useMediaQuery('(min-width: 768px)');
-    
+  const cartItem = product
+    ? cartItems.find((item) => item.id === product.id)
+    : null;
 
-
-    const cartItems = useSelector((state) => state.cart.items);
-
-const cartItem = product
-  ? cartItems.find((item) => item.id === product.id)
-  : null;
-
-const alreadyInCartQty = cartItem?.quantity || 0;
+  const alreadyInCartQty = cartItem?.quantity || 0;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -121,8 +119,8 @@ const alreadyInCartQty = cartItem?.quantity || 0;
   }, [product]);
 
   const slides = (product?.images ?? []).map((img) => ({
-  src: img.url,
-}));
+    src: img.url,
+  }));
 
   const handleMainImageClick = () => {
     const index = product.images.findIndex((img) => img.url === activeImage);
@@ -133,24 +131,22 @@ const alreadyInCartQty = cartItem?.quantity || 0;
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
-const handleAdd = () => {
- 
+  const handleAdd = () => {
+    // якщо вже максимум
+    if (alreadyInCartQty >= product.stock) {
+      toast.warning('Товар вже в кошику (досягнуто максимум)');
+      return;
+    }
 
-  // якщо вже максимум
-  if (alreadyInCartQty >= product.stock) {
-    toast.warning('Товар вже в кошику (досягнуто максимум)');
-    return;
-  }
+    // якщо додаємо більше ніж можна
+    if (alreadyInCartQty + quantity > product.stock) {
+      toast.warning(`Доступно лише ${product.stock} шт.`);
+      return;
+    }
 
-  // якщо додаємо більше ніж можна
-  if (alreadyInCartQty + quantity > product.stock) {
-    toast.warning(`Доступно лише ${product.stock} шт.`);
-    return;
-  }
-
-  dispatch(addToCart({ ...product, quantity }));
-  toast.success(`${product.name} додано в кошик!`);
-};
+    dispatch(addToCart({ ...product, quantity }));
+    toast.success(`${product.name} додано в кошик!`);
+  };
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
 
@@ -162,6 +158,14 @@ const handleAdd = () => {
       toast.info(`${product.name} додано в обране`);
     }
   };
+
+
+const hasDiscount = product?.new_price && product?.new_price < product.price;
+
+const discountPercent = hasDiscount
+  ? Math.round(((product.price - product.new_price) / product.price) * 100)
+  : 0;
+
 
   if (loading) {
     return (
@@ -261,9 +265,27 @@ const handleAdd = () => {
           </RatingRow>
 
           <PriceCard>
-            <PriceWrapper>
-              <CurrentPrice>{product.price.toLocaleString()} грн</CurrentPrice>
-            </PriceWrapper>
+           <PriceWrapper>
+  {hasDiscount ? (
+    <>
+      <CurrentPrice $discount>
+        {product.new_price.toLocaleString()} грн
+      </CurrentPrice>
+
+      <OldPrice>
+        {product.price.toLocaleString()} грн
+      </OldPrice>
+
+      <DiscountBadge>
+        -{discountPercent}%
+      </DiscountBadge>
+    </>
+  ) : (
+    <CurrentPrice>
+      {product.price.toLocaleString()} грн
+    </CurrentPrice>
+  )}
+</PriceWrapper>
 
             <ActionRow>
               <QuantitySelector>
@@ -271,25 +293,20 @@ const handleAdd = () => {
                   -
                 </button>
                 <span>{quantity}</span>
-            <TooltipWrapper $active={quantity >= product.stock}>
-  <button
-    onClick={() =>
-      setQuantity(Math.min(product.stock, quantity + 1))
-    }
-    disabled={quantity >= product.stock}
-  >
-    +
-  </button>
+                <TooltipWrapper $active={quantity >= product.stock}>
+                  <button
+                    onClick={() =>
+                      setQuantity(Math.min(product.stock, quantity + 1))
+                    }
+                    disabled={quantity >= product.stock}
+                  >
+                    +
+                  </button>
 
- 
-    <TooltipText>
-      Максимум: {product.stock}
-    </TooltipText>
-
-</TooltipWrapper>
-                
+                  <TooltipText>Максимум: {product.stock}</TooltipText>
+                </TooltipWrapper>
               </QuantitySelector>
-              
+
               <AddToCartBtn onClick={handleAdd}>
                 {' '}
                 <ShoppingCart size={25} />
@@ -318,107 +335,106 @@ const handleAdd = () => {
         </InfoSection>
       </MainSection>
       {!isDesktop && (
-      <TabsWrapper>
-        <TabButtons>
-          <TabButton
-            active={activeTab === 'description'}
-            onClick={() => setActiveTab('description')}
-          >
-            Опис
-          </TabButton>
-          <TabButton
-            active={activeTab === 'attributes'}
-            onClick={() => setActiveTab('attributes')}
-          >
-            Характеристики
-          </TabButton>
-          <TabButton
-            active={activeTab === 'FAQ'}
-            onClick={() => setActiveTab('FAQ')}
-          >
-            Питання та відповіді
-          </TabButton>
-        </TabButtons>
+        <TabsWrapper>
+          <TabButtons>
+            <TabButton
+              active={activeTab === 'description'}
+              onClick={() => setActiveTab('description')}
+            >
+              Опис
+            </TabButton>
+            <TabButton
+              active={activeTab === 'attributes'}
+              onClick={() => setActiveTab('attributes')}
+            >
+              Характеристики
+            </TabButton>
+            <TabButton
+              active={activeTab === 'FAQ'}
+              onClick={() => setActiveTab('FAQ')}
+            >
+              Питання та відповіді
+            </TabButton>
+          </TabButtons>
 
-        <TabContent>
-          {activeTab === 'description' && (
-            <DescriptionText>{product.description}</DescriptionText>
-          )}
-          {activeTab === 'attributes' && (
-            <SpecsGrid>
-              {product.attributes?.length ? (
-                product.attributes.map((attr) => (
-                  <SpecRow key={attr.id}>
-                    <span>{attr.label}</span>
-                    <b>{attr.value}</b>
-                  </SpecRow>
-                ))
-              ) : (
-                <p>Характеристики відсутні</p>
-              )}
-            </SpecsGrid>
-          )}
-          {activeTab === 'FAQ' && (
-            <FAQSection productId = {product.documentId}
-            questions={product.questions}></FAQSection>
-          )}
-        </TabContent>
-      </TabsWrapper>)}
-
-      {isDesktop && (
-  <DesktopWrapper>
-    
-    {/* ЛІВА КОЛОНКА */}
-  
-    <TabsWrapper>
-      <TabButtons>
-        <TabButton
-          active={activeTab === 'description'}
-          onClick={() => setActiveTab('description')}
-        >
-          Опис
-        </TabButton>
-
-        <TabButton
-          active={activeTab === 'FAQ'}
-          onClick={() => setActiveTab('FAQ')}
-        >
-          Питання та відповіді
-        </TabButton>
-      </TabButtons>
-
-      <TabContent>
-        {activeTab === 'description' && (
-          <DescriptionText>{product.description}</DescriptionText>
-        )}
-
-        {activeTab === 'FAQ' && (
-          <FAQSection
-            productId={product.documentId}
-            questions={product.questions}
-          />
-        )}
-      </TabContent>
-    </TabsWrapper>
-
-    {/* ПРАВА КОЛОНКА  */}
-     <SpecsGrid>
-
-      <TitleSpecs> Характеристики</TitleSpecs>
-      {product.attributes?.length ? (
-        product.attributes.map((attr) => (
-          <SpecRow key={attr.id}>
-            <span>{attr.label}</span>
-            <b>{attr.value}</b>
-          </SpecRow>
-        ))
-      ) : (
-        <p>Характеристики відсутні</p>
+          <TabContent>
+            {activeTab === 'description' && (
+              <DescriptionText>{product.description}</DescriptionText>
+            )}
+            {activeTab === 'attributes' && (
+              <SpecsGrid>
+                {product.attributes?.length ? (
+                  product.attributes.map((attr) => (
+                    <SpecRow key={attr.id}>
+                      <span>{attr.label}</span>
+                      <b>{attr.value}</b>
+                    </SpecRow>
+                  ))
+                ) : (
+                  <p>Характеристики відсутні</p>
+                )}
+              </SpecsGrid>
+            )}
+            {activeTab === 'FAQ' && (
+              <FAQSection
+                productId={product.documentId}
+                questions={product.questions}
+              ></FAQSection>
+            )}
+          </TabContent>
+        </TabsWrapper>
       )}
-    </SpecsGrid>
+      {isDesktop && (
+        <DesktopWrapper>
+          {/* ЛІВА КОЛОНКА */}
 
-  </DesktopWrapper>
-)}
+          <TabsWrapper>
+            <TabButtons>
+              <TabButton
+                active={activeTab === 'description'}
+                onClick={() => setActiveTab('description')}
+              >
+                Опис
+              </TabButton>
+
+              <TabButton
+                active={activeTab === 'FAQ'}
+                onClick={() => setActiveTab('FAQ')}
+              >
+                Питання та відповіді
+              </TabButton>
+            </TabButtons>
+
+            <TabContent>
+              {activeTab === 'description' && (
+                <DescriptionText>{product.description}</DescriptionText>
+              )}
+
+              {activeTab === 'FAQ' && (
+                <FAQSection
+                  productId={product.documentId}
+                  questions={product.questions}
+                />
+              )}
+            </TabContent>
+          </TabsWrapper>
+
+          {/* ПРАВА КОЛОНКА  */}
+          <SpecsGrid>
+            <TitleSpecs> Характеристики</TitleSpecs>
+            {product.attributes?.length ? (
+              product.attributes.map((attr) => (
+                <SpecRow key={attr.id}>
+                  <span>{attr.label}</span>
+                  <b>{attr.value}</b>
+                </SpecRow>
+              ))
+            ) : (
+              <p>Характеристики відсутні</p>
+            )}
+          </SpecsGrid>
+        </DesktopWrapper>
+      )}
     </Container>
   );
 };

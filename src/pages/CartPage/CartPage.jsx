@@ -10,8 +10,12 @@ import {
   ClearButton,
   ContentWrapper,
   CounterPrice,
+  CurrentPrice,
+  DiscountBadge,
+  OldPrice,
   OrderButton,
   PageContainer,
+  PriceBlock,
   PriceWrapper,
   ProductImg,
   ProductInfo,
@@ -70,6 +74,8 @@ const CartPage = () => {
     dispatch(clearCart());
   };
 
+  
+
   return (
     <>
       {isCartEmpty ? (
@@ -97,6 +103,13 @@ const CartPage = () => {
               {cartItems.map((item, index) => {
                 console.log(item);
                 const isFavorite = favorites.some((fav) => fav.id === item.id);
+            const hasDiscount = item.new_price && item.new_price < item.price;
+
+const finalPrice = hasDiscount ? item.new_price : item.price;
+
+const discountPercent = hasDiscount
+  ? Math.round(((item.price - item.new_price) / item.price) * 100)
+  : 0;
                 return (
                   <CartItem
                     key={`${item.id}-${index}`}
@@ -118,12 +131,25 @@ const CartPage = () => {
                       <Counter
                         item={{ ...item, quantity: item.quantity || 1 }}
                       />
-                      <PriceWrapper>
-                        <div className="current-price">
-                          {(item.price * (item.quantity || 1)).toLocaleString()}
-                          &nbsp;грн
-                        </div>
-                      </PriceWrapper>
+                <PriceWrapper>
+  <PriceBlock>
+    <CurrentPrice $discount={hasDiscount}>
+      {(finalPrice * (item.quantity || 1)).toLocaleString()} грн
+    </CurrentPrice>
+
+    {hasDiscount && (
+      <>
+        <OldPrice>
+          {(item.price * (item.quantity || 1)).toLocaleString()} грн
+        </OldPrice>
+
+        <DiscountBadge>
+          -{discountPercent}%
+        </DiscountBadge>
+      </>
+    )}
+  </PriceBlock>
+</PriceWrapper>
                     </CounterPrice>
                     <BtnIcons>
                       <ButtonFavorite

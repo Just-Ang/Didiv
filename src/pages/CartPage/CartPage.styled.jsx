@@ -142,6 +142,49 @@ export const PriceWrapper = styled.div`
   width: 100px;
  
 `;
+
+
+// export const PriceWrapper = styled.div`
+//   display: flex;
+//   align-items: flex-start;
+// `;
+
+export const PriceBlock = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const CurrentPrice = styled.span`
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ $discount }) => ($discount ? "#111" : "#111")};
+`;
+
+export const OldPrice = styled.span`
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+`;
+
+export const DiscountBadge = styled.span`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+
+  color: #fff;
+  background:var(--red-color);
+
+  padding: 2px 4px;
+  border-radius: 6px;
+
+  white-space: nowrap;
+`;
 export const ButtonDelete = styled.button`
   background: 'none';
   border: 'none';
