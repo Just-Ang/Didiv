@@ -1,8 +1,10 @@
-import { ActionButton, Breadcrumbs, CartImage, Container, MessageTitle, SubMessage,  } from "./CartEmpty.styled";
+
+import { ActionButton, Section, Breadcrumbs, CartImage, Container, EmptyWripper, MessageTitle, SubMessage,  } from "./CartEmpty.styled";
 
 const CartEmpty = () => {
-  return (
-    <>
+  return (  
+    <Section>
+    <EmptyWripper>
       <Breadcrumbs>Головна / Кошик</Breadcrumbs>
       <Container>
         <CartImage
@@ -15,7 +17,9 @@ const CartEmpty = () => {
           Перейти до покупок
         </ActionButton>
       </Container>
-    </>
+  
+    </EmptyWripper>
+    </Section>
   );
 };
 

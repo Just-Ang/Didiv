@@ -1,15 +1,32 @@
 import styled from 'styled-components';
 
-// Секція Header/Breadcrumbs
-export const Breadcrumbs = styled.div`
-  padding: 20px 40px;
-  font-size: 14px;
-  color: #8c8c8c;
-  background-color: #fdfaf7;
+export const EmptyWripper = styled.div`
+  width: 100%;
+  max-width: 750px;
+  padding: 10px;
+  @media screen and (min-width: 768px) {
+    max-width: 994px;
+    padding: 30px;
+  }
+  @media screen and (min-width: 1200px) {
+    max-width: 1448px;
+  }
+
+  margin: 0 auto;
 `;
 
+export const Breadcrumbs = styled.div`
+ font-family: var(--main-font);
+  font-size: 14px;
+  color: #8c8c8c;
+  margin-bottom: 15px;
+`;
+
+export const Section = styled.div`
+  background-color: #fdfaf7;
+`
+
 export const Container = styled.div`
-   
   display: flex;
   flex-direction: column;
   align-items: center;
