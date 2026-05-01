@@ -143,12 +143,6 @@ export const PriceWrapper = styled.div`
  
 `;
 
-
-// export const PriceWrapper = styled.div`
-//   display: flex;
-//   align-items: flex-start;
-// `;
-
 export const PriceBlock = styled.div`
   position: relative;
   display: flex;
@@ -169,6 +163,7 @@ export const OldPrice = styled.span`
 `;
 
 export const DiscountBadge = styled.span`
+    font-family: var(--second-font);
   position: absolute;
   top: -10px;
   right: -10px;

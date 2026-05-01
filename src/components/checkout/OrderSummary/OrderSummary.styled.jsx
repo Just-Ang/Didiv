@@ -72,12 +72,12 @@ export const Button = styled.button`
 export const CartPreviewList = styled.ul`
   list-style: none;
   padding: 0;
+  padding-right:10px;
   margin: 0 0 20px 0;
-  max-height: 240px; /* Обмежуємо висоту, щоб не розтягувати сторінку */
-  overflow-y: auto;  /* Додаємо внутрішню прокрутку */
+  max-height: 240px; 
+  overflow-y: auto;  
   border-bottom: 1px solid #eee;
 
-  /* Стилізація скроллбару */
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -134,4 +134,47 @@ export const PreviewInfo = styled.div`
     color: #888;
     margin: 0;
   }
+`;
+
+export const PriceWrapper = styled.div`
+  text-align: center;
+  width: 100px;
+ 
+`;
+
+export const PriceBlock = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const CurrentPrice = styled.span`
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ $discount }) => ($discount ? "#111" : "#111")};
+`;
+
+export const OldPrice = styled.span`
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+`;
+
+export const DiscountBadge = styled.span`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+
+  color: #fff;
+  background:var(--red-color);
+
+  padding: 2px 4px;
+  border-radius: 6px;
+
+  white-space: nowrap;
 `;

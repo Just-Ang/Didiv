@@ -58,8 +58,8 @@ const OrderConfirmation = () => {
   const products = order?.products ?? [];
 
   const totalPrice = products.reduce((sum, item) => {
-    return sum + Number(item.price || 0) * (item.quantity || 1);
-  }, 0);
+  return sum + Number(item.new_price ?? item.price) * (item.quantity || 1);
+}, 0);
 
   if (loading) return <div>Завантаження...</div>;
 
@@ -90,9 +90,9 @@ const OrderConfirmation = () => {
               <span className="item-info">
                 {item.name} (x{item.quantity})
               </span>
-              <span className="item-price">
-                {item.price * item.quantity} грн
-              </span>
+             <span className="item-price">
+  {(item.new_price ?? item.price) * (item.quantity || 1)} грн
+</span>
             </ListItem>
           ))}
         </List>

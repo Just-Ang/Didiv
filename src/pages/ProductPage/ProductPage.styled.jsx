@@ -5,6 +5,8 @@ export const Container = styled.div`
   max-width: 750px;
   margin: 0 auto;
   padding: 20px;
+    padding-left: 10px;
+  padding-right: 10px;
   font-family: var(--main-font);
   @media screen and (min-width: 768px) {
     max-width: 994px;

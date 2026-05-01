@@ -4,15 +4,20 @@ import {
   CardBottom,
   CardButtons,
   CardImg,
-  CardPrice,
+
   CardTitle,
   ContainerProduct,
+  CurrentPrice,
+  DiscountBadge,
   Dropdown,
   GridWrapper,
   Item,
   NotFoundDiv,
+  OldPrice,
   PageButton,
   PaginationWrapper,
+  PriceBlock,
+  PriceWrapper,
   SortButton,
   TitleCategory,
   WrapperSort,
@@ -299,6 +304,14 @@ const arr = [...filteredProducts];
 
             const isOutOfStock = currentQty >= (product.stock || 0);
 
+              const hasDiscount = product.new_price && product.new_price < product.price;
+
+const finalPrice = hasDiscount ? product.new_price : product.price;
+
+const discountPercent = hasDiscount
+  ? Math.round(((product.price - product.new_price) / product.price) * 100)
+  : 0;
+
             const handleAdd = (product, e) => {
               e.stopPropagation();
               if (isOutOfStock) {
@@ -331,7 +344,25 @@ const arr = [...filteredProducts];
                 <CardTitle>{product.name}</CardTitle>
 
                 <CardBottom>
-                  <CardPrice>{product.price} грн</CardPrice>
+                     <PriceWrapper>
+                    <PriceBlock>
+                      <CurrentPrice $discount={hasDiscount}>
+                        {(finalPrice * (product.quantity || 1)).toLocaleString()} грн
+                      </CurrentPrice>
+                  
+                      {hasDiscount && (
+                        <>
+                          <OldPrice>
+                            {(product.price * (product.quantity || 1)).toLocaleString()} грн
+                          </OldPrice>
+                  
+                          <DiscountBadge>
+                            -{discountPercent}%
+                          </DiscountBadge>
+                        </>
+                      )}
+                    </PriceBlock>
+                  </PriceWrapper>
                   <CardButtons>
                     <Button onClick={(e) => handleAdd(product, e)}>
                       <ShoppingCart size={24} 

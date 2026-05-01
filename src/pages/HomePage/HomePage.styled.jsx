@@ -8,8 +8,8 @@ export const Container = styled.div`
   width: 100%;
   max-width: 750px;
 
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;

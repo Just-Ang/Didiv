@@ -43,10 +43,11 @@ const CartPage = () => {
   const items = useSelector((state) => state.cart.items);
 
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * (item.quantity || 1),
-    0
-  );
+ const total = cartItems.reduce(
+  (sum, item) =>
+    sum + (item.new_price ?? item.price) * (item.quantity || 1),
+  0
+);
 
   const favorites = useSelector((state) => state.favorites.items);
   const isCartEmpty = cartItems.length === 0;

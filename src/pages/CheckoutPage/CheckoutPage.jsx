@@ -41,10 +41,11 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   console.log(paymentMethod)
 
-  const totalAmount = cartItems.reduce(
-    (acc, i) => acc + i.price * i.quantity,
-    0
-  );
+ const totalAmount = cartItems.reduce(
+  (acc, i) =>
+    acc + (i.new_price ?? i.price) * i.quantity,
+  0
+);
   const totalQuantity = cartItems.reduce((acc, i) => acc + i.quantity, 0);
 
   const generateOrderNumber = () => {
@@ -215,7 +216,7 @@ const CheckoutPage = () => {
               id: item.id,
               name: item.name,
               quantity: item.quantity,
-              price: item.price,
+             price: item.new_price ?? item.price,
             })),
 
             status_order: 'pending',
@@ -302,7 +303,7 @@ const CheckoutPage = () => {
           id: item.id,
           name: item.name,
           quantity: item.quantity,
-          price: item.price,
+          price: item.new_price ?? item.price,
         })),
         total: totalAmount,
         order_number: orderNumber,
@@ -400,16 +401,6 @@ const CheckoutPage = () => {
           handleSubmit={handleOrder}
         />
 
-        {/* <ButtonPay
-          onClick={handleOrder}
-          disabled={!isFormValid}
-          style={{
-            opacity: isFormValid ? 1 : 0.5,
-            cursor: isFormValid ? 'pointer' : 'not-allowed',
-          }}
-        >
-          {loading ? 'Переходимо до оплати...' : 'Оплатити'}
-        </ButtonPay> */}
       </CheckoutWrapper>
     </Container>
   );

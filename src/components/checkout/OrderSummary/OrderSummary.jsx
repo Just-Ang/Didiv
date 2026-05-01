@@ -1,4 +1,4 @@
-import { Button, CartPreviewItem, CartPreviewList, PreviewImg, PreviewInfo, Summary } from "./OrderSummary.styled";
+import { Button, CartPreviewItem, CartPreviewList, CurrentPrice, DiscountBadge, OldPrice, PreviewImg, PreviewInfo, PriceBlock, PriceWrapper, Summary } from "./OrderSummary.styled";
 import placeholder from '../../../../public/nofoto.png';
 
 const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, handleSubmit }) => {
@@ -7,16 +7,45 @@ const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, hand
   <Summary>
     <h3>Ваше замовлення</h3>
     <CartPreviewList>
-      {cartItems.map((item, index) => (
+      {cartItems.map((item, index) => {
+        const hasDiscount =
+  item.new_price && item.new_price < item.price;
+
+const finalPrice = hasDiscount ? item.new_price : item.price;
+
+const discountPercent = hasDiscount
+  ? Math.round(((item.price - item.new_price) / item.price) * 100)
+  : 0;
+
+const total = finalPrice * (item.quantity || 1);
+         return (
         <CartPreviewItem key={`${item.id}-${index}`}>
           <PreviewImg   src={item.images?.[0]?.url || placeholder} alt={item.name} />
           <PreviewInfo>
             <p className="item-name">{item.name}</p>
             <p className="item-details">{item.quantity} шт. × {item.price} грн</p>
           </PreviewInfo>
-          <span className="item-total">{item.price * item.quantity} грн</span>
-        </CartPreviewItem>
-      ))}
+<PriceWrapper>
+  <PriceBlock>
+    <CurrentPrice $discount={hasDiscount}>
+      {total.toLocaleString()} грн
+    </CurrentPrice>
+
+    {hasDiscount && (
+      <>
+        <OldPrice>
+          {(item.price * (item.quantity || 1)).toLocaleString()} грн
+        </OldPrice>
+
+        <DiscountBadge>
+          -{discountPercent}%
+        </DiscountBadge>
+      </>
+    )}
+  </PriceBlock>
+</PriceWrapper>
+     </CartPreviewItem>
+      )})}
     </CartPreviewList>
     <div className="summary-row">
       <span>Товари ({totalQuantity})</span>

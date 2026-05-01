@@ -19,6 +19,7 @@ import AboutUs from './pages/About/About';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import ContactsPage from './pages/ContactsPage/ContactsPage';
 import { NewProductsPage } from './pages/NewProductsPage/NewProductsPage';
+import SalePage from './pages/SalePage/SalePage';
 
 
 
@@ -40,6 +41,7 @@ function App() {
     <Route path="cart" element={<CartPage />} />
     <Route path="favorite" element={<FavoritesPage/>} />
     <Route path ="/catalog/new" element={<NewProductsPage/>} />
+     <Route path ="/catalog/sale" element={<SalePage/>} />
 
  <Route path="checkout" element={<CheckoutPage/>} />
   <Route path="/order-confirmation" element={<OrderConfirmation />} />
