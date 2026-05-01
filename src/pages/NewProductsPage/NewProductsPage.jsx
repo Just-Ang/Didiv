@@ -29,6 +29,7 @@ import { ButtonF } from './NewProductsPage.styled';
 import { BallTriangle } from 'react-loader-spinner';
 import { PaginationWrapper } from './NewProductsPage.styled';
 import { PageButton } from './NewProductsPage.styled';
+import placeholder from '../../../public/nofoto.png';
 export const NewProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -286,7 +287,7 @@ export const NewProductsPage = () => {
                 key={product.id}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-                <CardImg src={product.images?.[0]?.url} alt={product.name} />
+                <CardImg src={product.images?.[0]?.url || placeholder} alt={product.name} />
                 <CardTitle>{product.name}</CardTitle>
 
                 <CardBottom>
