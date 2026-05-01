@@ -202,7 +202,7 @@ export const NewProductsPage = () => {
       <Container>
         <ToastContainer autoClose={1500} />
         <WrapperTop>
-          <TitleNew>Нові товари</TitleNew>
+          <TitleNew>Нові товари </TitleNew>
           <WrapperSort>
             <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
               Сортування
