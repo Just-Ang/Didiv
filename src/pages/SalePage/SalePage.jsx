@@ -13,12 +13,14 @@ import {
   Dropdown,
   Item,
   SortButton,
+  Title,
 } from './SalePage.styled';
 import {
     CatalogButton,
   PageButton,
   PaginationWrapper,
   WrapperNone,
+  WrapperTop,
 
 } from '../NewProductsPage/NewProductsPage.styled';
 
@@ -180,7 +182,8 @@ const SalePage = () => {
     <Section>
       <Container>
           <ToastContainer autoClose={1500} />
-        <h1>Акційні товари</h1>
+          <WrapperTop>
+              <Title>Акційні товари</Title>
         <WrapperSort>
           <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
             Сортування
@@ -250,6 +253,9 @@ const SalePage = () => {
             </Dropdown>
           )}
         </WrapperSort>
+            
+          </WrapperTop>
+      
 
         <GridWrapper>
           {currentProducts.map((item) => {

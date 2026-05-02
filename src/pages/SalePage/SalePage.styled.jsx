@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 /* SECTION */
 export const Section = styled.section`
   background-color: var(--second-background);
@@ -28,17 +27,26 @@ export const Container = styled.div`
   }
 `;
 
-/* TITLE (якщо захочеш стилізувати h1) */
-export const Title = styled.h1`
-  font-family: var(--main-font);
-  font-size: 28px;
-  text-transform: uppercase;
-  margin-bottom: 30px;
-  color: var(--black-color);
 
-  @media screen and (min-width: 768px) {
-    font-size: 36px;
+export const Title = styled.h1`
+
+    font-size: 25px;
+font-family: var(--main-font);
+color: var( --black-color);
+text-transform: uppercase;
+ @media screen and (min-width: 360px) {
+  font-size: 32px;
   }
+
+
+@media screen and (min-width: 768px) {
+
+  text-align:center;
+margin-left:auto;
+margin-right: auto;
+
+  }
+
 `;
 
 /* GRID */
@@ -63,7 +71,9 @@ export const Card = styled.div`
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
     @media screen and (min-width: 768px) {
@@ -122,7 +132,6 @@ export const CardPrice = styled.span`
   }
 `;
 
-
 export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   position: static;
   bottom: 10px;
@@ -134,7 +143,6 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   opacity: 1;
 
   @media screen and (min-width: 768px) {
-
   }
 `;
 
@@ -170,18 +178,18 @@ export const FavoriteLogo = styled.svg`
   fill: var(--white-color);
 `;
 
-
 export const WrapperSort = styled.div`
-position: relative;
+  position: relative;
   display: inline-block;
-    margin-left: auto;
-    margin-bottom: 10px;
-    @media screen and (min-width: 768px) {
-         margin-bottom: 20px;
-    }
- `
+  display:flex;
+  
 
- export const Dropdown = styled.div`
+  @media screen and (min-width: 768px) {
+    margin-bottom: 20px;
+  }
+`;
+
+export const Dropdown = styled.div`
   position: absolute;
   top: 110%;
   right: 0;
@@ -193,7 +201,7 @@ position: relative;
   min-width: 160px;
   padding: 6px 0;
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 `;
 export const Item = styled.div`
@@ -217,13 +225,15 @@ export const SortButton = styled.button`
   justify-content: space-evenly;
   align-items: center;
   align-content: center;
-  transition: all 0.2s ease, transform 0.1s ease;
+  transition:
+    all 0.2s ease,
+    transform 0.1s ease;
 
   &:hover {
-  background: #4e4136;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
+    background: #4e4136;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
 
   &:active {
     transform: scale(0.97);

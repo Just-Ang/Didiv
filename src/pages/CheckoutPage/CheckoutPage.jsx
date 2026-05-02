@@ -17,6 +17,7 @@ const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log('апі', API_KEY)
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -39,7 +40,7 @@ const CheckoutPage = () => {
   // const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
   // const [ukrSearch, setUkrSearch] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(null);
-  console.log(paymentMethod)
+
 
  const totalAmount = cartItems.reduce(
   (acc, i) =>
