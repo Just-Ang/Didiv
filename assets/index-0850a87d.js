@@ -339,7 +339,7 @@ width: 100%;
   border: 1px solid #eee;
   max-height: 500px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 500;
   /* max-width:600px */
 `,yP=E.li`
   display: flex;
@@ -364,7 +364,7 @@ display: flex;
 flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-`,cn="/Didiv/assets/symbol-defs-fb9ce9f0.svg",wP=()=>{const[e,t]=b.useState("");console.log(e);const[n,r]=b.useState([]);console.log(n);const[i,o]=b.useState(!1);console.log(i);const a=On();b.useEffect(()=>{if(!e.trim()){r([]),o(!1);return}const s=setTimeout(async()=>{try{const d=await(await fetch(`https://backenddidiv-production.up.railway.app/api/products?filters[name][$containsi]=${e}&populate=*`)).json();r(d.data),o(!0)}catch(u){console.error(u)}},300);return()=>clearTimeout(s)},[e]);const l=s=>{t(""),o(!1),a(`/product/${s.id}`)};return f.jsxs(pP,{children:[f.jsx(hP,{name:"site-search",value:e,onChange:s=>t(s.target.value),placeholder:"Пошук",autoComplete:"off"}),f.jsx(mP,{className:"search-button",children:f.jsx(gP,{children:f.jsx("use",{href:`${cn}#icon-search`})})}),i&&n.length>0&&f.jsx(vP,{children:n.map(s=>{var c,y;const d=s.new_price&&s.new_price<s.price?s.new_price:s.price;return f.jsxs(yP,{onClick:()=>l(s),children:[f.jsx("img",{src:((y=(c=s.images)==null?void 0:c[0])==null?void 0:y.url)||"/nofoto.png",alt:""}),f.jsxs(bP,{children:[f.jsx(xP,{children:s.name}),f.jsxs("span",{children:[d," грн."]})]})]},s.id)})})]})};var Ab={exports:{}},Rb={};/**
+`,cn="/Didiv/assets/symbol-defs-fb9ce9f0.svg",wP=()=>{const[e,t]=b.useState(""),[n,r]=b.useState([]),[i,o]=b.useState(!1),a=On(),l=b.useRef(null);b.useEffect(()=>{if(!e.trim()){r([]),o(!1);return}const u=setTimeout(async()=>{try{const c=await(await fetch(`https://backenddidiv-production.up.railway.app/api/products?filters[name][$containsi]=${e}&populate=*`)).json();r(c.data),o(!0)}catch(d){console.error(d)}},300);return()=>clearTimeout(u)},[e]),b.useEffect(()=>{const u=d=>{l.current&&!l.current.contains(d.target)&&o(!1)};return document.addEventListener("mousedown",u),()=>{document.removeEventListener("mousedown",u)}},[]);const s=u=>{t(""),o(!1),a(`/product/${u.id}`)};return f.jsxs(pP,{ref:l,children:[f.jsx(hP,{name:"site-search",value:e,onChange:u=>t(u.target.value),placeholder:"Пошук",autoComplete:"off"}),f.jsx(mP,{className:"search-button",children:f.jsx(gP,{children:f.jsx("use",{href:`${cn}#icon-search`})})}),i&&n.length>0&&f.jsx(vP,{children:n.map(u=>{var y,p;const c=u.new_price&&u.new_price<u.price?u.new_price:u.price;return f.jsxs(yP,{onClick:()=>s(u),children:[f.jsx("img",{src:((p=(y=u.images)==null?void 0:y[0])==null?void 0:p.url)||"/nofoto.png",alt:""}),f.jsxs(bP,{children:[f.jsx(xP,{children:u.name}),f.jsxs("span",{children:[c," грн."]})]})]},u.id)})})]})};var Ab={exports:{}},Rb={};/**
  * @license React
  * use-sync-external-store-with-selector.production.js
  *
