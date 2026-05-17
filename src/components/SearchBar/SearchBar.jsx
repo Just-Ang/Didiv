@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, ButtonLogo, Dropdown, DropdownItem, Input, Wrapper } from './SearchBar.styled';
+import { Button, ButtonLogo, Dropdown, DropdownItem, Input, ItemTitle, Wrapper, WrapperDown } from './SearchBar.styled';
 import sprite from '../../img/symbol-defs.svg';
 import { useNavigate } from 'react-router-dom';
 
@@ -59,12 +59,21 @@ export const SearchBar = () => {
       </Button>
         {open && results.length > 0 && (
         <Dropdown>
-          {results.map((item) => (
+          {results.map((item) => {
+               const hasDiscount =
+  item.new_price && item.new_price < item.price;
+
+const finalPrice = hasDiscount ? item.new_price : item.price;
+         
+          return (
             <DropdownItem key={item.id} onClick={() => handleSelect(item)}>
               <img src={item.images?.[0]?.url || '/nofoto.png'} alt="" />
-              <span>{item.name}</span>
+             <WrapperDown>
+               <ItemTitle>{item.name}</ItemTitle>
+              <span>{finalPrice} грн.</span>
+             </WrapperDown>
             </DropdownItem>
-          ))}
+          )})}
         </Dropdown>
       )}
     </Wrapper>

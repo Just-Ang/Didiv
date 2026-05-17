@@ -60,9 +60,9 @@ export const Header = () => {
                   <StyledLink onClick={() => setMenuOpen(false)} to="/catalog">
                     <ShoppingBag size={22} strokeWidth={1.5} /> Каталог
                   </StyledLink>
-                  <StyledLink to="/catalog/new">
+                  <StyledLink  onClick={() => setMenuOpen(false)} to="/catalog/new">
                    <LayersPlus  size={22} strokeWidth={1.5} />Новинки</StyledLink>
-                  <StyledLink to="/catalog/sale">
+                  <StyledLink onClick={() => setMenuOpen(false)} to="/catalog/sale">
                 <BadgePercent size={22} strokeWidth={1.5} />Акційні товари</StyledLink>
                   <StyledLink onClick={() => setMenuOpen(false)} to="/about">
                     <Info size={22} strokeWidth={1.5} /> Про нас

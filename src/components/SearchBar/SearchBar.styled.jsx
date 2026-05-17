@@ -95,3 +95,15 @@ export const DropdownItem = styled.li`
     object-fit: cover;
   }
 `;
+
+
+export const ItemTitle = styled.h3`
+      text-align: left;
+
+`
+export const WrapperDown = styled.div`
+display: flex;
+flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+`
