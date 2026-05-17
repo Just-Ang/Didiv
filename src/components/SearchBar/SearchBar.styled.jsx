@@ -75,7 +75,7 @@ export const Dropdown = styled.ul`
   border: 1px solid #eee;
   max-height: 500px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 500;
   /* max-width:600px */
 `;
 

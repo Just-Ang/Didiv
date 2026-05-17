@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, ButtonLogo, Dropdown, DropdownItem, Input, ItemTitle, Wrapper, WrapperDown } from './SearchBar.styled';
 import sprite from '../../img/symbol-defs.svg';
 import { useNavigate } from 'react-router-dom';
 
 export const SearchBar = () => {
   const [value, setValue] = useState('');
-  console.log(value)
+
   const [results, setResults] = useState([]);
-  console.log(results)
+
   const [open, setOpen] = useState(false);
-    console.log(open)
+
 
   const navigate = useNavigate();
+    const searchRef = useRef(null);
+
   useEffect(() => {
     if (!value.trim()) {
       setResults([]);
@@ -36,6 +38,27 @@ export const SearchBar = () => {
     return () => clearTimeout(timeout);
   }, [value]);
 
+
+   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener(
+        'mousedown',
+        handleClickOutside
+      );
+    };
+  }, []);
+
     const handleSelect = (product) => {
     setValue('');
     setOpen(false);
@@ -43,7 +66,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <Wrapper>
+ <Wrapper ref={searchRef}>
       <Input
         name="site-search"
         value={value}
