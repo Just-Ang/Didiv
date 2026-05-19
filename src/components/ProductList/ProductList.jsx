@@ -154,6 +154,12 @@ export const ProductList = ({
 
 const sortedProducts = useMemo(() => {
 const arr = [...filteredProducts];
+const getFinalPrice = (product) => {
+    if (product.new_price && product.new_price < product.price) {
+      return product.new_price;
+    }
+    return product.price;
+  };
 
  
   switch (sortType) {
@@ -164,12 +170,17 @@ const arr = [...filteredProducts];
           : b.name.localeCompare(a.name)
       );
 
-    case "price":
-      return arr.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.price - b.price
-          : b.price - a.price
-      );
+  case "price":
+      return arr.sort((a, b) => {
+   
+        const priceA = getFinalPrice(a);
+        const priceB = getFinalPrice(b);
+
+
+        return sortOrder === "asc" 
+          ? priceA - priceB 
+          : priceB - priceA;
+      });
 
     case "date":
       return arr.sort((a, b) =>

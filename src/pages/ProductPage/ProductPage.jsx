@@ -422,16 +422,24 @@ const discountPercent = hasDiscount
           {/* ПРАВА КОЛОНКА  */}
           <SpecsGrid>
             <TitleSpecs> Характеристики</TitleSpecs>
-            {product.attributes?.length ? (
-              product.attributes.map((attr) => (
-                <SpecRow key={attr.id}>
-                  <span>{attr.label}</span>
-                  <b>{attr.value}</b>
-                </SpecRow>
-              ))
-            ) : (
-              <p>Характеристики відсутні</p>
-            )}
+            
+            {(() => {
+  const allSpecs = [
+    ...(product.attributes || []),
+    ...(product.features || [])
+  ];
+
+  return allSpecs.length ? (
+    allSpecs.map((spec, index) => (
+      <SpecRow key={`${spec.id}-${index}`}>
+        <span>{spec.label}</span>
+        <b>{spec.value}</b>
+      </SpecRow>
+    ))
+  ) : (
+    <p>Характеристики відсутні</p>
+  );
+})()}
           </SpecsGrid>
         </DesktopWrapper>
       )}
