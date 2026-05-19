@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Section,
   Container,
@@ -14,13 +14,13 @@ import {
   Item,
   SortButton,
   Title,
+  WrapperTop,
 } from './SalePage.styled';
 import {
     CatalogButton,
   PageButton,
   PaginationWrapper,
   WrapperNone,
-  WrapperTop,
 
 } from '../NewProductsPage/NewProductsPage.styled';
 
@@ -54,7 +54,24 @@ const SalePage = () => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const cartItems = useSelector((state) => state.cart.items);
+const sortRef = useRef(null); 
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Якщо клікнули ПОЗА контейнером sortRef — закриваємо
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+         setIsSortOpen(false);
+      }
+    };
+
+    // Вішаємо слухач подій на весь документ
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Прибираємо слухач при розмонтуванні компонента
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   useEffect(() => {
     const load = async () => {
       const API_URL = import.meta.env.VITE_API_URL;
@@ -184,7 +201,7 @@ const SalePage = () => {
           <ToastContainer autoClose={1500} />
           <WrapperTop>
               <Title>Акційні товари</Title>
-        <WrapperSort>
+        <WrapperSort ref={sortRef}>
           <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
             Сортування
             <ArrowDownNarrowWide strokeWidth={0.9} size={22} />

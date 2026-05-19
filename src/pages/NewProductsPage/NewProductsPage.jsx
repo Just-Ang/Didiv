@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   GridWrapper,
   Card,
@@ -51,6 +51,25 @@ export const NewProductsPage = () => {
   // const indexOfFirst = indexOfLast - PRODUCTS_PER_PAGE;
   // const currentProducts = products.slice(indexOfFirst, indexOfLast);
   // const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+
+  const sortRef = useRef(null); 
+  
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        // Якщо клікнули ПОЗА контейнером sortRef — закриваємо
+        if (sortRef.current && !sortRef.current.contains(event.target)) {
+           setIsSortOpen(false);
+        }
+      };
+  
+      // Вішаємо слухач подій на весь документ
+      document.addEventListener('mousedown', handleClickOutside);
+  
+      // Прибираємо слухач при розмонтуванні компонента
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
 
   useEffect(() => {
     window.scrollTo({
@@ -204,7 +223,7 @@ export const NewProductsPage = () => {
         <ToastContainer autoClose={1500} />
         <WrapperTop>
           <TitleNew>Нові товари </TitleNew>
-          <WrapperSort>
+          <WrapperSort ref={sortRef}>
             <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
               Сортування
               <ArrowDownNarrowWide strokeWidth={0.9} size={22} />

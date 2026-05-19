@@ -11,9 +11,7 @@ export const Container = styled.div`
     margin-left: auto;
   margin-right: auto;
   align-items: center;
-  padding-top: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
+        padding: 40px 30px;
 
  @media screen and (min-width: 768px) {
     max-width: 994px;
@@ -27,11 +25,11 @@ export const Container = styled.div`
   
 `;
 export const WrapperTop =styled.div`
-      display: flex;
-    width: 100%;
-    margin-bottom: 20px;
-    align-items: center;
-    justify-content: space-between;
+     width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
   
 `
 export const TitleNew = styled.h1`
@@ -46,7 +44,7 @@ text-transform: uppercase;
 
 
 @media screen and (min-width: 768px) {
-   margin-left: 40%;
+  
   }
 
 `;

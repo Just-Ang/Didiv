@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, ButtonLogo, Dropdown, DropdownItem, Input, ItemTitle, Wrapper, WrapperDown } from './SearchBar.styled';
+import { Button, ButtonLogo, Dropdown, DropdownItem, Input, ItemImg, ItemPrice, ItemTitle, Wrapper, WrapperDown } from './SearchBar.styled';
 import sprite from '../../img/symbol-defs.svg';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ export const SearchBar = () => {
     const searchRef = useRef(null);
 
   useEffect(() => {
-    if (!value.trim()) {
+  if (value.trim().length < 2) {
       setResults([]);
       setOpen(false);
       return;
@@ -73,6 +73,7 @@ export const SearchBar = () => {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Пошук"
         autoComplete="off"
+        onFocus={() => value.trim().length >= 2 && setOpen(true)}
       />
 
       <Button className="search-button">
@@ -90,10 +91,10 @@ const finalPrice = hasDiscount ? item.new_price : item.price;
          
           return (
             <DropdownItem key={item.id} onClick={() => handleSelect(item)}>
-              <img src={item.images?.[0]?.url || '/nofoto.png'} alt="" />
+              <ItemImg src={item.images?.[0]?.url || '/nofoto.png'} alt="" />
              <WrapperDown>
                <ItemTitle>{item.name}</ItemTitle>
-              <span>{finalPrice} грн.</span>
+              <ItemPrice>{finalPrice} грн.</ItemPrice>
              </WrapperDown>
             </DropdownItem>
           )})}

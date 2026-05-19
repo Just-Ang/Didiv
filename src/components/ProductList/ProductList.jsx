@@ -31,7 +31,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { toggleFavorite } from '../../redux/favoritesSlice';
 import placeholder from '../../../public/nofoto.png';
 import { ArrowDownNarrowWide, Heart, ShoppingCart } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 
 
@@ -54,6 +54,24 @@ export const ProductList = ({
   const itemsPerPage = 24;
   let filteredProducts = products;
   
+  const sortRef = useRef(null); 
+  
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        // Якщо клікнули ПОЗА контейнером sortRef — закриваємо
+        if (sortRef.current && !sortRef.current.contains(event.target)) {
+           setIsSortOpen(false);
+        }
+      };
+  
+      // Вішаємо слухач подій на весь документ
+      document.addEventListener('mousedown', handleClickOutside);
+  
+      // Прибираємо слухач при розмонтуванні компонента
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [setIsSortOpen]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -208,7 +226,7 @@ const arr = [...filteredProducts];
   <TitleCategory>
   {category}
 </TitleCategory>
- <WrapperSort>
+ <WrapperSort ref={sortRef}>
       <SortButton onClick={() => setIsSortOpen(prev => !prev)}>
         Сортування
           <ArrowDownNarrowWide strokeWidth={0.9} size={22}/>

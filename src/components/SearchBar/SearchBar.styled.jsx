@@ -21,7 +21,7 @@ export const Input = styled.input`
   border: none;
   outline: none;
   padding: 14px 22px;
-  font-size: 16px;
+  font-size: 20px;
   background-color: transparent;
   color: var(--white-color);
   width: 100%;
@@ -72,6 +72,7 @@ export const Dropdown = styled.ul`
 
   border-radius: 12px;
   background: rgb(255, 255, 255);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border: 1px solid #eee;
   max-height: 500px;
   overflow-y: auto;
@@ -88,22 +89,45 @@ export const DropdownItem = styled.li`
   &:hover {
     background: #f5f5f5;
   }
-
-  img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06); 
   }
-`;
 
+
+`;
+ export const ItemImg = styled.img`
+ width: 100px;
+    height: 100px;
+    object-fit: cover;
+ `
 
 export const ItemTitle = styled.h3`
       text-align: left;
+      font-size: 22px;
+      font-weight: 800;
 
 `
+export const ItemPrice= styled.h3`
+
+      font-size: 22px;
+         
+
+`
+
 export const WrapperDown = styled.div`
 display: flex;
 flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+
+      @media screen and (min-width: 768px) {
+   flex-direction: row;
+  justify-content: space-between; /* Рознесе назву вліво, а ціну вправо */
+  align-items: center;            /* Вирівняє їх по вертикалі */
+  width: 100%;
+  padding-right: 20px;
+  
+  }
+
+    
 `

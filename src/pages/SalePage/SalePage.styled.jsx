@@ -27,6 +27,14 @@ export const Container = styled.div`
   }
 `;
 
+export const WrapperTop = styled.div`
+width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
 
 export const Title = styled.h1`
 
@@ -42,8 +50,6 @@ text-transform: uppercase;
 @media screen and (min-width: 768px) {
 
   text-align:center;
-margin-left:auto;
-margin-right: auto;
 
   }
 
@@ -183,10 +189,6 @@ export const WrapperSort = styled.div`
   display: inline-block;
   display:flex;
   
-
-  @media screen and (min-width: 768px) {
-    margin-bottom: 20px;
-  }
 `;
 
 export const Dropdown = styled.div`
@@ -201,7 +203,8 @@ export const Dropdown = styled.div`
   min-width: 160px;
   padding: 6px 0;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  box-shadow:5px 5px 20px rgba(0,0,0,0.1);
   z-index: 1000;
 `;
 export const Item = styled.div`
@@ -214,6 +217,10 @@ export const Item = styled.div`
 `;
 export const SortButton = styled.button`
   width: 100%;
+      min-width: 130px;
+      @media screen and (min-width: 360px) {
+  min-width: 160px;
+  }
   height: 30px;
   padding: 10px 10px;
   background: #625244;
@@ -221,19 +228,20 @@ export const SortButton = styled.button`
   border: none;
   border-radius: 8px;
   font-family: var(--main-font);
+  font-weight: 900;
   display: flex;
+  gap:15px;
   justify-content: space-evenly;
   align-items: center;
   align-content: center;
-  transition:
-    all 0.2s ease,
-    transform 0.1s ease;
+
+   transition: all 0.2s ease, transform 0.1s ease;
 
   &:hover {
-    background: #4e4136;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
+  background: #4e4136;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
 
   &:active {
     transform: scale(0.97);
