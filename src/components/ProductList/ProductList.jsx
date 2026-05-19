@@ -373,25 +373,23 @@ const discountPercent = hasDiscount
                 <CardTitle>{product.name}</CardTitle>
 
                 <CardBottom>
-                     <PriceWrapper>
-                    <PriceBlock>
-                      <CurrentPrice $discount={hasDiscount}>
-                        {(finalPrice * (product.quantity || 1)).toLocaleString()} грн
-                      </CurrentPrice>
-                  
-                      {hasDiscount && (
-                        <>
-                          <OldPrice>
-                            {(product.price * (product.quantity || 1)).toLocaleString()} грн
-                          </OldPrice>
-                  
-                          <DiscountBadge>
-                            -{discountPercent}%
-                          </DiscountBadge>
-                        </>
-                      )}
-                    </PriceBlock>
-                  </PriceWrapper>
+                 <PriceWrapper>
+                  <PriceBlock>
+                    <CurrentPrice $discount={hasDiscount}>
+                      {finalPrice.toLocaleString()}&#160;грн
+                    </CurrentPrice>
+                
+                    {hasDiscount && (
+                      <OldPrice>
+                        {product.price.toLocaleString()}&#160;грн
+                      </OldPrice>
+                    )}
+                
+                    {hasDiscount && (
+                      <DiscountBadge>-{discountPercent}%</DiscountBadge>
+                    )}
+                  </PriceBlock>
+                </PriceWrapper>
                   <CardButtons>
                     <Button onClick={(e) => handleAdd(product, e)}>
                       <ShoppingCart size={24} 

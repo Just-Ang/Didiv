@@ -314,27 +314,23 @@ const sortRef = useRef(null);
                 <CardTitle>{item.name}</CardTitle>
 
                 <CardBottom>
-                  <PriceWrapper>
-                    <PriceBlock>
-                      <CurrentPrice $discount={hasDiscount}>
-                        {(finalPrice * (item.quantity || 1)).toLocaleString() +
-                          '\u00A0грн'}
-                      </CurrentPrice>
+                 <PriceWrapper>
+  <PriceBlock>
+    <CurrentPrice $discount={hasDiscount}>
+      {finalPrice.toLocaleString()}&#160;грн
+    </CurrentPrice>
 
-                      {hasDiscount && (
-                        <>
-                          <OldPrice>
-                            {(
-                              item.price * (item.quantity || 1)
-                            ).toLocaleString()}{' '}
-                            грн
-                          </OldPrice>
+    {hasDiscount && (
+      <OldPrice>
+        {item.price.toLocaleString()}&#160;грн
+      </OldPrice>
+    )}
 
-                          <DiscountBadge>-{discountPercent}%</DiscountBadge>
-                        </>
-                      )}
-                    </PriceBlock>
-                  </PriceWrapper>
+    {hasDiscount && (
+      <DiscountBadge>-{discountPercent}%</DiscountBadge>
+    )}
+  </PriceBlock>
+</PriceWrapper>
 
                   <CardButtons>
                     <Button onClick={(e) => handleAdd(item, e)}>

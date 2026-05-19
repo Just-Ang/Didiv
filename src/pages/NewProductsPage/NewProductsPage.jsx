@@ -4,7 +4,7 @@ import {
   Card,
   CardImg,
   CardTitle,
-  CardPrice,
+
   CardButtons,
   CardBottom,
   WrapperSort,
@@ -30,6 +30,7 @@ import { BallTriangle } from 'react-loader-spinner';
 import { PaginationWrapper } from './NewProductsPage.styled';
 import { PageButton } from './NewProductsPage.styled';
 import placeholder from '../../../public/nofoto.png';
+import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../CartPage/CartPage.styled';
 export const NewProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -113,6 +114,12 @@ export const NewProductsPage = () => {
 
   const sortedProducts = useMemo(() => {
     const arr = [...products];
+    const getFinalPrice = (product) => {
+    if (product.new_price && product.new_price < product.price) {
+      return product.new_price;
+    }
+    return product.price;
+  };
 
     switch (sortType) {
       case 'name':
@@ -122,10 +129,17 @@ export const NewProductsPage = () => {
             : b.name.localeCompare(a.name)
         );
 
-      case 'price':
-        return arr.sort((a, b) =>
-          sortOrder === 'asc' ? a.price - b.price : b.price - a.price
-        );
+      case "price":
+      return arr.sort((a, b) => {
+   
+        const priceA = getFinalPrice(a);
+        const priceB = getFinalPrice(b);
+
+
+        return sortOrder === "asc" 
+          ? priceA - priceB 
+          : priceB - priceA;
+      });
 
       case 'date':
         return arr.sort((a, b) =>
@@ -300,6 +314,13 @@ export const NewProductsPage = () => {
             // const inCart = cartItems.find((c) => c.id === product.id);
             // const currentQty = inCart ? inCart.quantity : 0;
             // const isMaxReached = currentQty >= product.stock;
+             const hasDiscount = product.new_price && product.new_price < product.price;
+
+            const finalPrice = hasDiscount ? product.new_price : product.price;
+
+            const discountPercent = hasDiscount
+              ? Math.round(((product.price - product.new_price) / product.price) * 100)
+              : 0;
 
             return (
               <Card
@@ -310,7 +331,23 @@ export const NewProductsPage = () => {
                 <CardTitle>{product.name}</CardTitle>
 
                 <CardBottom>
-                  <CardPrice>{product.price} грн</CardPrice>
+                        <PriceWrapper>
+  <PriceBlock>
+    <CurrentPrice $discount={hasDiscount}>
+      {finalPrice.toLocaleString()}&#160;грн
+    </CurrentPrice>
+
+    {hasDiscount && (
+      <OldPrice>
+        {product.price.toLocaleString()}&#160;грн
+      </OldPrice>
+    )}
+
+    {hasDiscount && (
+      <DiscountBadge>-{discountPercent}%</DiscountBadge>
+    )}
+  </PriceBlock>
+</PriceWrapper>
                   <CardButtons>
                     <ButtonC onClick={(e) => handleAdd(product, e)}>
                       <ShoppingCart size={24} color="black" />
