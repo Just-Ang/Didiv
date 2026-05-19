@@ -24,13 +24,13 @@ import { toggleFavorite } from '../../redux/favoritesSlice';
 import { TitleNew } from './NewProductsPage.styled';
 import { Container } from './NewProductsPage.styled';
 import { Section } from './NewProductsPage.styled';
-import { ButtonC } from './NewProductsPage.styled';
-import { ButtonF } from './NewProductsPage.styled';
+
 import { BallTriangle } from 'react-loader-spinner';
 import { PaginationWrapper } from './NewProductsPage.styled';
 import { PageButton } from './NewProductsPage.styled';
 import placeholder from '../../../public/nofoto.png';
 import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../CartPage/CartPage.styled';
+import { Button } from '../SalePage/SalePage.styled';
 export const NewProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -153,26 +153,7 @@ export const NewProductsPage = () => {
     }
   }, [sortType, products, sortOrder]);
 
-  const handleAdd = (product, e) => {
-    e.stopPropagation();
-    // 2. Перевірка залишку перед додаванням
-    const inCart = cartItems.find((c) => c.id === product.id);
-    const currentQty = inCart ? inCart.quantity : 0;
 
-    // Перевіряємо, чи є поле stock у продукті
-    if (currentQty >= product.stock) {
-      toast.error(`Вибачте, доступно лише ${product.stock} шт.`);
-      return;
-    }
-
-    dispatch(
-      addToCart({
-        ...product,
-        quantity: 1,
-      })
-    );
-    toast.success(`${product.name} додано в кошик!`);
-  };
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
     const exists = favorites.some((favItem) => favItem.id === product.id);
@@ -314,6 +295,12 @@ export const NewProductsPage = () => {
             // const inCart = cartItems.find((c) => c.id === product.id);
             // const currentQty = inCart ? inCart.quantity : 0;
             // const isMaxReached = currentQty >= product.stock;
+          
+
+            const inCart = cartItems.find((c) => c.id === product.id);
+            const currentQty = inCart ? inCart.quantity : 0;
+
+            const isOutOfStock = currentQty >= (product.stock || 0);
              const hasDiscount = product.new_price && product.new_price < product.price;
 
             const finalPrice = hasDiscount ? product.new_price : product.price;
@@ -321,6 +308,21 @@ export const NewProductsPage = () => {
             const discountPercent = hasDiscount
               ? Math.round(((product.price - product.new_price) / product.price) * 100)
               : 0;
+
+               const handleAdd = (product, e) => {
+                                        e.stopPropagation();
+                                        if (isOutOfStock) {
+                                          toast.error(`Товар уже у кошику`);
+                                          return;
+                                        }
+                                        dispatch(
+                                          addToCart({
+                                            ...product,
+                                            quantity: 1,
+                                          })
+                                        );
+                                        toast.success(`${product.name} додано в кошик!`);
+                                      };
 
             return (
               <Card
@@ -348,19 +350,25 @@ export const NewProductsPage = () => {
     )}
   </PriceBlock>
 </PriceWrapper>
-                  <CardButtons>
-                    <ButtonC onClick={(e) => handleAdd(product, e)}>
-                      <ShoppingCart size={24} color="black" />
-                    </ButtonC>
-
-                    <ButtonF onClick={(e) => HandleAddFavorite(product, e)}>
-                      <Heart
-                        size={24}
-                        fill={isFavorite ? '#ff4d4f' : 'none'}
-                        color={isFavorite ? '#ff4d4f' : '#000000'}
-                      />
-                    </ButtonF>
-                  </CardButtons>
+                 <CardButtons>
+                                                       <Button onClick={(e) => handleAdd(product, e)}>
+                                                         <ShoppingCart size={24} 
+                                       color={inCart ? 'var(--orange-color)' : 'black'} 
+                                     
+                                       // fill={inCart ? 'var(--orange-color)' : 'none'}
+                                           strokeWidth={inCart ? 2 : 2}
+                                   />
+                                                       </Button>
+                                   
+                                                       <Button onClick={(e) => HandleAddFavorite(product, e)}>
+                                                         <Heart
+                                                           size={24}
+                                                           fill={isFavorite ? '#ff4d4f' : 'none'}
+                                                           color={isFavorite ? '#ff4d4f' : '#000000'}
+                                                           strokeWidth={isFavorite ? 1 : 2}
+                                                         />
+                                                       </Button>
+                                                     </CardButtons>
                 </CardBottom>
               </Card>
             );

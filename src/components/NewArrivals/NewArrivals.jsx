@@ -1,4 +1,4 @@
-import { ShoppingCart, ArrowRight } from 'lucide-react';
+import { ShoppingCart, ArrowRight, Heart } from 'lucide-react';
 
 import {
   AllNewButton,
@@ -6,89 +6,164 @@ import {
   ButtonContent,
   Container,
   Grid,
-  IconButton,
+
   ImageLink,
   NewBadge,
-  Price,
+
   PriceRow,
   ProductCard,
   ProductInfo,
   ProductName,
   Title,
 } from './NewArrivals.styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import placeholder from '../../../public/nofoto.png';
 import { useEffect, useState } from 'react';
+import { Button, CardButtons, CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../ProductList/ProductList.styled';
+import { toggleFavorite } from '../../redux/favoritesSlice';
 
 export const NewArrivals = () => {
   const dispatch = useDispatch();
-    const [products, setProducts] = useState([]);
-  
-useEffect(() => {
-  const now = new Date();
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(now.getDate() - 7);
-  const isoDate = oneWeekAgo.toISOString();
+  const [products, setProducts] = useState([]);
+    const favorites = useSelector((state) => state.favorites.items);
+    const cartItems = useSelector((state) => state.cart.items);
 
-  fetch(`${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[createdAt][$gte]=${isoDate}`)
-    .then(res => res.json())
-    .then(data => setProducts(data.data))
-    .catch(err => console.error('Помилка завантаження нових товарів:', err));
-}, []);
 
-console.log(products);
+  useEffect(() => {
+    const now = new Date();
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(now.getDate() - 7);
+    const isoDate = oneWeekAgo.toISOString();
+
+    fetch(
+      `${
+        import.meta.env.VITE_API_URL
+      }/api/products?populate=*&filters[createdAt][$gte]=${isoDate}`
+    )
+      .then((res) => res.json())
+      .then((data) => setProducts(data.data))
+      .catch((err) =>
+        console.error('Помилка завантаження нових товарів:', err)
+      );
+  }, []);
+
+ const HandleAddFavorite = (product, e) => {
+    e.stopPropagation();
+    const exists = favorites.some((favItem) => favItem.id === product.id);
+
+    dispatch(toggleFavorite(product));
+    if (exists) {
+      toast.warning(`${product.name} видалено з обраного`);
+    } else {
+      toast.info(`${product.name} додано в обране`);
+    }
+  };
 
   const displayProducts = [...products]
     .sort(() => Math.random() - 0.5)
     .slice(0, 3);
 
-  const handleAdd = (product) => {
-    dispatch(
-      addToCart({
-        ...product,
-        quantity: 1,
-      })
-    );
-    toast.success(`${product.name} додано в кошик!`);
-  };
-    if (!products || products.length === 0) return null;
+ 
+  if (!products || products.length === 0) return null;
 
   return (
     <Container>
       <ToastContainer />
       <Title>Нові товари</Title>
       <Grid>
-        {displayProducts.map((item) => (
-          <ProductCard key={item.id}>
-            <ImageLink to={`/product/${item.id}`}>
-              <NewBadge>Новинка</NewBadge>
-              <img
-               src={item.images?.[0].url || placeholder} 
-                
-                alt={item.name}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = placeholder;
-                }}
-              />
-              <div className="overlay">
-                {/* <OverlayText>Детальніше</OverlayText> */}
-              </div>
-            </ImageLink>
+        {displayProducts.map((item) => {
+           const isFavorite = favorites.some((fav) => fav.id === item.id);
 
-            <ProductInfo>
-              <ProductName>{item.name}</ProductName>
-              <PriceRow>
-                <Price>{item.price} грн</Price>
-                <IconButton onClick={() => handleAdd(item)}>
-                  <ShoppingCart size={22} />
-                </IconButton>
-              </PriceRow>
-            </ProductInfo>
-          </ProductCard>
-        ))}
+            const inCart = cartItems.find((c) => c.id === item.id);
+            const currentQty = inCart ? inCart.quantity : 0;
+
+            const isOutOfStock = currentQty >= (item.stock || 0);
+          const hasDiscount = item.new_price && item.new_price < item.price;
+
+          const finalPrice = hasDiscount ? item.new_price : item.price;
+
+          const discountPercent = hasDiscount
+            ? Math.round(((item.price - item.new_price) / item.price) * 100)
+            : 0;
+             const handleAdd = (product, e) => {
+                          e.stopPropagation();
+                          if (isOutOfStock) {
+                            toast.error(`Товар уже у кошику`);
+                            return;
+                          }
+                          dispatch(
+                            addToCart({
+                              ...product,
+                              quantity: 1,
+                            })
+                          );
+                          toast.success(`${product.name} додано в кошик!`);
+                        };
+          return (
+            <ProductCard key={item.id}>
+              <ImageLink to={`/product/${item.id}`}>
+                <NewBadge>Новинка</NewBadge>
+                <img
+                  src={item.images?.[0].url || placeholder}
+                  alt={item.name}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = placeholder;
+                  }}
+                />
+                <div className="overlay">
+                  {/* <OverlayText>Детальніше</OverlayText> */}
+                </div>
+              </ImageLink>
+
+              <ProductInfo>
+                <ProductName>{item.name}</ProductName>
+                <PriceRow>
+                  <PriceWrapper>
+                    <PriceBlock>
+                      <CurrentPrice $discount={hasDiscount}>
+                        {finalPrice.toLocaleString()}&#160;грн
+                      </CurrentPrice>
+
+                      {hasDiscount && (
+                        <OldPrice>
+                          {item.price.toLocaleString()}&#160;грн
+                        </OldPrice>
+                      )}
+
+                      {hasDiscount && (
+                        <DiscountBadge>-{discountPercent}%</DiscountBadge>
+                      )}
+                    </PriceBlock>
+                  </PriceWrapper>
+                
+
+                  <CardButtons>
+                                      <Button onClick={(e) => handleAdd(item, e)}>
+                                        <ShoppingCart size={24} 
+                      color={inCart ? 'var(--orange-color)' : 'black'} 
+                    
+                      // fill={inCart ? 'var(--orange-color)' : 'none'}
+                          strokeWidth={inCart ? 2 : 2}
+                  />
+                                      </Button>
+                  
+                                      <Button onClick={(e) => HandleAddFavorite(item, e)}>
+                                        <Heart
+                                          size={24}
+                                          fill={isFavorite ? '#ff4d4f' : 'none'}
+                                          color={isFavorite ? '#ff4d4f' : '#000000'}
+                                          strokeWidth={isFavorite ? 1 : 2}
+                                        />
+                                      </Button>
+                                    </CardButtons>
+                </PriceRow>
+              </ProductInfo>
+            </ProductCard>
+          );
+        })}
 
         <AllNewButton to="/catalog/new">
           <ButtonContent>

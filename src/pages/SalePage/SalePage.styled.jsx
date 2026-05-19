@@ -3,7 +3,7 @@ import styled from 'styled-components';
 /* SECTION */
 export const Section = styled.section`
   background-color: var(--second-background);
-  min-height: 100vh;
+  /* min-height: 100vh; */
 `;
 
 /* CONTAINER */
@@ -16,6 +16,8 @@ export const Container = styled.div`
   margin-right: auto;
 
   padding: 30px 10px;
+  min-height: calc(100vh - 180px); /* 180px — це приблизна висота твоєї темної шапки */
+
 
   @media screen and (min-width: 768px) {
     max-width: 994px;

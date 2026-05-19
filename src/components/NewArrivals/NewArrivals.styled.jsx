@@ -127,19 +127,21 @@ export const ProductInfo = styled.div`
 `;
 
 export const ProductName = styled.h3`
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
  
   color: #333;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+   margin-bottom:16px;
 `;
 
 export const PriceRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+ 
 `;
 
 export const Price = styled.span`

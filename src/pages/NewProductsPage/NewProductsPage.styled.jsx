@@ -7,12 +7,13 @@ export const Section = styled.section`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
     margin-left: auto;
   margin-right: auto;
   align-items: center;
         padding: 40px 30px;
-
+min-height: calc(100vh - 120px); 
+/* min-height: 100vh; */
  @media screen and (min-width: 768px) {
     max-width: 994px;
     padding-left: 30px;
@@ -167,48 +168,7 @@ export const CardButtons = styled.div.attrs({ className: 'card-buttons' })`
   }
 `;
 
-export const ButtonC = styled.button`
-  padding: 6px 5px;
-  border-radius: 50px;
- border:none;
- background-color: transparent; 
-  
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  transition: all 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
-`;
-export const ButtonF = styled.button`
-  padding: 6px 5px;
-  border-radius: 50px;
- border:none;
- background-color: transparent;
-   
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  transition: all 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
-`;
 
 export const PaginationWrapper = styled.div`
   display: flex;
@@ -217,6 +177,8 @@ export const PaginationWrapper = styled.div`
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 15px;
+  margin-top: auto; 
+ padding-top: 40px; 
 `;
 
 export const PageButton = styled.button`
