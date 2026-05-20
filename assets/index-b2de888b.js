@@ -986,11 +986,13 @@ display: flex;
     margin-left: auto;
      
           @media screen and (min-width: 768px) {
- margin-left: 20%;
+ margin-right: 0;
+    margin-left: 0;
+    padding-left:30px;
    font-size:40px;
   }
        @media screen and (min-width: 890px) {
- margin-left: 40%;
+ 
   }
 
 `,Oj=k.div`
