@@ -98,8 +98,20 @@ export const AvailableRow = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
-    font-size: 17px;
+  
+    width: max-content;
+
   margin-bottom: 20px;
+  padding: 6px 15px;
+  border-radius: 20px;
+font-family: var(--second-font);
+  background: var(--red-color);
+  box-shadow: 0 6px 6px -4px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+
 `;
 
 

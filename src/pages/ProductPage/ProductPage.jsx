@@ -269,7 +269,7 @@ const discountPercent = hasDiscount
           <RatingRow>
             {isNew && <NewLable >● Новий товар</NewLable >}
           </RatingRow>
-          {!isAvailable &&  <AvailableRow>● Заброньовано</AvailableRow>}
+          {!isAvailable &&  <AvailableRow> Заброньовано</AvailableRow>}
          
 
           <PriceCard>
