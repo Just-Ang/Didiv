@@ -30,7 +30,8 @@ import { PaginationWrapper } from './NewProductsPage.styled';
 import { PageButton } from './NewProductsPage.styled';
 import placeholder from '../../../public/nofoto.png';
 import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../CartPage/CartPage.styled';
-import { Button } from '../SalePage/SalePage.styled';
+import { Button, } from '../SalePage/SalePage.styled';
+import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
 export const NewProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -295,6 +296,7 @@ export const NewProductsPage = () => {
             // const inCart = cartItems.find((c) => c.id === product.id);
             // const currentQty = inCart ? inCart.quantity : 0;
             // const isMaxReached = currentQty >= product.stock;
+             const isAvailable = product?.available ?? true;
           
 
             const inCart = cartItems.find((c) => c.id === product.id);
@@ -329,6 +331,7 @@ export const NewProductsPage = () => {
                 key={product.id}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
+                 {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
                 <CardImg src={product.images?.[0]?.url || placeholder} alt={product.name} />
                 <CardTitle>{product.name}</CardTitle>
 
@@ -351,7 +354,8 @@ export const NewProductsPage = () => {
   </PriceBlock>
 </PriceWrapper>
                  <CardButtons>
-                                                       <Button onClick={(e) => handleAdd(product, e)}>
+                                                       {isAvailable && (
+                                                        <Button onClick={(e) => handleAdd(product, e)}>
                                                          <ShoppingCart size={24} 
                                        color={inCart ? 'var(--orange-color)' : 'black'} 
                                      
@@ -359,6 +363,7 @@ export const NewProductsPage = () => {
                                            strokeWidth={inCart ? 2 : 2}
                                    />
                                                        </Button>
+                                                       )}
                                    
                                                        <Button onClick={(e) => HandleAddFavorite(product, e)}>
                                                          <Heart

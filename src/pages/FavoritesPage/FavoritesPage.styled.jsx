@@ -57,6 +57,8 @@ export const ListContainer = styled.div`
 `;
 
 export const ItemCard = styled.div`
+position: relative;
+    overflow: hidden;
 font-family: var(--second-font);
 font-weight: 500;
 display: flex;
@@ -79,6 +81,38 @@ display: flex;
   }
 `;
 
+export const ReservedBadgeFavorite = styled.div`
+  position: absolute;
+  top: 30px;
+  right: -10px;
+
+  padding: 6px 15px;
+  border-radius: 22px;
+
+  background: var(--red-color);
+  color: #fff;
+
+  font-family: var(--second-font);
+     font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+  line-height: 1;
+  text-transform: uppercase;
+
+  z-index: 10;
+  white-space: nowrap;
+    box-shadow: 0 6px 6px -4px rgba(0, 0, 0, 0.35);
+
+  @media (min-width: 768px) {
+    top: 50%;
+    left: 25px;
+    right: auto;
+    transform: translateY(-50%);
+    font-size: 14px;
+    padding: 6px 15px;
+  }
+`;
+
 export const ProductInfo = styled.div`
   display: flex;
   align-items: center;
@@ -86,6 +120,9 @@ export const ProductInfo = styled.div`
   flex: 1;
 `;
 
+export const ImageWrapper = styled.div`
+  position: relative;
+`;
 export const Image = styled.img`
    width: 100%;
   height: auto;
@@ -133,7 +170,12 @@ export const IconButton = styled.button`
   cursor: pointer;
   color: #1a1a1a;
   padding: 8px;
-  
+  transition: opacity 0.2s ease;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
 `;
 
 export const SummaryCard = styled.div`

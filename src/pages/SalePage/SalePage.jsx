@@ -38,6 +38,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import { toggleFavorite } from '../../redux/favoritesSlice';
+import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
 
 const SalePage = () => {
   const [products, setProducts] = useState([]);
@@ -279,6 +280,7 @@ const sortRef = useRef(null);
             const hasDiscount = item.new_price && item.new_price < item.price;
 
             const finalPrice = hasDiscount ? item.new_price : item.price;
+             const isAvailable = item?.available ?? true;
 
             const discountPercent = hasDiscount
               ? Math.round(((item.price - item.new_price) / item.price) * 100)
@@ -309,6 +311,7 @@ const sortRef = useRef(null);
                 onClick={() => navigate(`/product/${item.id}`)}
                 style={{ cursor: 'pointer' }}
               >
+                      {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
                 <CardImg src={item.images?.[0]?.url || '/nofoto.png'} />
 
                 <CardTitle>{item.name}</CardTitle>
@@ -333,14 +336,16 @@ const sortRef = useRef(null);
 </PriceWrapper>
 
                   <CardButtons>
-                    <Button onClick={(e) => handleAdd(item, e)}>
-                      <ShoppingCart
-                        size={24}
-                        color={inCart ? 'var(--orange-color)' : 'black'}
-                        // fill={inCart ? 'var(--orange-color)' : 'none'}
-                        strokeWidth={inCart ? 2 : 2}
-                      />
-                    </Button>
+                            {isAvailable && (
+                     <Button onClick={(e) => handleAdd(item, e)}>
+                       <ShoppingCart
+                         size={24}
+                         color={inCart ? 'var(--orange-color)' : 'black'}
+                         strokeWidth={2}
+                       />
+                     </Button>
+                   )}
+                    
 
                     <Button onClick={(e) => HandleAddFavorite(item, e)}>
                       <Heart

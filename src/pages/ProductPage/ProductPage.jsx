@@ -7,11 +7,13 @@ import sprite from '../../img/symbol-defs.svg';
 import {
   ActionRow,
   AddToCartBtn,
-  Availability,
+
+  AvailableRow,
+
   Breadcrumbs,
   Container,
   CurrentPrice,
-  DeliveryInfo,
+
   DescriptionText,
   DesktopWrapper,
   DiscountBadge,
@@ -21,6 +23,7 @@ import {
   InfoSection,
   MainImage,
   MainSection,
+  NewLable,
   OldPrice,
   PriceCard,
   PriceWrapper,
@@ -63,6 +66,7 @@ export const ProductPage = () => {
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;
+   
 
   const useMediaQuery = (query) => {
     const [matches, setMatches] = useState(false);
@@ -112,6 +116,8 @@ export const ProductPage = () => {
     fetchProducts();
   }, [id]);
   console.log(product);
+  const isAvailable = product?.available ?? true;
+    console.log(isAvailable);
   useEffect(() => {
     if (product && product.images) {
       setActiveImage(product.images?.[0]?.url);
@@ -261,8 +267,10 @@ const discountPercent = hasDiscount
         <InfoSection>
           <Title>{product.name}</Title>
           <RatingRow>
-            {isNew && <Availability>● Новий товар</Availability>}
+            {isNew && <NewLable >● Новий товар</NewLable >}
           </RatingRow>
+          {!isAvailable &&  <AvailableRow>● Заброньовано</AvailableRow>}
+         
 
           <PriceCard>
            <PriceWrapper>
@@ -307,7 +315,8 @@ const discountPercent = hasDiscount
                 </TooltipWrapper>
               </QuantitySelector>
 
-              <AddToCartBtn onClick={handleAdd}>
+              <AddToCartBtn onClick={handleAdd}
+               disabled={!isAvailable}>
                 {' '}
                 <ShoppingCart size={25} />
                 <span>В&nbsp;КОШИК</span>
@@ -326,12 +335,6 @@ const discountPercent = hasDiscount
             </ActionRow>
           </PriceCard>
 
-          <DeliveryInfo>
-            <p>
-              <strong>Ваше місто:</strong> Київ
-            </p>
-            <p>🚚 Доставка по Україні (Розрахувати вартість)</p>
-          </DeliveryInfo>
         </InfoSection>
       </MainSection>
       {!isDesktop && (

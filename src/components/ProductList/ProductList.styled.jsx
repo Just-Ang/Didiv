@@ -90,6 +90,7 @@ export const GridWrapper = styled.div`
 `;
 
 export const Card = styled.div`
+  position: relative;
 font-family: var(--second-font);
 font-weight: 500;
   border-radius: 16px;
@@ -114,7 +115,42 @@ font-weight: 500;
     }
   }
 `;
+export const ReservedBadge = styled.div`
+    font-family: var(--second-font);
+  position: absolute;
 
+  top: 25px;
+  right: -12px;
+
+  padding: 6px 15px;
+  border-radius: 20px;
+
+  background: var(--red-color);
+  box-shadow: 0 6px 6px -4px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  z-index: 10;
+`;
+
+
+// export const CardImgWrapper = styled.div`
+//   position: relative;
+//   overflow: hidden;
+  
+
+//   ${({ $reserved }) =>
+//     $reserved &&
+//     `
+//       &::after {
+//         content: "";
+//         position: absolute;
+//         inset: 0;
+//         background: rgba(0, 0, 0, 0.35);
+//       }
+//     `}
+// `; 
 export const CardImg = styled.img`
   width: 100%;
   height: 200px;

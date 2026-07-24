@@ -15,6 +15,8 @@ import {
   SummaryRow,
   Title,
   ClearButton,
+  ReservedBadgeFavorite,
+  ImageWrapper,
 } from './FavoritesPage.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
@@ -23,48 +25,61 @@ import FavEmpty from '../../components/FavEmpty/FavEmty';
 import { addAllToCart, addToCart } from '../../redux/cartSlice';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../CartPage/CartPage.styled';
+import {
+  CurrentPrice,
+  DiscountBadge,
+  OldPrice,
+  PriceBlock,
+  PriceWrapper,
+} from '../CartPage/CartPage.styled';
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const favorites = useSelector((state) => state.favorites.items);
+  console.log(favorites);
   const [removingIds, setRemovingIds] = useState([]);
 
   const cartItems = useSelector((state) => state.cart.items);
 
-  
   const handleAllAdd = () => {
-  const itemsToAdd = favorites.map((favItem) => {
-    const cartItem = cartItems.find((c) => c.id === favItem.id);
-    const currentQuantity = cartItem ? cartItem.quantity : 0;
+    const itemsToAdd = favorites
+      .filter((item) => item.available !== false)
+      .map((favItem) => {
+        const cartItem = cartItems.find((c) => c.id === favItem.id);
+        const currentQuantity = cartItem ? cartItem.quantity : 0;
 
-    const availableToAdd = favItem.stock - currentQuantity;
+        const availableToAdd = favItem.stock - currentQuantity;
 
-    if (availableToAdd <= 0) return null;
+        if (availableToAdd <= 0) return null;
 
-    return {
-      ...favItem,
-      quantity: availableToAdd, // додаємо тільки скільки можна
-    };
-  }).filter(Boolean);
+        return {
+          ...favItem,
+          quantity: availableToAdd, // додаємо тільки скільки можна
+        };
+      })
+      .filter(Boolean);
+    //       const unavailableItems = favorites.filter(item => !item.available);
 
-  if (itemsToAdd.length === 0) {
-    toast.error('Усі товари вже в максимальній кількості');
-    return;
-  }
+    // if (unavailableItems.length) {
+    //   toast.warning('Деякі товари заброньовані і не були додані до кошика');
+    // }
 
-  dispatch(addAllToCart(itemsToAdd));
-  toast.success('Додано максимально доступну кількість товарів');
-};
+    if (itemsToAdd.length === 0) {
+      toast.error('Усі товари вже в максимальній кількості');
+      return;
+    }
+
+    dispatch(addAllToCart(itemsToAdd));
+    toast.success('Додано максимально доступну кількість товарів');
+  };
 
   console.log(favorites);
   const total = favorites.reduce(
-  (sum, item) =>
-    sum + (item.new_price ?? item.price) * (item.quantity || 1),
-  0
-);
+    (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
+    0
+  );
   const HandleAddFavorite = (product, e) => {
     e.stopPropagation();
     const exists = favorites.some((favItem) => favItem.id === product.id);
@@ -111,78 +126,92 @@ const FavoritesPage = () => {
           <Layout>
             <ListContainer>
               {favorites.map((item) => {
-               
-               
+                const hasDiscount =
+                  item.new_price && item.new_price < item.price;
 
-                    const hasDiscount = item.new_price && item.new_price < item.price;
+                const finalPrice = hasDiscount ? item.new_price : item.price;
+                const isAvailable = item?.available ?? true;
 
-const finalPrice = hasDiscount ? item.new_price : item.price;
+                const discountPercent = hasDiscount
+                  ? Math.round(
+                      ((item.price - item.new_price) / item.price) * 100
+                    )
+                  : 0;
 
-const discountPercent = hasDiscount
-  ? Math.round(((item.price - item.new_price) / item.price) * 100)
-  : 0;
+                const handleAdd = (item) => {
+                  const itemInCart = cartItems.find(
+                    (cartItem) => cartItem.id === item.id
+                  );
 
+                  const currentQuantity = itemInCart ? itemInCart.quantity : 0;
 
-             const handleAdd = (item) => {
-  const itemInCart = cartItems.find(
-    (cartItem) => cartItem.id === item.id
-  );
+                  if (currentQuantity >= item.stock) {
+                    toast.error(`Вибачте, доступно лише ${item.stock} шт.`);
+                    return;
+                  }
 
-  const currentQuantity = itemInCart ? itemInCart.quantity : 0;
-
-  if (currentQuantity >= item.stock) {
-    toast.error(`Вибачте, доступно лише ${item.stock} шт.`);
-    return;
-  }
-
-  dispatch(addToCart(item));
-  toast.success(`${item.name} додано в кошик!`);
-};
+                  dispatch(addToCart(item));
+                  toast.success(`${item.name} додано в кошик!`);
+                };
 
                 return (
                   <ItemCard
                     key={item.id}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
-                    <Image
-                      src={item.images?.[0]?.url || '/nofoto.png'}
-                      alt={item.name}
-                      onClick={() => navigate(`/product/${item.id}`)}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = '/nofoto.png';
-                      }}
-                    />
+                    {!isAvailable && (
+                      <ReservedBadgeFavorite>
+                        Заброньовано
+                      </ReservedBadgeFavorite>
+                    )}
+                    <ImageWrapper>
+                      <Image
+                        src={item.images?.[0]?.url || '/nofoto.png'}
+                        alt={item.name}
+                        onClick={() => navigate(`/product/${item.id}`)}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/nofoto.png';
+                        }}
+                      />
+                    </ImageWrapper>
                     <ProductName>{item.name}</ProductName>
 
                     <ActionsWrapper>
                       {/* <Price>{item.price}&nbsp;грн</Price> */}
-                       <PriceWrapper>
+                      <PriceWrapper>
                         <PriceBlock>
                           <CurrentPrice $discount={hasDiscount}>
-                            {(finalPrice * (item.quantity || 1)).toLocaleString()} грн
+                            {(
+                              finalPrice * (item.quantity || 1)
+                            ).toLocaleString()}{' '}
+                            грн
                           </CurrentPrice>
-                      
+
                           {hasDiscount && (
                             <>
                               <OldPrice>
-                                {(item.price * (item.quantity || 1)).toLocaleString()} грн
+                                {(
+                                  item.price * (item.quantity || 1)
+                                ).toLocaleString()}{' '}
+                                грн
                               </OldPrice>
-                      
-                              <DiscountBadge>
-                                -{discountPercent}%
-                              </DiscountBadge>
+
+                              <DiscountBadge>-{discountPercent}%</DiscountBadge>
                             </>
                           )}
                         </PriceBlock>
                       </PriceWrapper>
                       <IconGroup>
-                        <IconButton
-                          onClick={() => handleAdd(item)}
-                          // disabled={isMax || item.stock === 0}
-                        >
-                          <ShoppingCart size={30} />
-                        </IconButton>
+                        {
+                          <IconButton
+                            onClick={() => handleAdd(item)}
+                            // disabled={isMax || item.stock === 0}
+                            disabled={!isAvailable}
+                          >
+                            <ShoppingCart size={30} />
+                          </IconButton>
+                        }
 
                         <IconButton onClick={(e) => HandleAddFavorite(item, e)}>
                           <Trash2 size={30} />

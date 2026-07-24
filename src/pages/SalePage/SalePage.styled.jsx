@@ -73,6 +73,7 @@ export const GridWrapper = styled.div`
 
 /* CARD */
 export const Card = styled.div`
+position: relative;
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
@@ -89,6 +90,22 @@ export const Card = styled.div`
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
     }
   }
+`;
+
+export const ReservedBadge = styled.div`
+  position: absolute;
+  top: 25px;
+  left: 25px;
+
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  background: var(--red-color);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  z-index: 10;
 `;
 
 /* IMAGE */

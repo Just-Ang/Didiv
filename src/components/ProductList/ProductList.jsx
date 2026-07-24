@@ -5,6 +5,8 @@ import {
   CardButtons,
   CardImg,
 
+
+
   CardTitle,
   ContainerProduct,
   CurrentPrice,
@@ -18,6 +20,7 @@ import {
   PaginationWrapper,
   PriceBlock,
   PriceWrapper,
+  ReservedBadge,
   SortButton,
   TitleCategory,
   WrapperSort,
@@ -332,6 +335,7 @@ const getFinalPrice = (product) => {
             const currentQty = inCart ? inCart.quantity : 0;
 
             const isOutOfStock = currentQty >= (product.stock || 0);
+             const isAvailable = product?.available ?? true;
 
               const hasDiscount = product.new_price && product.new_price < product.price;
 
@@ -362,6 +366,8 @@ const discountPercent = hasDiscount
                 onClick={() => navigate(`/product/${product.id}`)}
                 style={{ cursor: 'pointer' }}
               >
+                 {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
+               
                 <CardImg
                  src={product.images?.[0]?.url || "/placeholder.jpg"}
                   alt={product.name}
@@ -370,6 +376,7 @@ const discountPercent = hasDiscount
                     e.currentTarget.src = placeholder;
                   }}
                 />
+              
                 <CardTitle>{product.name}</CardTitle>
 
                 <CardBottom>
@@ -391,14 +398,15 @@ const discountPercent = hasDiscount
                   </PriceBlock>
                 </PriceWrapper>
                   <CardButtons>
-                    <Button onClick={(e) => handleAdd(product, e)}>
-                      <ShoppingCart size={24} 
-    color={inCart ? 'var(--orange-color)' : 'black'} 
-  
-    // fill={inCart ? 'var(--orange-color)' : 'none'}
-        strokeWidth={inCart ? 2 : 2}
-/>
-                    </Button>
+                   {isAvailable && (
+  <Button onClick={(e) => handleAdd(product, e)}>
+    <ShoppingCart
+      size={24}
+      color={inCart ? 'var(--orange-color)' : 'black'}
+      strokeWidth={2}
+    />
+  </Button>
+)}
 
                     <Button onClick={(e) => HandleAddFavorite(product, e)}>
                       <Heart

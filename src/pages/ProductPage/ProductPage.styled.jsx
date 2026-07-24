@@ -88,13 +88,23 @@ export const Title = styled.h1`
 `;
 
 export const RatingRow = styled.div`
+
   display: flex;
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
 `;
+export const AvailableRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+    font-size: 17px;
+  margin-bottom: 20px;
+`;
 
-export const Availability = styled.span`
+
+
+export const NewLable = styled.span`
   color: #27ae60;
   font-size: 17px;
 `;
@@ -193,6 +203,11 @@ export const AddToCartBtn = styled.button`
     @media screen and (max-width: 768px) {
       display: none;
     }
+  }
+    &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 `;
 

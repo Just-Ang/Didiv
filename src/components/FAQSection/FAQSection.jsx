@@ -28,9 +28,10 @@ const FAQSection = ({ productId, questions }) => {
       data: {
         question: question,
         userName: name,
-        product: productId, // ID поточного товару
+        product: productId, 
       },
     };
+
 
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/questions`,
@@ -40,7 +41,7 @@ const FAQSection = ({ productId, questions }) => {
         body: JSON.stringify(data),
       }
     );
-    console.log(productId);
+  
 
     if (response.ok) {
       toast.success(`Запитання надіслано! Воно з’явиться після модерації.`);
