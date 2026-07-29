@@ -24,7 +24,7 @@ import { Menu } from '../Menu/Menu';
 import { FavoriteIcon } from '../FavoriteIcon/FavoriteIcon';
 
 import sprite from '../../img/symbol-defs.svg';
-import { BadgePercent, CircleUserRound, Home, Info, LayersPlus, Mail, ShoppingBag, X } from 'lucide-react';
+import { BadgePercent, Home, Info, LayersPlus, Mail, ShoppingBag, UserRound, X } from 'lucide-react';
 
 export const Header = ( { openLogin,
  }) => {
@@ -40,7 +40,7 @@ export const Header = ( { openLogin,
             <HeadeRight>
               <CartIcon></CartIcon>
               <LoginButton onClick={openLogin}>
-<CircleUserRound  size ={28} color="#f2ebd4" strokeWidth={1.9} />
+<UserRound  size ={28} color="#f2ebd4" strokeWidth={1.9} />
 </LoginButton>
 
               <FavoriteIcon></FavoriteIcon>

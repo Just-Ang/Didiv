@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Backdrop,
   Modal,
@@ -11,6 +11,9 @@ import {
   SubmitButton,
   BottomText,
 } from "./AuthModal.styled";
+import { Eye, EyeOff } from "lucide-react";
+import { InputWrapper } from "./AuthModal.styled";
+import { EyeButton } from "./AuthModal.styled";
 
 export const AuthModal = ({
   isOpen,
@@ -18,6 +21,16 @@ export const AuthModal = ({
   mode,
   setMode,
 }) => {
+
+const [showPassword, setShowPassword] = useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+const [form, setForm] = useState({
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
+console.log(form);
   useEffect(() => {
     const handleEsc = e => {
       if (e.key === "Escape") {
@@ -32,11 +45,68 @@ export const AuthModal = ({
 
   if (!isOpen) return null;
 
+  const handleChange = e => {
+  setForm(prev => ({
+    ...prev,
+    [e.target.name]: e.target.value,
+  }));
+};
+
   const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
+
+//log in 
+
+
+const handleLogin = async () => {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/auth/local`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        identifier: form.email,
+        password: form.password,
+      }),
+    },
+ 
+  );
+onClose();
+  const data = await res.json();
+
+  console.log(data);
+};
+  /// register 
+  const handleRegister = async () => {
+  if (form.password !== form.confirmPassword) {
+    alert("Паролі не співпадають");
+    return;
+  }
+
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/auth/local/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      }),
+    }
+  );
+onClose();
+  const data = await res.json();
+
+  console.log(data);
+};
 
   return (
     <Backdrop onClick={handleBackdropClick}>
@@ -71,29 +141,63 @@ export const AuthModal = ({
 
         {mode === "register" && (
           <Input
-            type="text"
-            placeholder="Ім'я"
+           name="username"
+    value={form.username}
+    onChange={handleChange}
+    placeholder="Ім'я"
           />
         )}
 
         <Input
-          type="email"
-          placeholder="Email"
-        />
+    name="email"
+    type="email"
+    value={form.email}
+    onChange={handleChange}
+    placeholder="Email"
+/>
+<InputWrapper>
+  <Input
+    name="password"
+    type={showPassword ? "text" : "password"}
+    value={form.password}
+    onChange={handleChange}
+    placeholder="Пароль"
+  />
 
-        <Input
-          type="password"
-          placeholder="Пароль"
-        />
+  <EyeButton
+    type="button"
+    onClick={() => setShowPassword(prev => !prev)}
+  >
+    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+  </EyeButton>
+</InputWrapper>
 
         {mode === "register" && (
-          <Input
-            type="password"
-            placeholder="Повторіть пароль"
-          />
+            <InputWrapper>
+  <Input
+  name="confirmPassword"
+   type={showConfirmPassword ? "text" : "password"}
+    value={form.confirmPassword}
+    onChange={handleChange}
+    placeholder="Повторіть пароль"
+/>
+
+  <EyeButton
+    type="button"
+    onClick={() => setShowConfirmPassword(prev => !prev)}
+  >
+    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+  </EyeButton>
+</InputWrapper>
+          
         )}
 
-        <SubmitButton>
+        <SubmitButton onClick={
+        mode === "login"
+            ? handleLogin
+            : handleRegister
+    }>
+        
           {mode === "login"
             ? "Увійти"
             : "Зареєструватися"}

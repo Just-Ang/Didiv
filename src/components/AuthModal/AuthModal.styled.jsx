@@ -162,6 +162,39 @@ export const SubmitButton = styled.button`
   }
 `;
 
+
+export const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 18px;
+`;
+
+export const EyeButton = styled.button`
+  position: absolute;
+  top:40%;
+  right: 18px;
+
+  transform: translateY(-50%);
+
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  color: #8d837d;
+
+  padding: 0;
+
+  &:hover {
+    color: #ff7a00;
+  }
+`;
+
+
 export const BottomText = styled.p`
   margin-top:28px;
 
