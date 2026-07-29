@@ -55,6 +55,7 @@ export const HeaderUp = styled.div`
 export const HeadeRight = styled.div`
   display: flex;
   justify-content: space-around;
+  
 
   @media screen and (min-width: 1023px) {
     display: flex;
@@ -65,6 +66,29 @@ export const HeadeRight = styled.div`
   }
 `;
 
+
+export const LoginButton = styled.button`
+        order: 1;
+
+
+
+    border:none;
+  
+
+    background:transparent;
+
+    color:  var(--white-color);
+
+    cursor:pointer;
+
+    transition:.3s;
+      @media screen and (min-width: 768px) {
+    order: 3;
+    padding-left:15px;
+  }
+
+    
+`;
 
 //   color: var(--main-brand-color);
 //   display: flex;
@@ -136,6 +160,7 @@ export const CatalogIcon = styled.svg`
   fill: var(--white-color);
 `;
 export const MenuButton = styled.button`
+order:4;
   display: flex;
   align-items: center;
   gap: 8px;

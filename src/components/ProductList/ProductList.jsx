@@ -4,9 +4,6 @@ import {
   CardBottom,
   CardButtons,
   CardImg,
-
-
-
   CardTitle,
   ContainerProduct,
   CurrentPrice,
@@ -61,7 +58,6 @@ export const ProductList = ({
   
     useEffect(() => {
       const handleClickOutside = (event) => {
-        // Якщо клікнули ПОЗА контейнером sortRef — закриваємо
         if (sortRef.current && !sortRef.current.contains(event.target)) {
            setIsSortOpen(false);
         }

@@ -4,7 +4,7 @@ import SharedLayout from 'components/SharedLayout/SharedLayout';
 import CatalogPage from 'pages/CatalogPage/CatalogPage';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import { AppWrapper } from './App.styled';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import { Loader } from './components/Loader/Loader';
 import { GlobalStyle } from './styles/GlobalStyled';
 import HomePage from './pages/HomePage/HomePage';
@@ -20,10 +20,14 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import ContactsPage from './pages/ContactsPage/ContactsPage';
 import { NewProductsPage } from './pages/NewProductsPage/NewProductsPage';
 import SalePage from './pages/SalePage/SalePage';
+import { AuthModal } from './components/AuthModal/AuthModal';
 
 
 
 function App() {
+
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+const [authMode, setAuthMode] = useState("login");
 
   return (
      
@@ -32,7 +36,21 @@ function App() {
         <ScrollToTop />
        <Suspense fallback={<Loader />}>
       <Routes>
-  <Route path="/" element={<SharedLayout />}>
+    <Route
+        path="/"
+        element={
+          <SharedLayout
+            openLogin={() => {
+              setAuthMode("login");
+              setIsAuthOpen(true);
+            }}
+            openRegister={() => {
+              setAuthMode("register");
+              setIsAuthOpen(true);
+            }}
+          />
+        }
+      >
     <Route index element={<HomePage />} />
     <Route path="catalog" element={<CatalogPage />} />
      
@@ -49,8 +67,15 @@ function App() {
     <Route path="contacts" element={<ContactsPage/>} />
     <Route path="delivery" element={<DeliveryPage/>}/>
     <Route path="*" element={<ErrorPage />} />
+   
   </Route>
 </Routes>
+   <AuthModal
+      isOpen={isAuthOpen}
+      mode={authMode}
+      onClose={() => setIsAuthOpen(false)}
+      setMode={setAuthMode}
+    />
       </Suspense>
     </AppWrapper>
   );
