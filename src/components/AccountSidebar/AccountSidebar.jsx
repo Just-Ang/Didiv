@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Sidebar,
   User,
@@ -9,14 +10,45 @@ import {
 } from "./AccountSidebar.styled";
 
 export const AccountSidebar = () => {
+      const [name, setName] = useState("");
+      const [email, setEmail] = useState("");
+    
+    //   const [loading, setLoading] = useState(true);
+
+      useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const token = localStorage.getItem("token");
+    
+            const res = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/users/me`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+    
+            const user = await res.json();
+    
+    
+            setName(user.first_name);
+            setEmail(user.email)
+          } catch (err) {
+            console.error(err);
+          } 
+        };
+    
+        fetchUser();
+      }, []);
   return (
     <Sidebar>
       <User>
         <Avatar>A</Avatar>
 
         <div>
-          <Name>Анжеліка</Name>
-          <Email>angelika@gmail.com</Email>
+          <Name>{name}</Name>
+          <Email>{email}</Email>
         </div>
       </User>
 
