@@ -10,6 +10,7 @@ export const Backdrop = styled.div`
   align-items: center;
   padding: 20px;
   z-index: 999;
+
 `;
 
 export const Modal = styled.div`
@@ -28,11 +29,13 @@ export const Modal = styled.div`
     max-width: 500px;
     padding: 40px;
     border-radius: 36px;
+        margin-top: 100px;
   }
 
   @media screen and (min-width: 1440px) {
     max-width: 580px;
     padding: 48px;
+        margin-top: 130px;
   }
 `;
 

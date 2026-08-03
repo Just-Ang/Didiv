@@ -21,6 +21,9 @@ import ContactsPage from './pages/ContactsPage/ContactsPage';
 import { NewProductsPage } from './pages/NewProductsPage/NewProductsPage';
 import SalePage from './pages/SalePage/SalePage';
 import { AuthModal } from './components/AuthModal/AuthModal';
+import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
+import { AccountPage } from './pages/AccountPage/AccountPage';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 
 
 
@@ -28,6 +31,10 @@ function App() {
 
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 const [authMode, setAuthMode] = useState("login");
+
+const [isLoggedIn, ] = useState(
+  !!localStorage.getItem("token")
+);
 
   return (
      
@@ -66,6 +73,22 @@ const [authMode, setAuthMode] = useState("login");
     <Route path="about" element={<AboutUs/>} /> 
     <Route path="contacts" element={<ContactsPage/>} />
     <Route path="delivery" element={<DeliveryPage/>}/>
+
+    <Route
+  path="account"
+  element={
+    <ProtectedRoute isLoggedIn={isLoggedIn}>
+      <AccountPage />
+    </ProtectedRoute>
+  }
+>
+  <Route index element={<ProfilePage />} />
+  <Route path="profile" element={<ProfilePage />} />
+  {/* <Route path="orders" element={<OrdersPage />} />
+  <Route path="favorites" element={<FavoritesAccountPage />} />
+  <Route path="password" element={<ChangePasswordPage />} /> */}
+</Route>
+    
     <Route path="*" element={<ErrorPage />} />
    
   </Route>

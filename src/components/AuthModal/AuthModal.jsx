@@ -73,13 +73,19 @@ const handleLogin = async () => {
         identifier: form.email,
         password: form.password,
       }),
-    },
- 
+    }
   );
-onClose();
+
   const data = await res.json();
 
-  console.log(data);
+  if (!res.ok) {
+    alert(data.error?.message || "Помилка авторизації");
+    return;
+  }
+
+  localStorage.setItem("token", data.jwt);
+
+  onClose();
 };
   /// register 
   const handleRegister = async () => {
@@ -103,9 +109,9 @@ onClose();
     }
   );
 onClose();
-  const data = await res.json();
+ const data = await res.json();
 
-  console.log(data);
+   console.log(data);
 };
 
   return (

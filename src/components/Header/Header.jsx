@@ -25,10 +25,25 @@ import { FavoriteIcon } from '../FavoriteIcon/FavoriteIcon';
 
 import sprite from '../../img/symbol-defs.svg';
 import { BadgePercent, Home, Info, LayersPlus, Mail, ShoppingBag, UserRound, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const Header = ( { openLogin,
  }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+
+
+const navigate = useNavigate();
+
+const handleAccountClick = () => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    navigate("/account");
+  } else {
+    openLogin(); 
+  }
+};
 
   return (
     <HeaderSection>
@@ -39,7 +54,7 @@ export const Header = ( { openLogin,
 
             <HeadeRight>
               <CartIcon></CartIcon>
-              <LoginButton onClick={openLogin}>
+              <LoginButton onClick={handleAccountClick}>
 <UserRound  size ={28} color="#f2ebd4" strokeWidth={1.9} />
 </LoginButton>
 

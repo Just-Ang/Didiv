@@ -1,22 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 100%;
-  max-width: 750px;
-  padding: 10px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-    max-width: 994px;
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-  @media screen and (min-width: 1200px) {
-   max-width: 1448px;
-  }
+ 
 `;
 
 export const Section = styled.section`
