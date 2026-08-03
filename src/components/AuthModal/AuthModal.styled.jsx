@@ -169,7 +169,7 @@ export const SubmitButton = styled.button`
 export const InputWrapper = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 18px;
+ 
 `;
 
 export const EyeButton = styled.button`

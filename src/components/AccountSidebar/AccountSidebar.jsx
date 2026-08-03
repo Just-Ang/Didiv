@@ -8,6 +8,7 @@ import {
   Menu,
   MenuButton,
 } from "./AccountSidebar.styled";
+import { Navigate } from "react-router-dom";
 
 export const AccountSidebar = () => {
       const [name, setName] = useState("");
@@ -41,10 +42,20 @@ export const AccountSidebar = () => {
     
         fetchUser();
       }, []);
+
+
+        const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user"); 
+
+    Navigate("/");
+  };
   return (
     <Sidebar>
       <User>
-        <Avatar>A</Avatar>
+         <Avatar>
+          {(name || name)?.[0]?.toUpperCase() || "?"}
+        </Avatar>
 
         <div>
           <Name>{name}</Name>
@@ -68,7 +79,7 @@ export const AccountSidebar = () => {
   </MenuButton>
 </Menu>
 
-        <MenuButton>
+        <MenuButton onClick={handleLogout}>
           Вийти
         </MenuButton>
 

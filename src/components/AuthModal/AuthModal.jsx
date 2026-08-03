@@ -25,7 +25,8 @@ export const AuthModal = ({
 const [showPassword, setShowPassword] = useState(false);
 const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 const [form, setForm] = useState({
-  username: "",
+  first_name: "",
+  last_name: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -102,16 +103,20 @@ const handleLogin = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: form.username,
+        username: form.first_name,
+        first_name: form.first_name,
+        last_name: form.last_name,
         email: form.email,
         password: form.password,
       }),
     }
   );
+    const data = await res.json();
+  localStorage.setItem("token", data.jwt);
 onClose();
- const data = await res.json();
 
-   console.log(data);
+
+  //  console.log(data);
 };
 
   return (
@@ -145,14 +150,23 @@ onClose();
           </Tab>
         </Tabs>
 
-        {mode === "register" && (
-          <Input
-           name="username"
-    value={form.username}
-    onChange={handleChange}
-    placeholder="Ім'я"
-          />
-        )}
+     {mode === "register" && (
+  <>
+    <Input
+      name="first_name"
+      value={form.first_name}
+      onChange={handleChange}
+      placeholder="Ім'я"
+    />
+
+    <Input
+      name="last_name"
+      value={form.last_name}
+      onChange={handleChange}
+      placeholder="Прізвище"
+    />
+  </>
+)}
 
         <Input
     name="email"

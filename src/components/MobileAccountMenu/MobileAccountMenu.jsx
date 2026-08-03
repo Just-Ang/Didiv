@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 import {
@@ -14,6 +14,41 @@ import {
 
 export const MobileAccountMenu = () => {
   const [open, setOpen] = useState(false);
+
+    const [name, setName] = useState("");
+        const [email, setEmail] = useState("");
+      
+      //   const [loading, setLoading] = useState(true);
+  
+        useEffect(() => {
+          const fetchUser = async () => {
+            try {
+              const token = localStorage.getItem("token");
+      
+              const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/users/me`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+      
+              const user = await res.json();
+      
+      
+              setName(user.first_name);
+              setEmail(user.email)
+            } catch (err) {
+              console.error(err);
+            } 
+          };
+      
+          fetchUser();
+        }, []);
+
+
+
   const titles = {
   "/account": "Особисті дані",
   "/account/profile": "Особисті дані",
@@ -28,13 +63,15 @@ const currentTitle = titles[location.pathname] || "Особисті дані";
     
     <Wrapper>
          <User>
-                <Avatar>A</Avatar>
-        
-                <div>
-                  <Name>Анжеліка</Name>
-                  <Email>angelika@gmail.com</Email>
-                </div>
-              </User>
+                 <Avatar>
+  {(name || name)?.[0]?.toUpperCase() || "?"}
+</Avatar>
+         
+                 <div>
+                   <Name>{name}</Name>
+                   <Email>{email}</Email>
+                 </div>
+               </User>
 
       <ToggleButton
         onClick={() => setOpen(prev => !prev)}
