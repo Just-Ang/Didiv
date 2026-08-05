@@ -14,12 +14,14 @@ import {
 import { Eye, EyeOff } from "lucide-react";
 import { InputWrapper } from "./AuthModal.styled";
 import { EyeButton } from "./AuthModal.styled";
+import { ToastContainer } from "react-toastify";
 
 export const AuthModal = ({
   isOpen,
   onClose,
   mode,
   setMode,
+  localFavorites,
 }) => {
 
 const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +34,37 @@ const [form, setForm] = useState({
   confirmPassword: "",
 });
 console.log(form);
+
+
+const syncFavorites = async (localFavorites, token, id) => {
+  if (!localFavorites.length) return;
+
+  await Promise.all(
+    localFavorites.map(async (item) => {
+      console.log(item);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/favorites`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: {
+              product: item.documentId,
+               user: id,
+            },
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        console.error(await res.json());
+      }
+    })
+  );
+};
   useEffect(() => {
     const handleEsc = e => {
       if (e.key === "Escape") {
@@ -85,6 +118,9 @@ const handleLogin = async () => {
   }
 
   localStorage.setItem("token", data.jwt);
+  localStorage.setItem("user", JSON.stringify(data.user));
+
+  await syncFavorites(localFavorites, data.jwt, data.user.documentId );
 
   onClose();
 };
@@ -103,16 +139,49 @@ const handleLogin = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: form.first_name,
-        first_name: form.first_name,
-        last_name: form.last_name,
+        username: form.email,
+        // first_name: form.first_name,
+        // last_name: form.last_name,
         email: form.email,
         password: form.password,
       }),
     }
   );
     const data = await res.json();
+    console.log(data);
   localStorage.setItem("token", data.jwt);
+  try {
+      const token = localStorage.getItem("token");
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/${data.user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            first_name: form.first_name,
+            last_name: form.last_name,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Помилка оновлення");
+      }
+
+  
+  
+    } catch (err) {
+      console.error(err);
+      alert("Не вдалося оновити дані");
+    }
+
+
+
 onClose();
 
 
@@ -120,6 +189,7 @@ onClose();
 };
 
   return (
+    <>      <ToastContainer autoClose={1500} />
     <Backdrop onClick={handleBackdropClick}>
       <Modal>
         <CloseButton onClick={onClose}>×</CloseButton>
@@ -249,6 +319,6 @@ onClose();
           )}
         </BottomText>
       </Modal>
-    </Backdrop>
+    </Backdrop> </>
   );
 };

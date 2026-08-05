@@ -6,6 +6,7 @@ import {
   Input,
   SaveButton,
 } from "./ProfilePage.styled";
+import { toast, ToastContainer } from "react-toastify";
 
 export const ProfilePage = () => {
   const [form, setForm] = useState({
@@ -85,10 +86,10 @@ export const ProfilePage = () => {
         throw new Error("Помилка оновлення");
       }
 
-      alert("Дані успішно збережено");
+     toast.success('Дані оновлено успішно');
     } catch (err) {
       console.error(err);
-      alert("Не вдалося оновити дані");
+      toast.error('Не вдалось оновити дані');
     }
   };
 
@@ -98,6 +99,7 @@ export const ProfilePage = () => {
 
   return (
     <Card>
+       <ToastContainer autoClose={1500} />
       <Title>Особисті дані</Title>
 
       <Label>

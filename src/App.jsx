@@ -4,7 +4,7 @@ import SharedLayout from 'components/SharedLayout/SharedLayout';
 import CatalogPage from 'pages/CatalogPage/CatalogPage';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import { AppWrapper } from './App.styled';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Loader } from './components/Loader/Loader';
 import { GlobalStyle } from './styles/GlobalStyled';
 import HomePage from './pages/HomePage/HomePage';
@@ -24,17 +24,69 @@ import { AuthModal } from './components/AuthModal/AuthModal';
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 import { AccountPage } from './pages/AccountPage/AccountPage';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFavorites } from './redux/favoritesSlice';
 
 
 
 function App() {
-
+const dispatch = useDispatch();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 const [authMode, setAuthMode] = useState("login");
 
 const [isLoggedIn, ] = useState(
   !!localStorage.getItem("token")
 );
+
+const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user"));
+const userDocumentId = user?.documentId;
+
+//   const token = localStorage.getItem("token");
+ const localFavorites = useSelector((state) => state.favorites.items);
+
+
+  useEffect(() => {
+     if (!token || !userDocumentId) return;
+    const loadFavorites = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/favorites?filters[user][documentId][$eq]=${userDocumentId}&populate=product.images`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      // тут потім перетворимо відповідь Strapi у масив товарів
+      console.log(data);
+
+
+      // dispatch(setFavorites(...));
+
+     const favorites = data.data.map((item) => ({
+  ...item.product,
+  favoriteId: item.id,
+  favoriteDocumentId: item.documentId,
+}));
+
+dispatch(setFavorites(favorites));
+
+    };
+
+    loadFavorites();
+  }, [userDocumentId, dispatch,token]);
+
+
+
+
+
 
   return (
      
@@ -94,6 +146,7 @@ const [isLoggedIn, ] = useState(
   </Route>
 </Routes>
    <AuthModal
+    localFavorites={localFavorites}
       isOpen={isAuthOpen}
       mode={authMode}
       onClose={() => setIsAuthOpen(false)}
