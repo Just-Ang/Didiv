@@ -22,7 +22,7 @@ const CategoryHero = () => {
       }
 
       const data = await res.json();
-      console.log("API response:", data);
+   
 
       if (!data.data) {
         console.error("No data field:", data);
@@ -47,7 +47,7 @@ const CategoryHero = () => {
   fetchCategories();
 }, []);
   
-console.log(categories);
+
   return (<>
   <TitleCatalog>Каталог</TitleCatalog>
     <GridWrapper>

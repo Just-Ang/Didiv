@@ -33,15 +33,41 @@ const [form, setForm] = useState({
   password: "",
   confirmPassword: "",
 });
-console.log(form);
+
 
 
 const syncFavorites = async (localFavorites, token, id) => {
   if (!localFavorites.length) return;
 
+  // Отримуємо обране користувача з бекенду
+  const favoritesRes = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/favorites?filters[user][documentId][$eq]=${id}&populate=product`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!favoritesRes.ok) {
+    console.error(await favoritesRes.json());
+    return;
+  }
+
+  const favoritesData = await favoritesRes.json();
+  const backendFavorites = favoritesData.data;
+  console.log('бекфев',backendFavorites);
+
   await Promise.all(
     localFavorites.map(async (item) => {
-      console.log(item);
+      // Перевіряємо, чи вже існує цей товар
+      const exists = backendFavorites.some(
+        (favorite) => favorite.product?.documentId === item.documentId
+      );
+
+      if (exists) return;
+
+      // Якщо немає — додаємо
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/api/favorites`,
         {
@@ -53,7 +79,7 @@ const syncFavorites = async (localFavorites, token, id) => {
           body: JSON.stringify({
             data: {
               product: item.documentId,
-               user: id,
+              user: id,
             },
           }),
         }
@@ -148,7 +174,7 @@ const handleLogin = async () => {
     }
   );
     const data = await res.json();
-    console.log(data);
+  
   localStorage.setItem("token", data.jwt);
   try {
       const token = localStorage.getItem("token");
@@ -185,7 +211,7 @@ const handleLogin = async () => {
 onClose();
 
 
-  //  console.log(data);
+
 };
 
   return (

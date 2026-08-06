@@ -39,9 +39,9 @@ useEffect(() => {
     category
   )}&pagination[pageSize]=200`
 );
-        console.log(category)
+      
       const data = await res.json();
-      console.log('dataaaa',data.data)
+    
       const products = data.data || [];
 
 const aggregated = {};
