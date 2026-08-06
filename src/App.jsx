@@ -34,12 +34,10 @@ const dispatch = useDispatch();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 const [authMode, setAuthMode] = useState("login");
 
-const [isLoggedIn, ] = useState(
-  !!localStorage.getItem("token")
-);
+const isLoggedIn = !!localStorage.getItem("token");
 
 const token = localStorage.getItem("token");
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(localStorage.getItem("user") || "null");
 const userDocumentId = user?.documentId;
 
 //   const token = localStorage.getItem("token");
@@ -64,11 +62,10 @@ const userDocumentId = user?.documentId;
 
       const data = await res.json();
 
-      // тут потім перетворимо відповідь Strapi у масив товарів
       console.log(data);
 
 
-      // dispatch(setFavorites(...));
+      
 
      const favorites = data.data.map((item) => ({
   ...item.product,
