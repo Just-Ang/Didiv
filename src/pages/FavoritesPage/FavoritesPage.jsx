@@ -18,6 +18,7 @@ import {
   ReservedBadgeFavorite,
   ImageWrapper,
 } from './FavoritesPage.styled';
+import placeholder from '../../../public/nofoto.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import { clearFavorite, toggleFavorite } from '../../redux/favoritesSlice';
@@ -166,12 +167,12 @@ const FavoritesPage = () => {
                     )}
                     <ImageWrapper>
                       <Image
-                        src={item.images?.[0]?.url || '/nofoto.png'}
+                        src={item.images?.[0]?.url || placeholder}
                         alt={item.name}
                         onClick={() => navigate(`/product/${item.id}`)}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
-                          e.currentTarget.src = '/nofoto.png';
+                    
                         }}
                       />
                     </ImageWrapper>
