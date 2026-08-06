@@ -35,16 +35,28 @@ export const Header = ( { openLogin,
 
 const navigate = useNavigate();
 
+// const handleAccountClick = () => {
+//   const token = localStorage.getItem("token");
+
+//   if (token) {
+//     navigate("/account");
+//   } else {
+//     openLogin(); 
+//   }
+// };
 const handleAccountClick = () => {
   const token = localStorage.getItem("token");
 
+  console.log("token:", token);
+
   if (token) {
+    console.log("navigate");
     navigate("/account");
   } else {
-    openLogin(); 
+    console.log("login");
+    openLogin();
   }
 };
-
   return (
     <HeaderSection>
       <HeaderContainer>
