@@ -24,7 +24,9 @@ const CatalogPage = () => {
         setLoading(true);
 
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/categories?populate=*&pagination[limit]=50&sort=title:asc`
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/categories?populate=*&pagination[limit]=50&sort=title:asc`
         );
         const data = await res.json();
 
@@ -34,7 +36,7 @@ const CatalogPage = () => {
           data.data.map((cat) => ({
             id: cat.id_title,
             title: cat.title,
-           image: cat.image?.url,
+            image: cat.image?.url,
           }))
         );
       } catch (err) {
@@ -76,9 +78,9 @@ const CatalogPage = () => {
     <Section>
       <Container>
         <WrapperNew>
-<NewArrivals/>
+          <NewArrivals />
         </WrapperNew>
-         
+
         <CatalogTitle>Каталог</CatalogTitle>
         <CatalogBox>
           {categories.map((cat) => (

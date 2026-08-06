@@ -8,7 +8,6 @@ export const AccountPage = () => {
       const isMobile = useMediaQuery({
     maxWidth: 767,
   });
-   console.log("AccountPage rendered");
 
   return (
     <AccountWrapper className="container">

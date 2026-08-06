@@ -27,32 +27,31 @@ import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFavorites } from './redux/favoritesSlice';
 
-
-
 function App() {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-const [authMode, setAuthMode] = useState("login");
+  const [authMode, setAuthMode] = useState('login');
 
-const isLoggedIn = !!localStorage.getItem("token");
+  const isLoggedIn = !!localStorage.getItem('token');
 
-const token = localStorage.getItem("token");
-const user = JSON.parse(localStorage.getItem("user") || "null");
-const userDocumentId = user?.documentId;
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const userDocumentId = user?.documentId;
 
-//   const token = localStorage.getItem("token");
- const localFavorites = useSelector((state) => state.favorites.items);
-
+  //   const token = localStorage.getItem("token");
+  const localFavorites = useSelector((state) => state.favorites.items);
 
   useEffect(() => {
-     if (!token || !userDocumentId) return;
+    if (!token || !userDocumentId) return;
     const loadFavorites = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
       if (!token) return;
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/favorites?filters[user][documentId][$eq]=${userDocumentId}&populate=product.images`,
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/favorites?filters[user][documentId][$eq]=${userDocumentId}&populate=product.images`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,93 +61,80 @@ const userDocumentId = user?.documentId;
 
       const data = await res.json();
 
-      console.log(data);
+      const favorites = data.data.map((item) => ({
+        ...item.product,
+        favoriteId: item.id,
+        favoriteDocumentId: item.documentId,
+      }));
 
-
-      
-
-     const favorites = data.data.map((item) => ({
-  ...item.product,
-  favoriteId: item.id,
-  favoriteDocumentId: item.documentId,
-}));
-
-dispatch(setFavorites(favorites));
-
+      dispatch(setFavorites(favorites));
     };
 
     loadFavorites();
-  }, [userDocumentId, dispatch,token]);
-
-
-
-
-
+  }, [userDocumentId, dispatch, token]);
 
   return (
-     
     <AppWrapper>
-        <GlobalStyle />
-        <ScrollToTop />
-       <Suspense fallback={<Loader />}>
-      <Routes>
-    <Route
-        path="/"
-        element={
-          <SharedLayout
-            openLogin={() => {
-              setAuthMode("login");
-              setIsAuthOpen(true);
-            }}
-            openRegister={() => {
-              setAuthMode("register");
-              setIsAuthOpen(true);
-            }}
-          />
-        }
-      >
-    <Route index element={<HomePage />} />
-    <Route path="catalog" element={<CatalogPage />} />
-     
-    <Route path="/catalog/:category" element={<CategoryPage />} />
-    <Route path="/product/:id" element={<ProductPage />} />
-    <Route path="cart" element={<CartPage />} />
-    <Route path="favorite" element={<FavoritesPage/>} />
-    <Route path ="/catalog/new" element={<NewProductsPage/>} />
-     <Route path ="/catalog/sale" element={<SalePage/>} />
+      <GlobalStyle />
+      <ScrollToTop />
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <SharedLayout
+                openLogin={() => {
+                  setAuthMode('login');
+                  setIsAuthOpen(true);
+                }}
+                openRegister={() => {
+                  setAuthMode('register');
+                  setIsAuthOpen(true);
+                }}
+              />
+            }
+          >
+            <Route index element={<HomePage />} />
+            <Route path="catalog" element={<CatalogPage />} />
 
- <Route path="checkout" element={<CheckoutPage/>} /> 
-  <Route path="/order-confirmation" element={<OrderConfirmation />} />
-    <Route path="about" element={<AboutUs/>} /> 
-    <Route path="contacts" element={<ContactsPage/>} />
-    <Route path="delivery" element={<DeliveryPage/>}/>
+            <Route path="/catalog/:category" element={<CategoryPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="cart" element={<CartPage />} />
+            <Route path="favorite" element={<FavoritesPage />} />
+            <Route path="/catalog/new" element={<NewProductsPage />} />
+            <Route path="/catalog/sale" element={<SalePage />} />
 
-    <Route
-  path="account"
-  element={
-    <ProtectedRoute isLoggedIn={isLoggedIn}>
-      <AccountPage />
-    </ProtectedRoute>
-  }
->
-  <Route index element={<ProfilePage />} />
-  <Route path="profile" element={<ProfilePage />} />
-  {/* <Route path="orders" element={<OrdersPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
+            <Route path="about" element={<AboutUs />} />
+            <Route path="contacts" element={<ContactsPage />} />
+            <Route path="delivery" element={<DeliveryPage />} />
+
+            <Route
+              path="account"
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <AccountPage />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<ProfilePage />} />
+              <Route path="profile" element={<ProfilePage />} />
+              {/* <Route path="orders" element={<OrdersPage />} />
   <Route path="favorites" element={<FavoritesAccountPage />} />
   <Route path="password" element={<ChangePasswordPage />} /> */}
-</Route>
-    
-    <Route path="*" element={<ErrorPage />} />
-   
-  </Route>
-</Routes>
-   <AuthModal
-    localFavorites={localFavorites}
-      isOpen={isAuthOpen}
-      mode={authMode}
-      onClose={() => setIsAuthOpen(false)}
-      setMode={setAuthMode}
-    />
+            </Route>
+
+            <Route path="*" element={<ErrorPage />} />
+          </Route>
+        </Routes>
+        <AuthModal
+          localFavorites={localFavorites}
+          isOpen={isAuthOpen}
+          mode={authMode}
+          onClose={() => setIsAuthOpen(false)}
+          setMode={setAuthMode}
+        />
       </Suspense>
     </AppWrapper>
   );

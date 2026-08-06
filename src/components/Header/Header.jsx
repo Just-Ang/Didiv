@@ -47,13 +47,13 @@ const navigate = useNavigate();
 const handleAccountClick = () => {
   const token = localStorage.getItem("token");
 
-  console.log("token:", token);
+
 
   if (token) {
-    console.log("navigate");
+  
     navigate("/account");
   } else {
-    console.log("login");
+
     openLogin();
   }
 };

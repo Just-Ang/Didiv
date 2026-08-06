@@ -8,13 +8,19 @@ import {
   Menu,
   MenuButton,
 } from "./AccountSidebar.styled";
-import { Navigate } from "react-router-dom";
+
+import { persistor } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { clearFavorite } from "../../redux/favoritesSlice";
+import { useNavigate } from "react-router-dom";
+
 
 export const AccountSidebar = () => {
       const [name, setName] = useState("");
       const [email, setEmail] = useState("");
-    
-    //   const [loading, setLoading] = useState(true);
+      const dispatch = useDispatch();
+const navigate = useNavigate();
+
 
       useEffect(() => {
         const fetchUser = async () => {
@@ -44,12 +50,16 @@ export const AccountSidebar = () => {
       }, []);
 
 
-        const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user"); 
+    const handleLogout = async () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 
-    Navigate("/");
-  };
+  dispatch(clearFavorite());
+
+  await persistor.purge();
+
+navigate("/", { replace: true });
+};
   return (
     <Sidebar>
       <User>

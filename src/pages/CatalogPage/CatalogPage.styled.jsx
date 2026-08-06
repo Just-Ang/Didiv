@@ -15,6 +15,7 @@ export const Container = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   @media screen and (min-width: 768px) {
+    display: flex;
     max-width: 994px;
     padding-left: 30px;
     padding-right: 30px;
