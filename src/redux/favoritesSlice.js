@@ -15,6 +15,7 @@ const favoritesSlice = createSlice({
         state.items.push(product);
       }
     },
+    
     clearFavorite: (state) => {
       state.items = [];
     },

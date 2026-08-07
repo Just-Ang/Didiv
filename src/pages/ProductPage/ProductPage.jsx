@@ -43,7 +43,7 @@ import {
   TooltipWrapper,
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
-import { toggleFavorite } from '../../redux/favoritesSlice';
+import { addFavorite, removeFavorite, } from '../../redux/favoritesSlice';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'; // Імпорт плагіна
@@ -51,6 +51,7 @@ import { ShoppingCart } from 'lucide-react';
 import { BallTriangle } from 'react-loader-spinner';
 import dayjs from 'dayjs';
 import FAQSection from '../../components/FAQSection/FAQSection';
+import { createFavorite, deleteFavorite } from '../../api/favorites';
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -70,6 +71,10 @@ export const ProductPage = () => {
 
   const useMediaQuery = (query) => {
     const [matches, setMatches] = useState(false);
+
+
+     
+
 
     useEffect(() => {
       const media = window.matchMedia(query);
@@ -153,19 +158,51 @@ export const ProductPage = () => {
     dispatch(addToCart({ ...product, quantity }));
     toast.success(`${product.name} додано в кошик!`);
   };
-  const HandleAddFavorite = (product, e) => {
-    e.stopPropagation();
+  // const HandleAddFavorite = (product, e) => {
+  //   e.stopPropagation();
 
-    dispatch(toggleFavorite(product));
+  //   dispatch(toggleFavorite(product));
 
+  //   if (isFavorite) {
+  //     toast.warning(`${product.name} видалено з обраного`);
+  //   } else {
+  //     toast.info(`${product.name} додано в обране`);
+  //   }
+  // };
+
+const HandleAddFavorite = async (product, e) => {
+  e.stopPropagation();
+    const token = localStorage.getItem("token");
+   const user = JSON.parse(localStorage.getItem("user"));
+
+const documentId = user?.documentId;
+
+console.log(documentId);
+
+
+
+  try {
     if (isFavorite) {
+      // DELETE на Strapi
+      await deleteFavorite(product, favorites, documentId, token);
+
+      dispatch(removeFavorite(product.id));
       toast.warning(`${product.name} видалено з обраного`);
     } else {
-      toast.info(`${product.name} додано в обране`);
+      // POST на Strapi
+      const favorite = await createFavorite(product, favorites, documentId, token);
+ console.log('фавор',favorite)
+      // або product, або favorite.product - залежить від того,
+      // що повертає твій API
+      dispatch(addFavorite(product));
+
+      toast.success(`${product.name} додано в обране`);
     }
-  };
-
-
+  } catch (err) {
+    toast.error("Не вдалося оновити обране");
+    console.error(err);
+  }
+};
 const hasDiscount = product?.new_price && product?.new_price < product.price;
 
 const discountPercent = hasDiscount
