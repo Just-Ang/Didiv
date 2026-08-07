@@ -57,6 +57,7 @@ const navigate = useNavigate();
   dispatch(clearFavorite());
 
   await persistor.purge();
+  
 
 navigate("/", { replace: true });
 };
