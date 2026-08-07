@@ -33,63 +33,151 @@ export const AuthModal = ({
     confirmPassword: '',
   });
 
-  const syncFavorites = async (localFavorites, token, id) => {
-    if (!localFavorites.length) return;
+  // const syncFavorites = async (localFavorites, token, id) => {
+  //   if (!localFavorites.length) return;
 
-    // Отримуємо обране користувача з бекенду
-    const favoritesRes = await fetch(
-      `${
-        import.meta.env.VITE_API_URL
-      }/api/favorites?filters[user][documentId][$eq]=${id}&populate=product`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  //   // Отримуємо обране користувача з бекенду
+  //   const favoritesRes = await fetch(
+  //     `${
+  //       import.meta.env.VITE_API_URL
+  //     }/api/favorites?filters[user][documentId][$eq]=${id}&populate=product`,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+
+  //   if (!favoritesRes.ok) {
+  //     console.error(await favoritesRes.json());
+  //     return;
+  //   }
+
+  //   const favoritesData = await favoritesRes.json();
+  //   const backendFavorites = favoritesData.data;
+  //   console.log('бекфев', backendFavorites);
+
+  //   await Promise.all(
+  //     localFavorites.map(async (item) => {
+  //       // Перевіряємо, чи вже існує цей товар
+  //       const exists = backendFavorites.some(
+  //         (favorite) => favorite.product?.documentId === item.documentId
+  //       );
+
+  //       if (exists) return;
+
+  //       // Якщо немає — додаємо
+  //       const res = await fetch(
+  //         `${import.meta.env.VITE_API_URL}/api/favorites`,
+  //         {
+  //           method: 'POST',
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({
+  //             data: {
+  //               product: item.documentId,
+  //               user: id,
+  //             },
+  //           }),
+  //         }
+  //       );
+
+  //       if (!res.ok) {
+  //         console.error(await res.json());
+  //       }
+  //     })
+  //   );
+  // };
+  const syncFavorites = async (localFavorites, token, userId) => {
+  if (!localFavorites.length) return;
+
+  await Promise.all(
+    localFavorites.map(async (item) => {
+      // Шукаємо Favorite по товару
+      console.log(item);
+      const favoriteRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/favorites?filters[product][documentId][$eq]=${item.documentId}&populate=user`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!favoriteRes.ok) {
+        console.error(await favoriteRes.json());
+        return;
       }
-    );
 
-    if (!favoritesRes.ok) {
-      console.error(await favoritesRes.json());
-      return;
-    }
+      const favoriteData = await favoriteRes.json();
 
-    const favoritesData = await favoritesRes.json();
-    const backendFavorites = favoritesData.data;
-    console.log('бекфев', backendFavorites);
+      // Якщо Favorite вже існує
+      if (favoriteData.data.length > 0) {
+        const favorite = favoriteData.data[0];
 
-    await Promise.all(
-      localFavorites.map(async (item) => {
-        // Перевіряємо, чи вже існує цей товар
-        const exists = backendFavorites.some(
-          (favorite) => favorite.product?.documentId === item.documentId
+console.log("favr",favorite);
+
+        const users = favorite.user || [];
+
+        const alreadyExists = users.some(
+          (user) => user.documentId === userId
         );
 
-        if (exists) return;
+        if (alreadyExists) return;
 
-        // Якщо немає — додаємо
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/favorites`,
+        // Додаємо нового користувача
+        const updateRes = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/favorites/${favorite.documentId}`,
           {
-            method: 'POST',
+            method: "PUT",
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               data: {
-                product: item.documentId,
-                user: id,
+                user: [
+                  ...users.map((u) => u.documentId),
+                  userId,
+                ],
               },
             }),
           }
         );
 
-        if (!res.ok) {
-          console.error(await res.json());
+        if (!updateRes.ok) {
+          console.error(await updateRes.json());
         }
-      })
-    );
-  };
+
+        return;
+      }
+
+      // Якщо Favorite ще не існує
+      const createRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/favorites`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: {
+              product: item.documentId,
+              user: [userId],
+            },
+          }),
+        }
+      );
+
+      if (!createRes.ok) {
+        console.error(await createRes.json());
+      }
+    })
+  );
+};
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape') {
