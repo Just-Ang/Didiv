@@ -1990,7 +1990,22 @@ font-family: var(--second-font);
   height: 40px;
   object-fit: cover;
 `;const AD=()=>f.jsx(DD,{children:f.jsxs(LD,{children:[f.jsx(MD,{}),f.jsx(qw,{}),f.jsx(XM,{}),f.jsx(O2,{})]})}),RD=_.div`
- 
+  width: 100%;
+  max-width: 750px;
+  padding: 10px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    max-width: 994px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media screen and (min-width: 1200px) {
+   max-width: 1448px;
+  }
 `,FD=_.section`
   background-color:  var(--second-background);
 `,zD=_.div`
