@@ -7,13 +7,10 @@ import sprite from '../../img/symbol-defs.svg';
 import {
   ActionRow,
   AddToCartBtn,
-
   AvailableRow,
-
   Breadcrumbs,
   Container,
   CurrentPrice,
-
   DescriptionText,
   DesktopWrapper,
   DiscountBadge,
@@ -43,7 +40,7 @@ import {
   TooltipWrapper,
 } from './ProductPage.styled';
 import { toast, ToastContainer } from 'react-toastify';
-import { addFavorite, removeFavorite, } from '../../redux/favoritesSlice';
+
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'; // Імпорт плагіна
@@ -51,7 +48,8 @@ import { ShoppingCart } from 'lucide-react';
 import { BallTriangle } from 'react-loader-spinner';
 import dayjs from 'dayjs';
 import FAQSection from '../../components/FAQSection/FAQSection';
-import { createFavorite, deleteFavorite } from '../../api/favorites';
+
+import { handleFavorite } from '../../api/utils/handleFavorite';
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -61,20 +59,15 @@ export const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-  console.log('products', products);
+
   const [loading, setLoading] = useState(true);
   const product = products.find((p) => p.id === Number(id));
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;
-   
 
   const useMediaQuery = (query) => {
     const [matches, setMatches] = useState(false);
-
-
-     
-
 
     useEffect(() => {
       const media = window.matchMedia(query);
@@ -120,9 +113,9 @@ export const ProductPage = () => {
 
     fetchProducts();
   }, [id]);
-  console.log(product);
+
   const isAvailable = product?.available ?? true;
-    console.log(isAvailable);
+
   useEffect(() => {
     if (product && product.images) {
       setActiveImage(product.images?.[0]?.url);
@@ -158,57 +151,86 @@ export const ProductPage = () => {
     dispatch(addToCart({ ...product, quantity }));
     toast.success(`${product.name} додано в кошик!`);
   };
-  // const HandleAddFavorite = (product, e) => {
-  //   e.stopPropagation();
 
-  //   dispatch(toggleFavorite(product));
+// const HandleAddFavorite = async (product, e) => {
+//   e.stopPropagation();
 
-  //   if (isFavorite) {
-  //     toast.warning(`${product.name} видалено з обраного`);
-  //   } else {
-  //     toast.info(`${product.name} додано в обране`);
-  //   }
-  // };
+//   const token = localStorage.getItem('token');
+//   const user = JSON.parse(localStorage.getItem('user'));
 
-const HandleAddFavorite = async (product, e) => {
+//   // Якщо НЕ залогінений — працюємо тільки з Redux
+//   if (!token || !user) {
+//     if (isFavorite) {
+//       dispatch(removeFavorite(product.id));
+//       toast.warning(`${product.name} видалено з обраного`);
+//     } else {
+//       dispatch(addFavorite(product));
+//       toast.success(`${product.name} додано в обране`);
+//     }
+
+//     return;
+//   }
+
+//   //  Якщо залогінений — працюємо з бекендом
+//   const documentId = user?.documentId;
+//   const id = user?.id;
+
+//   try {
+//     const response = await fetch(
+//       `${
+//         import.meta.env.VITE_API_URL
+//       }/api/users/${id}?populate[favorites][populate][0]=product&populate[favorites][populate][1]=user`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+
+//     const userNew = await response.json();
+
+//     const data = await fetch(
+//       `${import.meta.env.VITE_API_URL}/api/favorites?populate=*`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+
+//     const { data: allFavorites } = await data.json();
+
+//     const favoritesOfUser = userNew?.favorites;
+
+//     if (isFavorite) {
+//       await deleteFavorite(product, favoritesOfUser, documentId, token);
+
+//       dispatch(removeFavorite(product.id));
+//       toast.warning(`${product.name} видалено з обраного`);
+//     } else {
+//       await createFavorite(product, allFavorites, documentId, token);
+
+//       dispatch(addFavorite(product));
+//       toast.success(`${product.name} додано в обране`);
+//     }
+//   } catch (err) {
+//     toast.error('Не вдалося оновити обране');
+//     console.error(err);
+//   }
+// };
+
+const handleClickFavorite = (product, e) => {
   e.stopPropagation();
-    const token = localStorage.getItem("token");
-   const user = JSON.parse(localStorage.getItem("user"));
 
-const documentId = user?.documentId;
-
-console.log(documentId);
-
-
-
-  try {
-    if (isFavorite) {
-      // DELETE на Strapi
-      await deleteFavorite(product, favorites, documentId, token);
-
-      dispatch(removeFavorite(product.id));
-      toast.warning(`${product.name} видалено з обраного`);
-    } else {
-      // POST на Strapi
-      const favorite = await createFavorite(product, favorites, documentId, token);
- console.log('фавор',favorite)
-      // або product, або favorite.product - залежить від того,
-      // що повертає твій API
-      dispatch(addFavorite(product));
-
-      toast.success(`${product.name} додано в обране`);
-    }
-  } catch (err) {
-    toast.error("Не вдалося оновити обране");
-    console.error(err);
-  }
+  handleFavorite(product, isFavorite, dispatch, toast);
 };
-const hasDiscount = product?.new_price && product?.new_price < product.price;
+  const hasDiscount = product?.new_price && product?.new_price < product.price;
 
-const discountPercent = hasDiscount
-  ? Math.round(((product.price - product.new_price) / product.price) * 100)
-  : 0;
-
+  const discountPercent = hasDiscount
+    ? Math.round(((product.price - product.new_price) / product.price) * 100)
+    : 0;
 
   if (loading) {
     return (
@@ -303,34 +325,27 @@ const discountPercent = hasDiscount
         {/* Права колонка: Інфо та покупка */}
         <InfoSection>
           <Title>{product.name}</Title>
-          <RatingRow>
-            {isNew && <NewLable >● Новий товар</NewLable >}
-          </RatingRow>
-          {!isAvailable &&  <AvailableRow> Заброньовано</AvailableRow>}
-         
+          <RatingRow>{isNew && <NewLable>● Новий товар</NewLable>}</RatingRow>
+          {!isAvailable && <AvailableRow> Заброньовано</AvailableRow>}
 
           <PriceCard>
-           <PriceWrapper>
-  {hasDiscount ? (
-    <>
-      <CurrentPrice $discount>
-        {product.new_price.toLocaleString()} грн
-      </CurrentPrice>
+            <PriceWrapper>
+              {hasDiscount ? (
+                <>
+                  <CurrentPrice $discount>
+                    {product.new_price.toLocaleString()} грн
+                  </CurrentPrice>
 
-      <OldPrice>
-        {product.price.toLocaleString()} грн
-      </OldPrice>
+                  <OldPrice>{product.price.toLocaleString()} грн</OldPrice>
 
-      <DiscountBadge>
-        -{discountPercent}%
-      </DiscountBadge>
-    </>
-  ) : (
-    <CurrentPrice>
-      {product.price.toLocaleString()} грн
-    </CurrentPrice>
-  )}
-</PriceWrapper>
+                  <DiscountBadge>-{discountPercent}%</DiscountBadge>
+                </>
+              ) : (
+                <CurrentPrice>
+                  {product.price.toLocaleString()} грн
+                </CurrentPrice>
+              )}
+            </PriceWrapper>
 
             <ActionRow>
               <QuantitySelector>
@@ -352,8 +367,7 @@ const discountPercent = hasDiscount
                 </TooltipWrapper>
               </QuantitySelector>
 
-              <AddToCartBtn onClick={handleAdd}
-               disabled={!isAvailable}>
+              <AddToCartBtn onClick={handleAdd} disabled={!isAvailable}>
                 {' '}
                 <ShoppingCart size={25} />
                 <span>В&nbsp;КОШИК</span>
@@ -361,7 +375,7 @@ const discountPercent = hasDiscount
 
               <FavoriteButton
                 $active={isFavorite}
-                onClick={(e) => HandleAddFavorite(product, e)}
+                onClick={(e) => handleClickFavorite(product, e)}
               >
                 <HeartIcon $active={isFavorite}>
                   {' '}
@@ -371,7 +385,6 @@ const discountPercent = hasDiscount
               </FavoriteButton>
             </ActionRow>
           </PriceCard>
-
         </InfoSection>
       </MainSection>
       {!isDesktop && (
@@ -462,24 +475,24 @@ const discountPercent = hasDiscount
           {/* ПРАВА КОЛОНКА  */}
           <SpecsGrid>
             <TitleSpecs> Характеристики</TitleSpecs>
-            
-            {(() => {
-  const allSpecs = [
-    ...(product.attributes || []),
-    ...(product.features || [])
-  ];
 
-  return allSpecs.length ? (
-    allSpecs.map((spec, index) => (
-      <SpecRow key={`${spec.id}-${index}`}>
-        <span>{spec.label}</span>
-        <b>{spec.value}</b>
-      </SpecRow>
-    ))
-  ) : (
-    <p>Характеристики відсутні</p>
-  );
-})()}
+            {(() => {
+              const allSpecs = [
+                ...(product.attributes || []),
+                ...(product.features || []),
+              ];
+
+              return allSpecs.length ? (
+                allSpecs.map((spec, index) => (
+                  <SpecRow key={`${spec.id}-${index}`}>
+                    <span>{spec.label}</span>
+                    <b>{spec.value}</b>
+                  </SpecRow>
+                ))
+              ) : (
+                <p>Характеристики відсутні</p>
+              );
+            })()}
           </SpecsGrid>
         </DesktopWrapper>
       )}

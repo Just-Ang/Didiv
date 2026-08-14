@@ -224,10 +224,9 @@ const getFinalPrice = (product) => {
       </div>
     );
   }
-  console.log(currentProducts);
 
-  console.log('filteredProducts.length:', filteredProducts.length);
-  console.log('currentProducts.length:', currentProducts.length);
+  // console.log('filteredProducts.length:', filteredProducts.length);
+  // console.log('currentProducts.length:', currentProducts.length);
  
 
   return (

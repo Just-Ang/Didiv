@@ -36,9 +36,9 @@ export const CategoryPage = () => {
   const [childValues, setChildValues] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 0]);
 
-  console.log(childValues);
 
-  console.log(category);
+
+
   const hasFilters = Object.values(selectedFilters).some(
     (value) => Array.isArray(value) && value.length > 0
   );

@@ -4,10 +4,8 @@ export const createFavorite = async (
   currentUserDocumentId,
   token
 ) => {
-
-    console.log(product, favorites, currentUserDocumentId, token)
   // шукаємо запис по товару
-  const favorite = favorites.find(
+  const favorite = favorites?.find(
     (item) => item.product?.documentId === product?.documentId
   );
 
@@ -74,18 +72,20 @@ export const deleteFavorite = async (
   currentUserDocumentId,
   token
 ) => {
-  const favorite = favorites.find(
+  const favorite = favorites?.find(
     (item) => item.product?.documentId === product?.documentId
   );
 
   if (!favorite) return;
 
   const users = favorite.user
-    .filter((u) => u.documentId !== currentUserDocumentId)
+    ?.filter((u) => u.documentId !== currentUserDocumentId)
     .map((u) => u.documentId);
 
+
+
   // Якщо після видалення нікого не залишилось — видаляємо запис
-  if (users.length === 0) {
+  if (users?.length === 0) {
     const res = await fetch(
       `${import.meta.env.VITE_API_URL}/api/favorites/${favorite.documentId}`,
       {
