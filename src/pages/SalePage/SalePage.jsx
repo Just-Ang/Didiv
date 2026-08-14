@@ -37,8 +37,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
-import { toggleFavorite } from '../../redux/favoritesSlice';
 import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
+import { handleFavorite } from '../../api/utils/handleFavorite';
 
 const SalePage = () => {
   const [products, setProducts] = useState([]);
@@ -138,17 +138,12 @@ const sortRef = useRef(null);
   );
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
-  const HandleAddFavorite = (product, e) => {
-    e.stopPropagation();
-    const exists = favorites.some((favItem) => favItem.id === product.id);
-
-    dispatch(toggleFavorite(product));
-    if (exists) {
-      toast.warning(`${product.name} видалено з обраного`);
-    } else {
-      toast.info(`${product.name} додано в обране`);
-    }
-  };
+ const handleClickFavorite = (product, e) => {
+   e.stopPropagation();
+   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+ 
+   handleFavorite(product, isFavorite, dispatch, toast);
+ };
 
   if (loading) {
     return (
@@ -347,7 +342,7 @@ const sortRef = useRef(null);
                    )}
                     
 
-                    <Button onClick={(e) => HandleAddFavorite(item, e)}>
+                    <Button onClick={(e) => handleClickFavorite(item, e)}>
                       <Heart
                         size={24}
                         fill={isFavorite ? '#ff4d4f' : 'none'}

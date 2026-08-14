@@ -226,6 +226,8 @@ const handleClickFavorite = (product, e) => {
 
   handleFavorite(product, isFavorite, dispatch, toast);
 };
+
+
   const hasDiscount = product?.new_price && product?.new_price < product.price;
 
   const discountPercent = hasDiscount

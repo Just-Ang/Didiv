@@ -26,12 +26,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { clearCart, removeFromCart } from '../../redux/cartSlice';
 import CartEmpty from '../../components/CartEmpty/CartEmpty';
-import { toggleFavorite } from '../../redux/favoritesSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import { Heart, Trash2 } from 'lucide-react';
 import Counter from '../../components/Counter/Counter';
 import { useState } from 'react';
 import placeholder from '../../../public/nofoto.png';
+import { handleFavorite } from '../../api/utils/handleFavorite';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -51,18 +51,12 @@ const CartPage = () => {
 
   const favorites = useSelector((state) => state.favorites.items);
   const isCartEmpty = cartItems.length === 0;
-  const HandleAddFavorite = (product, e) => {
-    e.stopPropagation();
-    console.log(product);
-    const exists = favorites.some((favItem) => favItem.id === product.id);
-
-    dispatch(toggleFavorite(product));
-    if (exists) {
-      toast.warning(`${product.name} видалено з обраного`);
-    } else {
-      toast.info(`${product.name} додано в обране`);
-    }
-  };
+ const handleClickFavorite = (product, e) => {
+   e.stopPropagation();
+   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+ 
+   handleFavorite(product, isFavorite, dispatch, toast);
+ };
   const handleDelete = (item) => {
     setRemovingIds((prev) => [...prev, item.id]);
 
@@ -154,7 +148,7 @@ const discountPercent = hasDiscount
                     </CounterPrice>
                     <BtnIcons>
                       <ButtonFavorite
-                        onClick={(e) => HandleAddFavorite(item, e)}
+                        onClick={(e) => handleClickFavorite(item, e)}
                         style={{
                           background: 'none',
                           border: 'none',

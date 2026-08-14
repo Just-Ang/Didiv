@@ -22,7 +22,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import placeholder from '../../../public/nofoto.png';
 import { useEffect, useState } from 'react';
 import { Button, CardButtons, CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../ProductList/ProductList.styled';
-import { toggleFavorite } from '../../redux/favoritesSlice';
+
+import { handleFavorite } from '../../api/utils/handleFavorite';
 
 export const NewArrivals = () => {
   const dispatch = useDispatch();
@@ -49,17 +50,12 @@ export const NewArrivals = () => {
       );
   }, []);
 
- const HandleAddFavorite = (product, e) => {
-    e.stopPropagation();
-    const exists = favorites.some((favItem) => favItem.id === product.id);
-
-    dispatch(toggleFavorite(product));
-    if (exists) {
-      toast.warning(`${product.name} видалено з обраного`);
-    } else {
-      toast.info(`${product.name} додано в обране`);
-    }
-  };
+ const handleClickFavorite = (product, e) => {
+   e.stopPropagation();
+   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+ 
+   handleFavorite(product, isFavorite, dispatch, toast);
+ };
 
   const displayProducts = [...products]
     .sort(() => Math.random() - 0.5)
@@ -150,7 +146,7 @@ export const NewArrivals = () => {
                   />
                                       </Button>
                   
-                                      <Button onClick={(e) => HandleAddFavorite(item, e)}>
+                                      <Button onClick={(e) => handleClickFavorite(item, e)}>
                                         <Heart
                                           size={24}
                                           fill={isFavorite ? '#ff4d4f' : 'none'}

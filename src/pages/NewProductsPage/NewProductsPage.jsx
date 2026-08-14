@@ -20,7 +20,6 @@ import { ArrowDownNarrowWide, ArrowRight, Heart, ShoppingCart } from 'lucide-rea
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
-import { toggleFavorite } from '../../redux/favoritesSlice';
 import { TitleNew } from './NewProductsPage.styled';
 import { Container } from './NewProductsPage.styled';
 import { Section } from './NewProductsPage.styled';
@@ -32,6 +31,7 @@ import placeholder from '../../../public/nofoto.png';
 import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../CartPage/CartPage.styled';
 import { Button, } from '../SalePage/SalePage.styled';
 import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
+import { handleFavorite } from '../../api/utils/handleFavorite';
 export const NewProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -155,17 +155,12 @@ export const NewProductsPage = () => {
   }, [sortType, products, sortOrder]);
 
 
-  const HandleAddFavorite = (product, e) => {
-    e.stopPropagation();
-    const exists = favorites.some((favItem) => favItem.id === product.id);
-
-    dispatch(toggleFavorite(product));
-    if (exists) {
-      toast.warning(`${product.name} видалено з обраного`);
-    } else {
-      toast.info(`${product.name} додано в обране`);
-    }
-  };
+ const handleClickFavorite = (product, e) => {
+   e.stopPropagation();
+   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+ 
+   handleFavorite(product, isFavorite, dispatch, toast);
+ };
 
   if (loading) {
     return (
@@ -365,7 +360,7 @@ export const NewProductsPage = () => {
                                                        </Button>
                                                        )}
                                    
-                                                       <Button onClick={(e) => HandleAddFavorite(product, e)}>
+                                                       <Button onClick={(e) => handleClickFavorite(product, e)}>
                                                          <Heart
                                                            size={24}
                                                            fill={isFavorite ? '#ff4d4f' : 'none'}
