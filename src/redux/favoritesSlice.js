@@ -24,7 +24,13 @@ const favoritesSlice = createSlice({
 },
 
 addFavorite(state, action) {
-  state.items.push(action.payload);
+  const exists = state.items.some(
+    item => item.id === action.payload.id
+  );
+
+  if (!exists) {
+    state.items.push(action.payload);
+  }
 },
 
 removeFavorite(state, action) {

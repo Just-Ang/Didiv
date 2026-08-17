@@ -24,12 +24,14 @@ import { useEffect, useState } from 'react';
 import { Button, CardButtons, CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../ProductList/ProductList.styled';
 
 import { handleFavorite } from '../../api/utils/handleFavorite';
+import { useNavigate } from 'react-router-dom';
 
 export const NewArrivals = () => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
     const favorites = useSelector((state) => state.favorites.items);
     const cartItems = useSelector((state) => state.cart.items);
+      const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -98,8 +100,9 @@ export const NewArrivals = () => {
                           toast.success(`${product.name} додано в кошик!`);
                         };
           return (
-            <ProductCard key={item.id}>
-              <ImageLink to={`/product/${item.id}`}>
+            <ProductCard key={item.id}
+            onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
+              <ImageLink >
                 <NewBadge>Новинка</NewBadge>
                 <img
                   src={item.images?.[0].url || placeholder}

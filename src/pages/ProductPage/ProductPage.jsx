@@ -52,16 +52,20 @@ import FAQSection from '../../components/FAQSection/FAQSection';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 
 export const ProductPage = () => {
-  const { id } = useParams();
+  const { identifier } = useParams();
   const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [activeImage, setActiveImage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-
   const [loading, setLoading] = useState(true);
-  const product = products.find((p) => p.id === Number(id));
+
+
+  const isId = !isNaN(identifier);
+const product = products.find((p) =>
+  isId ? String(p.id) === String(identifier) : p.slug === identifier
+);
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;
@@ -91,28 +95,30 @@ export const ProductPage = () => {
 
   const alreadyInCartQty = cartItem?.quantity || 0;
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
 
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/products?filters[id][$eq]=${id}&populate=*`
-        );
+      const filter = isId
+        ? `filters[id][$eq]=${identifier}`
+        : `filters[slug][$eq]=${identifier}`;
 
-        const data = await res.json();
-        setProducts(data.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products?${filter}&populate=*`
+      );
 
-    fetchProducts();
-  }, [id]);
+      const data = await res.json();
+      setProducts(data.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, [identifier, isId]);
 
   const isAvailable = product?.available ?? true;
 console.log(product);

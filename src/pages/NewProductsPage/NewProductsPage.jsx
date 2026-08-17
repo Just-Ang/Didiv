@@ -324,7 +324,7 @@ export const NewProductsPage = () => {
             return (
               <Card
                 key={product.id}
-                onClick={() => navigate(`/product/${product.id}`)}
+                onClick={() => navigate(`/product/${product.slug ?? product.id}`)}
               >
                  {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
                 <CardImg src={product.images?.[0]?.url || placeholder} alt={product.name} />

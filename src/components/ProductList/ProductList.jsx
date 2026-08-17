@@ -366,7 +366,7 @@ const discountPercent = hasDiscount
             return (
               <Card
                 key={product.id}
-                onClick={() => navigate(`/product/${product.id}`)}
+                onClick={() => navigate(`/product/${product.slug ?? product.id}`)}
                 style={{ cursor: 'pointer' }}
               >
                  {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}

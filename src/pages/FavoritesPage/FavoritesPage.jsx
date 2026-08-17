@@ -14,17 +14,17 @@ import {
   SummaryCard,
   SummaryRow,
   Title,
-  ClearButton,
+
   ReservedBadgeFavorite,
   ImageWrapper,
 } from './FavoritesPage.styled';
 import placeholder from '../../../public/nofoto.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
-import { clearFavorite} from '../../redux/favoritesSlice';
+
 import FavEmpty from '../../components/FavEmpty/FavEmty';
 import { addAllToCart, addToCart } from '../../redux/cartSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   CurrentPrice,
@@ -34,80 +34,251 @@ import {
   PriceWrapper,
 } from '../CartPage/CartPage.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
+import { BallTriangle } from 'react-loader-spinner';
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const favorites = useSelector((state) => state.favorites.items);
-  console.log(favorites);
+  const reduxFavorites = useSelector((state) => state.favorites.items);
+
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [removingIds, setRemovingIds] = useState([]);
 
   const cartItems = useSelector((state) => state.cart.items);
 
-  const handleAllAdd = () => {
-    const itemsToAdd = favorites
-      .filter((item) => item.available !== false)
-      .map((favItem) => {
-        const cartItem = cartItems.find((c) => c.id === favItem.id);
-        const currentQuantity = cartItem ? cartItem.quantity : 0;
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user'));
 
-        const availableToAdd = favItem.stock - currentQuantity;
+      // Якщо користувач НЕ авторизований —
+      // беремо обране з Redux
+      if (!token || !user) {
+        setFavorites(reduxFavorites);
+        setLoading(false);
+        return;
+      }
 
-        if (availableToAdd <= 0) return null;
+      // Якщо авторизований —
+      // беремо актуальні товари зі Strapi
+      try {
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/favorites?filters[user][documentId][$eq]=${
+            user.documentId
+          }&populate[product][populate]=*`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        return {
-          ...favItem,
-          quantity: availableToAdd, // додаємо тільки скільки можна
-        };
-      })
-      .filter(Boolean);
+        if (!response.ok) {
+          throw new Error('Не вдалося отримати обране');
+        }
 
-    if (itemsToAdd.length === 0) {
-      toast.error('Усі товари вже в максимальній кількості');
-      return;
-    }
+        const data = await response.json();
 
-    dispatch(addAllToCart(itemsToAdd));
-    toast.success('Додано максимально доступну кількість товарів');
-  };
+        const products = data.data
+          .map((favorite) => favorite.product)
+          .filter(Boolean);
 
-  console.log(favorites);
+        setFavorites(products);
+      } catch (error) {
+        console.error(error);
+        toast.error('Не вдалося завантажити обране');
+
+        // Якщо запит впав — можемо залишити Redux
+        setFavorites(reduxFavorites);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
+
+
+ const handleAllAdd = () => {
+  const itemsToAdd = favorites
+    .filter((item) => item.available !== false)
+    .map((favItem) => {
+      const cartItem = cartItems.find(
+        (cartItem) => cartItem.id === favItem.id
+      );
+
+      const currentQuantity = cartItem?.quantity ?? 0;
+      const stock = Number(favItem.stock ?? 0);
+      const availableToAdd = stock - currentQuantity;
+
+      if (availableToAdd <= 0) return null;
+
+      return {
+        ...favItem,
+        quantity: availableToAdd,
+      };
+    })
+    .filter(Boolean);
+
+  console.log('itemsToAdd:', itemsToAdd);
+
+  if (itemsToAdd.length === 0) {
+    toast.error('Усі товари вже в максимальній кількості');
+    return;
+  }
+
+  dispatch(addAllToCart(itemsToAdd));
+  toast.success('Додано максимально доступну кількість товарів');
+};
+
   const total = favorites.reduce(
     (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
     0
   );
-  // const HandleAddFavorite = (product, e) => {
-  //   e.stopPropagation();
-  //   const exists = favorites.some((favItem) => favItem.id === product.id);
-  //   setRemovingIds((prev) => [...prev, product.id]);
 
-  //   setTimeout(() => {
-  //     dispatch(toggleFavorite(product));
-  //     setRemovingIds((prev) => prev.filter((id) => id !== product.id));
-  //   }, 300);
+  // const handleClickFavorite = async (product, e) => {
+  //    e.stopPropagation();
+  //    const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+  //  setTimeout(() => {
+  //       setRemovingIds((prev) => prev.filter((id) => id !== product.id));
+  //     }, 300);
+  // const success = await handleFavorite(
+  //     product,
+  //     isFavorite,
+  //     dispatch,
+  //     toast
+  //   );
+  // console.log('success',success)
+  //  };
 
-  //   if (exists) {
-  //     toast.warning(`${product.name} видалено з обраного`);
-  //   } else {
-  //     toast.info(`${product.name} додано в обране`);
-  //   }
-  // };
-const handleClickFavorite = (product, e) => {
-   e.stopPropagation();
-   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
- setTimeout(() => {
+  const handleClickFavorite = async (product, e) => {
+    e.stopPropagation();
+
+    const isFavorite = favorites.some(
+      (favItem) => favItem.documentId === product.documentId
+    );
+
+    setRemovingIds((prev) => [...prev, product.id]);
+
+    const success = await handleFavorite(product, isFavorite, dispatch, toast);
+
+    if (success && isFavorite) {
+      setTimeout(() => {
+        setFavorites((prev) =>
+          prev.filter((favItem) => favItem.documentId !== product.documentId)
+        );
+
+        setRemovingIds((prev) => prev.filter((id) => id !== product.id));
+      }, 300);
+    } else {
       setRemovingIds((prev) => prev.filter((id) => id !== product.id));
-    }, 300);
-   handleFavorite(product, isFavorite, dispatch, toast);
- };
-
-
-
-  const handleDeleteAll = () => {
-    dispatch(clearFavorite());
+    }
   };
+
+  // const handleDeleteAll = () => {
+  //   dispatch(clearFavorite());
+  // };
+// const handleDeleteAll = async () => {
+//   const token = localStorage.getItem("token");
+//   const user = JSON.parse(localStorage.getItem("user"));
+
+//   // Якщо користувач не авторизований —
+//   // просто очищаємо Redux
+//   if (!token || !user) {
+//     dispatch(clearFavorite());
+//     return;
+//   }
+
+//   try {
+//     // Отримуємо всі favorites поточного користувача
+//     const response = await fetch(
+//       `${import.meta.env.VITE_API_URL}/api/favorites?filters[users][documentId][$eq]=${user.documentId}&populate=users`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+
+//     if (!response.ok) {
+//       throw new Error("Не вдалося отримати favorites");
+//     }
+
+//     const data = await response.json();
+
+//     // Для кожного Favorite прибираємо тільки поточного user
+//     await Promise.all(
+//       data.data.map(async (favorite) => {
+//         const users = favorite.users || [];
+
+//         const newUsers = users
+//           .filter((u) => u.documentId !== user.documentId)
+//           .map((u) => u.documentId);
+
+//         const updateResponse = await fetch(
+//           `${import.meta.env.VITE_API_URL}/api/favorites/${favorite.documentId}`,
+//           {
+//             method: "PUT",
+//             headers: {
+//               "Content-Type": "application/json",
+//               Authorization: `Bearer ${token}`,
+//             },
+//             body: JSON.stringify({
+//               data: {
+//                 users: newUsers,
+//               },
+//             }),
+//           }
+//         );
+
+//         if (!updateResponse.ok) {
+//           throw new Error(
+//             `Не вдалося оновити favorite ${favorite.documentId}`
+//           );
+//         }
+//       })
+//     );
+
+//     // Redux очищаємо тільки якщо бекенд успішно оновився
+//     dispatch(clearFavorite());
+
+//   } catch (error) {
+//     console.error("Помилка очищення favorites:", error);
+//     toast.error("Не вдалося очистити обране");
+//   }
+// };
+
   const isFavEmpty = favorites.length === 0;
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100vw',
+          height: '100vh',
+        }}
+      >
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="var(--orange-color)"
+          ariaLabel="ball-triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -172,14 +343,16 @@ const handleClickFavorite = (product, e) => {
                         Заброньовано
                       </ReservedBadgeFavorite>
                     )}
-                    <ImageWrapper>
+                    <ImageWrapper
+                      onClick={() =>
+                        navigate(`/product/${item.slug ?? item.id}`)
+                      }
+                    >
                       <Image
                         src={item.images?.[0]?.url || placeholder}
                         alt={item.name}
-                        onClick={() => navigate(`/product/${item.id}`)}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
-                    
                         }}
                       />
                     </ImageWrapper>
@@ -221,7 +394,9 @@ const handleClickFavorite = (product, e) => {
                           </IconButton>
                         }
 
-                        <IconButton onClick={(e) =>  handleClickFavorite(item, e)}>
+                        <IconButton
+                          onClick={(e) => handleClickFavorite(item, e)}
+                        >
                           <Trash2 size={30} />
                         </IconButton>
                       </IconGroup>
@@ -248,9 +423,9 @@ const handleClickFavorite = (product, e) => {
               <CheckoutButton onClick={() => handleAllAdd()}>
                 Додати все до кошика
               </CheckoutButton>
-              <ClearButton onClick={handleDeleteAll}>
+              {/* <ClearButton onClick={handleDeleteAll}>
                 Очистити обрані
-              </ClearButton>
+              </ClearButton> */}
             </SummaryCard>
           </Layout>
         </Container>

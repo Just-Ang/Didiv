@@ -36,6 +36,8 @@ import { handleFavorite } from '../../api/utils/handleFavorite';
 const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const [loading, setLoading] = useState(true);
+  
   const [removingIds, setRemovingIds] = useState([]);
   
   const cartItems = useSelector((state) => state.cart.items);
@@ -69,6 +71,30 @@ const CartPage = () => {
     dispatch(clearCart());
   };
 
+    // if (loading) {
+    //   return (
+    //     <div
+    //       style={{
+    //         display: 'flex',
+    //         justifyContent: 'center',
+    //         alignItems: 'center',
+    //         width: '100vw',
+    //         height: '100vh',
+    //       }}
+    //     >
+    //       <BallTriangle
+    //         height={100}
+    //         width={100}
+    //         radius={5}
+    //         color="var(--orange-color)"
+    //         ariaLabel="ball-triangle-loading"
+    //         wrapperStyle={{}}
+    //         wrapperClass=""
+    //         visible={true}
+    //       />
+    //     </div>
+    //   );
+    // }
   
 
   return (
@@ -109,11 +135,12 @@ const discountPercent = hasDiscount
                   <CartItem
                     key={`${item.id}-${index}`}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
+                    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
                   >
                     <ProductImg
   src={item.images?.[0]?.url || '/nofoto.png'}
   alt={item.name}
-  onClick={() => navigate(`/product/${item.id}`)}
+  // onClick={() => navigate(`/product/${item.id}`)}
   onError={(e) => {
     e.currentTarget.onerror = null;
     e.currentTarget.src = placeholder;

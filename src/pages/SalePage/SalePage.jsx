@@ -303,7 +303,7 @@ const sortRef = useRef(null);
             return (
               <Card
                 key={item.id}
-                onClick={() => navigate(`/product/${item.id}`)}
+                onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
                 style={{ cursor: 'pointer' }}
               >
                       {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
