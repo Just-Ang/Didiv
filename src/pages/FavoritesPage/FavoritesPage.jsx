@@ -21,7 +21,7 @@ import {
 import placeholder from '../../../public/nofoto.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
-import { clearFavorite, toggleFavorite } from '../../redux/favoritesSlice';
+import { clearFavorite} from '../../redux/favoritesSlice';
 import FavEmpty from '../../components/FavEmpty/FavEmty';
 import { addAllToCart, addToCart } from '../../redux/cartSlice';
 import { useState } from 'react';
@@ -33,6 +33,7 @@ import {
   PriceBlock,
   PriceWrapper,
 } from '../CartPage/CartPage.styled';
+import { handleFavorite } from '../../api/utils/handleFavorite';
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
@@ -61,11 +62,6 @@ const FavoritesPage = () => {
         };
       })
       .filter(Boolean);
-    //       const unavailableItems = favorites.filter(item => !item.available);
-
-    // if (unavailableItems.length) {
-    //   toast.warning('Деякі товари заброньовані і не були додані до кошика');
-    // }
 
     if (itemsToAdd.length === 0) {
       toast.error('Усі товари вже в максимальній кількості');
@@ -81,22 +77,33 @@ const FavoritesPage = () => {
     (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
     0
   );
-  const HandleAddFavorite = (product, e) => {
-    e.stopPropagation();
-    const exists = favorites.some((favItem) => favItem.id === product.id);
-    setRemovingIds((prev) => [...prev, product.id]);
+  // const HandleAddFavorite = (product, e) => {
+  //   e.stopPropagation();
+  //   const exists = favorites.some((favItem) => favItem.id === product.id);
+  //   setRemovingIds((prev) => [...prev, product.id]);
 
-    setTimeout(() => {
-      dispatch(toggleFavorite(product));
+  //   setTimeout(() => {
+  //     dispatch(toggleFavorite(product));
+  //     setRemovingIds((prev) => prev.filter((id) => id !== product.id));
+  //   }, 300);
+
+  //   if (exists) {
+  //     toast.warning(`${product.name} видалено з обраного`);
+  //   } else {
+  //     toast.info(`${product.name} додано в обране`);
+  //   }
+  // };
+const handleClickFavorite = (product, e) => {
+   e.stopPropagation();
+   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+ setTimeout(() => {
       setRemovingIds((prev) => prev.filter((id) => id !== product.id));
     }, 300);
+   handleFavorite(product, isFavorite, dispatch, toast);
+ };
 
-    if (exists) {
-      toast.warning(`${product.name} видалено з обраного`);
-    } else {
-      toast.info(`${product.name} додано в обране`);
-    }
-  };
+
+
   const handleDeleteAll = () => {
     dispatch(clearFavorite());
   };
@@ -214,7 +221,7 @@ const FavoritesPage = () => {
                           </IconButton>
                         }
 
-                        <IconButton onClick={(e) => HandleAddFavorite(item, e)}>
+                        <IconButton onClick={(e) =>  handleClickFavorite(item, e)}>
                           <Trash2 size={30} />
                         </IconButton>
                       </IconGroup>

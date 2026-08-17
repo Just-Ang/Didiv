@@ -115,7 +115,7 @@ export const ProductPage = () => {
   }, [id]);
 
   const isAvailable = product?.available ?? true;
-
+console.log(product);
   useEffect(() => {
     if (product && product.images) {
       setActiveImage(product.images?.[0]?.url);
