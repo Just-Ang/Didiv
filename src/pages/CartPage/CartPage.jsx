@@ -24,41 +24,111 @@ import {
   Title,
 } from './CartPage.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCart, removeFromCart } from '../../redux/cartSlice';
+import { clearCart, removeFromCart, setCartItems } from '../../redux/cartSlice';
 import CartEmpty from '../../components/CartEmpty/CartEmpty';
 import { toast, ToastContainer } from 'react-toastify';
 import { Heart, Trash2 } from 'lucide-react';
 import Counter from '../../components/Counter/Counter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import placeholder from '../../../public/nofoto.png';
 import { handleFavorite } from '../../api/utils/handleFavorite';
+import { BallTriangle } from 'react-loader-spinner';
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(true);
-  
   const [removingIds, setRemovingIds] = useState([]);
+     const reduxCartItems = useSelector((state) => state.cart.items);
   
-  const cartItems = useSelector((state) => state.cart.items);
+    const [localCartItems,  setLocalCartItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+  // const cartItems = useSelector((state) => state.cart.items);
 
   const items = useSelector((state) => state.cart.items);
 
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
- const total = cartItems.reduce(
-  (sum, item) =>
-    sum + (item.new_price ?? item.price) * (item.quantity || 1),
-  0
-);
+  const total = localCartItems.reduce(
+    (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
+    0
+  );
 
   const favorites = useSelector((state) => state.favorites.items);
-  const isCartEmpty = cartItems.length === 0;
- const handleClickFavorite = (product, e) => {
-   e.stopPropagation();
-   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+  const isCartEmpty = localCartItems.length === 0;
+
  
-   handleFavorite(product, isFavorite, dispatch, toast);
- };
+
+useEffect(() => {
+  const fetchCart = async () => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    // Якщо користувач НЕ авторизований —
+    // беремо кошик з Redux
+    if (!token || !user) {
+      setLocalCartItems(reduxCartItems);
+      setLoading(false);
+      return;
+    }
+
+    // Якщо авторизований —
+    // беремо актуальний кошик зі Strapi
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/cart-items?filters[user][documentId][$eq]=${
+          user.documentId
+        }&populate[product][populate]=*`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Не вдалося отримати кошик');
+      }
+
+      const data = await response.json();
+
+      const products = data.data
+        .map((cartItem) => {
+          if (!cartItem.product) return null;
+
+          return {
+            ...cartItem.product,
+            quantity: cartItem.quantity,
+          };
+        })
+        .filter(Boolean);
+
+      setLocalCartItems(products);
+            dispatch(setCartItems(products));
+
+    } catch (error) {
+      console.error(error);
+      toast.error('Не вдалося завантажити кошик');
+
+      // Якщо запит впав — залишаємо Redux
+      setLocalCartItems(reduxCartItems);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCart();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+  const handleClickFavorite = (product, e) => {
+    e.stopPropagation();
+    const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+
+    handleFavorite(product, isFavorite, dispatch, toast);
+  };
   const handleDelete = (item) => {
     setRemovingIds((prev) => [...prev, item.id]);
 
@@ -71,31 +141,30 @@ const CartPage = () => {
     dispatch(clearCart());
   };
 
-    // if (loading) {
-    //   return (
-    //     <div
-    //       style={{
-    //         display: 'flex',
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //         width: '100vw',
-    //         height: '100vh',
-    //       }}
-    //     >
-    //       <BallTriangle
-    //         height={100}
-    //         width={100}
-    //         radius={5}
-    //         color="var(--orange-color)"
-    //         ariaLabel="ball-triangle-loading"
-    //         wrapperStyle={{}}
-    //         wrapperClass=""
-    //         visible={true}
-    //       />
-    //     </div>
-    //   );
-    // }
-  
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100vw',
+          height: '100vh',
+        }}
+      >
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="var(--orange-color)"
+          ariaLabel="ball-triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -121,16 +190,19 @@ const CartPage = () => {
 
           <ContentWrapper>
             <CartItemsList>
-              {cartItems.map((item, index) => {
+              {localCartItems.map((item, index) => {
                 console.log(item);
                 const isFavorite = favorites.some((fav) => fav.id === item.id);
-            const hasDiscount = item.new_price && item.new_price < item.price;
+                const hasDiscount =
+                  item.new_price && item.new_price < item.price;
 
-const finalPrice = hasDiscount ? item.new_price : item.price;
+                const finalPrice = hasDiscount ? item.new_price : item.price;
 
-const discountPercent = hasDiscount
-  ? Math.round(((item.price - item.new_price) / item.price) * 100)
-  : 0;
+                const discountPercent = hasDiscount
+                  ? Math.round(
+                      ((item.price - item.new_price) / item.price) * 100
+                    )
+                  : 0;
                 return (
                   <CartItem
                     key={`${item.id}-${index}`}
@@ -138,14 +210,14 @@ const discountPercent = hasDiscount
                     onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
                   >
                     <ProductImg
-  src={item.images?.[0]?.url || '/nofoto.png'}
-  alt={item.name}
-  // onClick={() => navigate(`/product/${item.id}`)}
-  onError={(e) => {
-    e.currentTarget.onerror = null;
-    e.currentTarget.src = placeholder;
-  }}
-/>
+                      src={item.images?.[0]?.url || '/nofoto.png'}
+                      alt={item.name}
+                      // onClick={() => navigate(`/product/${item.id}`)}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = placeholder;
+                      }}
+                    />
                     <ProductInfo>
                       <h3>{item.name}</h3>
                     </ProductInfo>
@@ -153,25 +225,29 @@ const discountPercent = hasDiscount
                       <Counter
                         item={{ ...item, quantity: item.quantity || 1 }}
                       />
-                <PriceWrapper>
-  <PriceBlock>
-    <CurrentPrice $discount={hasDiscount}>
-      {(finalPrice * (item.quantity || 1)).toLocaleString()} грн
-    </CurrentPrice>
+                      <PriceWrapper>
+                        <PriceBlock>
+                          <CurrentPrice $discount={hasDiscount}>
+                            {(
+                              finalPrice * (item.quantity || 1)
+                            ).toLocaleString()}{' '}
+                            грн
+                          </CurrentPrice>
 
-    {hasDiscount && (
-      <>
-        <OldPrice>
-          {(item.price * (item.quantity || 1)).toLocaleString()} грн
-        </OldPrice>
+                          {hasDiscount && (
+                            <>
+                              <OldPrice>
+                                {(
+                                  item.price * (item.quantity || 1)
+                                ).toLocaleString()}{' '}
+                                грн
+                              </OldPrice>
 
-        <DiscountBadge>
-          -{discountPercent}%
-        </DiscountBadge>
-      </>
-    )}
-  </PriceBlock>
-</PriceWrapper>
+                              <DiscountBadge>-{discountPercent}%</DiscountBadge>
+                            </>
+                          )}
+                        </PriceBlock>
+                      </PriceWrapper>
                     </CounterPrice>
                     <BtnIcons>
                       <ButtonFavorite

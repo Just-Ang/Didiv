@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice';
+
 import sprite from '../../img/symbol-defs.svg';
 
 import {
@@ -26,6 +26,7 @@ import {
   PriceWrapper,
   QuantitySelector,
   RatingRow,
+  Sku,
   SpecRow,
   SpecsGrid,
   TabButton,
@@ -50,6 +51,7 @@ import dayjs from 'dayjs';
 import FAQSection from '../../components/FAQSection/FAQSection';
 
 import { handleFavorite } from '../../api/utils/handleFavorite';
+import { handleCart } from '../../api/utils/handleCart';
 
 export const ProductPage = () => {
   const { identifier } = useParams();
@@ -61,11 +63,10 @@ export const ProductPage = () => {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
-
   const isId = !isNaN(identifier);
-const product = products.find((p) =>
-  isId ? String(p.id) === String(identifier) : p.slug === identifier
-);
+  const product = products.find((p) =>
+    isId ? String(p.id) === String(identifier) : p.slug === identifier
+  );
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;
@@ -95,33 +96,33 @@ const product = products.find((p) =>
 
   const alreadyInCartQty = cartItem?.quantity || 0;
 
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
 
-      const filter = isId
-        ? `filters[id][$eq]=${identifier}`
-        : `filters[slug][$eq]=${identifier}`;
+        const filter = isId
+          ? `filters[id][$eq]=${identifier}`
+          : `filters[slug][$eq]=${identifier}`;
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/products?${filter}&populate=*`
-      );
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/products?${filter}&populate=*`
+        );
 
-      const data = await res.json();
-      setProducts(data.data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const data = await res.json();
+        setProducts(data.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchProducts();
-}, [identifier, isId]);
+    fetchProducts();
+  }, [identifier, isId]);
 
   const isAvailable = product?.available ?? true;
-console.log(product);
+
   useEffect(() => {
     if (product && product.images) {
       setActiveImage(product.images?.[0]?.url);
@@ -141,98 +142,116 @@ console.log(product);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
-  const handleAdd = () => {
-    // якщо вже максимум
-    if (alreadyInCartQty >= product.stock) {
-      toast.warning('Товар вже в кошику (досягнуто максимум)');
-      return;
-    }
+  // const handleAdd = () => {
+  //   // якщо вже максимум
+  //   if (alreadyInCartQty >= product.stock) {
+  //     toast.warning('Товар вже в кошику (досягнуто максимум)');
+  //     return;
+  //   }
 
-    // якщо додаємо більше ніж можна
-    if (alreadyInCartQty + quantity > product.stock) {
-      toast.warning(`Доступно лише ${product.stock} шт.`);
-      return;
-    }
+  //   // якщо додаємо більше ніж можна
+  //   if (alreadyInCartQty + quantity > product.stock) {
+  //     toast.warning(`Доступно лише ${product.stock} шт.`);
+  //     return;
+  //   }
 
-    dispatch(addToCart({ ...product, quantity }));
-    toast.success(`${product.name} додано в кошик!`);
-  };
+  //   dispatch(addToCart({ ...product, quantity }));
+  //   toast.success(`${product.name} додано в кошик!`);
+  // };
 
-// const HandleAddFavorite = async (product, e) => {
-//   e.stopPropagation();
+  // const HandleAddFavorite = async (product, e) => {
+  //   e.stopPropagation();
 
-//   const token = localStorage.getItem('token');
-//   const user = JSON.parse(localStorage.getItem('user'));
+  //   const token = localStorage.getItem('token');
+  //   const user = JSON.parse(localStorage.getItem('user'));
 
-//   // Якщо НЕ залогінений — працюємо тільки з Redux
-//   if (!token || !user) {
-//     if (isFavorite) {
-//       dispatch(removeFavorite(product.id));
-//       toast.warning(`${product.name} видалено з обраного`);
-//     } else {
-//       dispatch(addFavorite(product));
-//       toast.success(`${product.name} додано в обране`);
-//     }
+  //   // Якщо НЕ залогінений — працюємо тільки з Redux
+  //   if (!token || !user) {
+  //     if (isFavorite) {
+  //       dispatch(removeFavorite(product.id));
+  //       toast.warning(`${product.name} видалено з обраного`);
+  //     } else {
+  //       dispatch(addFavorite(product));
+  //       toast.success(`${product.name} додано в обране`);
+  //     }
 
-//     return;
-//   }
+  //     return;
+  //   }
 
-//   //  Якщо залогінений — працюємо з бекендом
-//   const documentId = user?.documentId;
-//   const id = user?.id;
+  //   //  Якщо залогінений — працюємо з бекендом
+  //   const documentId = user?.documentId;
+  //   const id = user?.id;
 
-//   try {
-//     const response = await fetch(
-//       `${
-//         import.meta.env.VITE_API_URL
-//       }/api/users/${id}?populate[favorites][populate][0]=product&populate[favorites][populate][1]=user`,
-//       {
-//         method: 'GET',
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
+  //   try {
+  //     const response = await fetch(
+  //       `${
+  //         import.meta.env.VITE_API_URL
+  //       }/api/users/${id}?populate[favorites][populate][0]=product&populate[favorites][populate][1]=user`,
+  //       {
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
 
-//     const userNew = await response.json();
+  //     const userNew = await response.json();
 
-//     const data = await fetch(
-//       `${import.meta.env.VITE_API_URL}/api/favorites?populate=*`,
-//       {
-//         method: 'GET',
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
+  //     const data = await fetch(
+  //       `${import.meta.env.VITE_API_URL}/api/favorites?populate=*`,
+  //       {
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
 
-//     const { data: allFavorites } = await data.json();
+  //     const { data: allFavorites } = await data.json();
 
-//     const favoritesOfUser = userNew?.favorites;
+  //     const favoritesOfUser = userNew?.favorites;
 
-//     if (isFavorite) {
-//       await deleteFavorite(product, favoritesOfUser, documentId, token);
+  //     if (isFavorite) {
+  //       await deleteFavorite(product, favoritesOfUser, documentId, token);
 
-//       dispatch(removeFavorite(product.id));
-//       toast.warning(`${product.name} видалено з обраного`);
-//     } else {
-//       await createFavorite(product, allFavorites, documentId, token);
+  //       dispatch(removeFavorite(product.id));
+  //       toast.warning(`${product.name} видалено з обраного`);
+  //     } else {
+  //       await createFavorite(product, allFavorites, documentId, token);
 
-//       dispatch(addFavorite(product));
-//       toast.success(`${product.name} додано в обране`);
-//     }
-//   } catch (err) {
-//     toast.error('Не вдалося оновити обране');
-//     console.error(err);
-//   }
-// };
+  //       dispatch(addFavorite(product));
+  //       toast.success(`${product.name} додано в обране`);
+  //     }
+  //   } catch (err) {
+  //     toast.error('Не вдалося оновити обране');
+  //     console.error(err);
+  //   }
+  // };
 
-const handleClickFavorite = (product, e) => {
-  e.stopPropagation();
+const handleAdd = async () => {
+  if (alreadyInCartQty >= product.stock) {
+    toast.warning('Товар вже в кошику (досягнуто максимум)');
+    return;
+  }
 
-  handleFavorite(product, isFavorite, dispatch, toast);
+  if (alreadyInCartQty + quantity > product.stock) {
+    toast.warning(`Доступно лише ${product.stock} шт.`);
+    return;
+  }
+
+  await handleCart(
+    product,
+    quantity,
+    dispatch,
+    toast
+  );
 };
 
+  const handleClickFavorite = (product, e) => {
+    e.stopPropagation();
+
+    handleFavorite(product, isFavorite, dispatch, toast);
+  };
 
   const hasDiscount = product?.new_price && product?.new_price < product.price;
 
@@ -333,6 +352,7 @@ const handleClickFavorite = (product, e) => {
         {/* Права колонка: Інфо та покупка */}
         <InfoSection>
           <Title>{product.name}</Title>
+          <Sku>Артикул: {product.sku ?? ''}</Sku>
           <RatingRow>{isNew && <NewLable>● Новий товар</NewLable>}</RatingRow>
           {!isAvailable && <AvailableRow> Заброньовано</AvailableRow>}
 

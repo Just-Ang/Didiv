@@ -87,6 +87,14 @@ export const Title = styled.h1`
   font-weight: 500;
 `;
 
+export const Sku = styled.p`
+   font-size: 17px;
+  margin-bottom: 10px;
+  color: #151414;
+    font-family: var(--second-font);
+
+`
+
 export const RatingRow = styled.div`
 
   display: flex;

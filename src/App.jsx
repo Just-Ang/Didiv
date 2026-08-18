@@ -40,6 +40,7 @@ function App() {
 
   //   const token = localStorage.getItem("token");
   const localFavorites = useSelector((state) => state.favorites.items);
+  const localCartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     if (!token || !userDocumentId) return;
@@ -130,6 +131,7 @@ function App() {
         </Routes>
         <AuthModal
           localFavorites={localFavorites}
+          localCartItems={localCartItems}
           isOpen={isAuthOpen}
           mode={authMode}
           onClose={() => setIsAuthOpen(false)}

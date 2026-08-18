@@ -34,7 +34,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 
-
 export const ProductList = ({
   setValues,
   category,
@@ -46,42 +45,43 @@ export const ProductList = ({
   setSortType,
   sortOrder,
   setSortOrder,
-
 }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 24;
   let filteredProducts = products;
-  
-  const sortRef = useRef(null); 
-  
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (sortRef.current && !sortRef.current.contains(event.target)) {
-           setIsSortOpen(false);
-        }
-      };
-  
-      // Вішаємо слухач подій на весь документ
-      document.addEventListener('mousedown', handleClickOutside);
-  
-      // Прибираємо слухач при розмонтуванні компонента
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [setIsSortOpen]);
+
+  const sortRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setIsSortOpen(false);
+      }
+    };
+
+    // Вішаємо слухач подій на весь документ
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Прибираємо слухач при розмонтуванні компонента
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setIsSortOpen]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
 
-       const res = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
-    category
-  )}&pagination[pageSize]=500`
-);
+        const res = await fetch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
+            category
+          )}&pagination[pageSize]=500`
+        );
 
         const data = await res.json();
         setProducts(data.data);
@@ -119,25 +119,12 @@ export const ProductList = ({
   const favorites = useSelector((state) => state.favorites.items);
   const cartItems = useSelector((state) => state.cart.items);
 
-  // const HandleAddFavorite = (product, e) => {
-  //   e.stopPropagation();
-  //   const exists = favorites.some((favItem) => favItem.id === product.id);
+  const handleClickFavorite = (product, e) => {
+    e.stopPropagation();
+    const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
 
-  //   dispatch(toggleFavorite(product));
-  //   if (exists) {
-  //     toast.warning(`${product.name} видалено з обраного`);
-  //   } else {
-  //     toast.info(`${product.name} додано в обране`);
-  //   }
-  // };
-
-const handleClickFavorite = (product, e) => {
-  e.stopPropagation();
-  const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
-
-  handleFavorite(product, isFavorite, dispatch, toast);
-};
-
+    handleFavorite(product, isFavorite, dispatch, toast);
+  };
 
   Object.keys(selectedFilters).forEach((key) => {
     const value = selectedFilters[key];
@@ -155,58 +142,51 @@ const handleClickFavorite = (product, e) => {
   if (priceRange && priceRange.length === 2) {
     const [minPrice, maxPrice] = priceRange;
     console.log(minPrice, maxPrice);
-   
   }
 
+  const sortedProducts = useMemo(() => {
+    const arr = [...filteredProducts];
+    const getFinalPrice = (product) => {
+      if (product.new_price && product.new_price < product.price) {
+        return product.new_price;
+      }
+      return product.price;
+    };
 
-const sortedProducts = useMemo(() => {
-const arr = [...filteredProducts];
-const getFinalPrice = (product) => {
-    if (product.new_price && product.new_price < product.price) {
-      return product.new_price;
+    switch (sortType) {
+      case 'name':
+        return arr.sort((a, b) =>
+          sortOrder === 'asc'
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name)
+        );
+
+      case 'price':
+        return arr.sort((a, b) => {
+          const priceA = getFinalPrice(a);
+          const priceB = getFinalPrice(b);
+
+          return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+        });
+
+      case 'date':
+        return arr.sort((a, b) =>
+          sortOrder === 'asc'
+            ? new Date(a.createdAt) - new Date(b.createdAt)
+            : new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+      default:
+        return arr;
     }
-    return product.price;
-  };
-
- 
-  switch (sortType) {
-    case "name":
-      return arr.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name)
-      );
-
-  case "price":
-      return arr.sort((a, b) => {
-   
-        const priceA = getFinalPrice(a);
-        const priceB = getFinalPrice(b);
-
-
-        return sortOrder === "asc" 
-          ? priceA - priceB 
-          : priceB - priceA;
-      });
-
-    case "date":
-      return arr.sort((a, b) =>
-        sortOrder === "asc"
-          ? new Date(a.createdAt) - new Date(b.createdAt)
-          : new Date(b.createdAt) - new Date(a.createdAt)
-      );
-
-    default:
-      return arr;
-  }
-}, [sortType, filteredProducts, sortOrder]);
+  }, [sortType, filteredProducts, sortOrder]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
- const currentProducts = sortedProducts.slice(
-  indexOfFirstItem,
-  indexOfLastItem
-);
+  const currentProducts = sortedProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   if (loading) {
     return (
@@ -235,84 +215,81 @@ const getFinalPrice = (product) => {
 
   // console.log('filteredProducts.length:', filteredProducts.length);
   // console.log('currentProducts.length:', currentProducts.length);
- 
 
   return (
     <ContainerProduct>
-<WrapperTop>
-  <TitleCategory>
-  {category}
-</TitleCategory>
- <WrapperSort ref={sortRef}>
-      <SortButton onClick={() => setIsSortOpen(prev => !prev)}>
-        Сортування
-          <ArrowDownNarrowWide strokeWidth={0.9} size={22}/>
-      </SortButton>
+      <WrapperTop>
+        <TitleCategory>{category}</TitleCategory>
+        <WrapperSort ref={sortRef}>
+          <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
+            Сортування
+            <ArrowDownNarrowWide strokeWidth={0.9} size={22} />
+          </SortButton>
 
-      {isSortOpen && (
-         <Dropdown>
-                        <Item
-                          onClick={() => {
-                            setSortType('name');
-                            setSortOrder('asc');
-                            setIsSortOpen(false);
-                          }}
-                        >
-                          А-Я
-                        </Item>
-        
-                        <Item
-                          onClick={() => {
-                            setSortType('name');
-                            setSortOrder('desc');
-                            setIsSortOpen(false);
-                          }}
-                        >
-                          Я-А
-                        </Item>
-        
-                        <Item
-                          onClick={() => {
-                            setSortType('price');
-                            setSortOrder('asc');
-                            setIsSortOpen(false);
-                          }}
-                        >
-                          Ціна ↑
-                        </Item>
-        
-                        <Item
-                          onClick={() => {
-                            setSortType('price');
-                            setSortOrder('desc');
-                            setIsSortOpen(false);
-                          }}
-                        >
-                          Ціна ↓
-                        </Item>
-        
-                        <Item
-                          onClick={() => {
-                            setSortType('date');
-                            setSortOrder('desc');
-                            setIsSortOpen(false);
-                          }}
-                        >
-                          Спочатку новіші
-                        </Item>
-                        <Item
-                          onClick={() => {
-                            setSortType('date');
-                            setSortOrder('asc');
-                            setIsSortOpen(false);
-                          }}
-                        >
-                          Спочатку старіші
-                        </Item>
-                      </Dropdown>
-      )}
-    </WrapperSort>
-</WrapperTop>
+          {isSortOpen && (
+            <Dropdown>
+              <Item
+                onClick={() => {
+                  setSortType('name');
+                  setSortOrder('asc');
+                  setIsSortOpen(false);
+                }}
+              >
+                А-Я
+              </Item>
+
+              <Item
+                onClick={() => {
+                  setSortType('name');
+                  setSortOrder('desc');
+                  setIsSortOpen(false);
+                }}
+              >
+                Я-А
+              </Item>
+
+              <Item
+                onClick={() => {
+                  setSortType('price');
+                  setSortOrder('asc');
+                  setIsSortOpen(false);
+                }}
+              >
+                Ціна ↑
+              </Item>
+
+              <Item
+                onClick={() => {
+                  setSortType('price');
+                  setSortOrder('desc');
+                  setIsSortOpen(false);
+                }}
+              >
+                Ціна ↓
+              </Item>
+
+              <Item
+                onClick={() => {
+                  setSortType('date');
+                  setSortOrder('desc');
+                  setIsSortOpen(false);
+                }}
+              >
+                Спочатку новіші
+              </Item>
+              <Item
+                onClick={() => {
+                  setSortType('date');
+                  setSortOrder('asc');
+                  setIsSortOpen(false);
+                }}
+              >
+                Спочатку старіші
+              </Item>
+            </Dropdown>
+          )}
+        </WrapperSort>
+      </WrapperTop>
 
       <ToastContainer autoClose={1500} />
       {filteredProducts.length === 0 ? (
@@ -338,15 +315,18 @@ const getFinalPrice = (product) => {
             const currentQty = inCart ? inCart.quantity : 0;
 
             const isOutOfStock = currentQty >= (product.stock || 0);
-             const isAvailable = product?.available ?? true;
+            const isAvailable = product?.available ?? true;
 
-              const hasDiscount = product.new_price && product.new_price < product.price;
+            const hasDiscount =
+              product.new_price && product.new_price < product.price;
 
-const finalPrice = hasDiscount ? product.new_price : product.price;
+            const finalPrice = hasDiscount ? product.new_price : product.price;
 
-const discountPercent = hasDiscount
-  ? Math.round(((product.price - product.new_price) / product.price) * 100)
-  : 0;
+            const discountPercent = hasDiscount
+              ? Math.round(
+                  ((product.price - product.new_price) / product.price) * 100
+                )
+              : 0;
 
             const handleAdd = (product, e) => {
               e.stopPropagation();
@@ -366,50 +346,52 @@ const discountPercent = hasDiscount
             return (
               <Card
                 key={product.id}
-                onClick={() => navigate(`/product/${product.slug ?? product.id}`)}
+                onClick={() =>
+                  navigate(`/product/${product.slug ?? product.id}`)
+                }
                 style={{ cursor: 'pointer' }}
               >
-                 {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
-               
+                {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
+
                 <CardImg
-                 src={product.images?.[0]?.url || "/placeholder.jpg"}
+                  src={product.images?.[0]?.url || '/placeholder.jpg'}
                   alt={product.name}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = placeholder;
                   }}
                 />
-              
+
                 <CardTitle>{product.name}</CardTitle>
 
                 <CardBottom>
-                 <PriceWrapper>
-                  <PriceBlock>
-                    <CurrentPrice $discount={hasDiscount}>
-                      {finalPrice.toLocaleString()}&#160;грн
-                    </CurrentPrice>
-                
-                    {hasDiscount && (
-                      <OldPrice>
-                        {product.price.toLocaleString()}&#160;грн
-                      </OldPrice>
-                    )}
-                
-                    {hasDiscount && (
-                      <DiscountBadge>-{discountPercent}%</DiscountBadge>
-                    )}
-                  </PriceBlock>
-                </PriceWrapper>
+                  <PriceWrapper>
+                    <PriceBlock>
+                      <CurrentPrice $discount={hasDiscount}>
+                        {finalPrice.toLocaleString()}&#160;грн
+                      </CurrentPrice>
+
+                      {hasDiscount && (
+                        <OldPrice>
+                          {product.price.toLocaleString()}&#160;грн
+                        </OldPrice>
+                      )}
+
+                      {hasDiscount && (
+                        <DiscountBadge>-{discountPercent}%</DiscountBadge>
+                      )}
+                    </PriceBlock>
+                  </PriceWrapper>
                   <CardButtons>
-                   {isAvailable && (
-  <Button onClick={(e) => handleAdd(product, e)}>
-    <ShoppingCart
-      size={24}
-      color={inCart ? 'var(--orange-color)' : 'black'}
-      strokeWidth={2}
-    />
-  </Button>
-)}
+                    {isAvailable && (
+                      <Button onClick={(e) => handleAdd(product, e)}>
+                        <ShoppingCart
+                          size={24}
+                          color={inCart ? 'var(--orange-color)' : 'black'}
+                          strokeWidth={2}
+                        />
+                      </Button>
+                    )}
 
                     <Button onClick={(e) => handleClickFavorite(product, e)}>
                       <Heart

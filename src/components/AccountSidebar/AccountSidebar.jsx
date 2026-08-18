@@ -13,6 +13,7 @@ import { persistor } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { clearFavorite } from "../../redux/favoritesSlice";
 import { useNavigate } from "react-router-dom";
+import { clearCart } from "../../redux/cartSlice";
 
 
 export const AccountSidebar = () => {
@@ -55,6 +56,7 @@ const navigate = useNavigate();
   localStorage.removeItem("user");
 
   dispatch(clearFavorite());
+  dispatch(clearCart());
 
   await persistor.purge();
   

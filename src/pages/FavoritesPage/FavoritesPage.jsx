@@ -14,7 +14,6 @@ import {
   SummaryCard,
   SummaryRow,
   Title,
-
   ReservedBadgeFavorite,
   ImageWrapper,
 } from './FavoritesPage.styled';
@@ -101,40 +100,41 @@ const FavoritesPage = () => {
     };
 
     fetchFavorites();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleAllAdd = () => {
+    const itemsToAdd = favorites
+      .filter((item) => item.available !== false)
+      .map((favItem) => {
+        const cartItem = cartItems.find(
+          (cartItem) => cartItem.id === favItem.id
+        );
 
- const handleAllAdd = () => {
-  const itemsToAdd = favorites
-    .filter((item) => item.available !== false)
-    .map((favItem) => {
-      const cartItem = cartItems.find(
-        (cartItem) => cartItem.id === favItem.id
-      );
+        const currentQuantity = cartItem?.quantity ?? 0;
+        const stock = Number(favItem.stock ?? 0);
+        const availableToAdd = stock - currentQuantity;
 
-      const currentQuantity = cartItem?.quantity ?? 0;
-      const stock = Number(favItem.stock ?? 0);
-      const availableToAdd = stock - currentQuantity;
+        if (availableToAdd <= 0) return null;
 
-      if (availableToAdd <= 0) return null;
+        return {
+          ...favItem,
+          quantity: availableToAdd,
+        };
+      })
+      .filter(Boolean);
 
-      return {
-        ...favItem,
-        quantity: availableToAdd,
-      };
-    })
-    .filter(Boolean);
+    console.log('itemsToAdd:', itemsToAdd);
 
-  console.log('itemsToAdd:', itemsToAdd);
+    if (itemsToAdd.length === 0) {
+      toast.error('Усі товари вже в максимальній кількості');
+      return;
+    }
 
-  if (itemsToAdd.length === 0) {
-    toast.error('Усі товари вже в максимальній кількості');
-    return;
-  }
-
-  dispatch(addAllToCart(itemsToAdd));
-  toast.success('Додано максимально доступну кількість товарів');
-};
+    dispatch(addAllToCart(itemsToAdd));
+    toast.success('Додано максимально доступну кількість товарів');
+  };
 
   const total = favorites.reduce(
     (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
@@ -183,75 +183,75 @@ const FavoritesPage = () => {
   // const handleDeleteAll = () => {
   //   dispatch(clearFavorite());
   // };
-// const handleDeleteAll = async () => {
-//   const token = localStorage.getItem("token");
-//   const user = JSON.parse(localStorage.getItem("user"));
+  // const handleDeleteAll = async () => {
+  //   const token = localStorage.getItem("token");
+  //   const user = JSON.parse(localStorage.getItem("user"));
 
-//   // Якщо користувач не авторизований —
-//   // просто очищаємо Redux
-//   if (!token || !user) {
-//     dispatch(clearFavorite());
-//     return;
-//   }
+  //   // Якщо користувач не авторизований —
+  //   // просто очищаємо Redux
+  //   if (!token || !user) {
+  //     dispatch(clearFavorite());
+  //     return;
+  //   }
 
-//   try {
-//     // Отримуємо всі favorites поточного користувача
-//     const response = await fetch(
-//       `${import.meta.env.VITE_API_URL}/api/favorites?filters[users][documentId][$eq]=${user.documentId}&populate=users`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
+  //   try {
+  //     // Отримуємо всі favorites поточного користувача
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_URL}/api/favorites?filters[users][documentId][$eq]=${user.documentId}&populate=users`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
 
-//     if (!response.ok) {
-//       throw new Error("Не вдалося отримати favorites");
-//     }
+  //     if (!response.ok) {
+  //       throw new Error("Не вдалося отримати favorites");
+  //     }
 
-//     const data = await response.json();
+  //     const data = await response.json();
 
-//     // Для кожного Favorite прибираємо тільки поточного user
-//     await Promise.all(
-//       data.data.map(async (favorite) => {
-//         const users = favorite.users || [];
+  //     // Для кожного Favorite прибираємо тільки поточного user
+  //     await Promise.all(
+  //       data.data.map(async (favorite) => {
+  //         const users = favorite.users || [];
 
-//         const newUsers = users
-//           .filter((u) => u.documentId !== user.documentId)
-//           .map((u) => u.documentId);
+  //         const newUsers = users
+  //           .filter((u) => u.documentId !== user.documentId)
+  //           .map((u) => u.documentId);
 
-//         const updateResponse = await fetch(
-//           `${import.meta.env.VITE_API_URL}/api/favorites/${favorite.documentId}`,
-//           {
-//             method: "PUT",
-//             headers: {
-//               "Content-Type": "application/json",
-//               Authorization: `Bearer ${token}`,
-//             },
-//             body: JSON.stringify({
-//               data: {
-//                 users: newUsers,
-//               },
-//             }),
-//           }
-//         );
+  //         const updateResponse = await fetch(
+  //           `${import.meta.env.VITE_API_URL}/api/favorites/${favorite.documentId}`,
+  //           {
+  //             method: "PUT",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //             body: JSON.stringify({
+  //               data: {
+  //                 users: newUsers,
+  //               },
+  //             }),
+  //           }
+  //         );
 
-//         if (!updateResponse.ok) {
-//           throw new Error(
-//             `Не вдалося оновити favorite ${favorite.documentId}`
-//           );
-//         }
-//       })
-//     );
+  //         if (!updateResponse.ok) {
+  //           throw new Error(
+  //             `Не вдалося оновити favorite ${favorite.documentId}`
+  //           );
+  //         }
+  //       })
+  //     );
 
-//     // Redux очищаємо тільки якщо бекенд успішно оновився
-//     dispatch(clearFavorite());
+  //     // Redux очищаємо тільки якщо бекенд успішно оновився
+  //     dispatch(clearFavorite());
 
-//   } catch (error) {
-//     console.error("Помилка очищення favorites:", error);
-//     toast.error("Не вдалося очистити обране");
-//   }
-// };
+  //   } catch (error) {
+  //     console.error("Помилка очищення favorites:", error);
+  //     toast.error("Не вдалося очистити обране");
+  //   }
+  // };
 
   const isFavEmpty = favorites.length === 0;
 
