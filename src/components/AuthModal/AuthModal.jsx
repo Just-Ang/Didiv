@@ -17,6 +17,9 @@ import { EyeButton } from './AuthModal.styled';
 import { ToastContainer } from 'react-toastify';
 import { syncFavorites } from '../../api/utils/syncFavorites';
 import { syncCart } from '../../api/utils/syncCart';
+import { fetchUserCart } from '../../api/utils/fetchUserCart';
+import { setCartItems } from '../../redux/cartSlice';
+import { useDispatch } from 'react-redux';
 
 export const AuthModal = ({
   isOpen,
@@ -35,7 +38,7 @@ export const AuthModal = ({
     password: '',
     confirmPassword: '',
   });
-
+const dispatch = useDispatch();
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape') {
@@ -88,11 +91,13 @@ export const AuthModal = ({
     localStorage.setItem('user', JSON.stringify(data.user));
 
     await syncFavorites(localFavorites, data.jwt, data.user.documentId);
-    await syncCart(
-  localCartItems,
+    await syncCart(localCartItems, data.jwt, data.user.documentId);
+    const backendCart = await fetchUserCart(
   data.jwt,
   data.user.documentId
 );
+
+dispatch(setCartItems(backendCart));
 
     onClose();
   };
