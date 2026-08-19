@@ -7,7 +7,6 @@ import {
   FilterLabel,
 } from './SidebarFiltersMobile.styled';
 
-
 import { PriceRange } from '../PriceRange/PriceRange';
 import {
   HiddenCheckbox,
@@ -17,67 +16,60 @@ import {
 import { useEffect, useState } from 'react';
 
 export const SidebarFiltersMobile = ({
- childValues,
+  childValues,
   category,
   selectedFilters,
   setSelectedFilters,
 
   setPriceRange,
 }) => {
-
   const [openFilters, setOpenFilters] = useState({});
-   const [filters, setFilters] = useState([]);
-  
-useEffect(() => {
-  const fetchFilters = async () => {
-    try {
-       const res = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
-    category
-  )}&pagination[pageSize]=200`
-);
-        console.log(category)
-      const data = await res.json();
-      console.log('dataaaa',data.data)
-      const products = data.data || [];
+  const [filters, setFilters] = useState([]);
 
-const aggregated = {};
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await fetch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
+            category
+          )}&pagination[pageSize]=200`
+        );
 
+        const data = await res.json();
 
-products.forEach(product => {
-  product.attributes?.forEach(attr => {
-    if (!aggregated[attr.label]) aggregated[attr.label] = new Set();
-    aggregated[attr.label].add(attr.value);
-  });
-});
+        const products = data.data || [];
 
-// Створюємо масив об’єктів для SidebarFilters
-const apiFilters = Object.entries(aggregated).map(([label, optionsSet]) => ({
-  type: 'checkbox',
-  label,                     
-  name: label.toLowerCase(), 
-  options: Array.from(optionsSet),
-}));
+        const aggregated = {};
 
+        products.forEach((product) => {
+          product.attributes?.forEach((attr) => {
+            if (!aggregated[attr.label]) aggregated[attr.label] = new Set();
+            aggregated[attr.label].add(attr.value);
+          });
+        });
 
+        // Створюємо масив об’єктів для SidebarFilters
+        const apiFilters = Object.entries(aggregated).map(
+          ([label, optionsSet]) => ({
+            type: 'checkbox',
+            label,
+            name: label.toLowerCase(),
+            options: Array.from(optionsSet),
+          })
+        );
 
-console.log('fillltr',apiFilters);
-setFilters(apiFilters);
-    } catch (error) {
-      console.error(error);
+        setFilters(apiFilters);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (category) {
+      fetchFilters();
     }
-  };
-
-
-
-  if (category) {
-    fetchFilters();
-  }
-}, [category]); 
-
-
-  
-
+  }, [category]);
 
   const toggleFilter = (filterName) => {
     setOpenFilters((prev) => ({
@@ -107,23 +99,30 @@ setFilters(apiFilters);
         return (
           <FilterBlock key={filter.name}>
             <FilterHeader onClick={() => toggleFilter(filter.name)}>
-            <FilterLabel>{filter.label}</FilterLabel>
-            <ArrowIcon isOpen={isOpen} />
+              <FilterLabel>{filter.label}</FilterLabel>
+              <ArrowIcon isOpen={isOpen} />
             </FilterHeader>
-<FilterContent isOpen={isOpen}>
-              {filter.type === "checkbox" &&
-                filter.options?.map(option => (
+            <FilterContent isOpen={isOpen}>
+              {filter.type === 'checkbox' &&
+                filter.options?.map((option) => (
                   <Label key={option}>
                     <HiddenCheckbox
-                      checked={selectedFilters[filter.name]?.includes(option) || false}
+                      checked={
+                        selectedFilters[filter.name]?.includes(option) || false
+                      }
                       onChange={() => handleCheckbox(filter.name, option)}
                     />
                     <Checkmark />
                     {option}
                   </Label>
                 ))}
-              
-              {filter.type === "range" && <PriceRange onChange={setPriceRange}  childValues={childValues} />}
+
+              {filter.type === 'range' && (
+                <PriceRange
+                  onChange={setPriceRange}
+                  childValues={childValues}
+                />
+              )}
             </FilterContent>
           </FilterBlock>
         );

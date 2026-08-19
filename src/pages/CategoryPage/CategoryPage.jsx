@@ -26,7 +26,6 @@ import { ArrowDownNarrowWide, SlidersHorizontal, X } from 'lucide-react';
 
 export const CategoryPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
-  console.log(selectedFilters);
   const { category } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -35,9 +34,6 @@ export const CategoryPage = () => {
 
   const [childValues, setChildValues] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 0]);
-
-
-
 
   const hasFilters = Object.values(selectedFilters).some(
     (value) => Array.isArray(value) && value.length > 0

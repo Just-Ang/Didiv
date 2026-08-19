@@ -17,7 +17,6 @@ const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log('апі', API_KEY)
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -41,12 +40,10 @@ const CheckoutPage = () => {
   // const [ukrSearch, setUkrSearch] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(null);
 
-
- const totalAmount = cartItems.reduce(
-  (acc, i) =>
-    acc + (i.new_price ?? i.price) * i.quantity,
-  0
-);
+  const totalAmount = cartItems.reduce(
+    (acc, i) => acc + (i.new_price ?? i.price) * i.quantity,
+    0
+  );
   const totalQuantity = cartItems.reduce((acc, i) => acc + i.quantity, 0);
 
   const generateOrderNumber = () => {
@@ -57,7 +54,7 @@ const CheckoutPage = () => {
   };
 
   const orderNumber = generateOrderNumber();
-  console.log(orderNumber);
+
   // ---------------- МІСТА ----------------
   useEffect(() => {
     if (inputCity.length < 2) return;
@@ -217,20 +214,20 @@ const CheckoutPage = () => {
               id: item.id,
               name: item.name,
               quantity: item.quantity,
-             price: item.new_price ?? item.price,
+              price: item.new_price ?? item.price,
             })),
 
             status_order: 'pending',
             order_number: orderNumber,
 
             payment_method:
-  paymentMethod === 'liqpay'
-    ? 'Онлайн (LiqPay)'
-    : paymentMethod === 'cod'
-    ? 'Післяплата'
-    : paymentMethod === 'bank_transfer'
-    ? 'Оплата за реквізитами'
-    : '',
+              paymentMethod === 'liqpay'
+                ? 'Онлайн (LiqPay)'
+                : paymentMethod === 'cod'
+                ? 'Післяплата'
+                : paymentMethod === 'bank_transfer'
+                ? 'Оплата за реквізитами'
+                : '',
 
             delivery_method:
               deliveryMethod === 'nova'
@@ -248,9 +245,6 @@ const CheckoutPage = () => {
           },
         }),
       });
-
-      // console.log('ORDER:', orderNumber);
-      // console.log('AMOUNT:', totalAmount);
 
       // Якщо LiqPay
       if (paymentMethod === 'liqpay') {
@@ -314,14 +308,14 @@ const CheckoutPage = () => {
             : deliveryMethod === 'ukr'
             ? selectedUkrOffice
             : 'Самовивіз',
-      payment_method:
-  paymentMethod === 'liqpay'
-    ? 'Онлайн (LiqPay)'
-    : paymentMethod === 'cod'
-    ? 'Післяплата'
-    : paymentMethod === 'bank_transfer'
-    ? 'Оплата за реквізитами'
-    : '',
+        payment_method:
+          paymentMethod === 'liqpay'
+            ? 'Онлайн (LiqPay)'
+            : paymentMethod === 'cod'
+            ? 'Післяплата'
+            : paymentMethod === 'bank_transfer'
+            ? 'Оплата за реквізитами'
+            : '',
       };
       dispatch(clearCart());
       navigate('/order-confirmation', { state: { order: finalOrder } });
@@ -348,7 +342,7 @@ const CheckoutPage = () => {
   const paymentOptions = [
     { value: 'liqpay', label: 'Онлайн оплата (LiqPay)' },
     { value: 'cod', label: 'Післяплата' },
-       { value: 'bank_transfer', label: 'Оплата за реквізитами' },
+    { value: 'bank_transfer', label: 'Оплата за реквізитами' },
   ];
 
   return (
@@ -401,7 +395,6 @@ const CheckoutPage = () => {
           isFormValid={isFormValid}
           handleSubmit={handleOrder}
         />
-
       </CheckoutWrapper>
     </Container>
   );

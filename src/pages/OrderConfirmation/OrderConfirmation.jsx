@@ -53,7 +53,7 @@ const OrderConfirmation = () => {
       setLoading(false);
     }
   }, [orderId, stateOrder]);
-  console.log(order);
+
 
   const products = order?.products ?? [];
 

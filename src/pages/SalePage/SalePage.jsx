@@ -49,7 +49,7 @@ const SalePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 24;
-  console.log(isSortOpen)
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ const sortRef = useRef(null);
         );
 
         const data = await res.json();
-        console.log(data.data);
+       
 
         setProducts(data.data);
         setLoading(false);

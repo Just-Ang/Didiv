@@ -33,10 +33,13 @@ import { useEffect, useState } from 'react';
 import placeholder from '../../../public/nofoto.png';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { BallTriangle } from 'react-loader-spinner';
+import { clearCartFromBackend } from '../../api/utils/clearCartFromBackend';
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+   const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
   const [removingIds, setRemovingIds] = useState([]);
      const reduxCartItems = useSelector((state) => state.cart.items);
   
@@ -60,8 +63,6 @@ const CartPage = () => {
 
 useEffect(() => {
   const fetchCart = async () => {
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user'));
 
     // Якщо користувач НЕ авторизований —
     // беремо кошик з Redux
@@ -137,9 +138,20 @@ useEffect(() => {
       setRemovingIds((prev) => prev.filter((id) => id !== item.id));
     }, 300);
   };
-  const handleClear = () => {
+const handleClear = async () => {
+  if (!user) {
     dispatch(clearCart());
-  };
+    setLocalCartItems([]);
+    return;
+  }
+
+  try {
+    await clearCartFromBackend(user.id, dispatch, token);
+    setLocalCartItems([]);
+  } catch (error) {
+    toast.error('Не вдалося очистити кошик');
+  }
+};
 
   if (loading) {
     return (
@@ -191,7 +203,7 @@ useEffect(() => {
           <ContentWrapper>
             <CartItemsList>
               {localCartItems.map((item, index) => {
-                console.log(item);
+              
                 const isFavorite = favorites.some((fav) => fav.id === item.id);
                 const hasDiscount =
                   item.new_price && item.new_price < item.price;

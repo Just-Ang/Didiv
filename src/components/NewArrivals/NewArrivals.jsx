@@ -17,7 +17,6 @@ import {
   Title,
 } from './NewArrivals.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import placeholder from '../../../public/nofoto.png';
 import { useEffect, useState } from 'react';
@@ -25,6 +24,7 @@ import { Button, CardButtons, CurrentPrice, DiscountBadge, OldPrice, PriceBlock,
 
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { useNavigate } from 'react-router-dom';
+import { handleCart } from '../../api/utils/handleCart';
 
 export const NewArrivals = () => {
   const dispatch = useDispatch();
@@ -85,20 +85,24 @@ export const NewArrivals = () => {
           const discountPercent = hasDiscount
             ? Math.round(((item.price - item.new_price) / item.price) * 100)
             : 0;
-             const handleAdd = (product, e) => {
-                          e.stopPropagation();
-                          if (isOutOfStock) {
-                            toast.error(`Товар уже у кошику`);
-                            return;
-                          }
-                          dispatch(
-                            addToCart({
-                              ...product,
-                              quantity: 1,
-                            })
-                          );
-                          toast.success(`${product.name} додано в кошик!`);
-                        };
+            const handleAdd = async () => {
+  if (isOutOfStock) {
+    toast.warning('Товар вже в кошику (досягнуто максимум)');
+    return;
+  }
+
+  if (isOutOfStock) {
+    toast.warning(`Доступно лише ${item.stock} шт.`);
+    return;
+  }
+
+  await handleCart(
+  item,
+  1,
+  dispatch,
+  toast
+);
+};
           return (
             <ProductCard key={item.id}
             onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>

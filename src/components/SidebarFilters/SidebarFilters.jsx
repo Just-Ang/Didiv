@@ -64,7 +64,7 @@ const apiFilters = Object.entries(aggregated).map(([label, optionsSet]) => ({
 
 
 
-console.log('fillltr',apiFilters);
+
 setFilters(apiFilters);
     } catch (error) {
       console.error(error);
@@ -110,7 +110,7 @@ setFilters(apiFilters);
   };
   
 
-  console.log(hasFilters);
+
   return (
     <Aside>
       <TitleSidebar>Фільтри <SlidersHorizontal size={20} /></TitleSidebar>

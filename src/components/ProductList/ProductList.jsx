@@ -213,8 +213,7 @@ export const ProductList = ({
     );
   }
 
-  // console.log('filteredProducts.length:', filteredProducts.length);
-  // console.log('currentProducts.length:', currentProducts.length);
+
 
   return (
     <ContainerProduct>

@@ -1,5 +1,4 @@
 export const syncCart = async (localCartItems, token, userId) => {
-    console.log('localCartItems', localCartItems)
   if (!localCartItems.length) return;
 
   await Promise.all(
@@ -20,7 +19,6 @@ export const syncCart = async (localCartItems, token, userId) => {
       }
 
       const cartData = await cartRes.json();
-      console.log('cartData', cartData)
       // Такий товар уже є в кошику користувача
       if (cartData.data.length > 0) {
         const cartItem = cartData.data[0];

@@ -30,7 +30,7 @@ const CatalogPage = () => {
         );
         const data = await res.json();
 
-        console.log(data);
+
 
         setCategories(
           data.data.map((cat) => ({

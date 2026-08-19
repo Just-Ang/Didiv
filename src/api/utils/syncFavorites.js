@@ -4,7 +4,6 @@
   await Promise.all(
     localFavorites.map(async (item) => {
       // Шукаємо Favorite по товару
-      console.log(item);
       const favoriteRes = await fetch(
         `${import.meta.env.VITE_API_URL}/api/favorites?filters[product][documentId][$eq]=${item.documentId}&populate=user`,
         {
@@ -25,7 +24,6 @@
       if (favoriteData.data.length > 0) {
         const favorite = favoriteData.data[0];
 
-console.log("favr",favorite);
 
         const users = favorite.user || [];
 

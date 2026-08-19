@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 
 import FavEmpty from '../../components/FavEmpty/FavEmty';
-import { addAllToCart, addToCart } from '../../redux/cartSlice';
+import { addAllToCart } from '../../redux/cartSlice';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -34,6 +34,7 @@ import {
 } from '../CartPage/CartPage.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { BallTriangle } from 'react-loader-spinner';
+import { handleCart } from '../../api/utils/handleCart';
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
@@ -125,8 +126,6 @@ const FavoritesPage = () => {
       })
       .filter(Boolean);
 
-    console.log('itemsToAdd:', itemsToAdd);
-
     if (itemsToAdd.length === 0) {
       toast.error('Усі товари вже в максимальній кількості');
       return;
@@ -140,21 +139,6 @@ const FavoritesPage = () => {
     (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
     0
   );
-
-  // const handleClickFavorite = async (product, e) => {
-  //    e.stopPropagation();
-  //    const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
-  //  setTimeout(() => {
-  //       setRemovingIds((prev) => prev.filter((id) => id !== product.id));
-  //     }, 300);
-  // const success = await handleFavorite(
-  //     product,
-  //     isFavorite,
-  //     dispatch,
-  //     toast
-  //   );
-  // console.log('success',success)
-  //  };
 
   const handleClickFavorite = async (product, e) => {
     e.stopPropagation();
@@ -317,7 +301,7 @@ const FavoritesPage = () => {
                     )
                   : 0;
 
-                const handleAdd = (item) => {
+                const handleAdd = async (item) => {
                   const itemInCart = cartItems.find(
                     (cartItem) => cartItem.id === item.id
                   );
@@ -329,8 +313,7 @@ const FavoritesPage = () => {
                     return;
                   }
 
-                  dispatch(addToCart(item));
-                  toast.success(`${item.name} додано в кошик!`);
+                  await handleCart(item, 1, dispatch, toast);
                 };
 
                 return (
