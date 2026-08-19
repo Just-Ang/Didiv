@@ -6,21 +6,29 @@ import {
   ButtonContent,
   Container,
   Grid,
-
   ImageLink,
   NewBadge,
-
   PriceRow,
   ProductCard,
   ProductInfo,
   ProductName,
+  ReservedBadge,
   Title,
 } from './NewArrivals.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import placeholder from '../../../public/nofoto.png';
 import { useEffect, useState } from 'react';
-import { Button, CardButtons, CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../ProductList/ProductList.styled';
+import {
+  Button,
+  CardButtons,
+  CurrentPrice,
+  DiscountBadge,
+  OldPrice,
+  PriceBlock,
+  PriceWrapper,
+
+} from '../ProductList/ProductList.styled';
 
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { useNavigate } from 'react-router-dom';
@@ -29,10 +37,9 @@ import { handleCart } from '../../api/utils/handleCart';
 export const NewArrivals = () => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
-    const favorites = useSelector((state) => state.favorites.items);
-    const cartItems = useSelector((state) => state.cart.items);
-      const navigate = useNavigate();
-
+  const favorites = useSelector((state) => state.favorites.items);
+  const cartItems = useSelector((state) => state.cart.items);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const now = new Date();
@@ -52,18 +59,17 @@ export const NewArrivals = () => {
       );
   }, []);
 
- const handleClickFavorite = (product, e) => {
-   e.stopPropagation();
-   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
- 
-   handleFavorite(product, isFavorite, dispatch, toast);
- };
+  const handleClickFavorite = (product, e) => {
+    e.stopPropagation();
+    const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+
+    handleFavorite(product, isFavorite, dispatch, toast);
+  };
 
   const displayProducts = [...products]
     .sort(() => Math.random() - 0.5)
     .slice(0, 3);
 
- 
   if (!products || products.length === 0) return null;
 
   return (
@@ -72,12 +78,17 @@ export const NewArrivals = () => {
       <Title>Нові товари</Title>
       <Grid>
         {displayProducts.map((item) => {
-           const isFavorite = favorites.some((fav) => fav.id === item.id);
+          const isFavorite = favorites.some((fav) => fav.id === item.id);
+const isAvailable = item?.available ?? true;
+console.log({
+  name: item.name,
+  available: item.available,
+  isAvailable,
+});
+          const inCart = cartItems.find((c) => c.id === item.id);
+          const currentQty = inCart ? inCart.quantity : 0;
 
-            const inCart = cartItems.find((c) => c.id === item.id);
-            const currentQty = inCart ? inCart.quantity : 0;
-
-            const isOutOfStock = currentQty >= (item.stock || 0);
+          const isOutOfStock = currentQty >= (item.stock || 0);
           const hasDiscount = item.new_price && item.new_price < item.price;
 
           const finalPrice = hasDiscount ? item.new_price : item.price;
@@ -85,29 +96,29 @@ export const NewArrivals = () => {
           const discountPercent = hasDiscount
             ? Math.round(((item.price - item.new_price) / item.price) * 100)
             : 0;
-            const handleAdd = async () => {
-  if (isOutOfStock) {
-    toast.warning('Товар вже в кошику (досягнуто максимум)');
-    return;
-  }
+          const handleAdd = async () => {
+            if (isOutOfStock) {
+              toast.warning('Товар вже в кошику (досягнуто максимум)');
+              return;
+            }
 
-  if (isOutOfStock) {
-    toast.warning(`Доступно лише ${item.stock} шт.`);
-    return;
-  }
+            if (isOutOfStock) {
+              toast.warning(`Доступно лише ${item.stock} шт.`);
+              return;
+            }
 
-  await handleCart(
-  item,
-  1,
-  dispatch,
-  toast
-);
-};
+            await handleCart(item, 1, dispatch, toast);
+          };
           return (
-            <ProductCard key={item.id}
-            onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
-              <ImageLink >
+            <ProductCard
+              key={item.id}
+              onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
+            >
+                             
+              
+              <ImageLink>
                 <NewBadge>Новинка</NewBadge>
+                  {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
                 <img
                   src={item.images?.[0].url || placeholder}
                   alt={item.name}
@@ -141,27 +152,25 @@ export const NewArrivals = () => {
                       )}
                     </PriceBlock>
                   </PriceWrapper>
-                
 
                   <CardButtons>
-                                      <Button onClick={(e) => handleAdd(item, e)}>
-                                        <ShoppingCart size={24} 
-                      color={inCart ? 'var(--orange-color)' : 'black'} 
-                    
-                      // fill={inCart ? 'var(--orange-color)' : 'none'}
-                          strokeWidth={inCart ? 2 : 2}
-                  />
-                                      </Button>
-                  
-                                      <Button onClick={(e) => handleClickFavorite(item, e)}>
-                                        <Heart
-                                          size={24}
-                                          fill={isFavorite ? '#ff4d4f' : 'none'}
-                                          color={isFavorite ? '#ff4d4f' : '#000000'}
-                                          strokeWidth={isFavorite ? 1 : 2}
-                                        />
-                                      </Button>
-                                    </CardButtons>
+                    {isAvailable && <Button onClick={(e) => handleAdd(item, e)}>
+                      <ShoppingCart
+                        size={24}
+                        color={inCart ? 'var(--orange-color)' : 'black'}
+                        strokeWidth={inCart ? 2 : 2}
+                      />
+                    </Button>}
+
+                    <Button onClick={(e) => handleClickFavorite(item, e)}>
+                      <Heart
+                        size={24}
+                        fill={isFavorite ? '#ff4d4f' : 'none'}
+                        color={isFavorite ? '#ff4d4f' : '#000000'}
+                        strokeWidth={isFavorite ? 1 : 2}
+                      />
+                    </Button>
+                  </CardButtons>
                 </PriceRow>
               </ProductInfo>
             </ProductCard>

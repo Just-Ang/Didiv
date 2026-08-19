@@ -36,9 +36,9 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice';
 import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
+import { handleCart } from '../../api/utils/handleCart';
 
 const SalePage = () => {
   const [products, setProducts] = useState([]);
@@ -286,19 +286,18 @@ const sortRef = useRef(null);
             const currentQty = inCart ? inCart.quantity : 0;
             const isOutOfStock = currentQty >= (item.stock || 0);
 
-            const handleAdd = (product, e) => {
+            const handleAdd = async (product, e) => {
               e.stopPropagation();
               if (isOutOfStock) {
                 toast.error(`Товар уже у кошику`);
                 return;
               }
-              dispatch(
-                addToCart({
-                  ...product,
-                  quantity: 1,
-                })
-              );
-              toast.success(`${product.name} додано в кошик!`);
+               await handleCart(
+               item,
+               1,
+               dispatch,
+               toast
+             );
             };
             return (
               <Card

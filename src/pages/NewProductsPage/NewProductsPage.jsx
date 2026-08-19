@@ -18,7 +18,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { ArrowDownNarrowWide, ArrowRight, Heart, ShoppingCart } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice';
+
 import { toast, ToastContainer } from 'react-toastify';
 import { TitleNew } from './NewProductsPage.styled';
 import { Container } from './NewProductsPage.styled';
@@ -32,6 +32,7 @@ import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from 
 import { Button, } from '../SalePage/SalePage.styled';
 import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
+import { handleCart } from '../../api/utils/handleCart';
 export const NewProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,20 +46,15 @@ export const NewProductsPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  // const PRODUCTS_PER_PAGE = 24;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const indexOfLast = currentPage * PRODUCTS_PER_PAGE;
-  // const indexOfFirst = indexOfLast - PRODUCTS_PER_PAGE;
-  // const currentProducts = products.slice(indexOfFirst, indexOfLast);
-  // const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
 
   const sortRef = useRef(null); 
   
     useEffect(() => {
       const handleClickOutside = (event) => {
-        // Якщо клікнули ПОЗА контейнером sortRef — закриваємо
         if (sortRef.current && !sortRef.current.contains(event.target)) {
            setIsSortOpen(false);
         }
@@ -306,19 +302,18 @@ export const NewProductsPage = () => {
               ? Math.round(((product.price - product.new_price) / product.price) * 100)
               : 0;
 
-               const handleAdd = (product, e) => {
+               const handleAdd = async (product, e) => {
                                         e.stopPropagation();
                                         if (isOutOfStock) {
                                           toast.error(`Товар уже у кошику`);
                                           return;
                                         }
-                                        dispatch(
-                                          addToCart({
-                                            ...product,
-                                            quantity: 1,
-                                          })
-                                        );
-                                        toast.success(`${product.name} додано в кошик!`);
+                                        await handleCart(
+                                                       product,
+                                                       1,
+                                                       dispatch,
+                                                       toast
+                                                     );
                                       };
 
             return (
@@ -354,7 +349,7 @@ export const NewProductsPage = () => {
                                                          <ShoppingCart size={24} 
                                        color={inCart ? 'var(--orange-color)' : 'black'} 
                                      
-                                       // fill={inCart ? 'var(--orange-color)' : 'none'}
+          
                                            strokeWidth={inCart ? 2 : 2}
                                    />
                                                        </Button>
