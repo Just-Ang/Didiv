@@ -73,6 +73,10 @@ font-weight: 500;
     opacity: 0;
     transform: translateX(40px);
   }
+  &.unavailable {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
 
   @media screen and (min-width: 768px) {
     display: grid;

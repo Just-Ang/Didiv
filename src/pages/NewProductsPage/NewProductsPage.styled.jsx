@@ -99,13 +99,13 @@ export const CardImg = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
-  padding:20px;
+  padding:10px;
 
 `;
 
 
 export const CardBottom = styled.div`
-  padding: 16px;
+  padding: 10px;
       display: flex;
     align-content: center;
     align-items: center;

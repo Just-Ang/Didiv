@@ -118,7 +118,7 @@ console.log({
               
               <ImageLink>
                 <NewBadge>Новинка</NewBadge>
-                  {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
+                  {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
                 <img
                   src={item.images?.[0].url || placeholder}
                   alt={item.name}

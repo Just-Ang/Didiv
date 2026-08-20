@@ -72,22 +72,23 @@ font-family: var(--second-font);
 export const ReservedBadge = styled.p`
     font-family: var(--second-font);
   position: absolute;
-
   top: 10px;
   right: 10px; 
-
  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 20px; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.344);
-
   background: var(--red-color);
-
   color: #fff;
-
   z-index: 10;
+  @media screen and (max-width: 480px) {
+    font-size: 10px;
+    padding: 3px 8px;
+    top: 8px;
+  right: 8px;
+  }
 `
 export const ImageLink = styled(Link)`
   position: relative;

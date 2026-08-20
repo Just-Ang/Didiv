@@ -34,95 +34,104 @@ import placeholder from '../../../public/nofoto.png';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { BallTriangle } from 'react-loader-spinner';
 import { clearCartFromBackend } from '../../api/utils/clearCartFromBackend';
+import { ImgWrapper } from '../../components/ProductList/ProductList.styled';
+import { ReservedBadgeFavorite } from '../FavoritesPage/FavoritesPage.styled';
+import { deleteCartItemFromBackend } from '../../api/utils/deleteCartItemFromBackend';
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-   const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
   const [removingIds, setRemovingIds] = useState([]);
-     const reduxCartItems = useSelector((state) => state.cart.items);
-  
-    const [localCartItems,  setLocalCartItems] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const reduxCartItems = useSelector((state) => state.cart.items);
 
-  // const cartItems = useSelector((state) => state.cart.items);
+  const [localCartItemsProduct, setLocalCartItemsProduct] = useState([]);
+  const [cartItems, setCartItem] = useState([]);
+  console.log('cartItems',cartItems);
 
-  const items = useSelector((state) => state.cart.items);
+  const [loading, setLoading] = useState(true);
+console.log('localCartItems',localCartItemsProduct)
 
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-  const total = localCartItems.reduce(
-    (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
+const totalQuantity = reduxCartItems
+  .filter((item) => item.available !== false)
+  .reduce((sum, item) => sum + item.quantity, 0);
+
+const total = reduxCartItems
+  .filter((item) => item.available !== false)
+  .reduce(
+    (sum, item) =>
+      sum + (item.new_price ?? item.price) * (item.quantity || 1),
     0
   );
 
   const favorites = useSelector((state) => state.favorites.items);
-  const isCartEmpty = localCartItems.length === 0;
+  const isCartEmpty = localCartItemsProduct.length === 0;
 
- 
-
-useEffect(() => {
-  const fetchCart = async () => {
-
-    // Якщо користувач НЕ авторизований —
-    // беремо кошик з Redux
-    if (!token || !user) {
-      setLocalCartItems(reduxCartItems);
-      setLoading(false);
-      return;
-    }
-
-    // Якщо авторизований —
-    // беремо актуальний кошик зі Strapi
-    try {
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/cart-items?filters[user][documentId][$eq]=${
-          user.documentId
-        }&populate[product][populate]=*`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Не вдалося отримати кошик');
+  useEffect(() => {
+    const fetchCart = async () => {
+      // Якщо користувач НЕ авторизований —
+      // беремо кошик з Redux
+      if (!token || !user) {
+        setLocalCartItemsProduct(reduxCartItems);
+        setLoading(false);
+        return;
       }
 
-      const data = await response.json();
+      // Якщо авторизований —
+      // беремо актуальний кошик зі Strapi
+      try {
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/cart-items?filters[user][documentId][$eq]=${
+            user.documentId
+          }&populate[product][populate]=*`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      const products = data.data
-        .map((cartItem) => {
-          if (!cartItem.product) return null;
+        if (!response.ok) {
+          throw new Error('Не вдалося отримати кошик');
+        }
 
-          return {
-            ...cartItem.product,
-            quantity: cartItem.quantity,
-          };
-        })
-        .filter(Boolean);
+        const data = await response.json();
+setCartItem(data.data);
+        const products = data.data
+          .map((cartItem) => {
+            if (!cartItem.product) return null;
 
-      setLocalCartItems(products);
-            dispatch(setCartItems(products));
+            return {
+              ...cartItem.product,
+              quantity: cartItem.quantity,
+            };
+          })
+          .filter(Boolean);
 
-    } catch (error) {
-      console.error(error);
-      toast.error('Не вдалося завантажити кошик');
+        setLocalCartItemsProduct(products);
+        dispatch(setCartItems(products));
+      } catch (error) {
+        console.error(error);
+        toast.error('Не вдалося завантажити кошик');
 
-      // Якщо запит впав — залишаємо Redux
-      setLocalCartItems(reduxCartItems);
-    } finally {
-      setLoading(false);
-    }
-  };
+        // Якщо запит впав — залишаємо Redux
+        setLocalCartItemsProduct(reduxCartItems);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchCart();
+    fetchCart();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+  setLocalCartItemsProduct(reduxCartItems);
+}, [reduxCartItems]);
 
   const handleClickFavorite = (product, e) => {
     e.stopPropagation();
@@ -130,28 +139,54 @@ useEffect(() => {
 
     handleFavorite(product, isFavorite, dispatch, toast);
   };
-  const handleDelete = (item) => {
-    setRemovingIds((prev) => [...prev, item.id]);
-
-    setTimeout(() => {
-      dispatch(removeFromCart(item));
-      setRemovingIds((prev) => prev.filter((id) => id !== item.id));
-    }, 300);
-  };
-const handleClear = async () => {
-  if (!user) {
-    dispatch(clearCart());
-    setLocalCartItems([]);
-    return;
-  }
+const handleDelete = async (item) => {
+  setRemovingIds((prev) => [...prev, item.id]);
 
   try {
-    await clearCartFromBackend(user.id, dispatch, token);
-    setLocalCartItems([]);
+    if (!user) {
+      setTimeout(() => {
+        dispatch(removeFromCart(item));
+
+        setRemovingIds((prev) =>
+          prev.filter((id) => id !== item.id)
+        );
+      }, 300);
+
+      return;
+    }
+
+    await deleteCartItemFromBackend(item, user.id, dispatch, token);
+
+    setTimeout(() => {
+      setRemovingIds((prev) =>
+        prev.filter((id) => id !== item.id)
+      );
+    }, 300);
   } catch (error) {
-    toast.error('Не вдалося очистити кошик');
+    setRemovingIds((prev) =>
+      prev.filter((id) => id !== item.id)
+    );
+
+    toast.error('Не вдалося видалити товар з кошика');
   }
 };
+
+
+
+  const handleClear = async () => {
+    if (!user) {
+      dispatch(clearCart());
+      setLocalCartItemsProduct([]);
+      return;
+    }
+
+    try {
+      await clearCartFromBackend(user.id, dispatch, token);
+      setLocalCartItemsProduct([]);
+    } catch (error) {
+      toast.error('Не вдалося очистити кошик');
+    }
+  };
 
   if (loading) {
     return (
@@ -202,11 +237,15 @@ const handleClear = async () => {
 
           <ContentWrapper>
             <CartItemsList>
-              {localCartItems.map((item, index) => {
-              
+              {localCartItemsProduct.map((item, index) => {
+                  const cartItem = cartItems.find(
+  (cartItem) => cartItem.product?.documentId === item.documentId
+);
+
                 const isFavorite = favorites.some((fav) => fav.id === item.id);
                 const hasDiscount =
                   item.new_price && item.new_price < item.price;
+                const isAvailable = item?.available ?? true;
 
                 const finalPrice = hasDiscount ? item.new_price : item.price;
 
@@ -218,25 +257,36 @@ const handleClear = async () => {
                 return (
                   <CartItem
                     key={`${item.id}-${index}`}
-                    className={removingIds.includes(item.id) ? 'removing' : ''}
-                    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
+                    className={`
+    ${removingIds.includes(item.id) ? 'removing' : ''}
+    ${!isAvailable ? 'unavailable' : ''}
+  `}
+                 
                   >
-                    <ProductImg
-                      src={item.images?.[0]?.url || '/nofoto.png'}
-                      alt={item.name}
-                      // onClick={() => navigate(`/product/${item.id}`)}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = placeholder;
-                      }}
-                    />
-                    <ProductInfo>
+                    <ImgWrapper    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
+                      {!isAvailable && (
+                        <ReservedBadgeFavorite>Бронь</ReservedBadgeFavorite>
+                      )}
+                      <ProductImg
+                        src={item.images?.[0]?.url || '/nofoto.png'}
+                        alt={item.name}
+                        // onClick={() => navigate(`/product/${item.id}`)}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = placeholder;
+                        }}
+                      />
+                    </ImgWrapper>
+                    <ProductInfo    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
                       <h3>{item.name}</h3>
                     </ProductInfo>
                     <CounterPrice>
-                      <Counter
-                        item={{ ...item, quantity: item.quantity || 1 }}
-                      />
+                   <Counter
+  item={item}
+  cartItem={cartItem}
+  user={user}
+  token={token}
+/>
                       <PriceWrapper>
                         <PriceBlock>
                           <CurrentPrice $discount={hasDiscount}>

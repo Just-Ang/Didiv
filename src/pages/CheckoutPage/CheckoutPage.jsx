@@ -40,11 +40,17 @@ const CheckoutPage = () => {
   // const [ukrSearch, setUkrSearch] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(null);
 
-  const totalAmount = cartItems.reduce(
+  const totalAmount = cartItems.filter((item) => item.available !== false).reduce(
     (acc, i) => acc + (i.new_price ?? i.price) * i.quantity,
     0
   );
-  const totalQuantity = cartItems.reduce((acc, i) => acc + i.quantity, 0);
+ const totalCartItems = cartItems.filter(
+  (item) => item.available !== false
+);
+
+const totalQuantity = cartItems
+  .filter((item) => item.available !== false)
+  .reduce((acc, i) => acc + i.quantity, 0);
 
   const generateOrderNumber = () => {
     const year = new Date().getFullYear().toString().slice(-2);
@@ -389,7 +395,7 @@ const CheckoutPage = () => {
         </Section>
 
         <OrderSummary
-          cartItems={cartItems}
+          cartItems={totalCartItems}
           totalAmount={totalAmount}
           totalQuantity={totalQuantity}
           isFormValid={isFormValid}

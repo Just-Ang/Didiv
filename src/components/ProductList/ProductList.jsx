@@ -10,6 +10,7 @@ import {
   DiscountBadge,
   Dropdown,
   GridWrapper,
+  ImgWrapper,
   Item,
   NotFoundDiv,
   OldPrice,
@@ -350,8 +351,9 @@ export const ProductList = ({
                 }
                 style={{ cursor: 'pointer' }}
               >
-                {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
-
+                
+<ImgWrapper>
+{!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
                 <CardImg
                   src={product.images?.[0]?.url || '/placeholder.jpg'}
                   alt={product.name}
@@ -359,7 +361,7 @@ export const ProductList = ({
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = placeholder;
                   }}
-                />
+                /></ImgWrapper>
 
                 <CardTitle>{product.name}</CardTitle>
 

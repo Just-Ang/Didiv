@@ -321,16 +321,14 @@ const FavoritesPage = () => {
                     key={item.id}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
-                    {!isAvailable && (
-                      <ReservedBadgeFavorite>
-                        Заброньовано
-                      </ReservedBadgeFavorite>
-                    )}
+                   
                     <ImageWrapper
                       onClick={() =>
                         navigate(`/product/${item.slug ?? item.id}`)
                       }
-                    >
+                    > {!isAvailable && (
+                      <ReservedBadgeFavorite>Бронь</ReservedBadgeFavorite>
+                    )}
                       <Image
                         src={item.images?.[0]?.url || placeholder}
                         alt={item.name}
@@ -339,7 +337,10 @@ const FavoritesPage = () => {
                         }}
                       />
                     </ImageWrapper>
-                    <ProductName>{item.name}</ProductName>
+                    <ProductName  onClick={() =>
+                        navigate(`/product/${item.slug ?? item.id}`)
+                      }
+                    >{item.name}</ProductName>
 
                     <ActionsWrapper>
                       {/* <Price>{item.price}&nbsp;грн</Price> */}

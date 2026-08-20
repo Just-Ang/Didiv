@@ -2,7 +2,7 @@ import { Button, CartPreviewItem, CartPreviewList, CurrentPrice, DiscountBadge, 
 import placeholder from '../../../../public/nofoto.png';
 
 const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, handleSubmit }) => {
-  
+  console.log(totalQuantity, totalAmount)
   return(
   <Summary>
     <h3>Ваше замовлення</h3>
@@ -17,7 +17,10 @@ const discountPercent = hasDiscount
   ? Math.round(((item.price - item.new_price) / item.price) * 100)
   : 0;
 
-const total = finalPrice * (item.quantity || 1);
+const total =
+  item.available !== false
+    ? finalPrice * (item.quantity || 1)
+    : 0;
          return (
         <CartPreviewItem key={`${item.id}-${index}`}>
           <PreviewImg   src={item.images?.[0]?.url || placeholder} alt={item.name} />

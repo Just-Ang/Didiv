@@ -305,7 +305,7 @@ const sortRef = useRef(null);
                 onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
                 style={{ cursor: 'pointer' }}
               >
-                      {!isAvailable && <ReservedBadge>Заброньовано</ReservedBadge>}
+                      {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
                 <CardImg src={item.images?.[0]?.url || '/nofoto.png'} />
 
                 <CardTitle>{item.name}</CardTitle>

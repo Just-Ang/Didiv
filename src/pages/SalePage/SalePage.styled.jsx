@@ -113,7 +113,7 @@ export const CardImg = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
-  padding: 20px;
+ padding: 10px;
 `;
 
 /* TITLE */
@@ -141,7 +141,7 @@ export const CardBottom = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  padding: 0 16px 16px;
+  padding: 0 10px 10px;
 `;
 
 /* PRICE */

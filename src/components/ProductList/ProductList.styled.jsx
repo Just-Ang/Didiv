@@ -115,23 +115,30 @@ font-weight: 500;
     }
   }
 `;
+ export const ImgWrapper = styled.div`
+  position: relative;
+  display: block;
+ `
 export const ReservedBadge = styled.div`
     font-family: var(--second-font);
   position: absolute;
-
-  top: 25px;
-  right: -12px;
-
-  padding: 6px 15px;
-  border-radius: 20px;
-
-  background: var(--red-color);
-  box-shadow: 0 6px 6px -4px rgba(0, 0, 0, 0.35);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 400;
+  top: 20px;
+  right: 20px; 
+ font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.344);
+  background: var(--red-color);
+  color: #fff;
   z-index: 10;
+  @media screen and (max-width: 480px) {
+    font-size: 10px;
+    padding: 3px 8px;
+    top: 8px;
+  right: 8px;
+  }
 `;
 
 
@@ -155,11 +162,11 @@ export const CardImg = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
-  padding:20px;
+  padding:10px;
 `;
 
 export const CardBottom = styled.div`
-  padding: 16px;
+  padding: 10px;
       display: flex;
     align-content: center;
     align-items: center;

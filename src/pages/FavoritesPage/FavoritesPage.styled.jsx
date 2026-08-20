@@ -82,34 +82,24 @@ display: flex;
 `;
 
 export const ReservedBadgeFavorite = styled.div`
+   font-family: var(--second-font);
   position: absolute;
-  top: 30px;
-  right: -10px;
-
-  padding: 6px 15px;
-  border-radius: 22px;
-
+  top: 10px;
+  right: 10px; 
+ font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.344);
   background: var(--red-color);
   color: #fff;
-
-  font-family: var(--second-font);
-     font-size: 14px;
-    font-weight: 400;
-    text-transform: uppercase;
-  line-height: 1;
-  text-transform: uppercase;
-
   z-index: 10;
-  white-space: nowrap;
-    box-shadow: 0 6px 6px -4px rgba(0, 0, 0, 0.35);
-
-  @media (min-width: 768px) {
-    top: 50%;
-    left: 25px;
-    right: auto;
-    transform: translateY(-50%);
-    font-size: 14px;
-    padding: 6px 15px;
+  @media screen and (max-width: 480px) {
+    font-size: 10px;
+    padding: 3px 8px;
+    top: 8px;
+  right: 8px;
   }
 `;
 

@@ -354,7 +354,7 @@ const handleAdd = async () => {
           <Title>{product.name}</Title>
           <Sku>Артикул: {product.sku ?? ''}</Sku>
           <RatingRow>{isNew && <NewLable>● Новий товар</NewLable>}</RatingRow>
-          {!isAvailable && <AvailableRow> Заброньовано</AvailableRow>}
+          {!isAvailable && <AvailableRow>Бронь</AvailableRow>}
 
           <PriceCard>
             <PriceWrapper>
