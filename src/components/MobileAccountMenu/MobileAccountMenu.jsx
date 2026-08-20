@@ -11,15 +11,33 @@ import {
   Name,
   Email,
 } from "./MobileAccountMenu.styled";
+import { clearFavorite } from "../../redux/favoritesSlice";
+import { clearCart } from "../../redux/cartSlice";
+import { persistor } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const MobileAccountMenu = () => {
   const [open, setOpen] = useState(false);
 
     const [name, setName] = useState("");
         const [email, setEmail] = useState("");
+         const dispatch = useDispatch();
+const navigate = useNavigate();
       
       //   const [loading, setLoading] = useState(true);
+  const handleLogout = async () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   
+    dispatch(clearFavorite());
+    dispatch(clearCart());
+  
+    await persistor.purge();
+    
+  
+  navigate("/", { replace: true });
+  };
         useEffect(() => {
           const fetchUser = async () => {
             try {
@@ -117,7 +135,7 @@ const currentTitle = titles[location.pathname] || "Особисті дані";
           </MenuButton>
 
           <MenuButton
-            to="/"
+            onClick={handleLogout}
           >
             Вийти
           </MenuButton>

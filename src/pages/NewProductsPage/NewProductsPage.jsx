@@ -30,7 +30,7 @@ import { PageButton } from './NewProductsPage.styled';
 import placeholder from '../../../public/nofoto.png';
 import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../CartPage/CartPage.styled';
 import { Button, } from '../SalePage/SalePage.styled';
-import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
+import { NewBadge, ReservedBadge } from '../../components/ProductList/ProductList.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { handleCart } from '../../api/utils/handleCart';
 export const NewProductsPage = () => {
@@ -322,6 +322,7 @@ export const NewProductsPage = () => {
                 onClick={() => navigate(`/product/${product.slug ?? product.id}`)}
               >
                  {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
+                 <NewBadge>Новинка</NewBadge>
                 <CardImg src={product.images?.[0]?.url || placeholder} alt={product.name} />
                 <CardTitle>{product.name}</CardTitle>
 

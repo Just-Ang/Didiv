@@ -36,7 +36,7 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReservedBadge } from '../../components/ProductList/ProductList.styled';
+import { NewBadge, ReservedBadge } from '../../components/ProductList/ProductList.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { handleCart } from '../../api/utils/handleCart';
 
@@ -273,7 +273,9 @@ const sortRef = useRef(null);
         <GridWrapper>
           {currentProducts.map((item) => {
             const hasDiscount = item.new_price && item.new_price < item.price;
-
+const isNew = item?.createdAt
+  ? Date.now() - new Date(item.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
+  : false;
             const finalPrice = hasDiscount ? item.new_price : item.price;
              const isAvailable = item?.available ?? true;
 
@@ -304,7 +306,8 @@ const sortRef = useRef(null);
                 key={item.id}
                 onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
                 style={{ cursor: 'pointer' }}
-              >
+              >                {isNew && <NewBadge>Новинка</NewBadge>}
+              
                       {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
                 <CardImg src={item.images?.[0]?.url || '/nofoto.png'} />
 

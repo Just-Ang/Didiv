@@ -125,7 +125,7 @@ export const ReservedBadge = styled.div`
   top: 20px;
   right: 20px; 
  font-size: 11px;
-  font-weight: 700;
+ font-weight: 500;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 20px; 
@@ -136,10 +136,34 @@ export const ReservedBadge = styled.div`
   @media screen and (max-width: 480px) {
     font-size: 10px;
     padding: 3px 8px;
-    top: 8px;
-  right: 8px;
+    top: 15px;
+  right: 15px;
   }
 `;
+export const NewBadge = styled.div`
+    font-family: var(--second-font);
+ position: absolute;
+top: 20px;
+  left: 20px; 
+  background-color:var( --orange-color); 
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.344); 
+  z-index: 1; 
+  letter-spacing: 0.5px;
+  pointer-events: none; 
+
+  @media screen and (max-width: 480px) {
+    font-size: 10px;
+    padding: 3px 8px;
+    top: 15px;
+    left: 15px;
+  }
+`
 
 
 // export const CardImgWrapper = styled.div`

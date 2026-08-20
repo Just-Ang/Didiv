@@ -12,6 +12,7 @@ import {
   GridWrapper,
   ImgWrapper,
   Item,
+  NewBadge,
   NotFoundDiv,
   OldPrice,
   PageButton,
@@ -52,10 +53,9 @@ export const ProductList = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 24;
   let filteredProducts = products;
-
+console.log(products)
   const sortRef = useRef(null);
-
-  useEffect(() => {
+ useEffect(() => {
     const handleClickOutside = (event) => {
       if (sortRef.current && !sortRef.current.contains(event.target)) {
         setIsSortOpen(false);
@@ -214,8 +214,6 @@ export const ProductList = ({
     );
   }
 
-
-
   return (
     <ContainerProduct>
       <WrapperTop>
@@ -310,7 +308,9 @@ export const ProductList = ({
         <GridWrapper>
           {currentProducts.map((product) => {
             const isFavorite = favorites.some((fav) => fav.id === product.id);
-
+const isNew = product?.createdAt
+  ? Date.now() - new Date(product.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
+  : false;
             const inCart = cartItems.find((c) => c.id === product.id);
             const currentQty = inCart ? inCart.quantity : 0;
 
@@ -351,20 +351,19 @@ export const ProductList = ({
                 }
                 style={{ cursor: 'pointer' }}
               >
-                
-<ImgWrapper>
-{!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
-                <CardImg
-                  src={product.images?.[0]?.url || '/placeholder.jpg'}
-                  alt={product.name}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = placeholder;
-                  }}
-                /></ImgWrapper>
-
+                <ImgWrapper>
+                {isNew && <NewBadge>Новинка</NewBadge>}
+                  {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
+                  <CardImg
+                    src={product.images?.[0]?.url || '/placeholder.jpg'}
+                    alt={product.name}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = placeholder;
+                    }}
+                  />
+                </ImgWrapper>
                 <CardTitle>{product.name}</CardTitle>
-
                 <CardBottom>
                   <PriceWrapper>
                     <PriceBlock>

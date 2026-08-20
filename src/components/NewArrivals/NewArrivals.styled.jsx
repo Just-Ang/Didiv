@@ -75,7 +75,7 @@ export const ReservedBadge = styled.p`
   top: 10px;
   right: 10px; 
  font-size: 11px;
-  font-weight: 700;
+ font-weight: 500;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 20px; 
@@ -126,7 +126,7 @@ export const NewBadge = styled.span`
   background-color:var( --orange-color); 
   color: white;
   font-size: 11px;
-  font-weight: 700;
+font-weight: 500;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 20px; 
