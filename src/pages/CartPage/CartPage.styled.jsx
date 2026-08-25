@@ -45,7 +45,7 @@ export const ContentWrapper = styled.div`
   gap: 20px; 
   width: 100%;
   
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width:  895px) {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between; 
@@ -78,12 +78,13 @@ font-weight: 500;
   filter: grayscale(100%);
 }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 895px) {
     display: grid;
     grid-template-columns: 100px 1.5fr 230px 80px; 
     align-items: center;
     gap: 20px;
   }
+  
 `;
 
 
@@ -205,12 +206,12 @@ export const SummaryCard = styled.div`
   padding: 24px;
 
   top: 20px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 895px) {
     width: 100%;
-    max-width: 750px;
+    max-width: 850px;
     padding: 10px;
   }
-   @media screen and (min-width: 768px) {
+   @media screen and (min-width:  895pxpx) {
     
    width: 400px;
   
