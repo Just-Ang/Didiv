@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CitySelect from '../../components/checkout/CitySelect/CitySelect';
 import DeliveryMethodSelect from '../../components/checkout/DeliveryMethodSelect/DeliveryMethodSelect';
@@ -9,6 +9,7 @@ import ContactForm from '../../components/checkout/ContactForm/ContactForm';
 import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
 import PaymentMethodSelect from '../../components/checkout/PaymentMethodSelect/PaymentMethodSelect';
 import { clearCart } from '../../redux/cartSlice';
+import { formatPhone } from '../../api/utils/formatPhone';
 
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
 const BASE_URL = 'https://api.novaposhta.ua/v2.0/json/';
@@ -17,14 +18,22 @@ const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+ const user = useMemo(() => {
+  const savedUser = localStorage.getItem('user');
+
+  return savedUser ? JSON.parse(savedUser) : null;
+}, []);
+
+  console.log(user);
 
   const [formData, setFormData] = useState({
     fullName: '',
-    phone: '+38 (0',
+    phone: '+38(0',
     email: '',
     city: '',
     postOffice: '',
   });
+  console.log(formData);
 
   const [inputCity, setInputCity] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
@@ -39,6 +48,20 @@ const CheckoutPage = () => {
   // const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
   // const [ukrSearch, setUkrSearch] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(null);
+
+const userDataInitialized = useRef(false);
+
+useEffect(() => {
+  if (!user || userDataInitialized.current) return;
+
+  userDataInitialized.current = true;
+
+  setFormData({
+    fullName: `${user.last_name || ""} ${user.first_name || ""}`.trim(),
+      phone: formatPhone(user.phone),
+    email: user.email || "",
+  });
+}, [user]);
 
   const totalAmount = cartItems.filter((item) => item.available !== false).reduce(
     (acc, i) => acc + (i.new_price ?? i.price) * i.quantity,

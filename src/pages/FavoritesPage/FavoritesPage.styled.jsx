@@ -42,7 +42,7 @@ export const Layout = styled.div`
   gap: 20px; 
   width: 100%;
   
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 895px) {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between; 
@@ -73,7 +73,7 @@ display: flex;
     transform: translateX(40px);
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 895px) {
     display: grid;
     grid-template-columns: 150px 1.5fr 0.7fr; 
     align-items: center;
@@ -183,12 +183,12 @@ export const SummaryCard = styled.div`
   padding: 24px;
 
   top: 20px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 895px) {
     width: 100%;
-    max-width: 750px;
+    max-width: 850px;
     padding: 10px;
   }
-   @media screen and (min-width: 768px) {
+   @media screen and (min-width: 895px) {
     
    max-width: 400px;
   
