@@ -16,9 +16,13 @@ import { clearCart } from "../../redux/cartSlice";
 import { persistor } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ModalLogOut } from "../ModalLogOut/ModalLogOut";
 
 export const MobileAccountMenu = () => {
   const [open, setOpen] = useState(false);
+
+
+const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
     const [name, setName] = useState("");
         const [email, setEmail] = useState("");
@@ -80,6 +84,12 @@ const currentTitle = titles[location.pathname] || "Особисті дані";
   return (
     
     <Wrapper>
+      {isLogoutModalOpen && (
+  <ModalLogOut
+    onClose={() => setIsLogoutModalOpen(false)}
+    onConfirm={handleLogout}
+  />
+)}
          <User>
                  <Avatar>
   {(name || name)?.[0]?.toUpperCase() || "?"}
@@ -134,11 +144,9 @@ const currentTitle = titles[location.pathname] || "Особисті дані";
             Змінити пароль
           </MenuButton>
 
-          <MenuButton
-            onClick={handleLogout}
-          >
-            Вийти
-          </MenuButton>
+          <MenuButton onClick={() => setIsLogoutModalOpen(true)}>
+  Вийти
+</MenuButton>
 
         </Menu>
       )}

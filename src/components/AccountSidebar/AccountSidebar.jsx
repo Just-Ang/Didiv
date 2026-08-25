@@ -14,11 +14,14 @@ import { useDispatch } from "react-redux";
 import { clearFavorite } from "../../redux/favoritesSlice";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../../redux/cartSlice";
+import { ModalLogOut } from "../ModalLogOut/ModalLogOut";
 
 
 export const AccountSidebar = () => {
       const [name, setName] = useState("");
       const [email, setEmail] = useState("");
+      const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
       const dispatch = useDispatch();
 const navigate = useNavigate();
 
@@ -65,6 +68,12 @@ navigate("/", { replace: true });
 };
   return (
     <Sidebar>
+         {isLogoutModalOpen && (
+        <ModalLogOut
+          onClose={() => setIsLogoutModalOpen(false)}
+          onConfirm={handleLogout}
+        />
+      )}
       <User>
          <Avatar>
           {(name || name)?.[0]?.toUpperCase() || "?"}
@@ -92,9 +101,9 @@ navigate("/", { replace: true });
   </MenuButton>
 </Menu>
 
-        <MenuButton onClick={handleLogout}>
-          Вийти
-        </MenuButton>
+        <MenuButton onClick={() => setIsLogoutModalOpen(true)}>
+         Вийти
+       </MenuButton>
 
       </Menu>
     </Sidebar>
