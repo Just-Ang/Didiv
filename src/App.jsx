@@ -26,6 +26,7 @@ import { AccountPage } from './pages/AccountPage/AccountPage';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFavorites } from './redux/favoritesSlice';
+import { OrderPage } from './components/OrderPage/OrderPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -121,9 +122,9 @@ function App() {
             >
               <Route index element={<ProfilePage />} />
               <Route path="profile" element={<ProfilePage />} />
-              {/* <Route path="orders" element={<OrdersPage />} />
-  <Route path="favorites" element={<FavoritesAccountPage />} />
-  <Route path="password" element={<ChangePasswordPage />} /> */}
+              <Route path="orders" element={<OrderPage /> }/>
+ {/* <Route path="favorites" element={<FavoritesAccountPage />} />
+   <Route path="password" element={<ChangePasswordPage />} />  */}
             </Route>
 
             <Route path="*" element={<ErrorPage />} />

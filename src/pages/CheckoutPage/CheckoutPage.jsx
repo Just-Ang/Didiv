@@ -240,10 +240,11 @@ const totalQuantity = cartItems
             city: formData.city,
 
             products: cartItems?.map((item) => ({
-              id: item.id,
-              name: item.name,
-              quantity: item.quantity,
-              price: item.new_price ?? item.price,
+              id: item?.id,
+              name: item?.name,
+              quantity: item?.quantity,
+              price: item?.new_price ?? item.price,
+              image: item?.images?.[0].url,
             })),
 
             status_order: 'pending',

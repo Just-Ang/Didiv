@@ -90,4 +90,10 @@ export const MenuButton = styled(NavLink)`
   &:not(:last-child){
     border-bottom:1px solid #ececec;
   }
+  
+  transition: 0.25s;
+  &.logout {
+    background-color: transparent;
+      color: #333;
+  }
 `;

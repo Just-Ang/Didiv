@@ -88,7 +88,7 @@ navigate("/", { replace: true });
       <Menu>
 
         <Menu>
-  <MenuButton $active to="/account/profile">
+  <MenuButton  to="/account/profile">
     Особисті дані
   </MenuButton>
 
@@ -101,7 +101,8 @@ navigate("/", { replace: true });
   </MenuButton>
 </Menu>
 
-        <MenuButton onClick={() => setIsLogoutModalOpen(true)}>
+        <MenuButton   as="button"
+  className="logout" onClick={() => setIsLogoutModalOpen(true)}>
          Вийти
        </MenuButton>
 

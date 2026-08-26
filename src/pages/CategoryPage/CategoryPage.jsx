@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import {
   ApplyButton,
   ClearFilter,
@@ -24,6 +24,7 @@ import { useState } from 'react';
 import sprite from '../../img/symbol-defs.svg';
 import { ArrowDownNarrowWide, SlidersHorizontal, X } from 'lucide-react';
 
+
 export const CategoryPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const { category } = useParams();
@@ -45,7 +46,12 @@ export const CategoryPage = () => {
   };
   return (
     <Section>
+      
       <Container>
+        {/* <Breadcrumbs>
+        <Link to="/">Головна</Link> / <Link to="/catalog">Каталог</Link>
+      </Breadcrumbs> */}
+        
         <TopBar>
           <FilterButton onClick={() => setIsFilterOpen(true)}>
             Фільтр

@@ -51,4 +51,8 @@ export const SaveButton = styled.button`
   color: white;
 
   cursor: pointer;
+   &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;

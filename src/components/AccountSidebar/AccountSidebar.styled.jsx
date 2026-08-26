@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Sidebar = styled.aside`
   background: #fff;
@@ -55,24 +55,24 @@ export const MenuButton = styled(NavLink)`
   border: none;
   border-radius: 12px;
   cursor: pointer;
-      display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: #333;
 
+  &.active,
+  &.active:hover {
+    background: #5b4637;
+    color: #fff;
+  }
 
-
-  background: ${({ $active }) =>
-    $active ? "#5b4637" : "transparent"};
-
-  color: ${({ $active }) =>
-    $active ? "#fff" : "#333"};
-
-  transition: .25s;
-
-  &:hover {
-    background: ${({ $active }) =>
-      $active ? "#5b4637" : "#f5f1ec"};
+  &:hover,
+  &.logout:hover {
+    background: #f5f1ec;
+  }
+  transition: 0.25s;
+  &.logout {
+    background-color: transparent;
   }
 `;
-

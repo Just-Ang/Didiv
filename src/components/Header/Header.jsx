@@ -51,7 +51,7 @@ const handleAccountClick = () => {
 
   if (token) {
   
-    navigate("/account");
+    navigate("/account/profile");
   } else {
 
     openLogin();

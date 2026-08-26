@@ -9,6 +9,12 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 
 export const ProfilePage = () => {
+  const [initialForm, setInitialForm] = useState({
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+});
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -37,12 +43,15 @@ export const ProfilePage = () => {
 
         setUserId(user.id);
 
-        setForm({
-          first_name: user.first_name || "",
-          last_name: user.last_name || "",
-          email: user.email || "",
-          phone: user.phone || "",
-        });
+       const userForm = {
+  first_name: user.first_name || "",
+  last_name: user.last_name || "",
+  email: user.email || "",
+  phone: user.phone || "",
+};
+
+setForm(userForm);
+setInitialForm(userForm);
       } catch (err) {
         console.error(err);
       } finally {
@@ -61,7 +70,10 @@ export const ProfilePage = () => {
       [name]: value,
     }));
   };
-
+const hasChanges =
+  form.first_name !== initialForm.first_name ||
+  form.last_name !== initialForm.last_name ||
+  form.phone !== initialForm.phone;
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -85,7 +97,7 @@ export const ProfilePage = () => {
       if (!res.ok) {
         throw new Error("Помилка оновлення");
       }
-
+setInitialForm(form);
      toast.success('Дані оновлено успішно');
     } catch (err) {
       console.error(err);
@@ -137,7 +149,8 @@ export const ProfilePage = () => {
         />
       </Label>
 
-      <SaveButton onClick={handleSave}>
+      <SaveButton onClick={handleSave}   disabled={!hasChanges}
+>
         Зберегти
       </SaveButton>
     </Card>
