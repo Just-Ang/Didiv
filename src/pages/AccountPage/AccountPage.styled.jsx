@@ -7,12 +7,13 @@ export const AccountWrapper = styled.main`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+    padding: 30px 10px;
 
   @media screen and (min-width: 768px) {
+     gap: 20px;
     flex-direction: row;
-    max-width:1200px;
-    padding-left: 30px;
-    padding-right: 30px;
+   max-width: 994px;
+    padding: 40px 30px;
   }
   @media screen and (min-width: 1200px) {
    max-width: 1448px;

@@ -8,8 +8,9 @@ import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
 import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
 import PaymentMethodSelect from '../../components/checkout/PaymentMethodSelect/PaymentMethodSelect';
-import { clearCart } from '../../redux/cartSlice';
+
 import { formatPhone } from '../../api/utils/formatPhone';
+import { clearBackendCart } from '../../api/utils/clearBackendCart';
 
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
 const BASE_URL = 'https://api.novaposhta.ua/v2.0/json/';
@@ -18,6 +19,8 @@ const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+      const token = localStorage.getItem('token');
+
  const user = useMemo(() => {
   const savedUser = localStorage.getItem('user');
 
@@ -291,6 +294,7 @@ const totalQuantity = cartItems
         );
 
         const { data, signature } = await res.json();
+        await clearBackendCart(user, token, dispatch);
 
         const form = document.createElement('form');
         form.method = 'POST';
@@ -347,7 +351,8 @@ const totalQuantity = cartItems
             ? 'Оплата за реквізитами'
             : '',
       };
-      dispatch(clearCart());
+      // dispatch(clearCart());
+       await clearBackendCart(user, token, dispatch);
       navigate('/order-confirmation', { state: { order: finalOrder } });
     } catch (e) {
       console.error(e);

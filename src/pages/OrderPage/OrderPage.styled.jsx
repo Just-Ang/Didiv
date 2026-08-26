@@ -5,8 +5,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
   max-width: 750px;
-  padding-left: 10px;
-  padding-right: 10px;
+
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -14,8 +13,8 @@ export const Container = styled.div`
 
   @media screen and (min-width: 768px) {
     max-width: 994px;
-    padding-left: 30px;
-    padding-right: 30px;
+    
+    
   }
 
   @media screen and (min-width: 1200px) {
@@ -45,7 +44,7 @@ export const MainContent = styled.div`
   background-color: #ffffff;
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   text-align: left;
 `;
 

@@ -26,7 +26,7 @@ import { AccountPage } from './pages/AccountPage/AccountPage';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFavorites } from './redux/favoritesSlice';
-import { OrderPage } from './components/OrderPage/OrderPage';
+import { OrderPage } from './pages/OrderPage/OrderPage';
 
 function App() {
   const dispatch = useDispatch();

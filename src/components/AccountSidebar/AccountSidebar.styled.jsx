@@ -6,6 +6,9 @@ export const Sidebar = styled.aside`
   border-radius: 24px;
   padding: 24px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+   @media screen and (min-width: 768px) {
+
+  }
 
   @media screen and (min-width: 1440px) {
     position: sticky;
