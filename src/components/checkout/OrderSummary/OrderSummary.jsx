@@ -1,7 +1,8 @@
 import { Button, CartPreviewItem, CartPreviewList, CurrentPrice, DiscountBadge, OldPrice, PreviewImg, PreviewInfo, PriceBlock, PriceWrapper, Summary } from "./OrderSummary.styled";
 import placeholder from '../../../../public/nofoto.png';
+import { CallConfirmation, Checkbox, CheckboxLabel } from "../../../pages/CheckoutPage/CheckoutPage.styled";
 
-const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, handleSubmit }) => {
+const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, handleSubmit, noCall, setNoCall }) => {
   console.log(totalQuantity, totalAmount)
   return(
   <Summary>
@@ -63,6 +64,18 @@ const total =
       <span>Всього до сплати:</span>
       <span>{totalAmount} грн</span>
     </div>
+       <CallConfirmation>
+      <Checkbox
+        type="checkbox"
+        id="noCall"
+        checked={noCall}
+        onChange={(e) => setNoCall(e.target.checked)}
+      />
+    
+      <CheckboxLabel htmlFor="noCall">
+        Не потребує підтвердження дзвінком
+      </CheckboxLabel>
+    </CallConfirmation>
     <Button type="submit" disabled={!isFormValid} onClick={handleSubmit} style={{ opacity: isFormValid ? 1 : 0.5, cursor: isFormValid ? 'pointer' : 'not-allowed' }}>
       Підтвердити замовлення
     </Button>

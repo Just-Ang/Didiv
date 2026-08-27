@@ -6,7 +6,7 @@ import DeliveryMethodSelect from '../../components/checkout/DeliveryMethodSelect
 import OfficeSelect from '../../components/checkout/OfficeSelect/OfficeSelect';
 import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
-import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
+import {  CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
 import PaymentMethodSelect from '../../components/checkout/PaymentMethodSelect/PaymentMethodSelect';
 
 import { formatPhone } from '../../api/utils/formatPhone';
@@ -51,6 +51,8 @@ const CheckoutPage = () => {
   // const [ukrOfficeOptions, setUkrOfficeOptions] = useState([]);
   // const [ukrSearch, setUkrSearch] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(null);
+
+  const [noCall, setNoCall] = useState(false);
 
 const userDataInitialized = useRef(false);
 
@@ -421,14 +423,18 @@ const totalQuantity = cartItems
             onChange={setPaymentMethod}
             error={errors.payment}
           />
-        </Section>
+         
 
+        </Section>
+       
         <OrderSummary
           cartItems={totalCartItems}
           totalAmount={totalAmount}
           totalQuantity={totalQuantity}
           isFormValid={isFormValid}
           handleSubmit={handleOrder}
+          setNoCall={setNoCall}
+          noCall={noCall}
         />
       </CheckoutWrapper>
     </Container>

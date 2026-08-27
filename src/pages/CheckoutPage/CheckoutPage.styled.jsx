@@ -29,7 +29,7 @@ export const Title = styled.h2`
 export const CheckoutWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  /* gap: 30px; */
   text-align: left;
 
   @media screen and (min-width: 1200px) {
@@ -83,6 +83,7 @@ export const Input = styled.input`
   }
 `;
 
+
 export const Summary = styled.div`
   background: #ffffff;
   border-radius: 12px;
@@ -130,7 +131,7 @@ export const ErrorText = styled.span`
 export const Button = styled.button`
   width: 100%;
   padding: 15px;
-  background-color: #f58220; /* Ваш фірмовий помаранчевий */
+  background-color: var(--orange-color); 
   color: white;
   border: none;
   border-radius: 8px;
@@ -223,3 +224,31 @@ export const PreviewInfo = styled.div`
 
 export const ButtonPay = styled.button `
 `
+export const CallConfirmation = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 18px 2px 28px;
+
+  font-size: 16px;
+     color: var(--black-color);
+`;
+
+export const Checkbox = styled.input`
+  width: 20px;
+  height: 20px;
+
+  accent-color: #5b4637;
+  cursor: pointer;
+
+  flex-shrink: 0;
+`;
+
+export const CheckboxLabel = styled.label`
+  font-size: 16px;
+  line-height: 1.4;
+
+      color: var(--black-color);
+  cursor: pointer;
+`;
