@@ -149,6 +149,12 @@ dispatch(setCartItems(backendCart));
       if (!res.ok) {
         throw new Error('Помилка оновлення');
       }
+      const updatedUser = await res.json();
+
+  // Записуємо саме оновленого користувача
+  localStorage.setItem('user', JSON.stringify(updatedUser));
+           
+
     } catch (err) {
       console.error(err);
       alert('Не вдалося оновити дані');

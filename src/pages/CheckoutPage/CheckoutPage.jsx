@@ -230,14 +230,18 @@ const totalQuantity = cartItems
       alert('Оберіть спосіб оплати');
       return;
     }
+const headers = {
+  'Content-Type': 'application/json',
+};
 
+if (token) {
+  headers.Authorization = `Bearer ${token}`;
+}
     try {
       // cтворення замовлення
-      await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+      const response =  await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+         headers,
         body: JSON.stringify({
           data: {
             name: formData.fullName,
@@ -256,8 +260,9 @@ const totalQuantity = cartItems
             status_order: 'pending',
             order_number: orderNumber,
            no_call: noCall,
-
-
+             ...(user?.documentId && {
+      user: user.documentId,
+    }),
 
             payment_method:
               paymentMethod === 'liqpay'
@@ -284,6 +289,10 @@ const totalQuantity = cartItems
           },
         }),
       });
+      const result = await response.json();
+
+console.log('STATUS:', response.status);
+console.log('RESPONSE:', result);
 
       // Якщо LiqPay
       if (paymentMethod === 'liqpay') {

@@ -18,6 +18,7 @@ const CatalogPage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -34,7 +35,7 @@ const CatalogPage = () => {
 
         setCategories(
           data.data.map((cat) => ({
-            id: cat.id_title,
+            id: cat.id,
             title: cat.title,
             image: cat.image?.url,
           }))

@@ -97,6 +97,10 @@ const hasChanges =
       if (!res.ok) {
         throw new Error("Помилка оновлення");
       }
+         const updatedUser = await res.json();
+
+    // Оновлюємо user у localStorage
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 setInitialForm(form);
      toast.success('Дані оновлено успішно');
     } catch (err) {
