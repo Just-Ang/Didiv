@@ -5,10 +5,11 @@ import {
   incrementQuantity,
 } from '../../redux/cartSlice';
 
-const Counter = ({ item, cartItem, user, token }) => {
+const Counter = ({ item, cartItem, user, token, disabled, isSoldOut  }) => {
   const dispatch = useDispatch();
 
   const handleIncrement = async () => {
+    if (disabled) return;
     const newQuantity = item.quantity + 1;
 
     // Для неавторизованого користувача
@@ -58,6 +59,7 @@ const Counter = ({ item, cartItem, user, token }) => {
   };
 
   const handleDecrement = async () => {
+    if (disabled) return;
     const newQuantity = item.quantity - 1;
 
     if (!user) {
@@ -97,21 +99,21 @@ const Counter = ({ item, cartItem, user, token }) => {
 
   return (
     <CounterWrapper>
-      <button
-        onClick={handleDecrement}
-        disabled={item.quantity <= 1}
-      >
-        -
-      </button>
+   <button
+  onClick={handleDecrement}
+  disabled={isSoldOut || item.quantity <= 1}
+>
+  -
+</button>
 
-      <span>{item.quantity}</span>
+<span>{item.quantity}</span>
 
-      <button
-        onClick={handleIncrement}
-        disabled={item.quantity >= item.stock}
-      >
-        +
-      </button>
+<button
+  onClick={handleIncrement}
+  disabled={isSoldOut || item.quantity >= item.stock}
+>
+  +
+</button>
     </CounterWrapper>
   );
 };

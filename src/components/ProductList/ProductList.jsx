@@ -20,6 +20,7 @@ import {
   PriceBlock,
   PriceWrapper,
   ReservedBadge,
+  SoldOutBadge,
   SortButton,
   TitleCategory,
   WrapperSort,
@@ -54,9 +55,9 @@ export const ProductList = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 24;
   let filteredProducts = products;
-console.log(products)
+  console.log(products);
   const sortRef = useRef(null);
- useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (sortRef.current && !sortRef.current.contains(event.target)) {
         setIsSortOpen(false);
@@ -309,14 +310,14 @@ console.log(products)
         <GridWrapper>
           {currentProducts.map((product) => {
             const isFavorite = favorites.some((fav) => fav.id === product.id);
-const isNew = product?.createdAt
-  ? Date.now() - new Date(product.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
-  : false;
+            const isNew = product?.createdAt
+              ? Date.now() - new Date(product.createdAt).getTime() <
+                7 * 24 * 60 * 60 * 1000
+              : false;
             const inCart = cartItems.find((c) => c.id === product.id);
-            // const currentQty = inCart ? inCart.quantity : 0;
-
-            // const isOutOfStock = currentQty >= (product.stock || 0);
+           
             const isAvailable = product?.available ?? true;
+            const isSoldOut = product?.stock === 0;
 
             const hasDiscount =
               product.new_price && product.new_price < product.price;
@@ -328,12 +329,11 @@ const isNew = product?.createdAt
                   ((product.price - product.new_price) / product.price) * 100
                 )
               : 0;
-            
 
-  const cartItem = product
-    ? cartItems.find((item) => item.id === product.id)
-    : null;
-  const alreadyInCartQty = cartItem?.quantity || 0;
+            const cartItem = product
+              ? cartItems.find((item) => item.id === product.id)
+              : null;
+            const alreadyInCartQty = cartItem?.quantity || 0;
             // const handleAdd = (product, e) => {
             //   e.stopPropagation();
             //   if (isOutOfStock) {
@@ -348,36 +348,34 @@ const isNew = product?.createdAt
             //   );
             //   toast.success(`${product.name} додано в кошик!`);
             // };
-const handleAdd = async (product, e) => {
-    e.stopPropagation();
-  if (alreadyInCartQty >= product.stock) {
-    toast.warning('Товар вже в кошику (досягнуто максимум)');
-    return;
-  }
+            const handleAdd = async (product, e) => {
+              e.stopPropagation();
+              if (alreadyInCartQty >= product.stock) {
+                toast.warning('Товар вже в кошику (досягнуто максимум)');
+                return;
+              }
 
-  if (alreadyInCartQty + 1 > product.stock) {
-    toast.warning(`Доступно лише ${product.stock} шт.`);
-    return;
-  }
+              if (alreadyInCartQty + 1 > product.stock) {
+                toast.warning(`Доступно лише ${product.stock} шт.`);
+                return;
+              }
 
-  await handleCart(
-    product,
-    1,
-    dispatch,
-    toast
-  );
-};
+              await handleCart(product, 1, dispatch, toast);
+            };
             return (
               <Card
                 key={product.id}
                 onClick={() =>
                   navigate(`/product/${product.slug ?? product.id}`)
                 }
+                  $soldOut={isSoldOut}
                 style={{ cursor: 'pointer' }}
               >
                 <ImgWrapper>
-                {isNew && <NewBadge>Новинка</NewBadge>}
+                  {isNew && <NewBadge>Новинка</NewBadge>}
                   {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
+                    {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+
                   <CardImg
                     src={product.images?.[0]?.url || '/placeholder.jpg'}
                     alt={product.name}
@@ -407,7 +405,7 @@ const handleAdd = async (product, e) => {
                     </PriceBlock>
                   </PriceWrapper>
                   <CardButtons>
-                    {isAvailable && (
+                    {isAvailable && !isSoldOut && (
                       <Button onClick={(e) => handleAdd(product, e)}>
                         <ShoppingCart
                           size={24}
@@ -416,15 +414,15 @@ const handleAdd = async (product, e) => {
                         />
                       </Button>
                     )}
-
-                    <Button onClick={(e) => handleClickFavorite(product, e)}>
+{!isSoldOut && (<Button onClick={(e) => handleClickFavorite(product, e)}>
                       <Heart
                         size={24}
                         fill={isFavorite ? '#ff4d4f' : 'none'}
                         color={isFavorite ? '#ff4d4f' : '#000000'}
                         strokeWidth={isFavorite ? 1 : 2}
                       />
-                    </Button>
+                    </Button>)}
+                    
                   </CardButtons>
                 </CardBottom>
               </Card>

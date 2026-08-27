@@ -93,6 +93,12 @@ export const Card = styled.div`
       transform: translateY(0);
     }
   }
+   ${({ $soldOut }) =>
+    $soldOut &&
+    `
+      opacity: 0.55;
+      filter: grayscale(100%);
+    `}
 `;
 
 export const CardImg = styled.img`

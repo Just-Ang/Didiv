@@ -101,7 +101,12 @@ font-weight: 500;
     transform 0.3s ease,
     box-shadow 0.3s ease;
     height: 100%;
-
+ ${({ $soldOut }) =>
+    $soldOut &&
+    `
+      opacity: 0.55;
+      filter: grayscale(100%);
+    `}
 
   &:hover {
     @media screen and (min-width: 768px) {
@@ -119,6 +124,24 @@ font-weight: 500;
   position: relative;
   display: block;
  `
+ export const SoldOutBadge = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+
+  padding: 8px 16px;
+  border-radius: 6px;
+
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+`;
 export const ReservedBadge = styled.div`
     font-family: var(--second-font);
   position: absolute;

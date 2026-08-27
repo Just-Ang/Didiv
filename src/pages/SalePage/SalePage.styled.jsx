@@ -90,6 +90,12 @@ position: relative;
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
     }
   }
+   ${({ $soldOut }) =>
+    $soldOut &&
+    `
+      opacity: 0.55;
+      filter: grayscale(100%);
+    `}
 `;
 
 export const ReservedBadge = styled.div`
@@ -109,6 +115,9 @@ export const ReservedBadge = styled.div`
 `;
 
 /* IMAGE */
+export const ImgWrapper = styled.div`
+  position: relative;
+`
 export const CardImg = styled.img`
   width: 100%;
   height: 200px;

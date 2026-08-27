@@ -29,8 +29,8 @@ import { PaginationWrapper } from './NewProductsPage.styled';
 import { PageButton } from './NewProductsPage.styled';
 import placeholder from '../../../public/nofoto.png';
 import { CurrentPrice, DiscountBadge, OldPrice, PriceBlock, PriceWrapper } from '../CartPage/CartPage.styled';
-import { Button, } from '../SalePage/SalePage.styled';
-import { NewBadge, ReservedBadge } from '../../components/ProductList/ProductList.styled';
+import { Button, ImgWrapper, } from '../SalePage/SalePage.styled';
+import { NewBadge, ReservedBadge, SoldOutBadge } from '../../components/ProductList/ProductList.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { handleCart } from '../../api/utils/handleCart';
 export const NewProductsPage = () => {
@@ -288,6 +288,8 @@ export const NewProductsPage = () => {
             // const currentQty = inCart ? inCart.quantity : 0;
             // const isMaxReached = currentQty >= product.stock;
              const isAvailable = product?.available ?? true;
+                         const isSoldOut = product?.stock === 0;
+
           
 
             const inCart = cartItems.find((c) => c.id === product.id);
@@ -320,10 +322,15 @@ export const NewProductsPage = () => {
               <Card
                 key={product.id}
                 onClick={() => navigate(`/product/${product.slug ?? product.id}`)}
+                   $soldOut={isSoldOut}
               >
                  {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
                  <NewBadge>Новинка</NewBadge>
-                <CardImg src={product.images?.[0]?.url || placeholder} alt={product.name} />
+                 <ImgWrapper>
+                   {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+                 <CardImg src={product.images?.[0]?.url || placeholder} alt={product.name} />
+                 </ImgWrapper>
+                
                 <CardTitle>{product.name}</CardTitle>
 
                 <CardBottom>
@@ -345,7 +352,7 @@ export const NewProductsPage = () => {
   </PriceBlock>
 </PriceWrapper>
                  <CardButtons>
-                                                       {isAvailable && (
+                                                        {isAvailable && !isSoldOut && (
                                                         <Button onClick={(e) => handleAdd(product, e)}>
                                                          <ShoppingCart size={24} 
                                        color={inCart ? 'var(--orange-color)' : 'black'} 
@@ -356,14 +363,14 @@ export const NewProductsPage = () => {
                                                        </Button>
                                                        )}
                                    
-                                                       <Button onClick={(e) => handleClickFavorite(product, e)}>
+                                                       {!isSoldOut && (<Button onClick={(e) => handleClickFavorite(product, e)}>
                                                          <Heart
                                                            size={24}
                                                            fill={isFavorite ? '#ff4d4f' : 'none'}
                                                            color={isFavorite ? '#ff4d4f' : '#000000'}
                                                            strokeWidth={isFavorite ? 1 : 2}
                                                          />
-                                                       </Button>
+                                                       </Button>)}
                                                      </CardButtons>
                 </CardBottom>
               </Card>

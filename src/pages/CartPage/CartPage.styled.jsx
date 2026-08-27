@@ -77,6 +77,9 @@ font-weight: 500;
   opacity: 0.5;
   filter: grayscale(100%);
 }
+&.sold-out {
+  opacity: 0.65;
+}
 
   @media screen and (min-width: 895px) {
     display: grid;
@@ -86,7 +89,28 @@ font-weight: 500;
   }
   
 `;
+ export const SoldOutBadge = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  padding: 8px 16px;
+  border-radius: 6px;
 
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+@media screen and (min-width:895px){
+   padding: 3px 9px;
+    font-size: 13px;
+     font-weight: 400;
+}
+ `
 
 
 export const ProductImg = styled.img`
@@ -196,6 +220,12 @@ export const ButtonFavorite = styled.button`
   border: 'none';
   cursor: 'pointer';
   color: '#ccc';
+
+
+&:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 `;
 
 export const SummaryCard = styled.div`

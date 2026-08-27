@@ -15,16 +15,21 @@ import {
   SortButton,
   Title,
   WrapperTop,
+  ImgWrapper,
 } from './SalePage.styled';
 import {
-    CatalogButton,
+  CatalogButton,
   PageButton,
   PaginationWrapper,
   WrapperNone,
-
 } from '../NewProductsPage/NewProductsPage.styled';
 
-import { ArrowDownNarrowWide, ArrowRight, Heart, ShoppingCart } from 'lucide-react';
+import {
+  ArrowDownNarrowWide,
+  ArrowRight,
+  Heart,
+  ShoppingCart,
+} from 'lucide-react';
 import { BallTriangle } from 'react-loader-spinner';
 import {
   CurrentPrice,
@@ -36,7 +41,11 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { NewBadge, ReservedBadge } from '../../components/ProductList/ProductList.styled';
+import {
+  NewBadge,
+  ReservedBadge,
+  SoldOutBadge,
+} from '../../components/ProductList/ProductList.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { handleCart } from '../../api/utils/handleCart';
 
@@ -50,18 +59,17 @@ const SalePage = () => {
 
   const itemsPerPage = 24;
 
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const cartItems = useSelector((state) => state.cart.items);
-const sortRef = useRef(null); 
+  const sortRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       // Якщо клікнули ПОЗА контейнером sortRef — закриваємо
       if (sortRef.current && !sortRef.current.contains(event.target)) {
-         setIsSortOpen(false);
+        setIsSortOpen(false);
       }
     };
 
@@ -83,7 +91,6 @@ const sortRef = useRef(null);
         );
 
         const data = await res.json();
-       
 
         setProducts(data.data);
         setLoading(false);
@@ -138,12 +145,12 @@ const sortRef = useRef(null);
   );
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
- const handleClickFavorite = (product, e) => {
-   e.stopPropagation();
-   const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
- 
-   handleFavorite(product, isFavorite, dispatch, toast);
- };
+  const handleClickFavorite = (product, e) => {
+    e.stopPropagation();
+    const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
+
+    handleFavorite(product, isFavorite, dispatch, toast);
+  };
 
   if (loading) {
     return (
@@ -170,114 +177,112 @@ const sortRef = useRef(null);
     );
   }
 
-   if (products.length === 0) {
-      return (
-        <WrapperNone
+  if (products.length === 0) {
+    return (
+      <WrapperNone>
+        <p
+          style={{
+            textAlign: 'center',
+          }}
         >
-          <p
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            Нажаль, поки знижок немає
-          </p>
-          <CatalogButton to="/catalog">
-                  <p>Весь каталог</p>
-                 
-                        <ArrowRight size={24} />
-                   
-                </CatalogButton>
-        </WrapperNone>
-      );
-    }
+          Нажаль, поки знижок немає
+        </p>
+        <CatalogButton to="/catalog">
+          <p>Весь каталог</p>
+
+          <ArrowRight size={24} />
+        </CatalogButton>
+      </WrapperNone>
+    );
+  }
 
   return (
     <Section>
       <Container>
-          <ToastContainer autoClose={1500} />
-          <WrapperTop>
-              <Title>Акційні товари</Title>
-        <WrapperSort ref={sortRef}>
-          <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
-            Сортування
-            <ArrowDownNarrowWide strokeWidth={0.9} size={22} />
-          </SortButton>
+        <ToastContainer autoClose={1500} />
+        <WrapperTop>
+          <Title>Акційні товари</Title>
+          <WrapperSort ref={sortRef}>
+            <SortButton onClick={() => setIsSortOpen((prev) => !prev)}>
+              Сортування
+              <ArrowDownNarrowWide strokeWidth={0.9} size={22} />
+            </SortButton>
 
-          {isSortOpen && (
-            <Dropdown>
-              <Item
-                onClick={() => {
-                  setSortType('name');
-                  setSortOrder('asc');
-                  setIsSortOpen(false);
-                }}
-              >
-                А-Я
-              </Item>
+            {isSortOpen && (
+              <Dropdown>
+                <Item
+                  onClick={() => {
+                    setSortType('name');
+                    setSortOrder('asc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  А-Я
+                </Item>
 
-              <Item
-                onClick={() => {
-                  setSortType('name');
-                  setSortOrder('desc');
-                  setIsSortOpen(false);
-                }}
-              >
-                Я-А
-              </Item>
+                <Item
+                  onClick={() => {
+                    setSortType('name');
+                    setSortOrder('desc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Я-А
+                </Item>
 
-              <Item
-                onClick={() => {
-                  setSortType('price');
-                  setSortOrder('asc');
-                  setIsSortOpen(false);
-                }}
-              >
-                Ціна ↑
-              </Item>
+                <Item
+                  onClick={() => {
+                    setSortType('price');
+                    setSortOrder('asc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Ціна ↑
+                </Item>
 
-              <Item
-                onClick={() => {
-                  setSortType('price');
-                  setSortOrder('desc');
-                  setIsSortOpen(false);
-                }}
-              >
-                Ціна ↓
-              </Item>
+                <Item
+                  onClick={() => {
+                    setSortType('price');
+                    setSortOrder('desc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Ціна ↓
+                </Item>
 
-              <Item
-                onClick={() => {
-                  setSortType('date');
-                  setSortOrder('desc');
-                  setIsSortOpen(false);
-                }}
-              >
-                Спочатку новіші
-              </Item>
-              <Item
-                onClick={() => {
-                  setSortType('date');
-                  setSortOrder('asc');
-                  setIsSortOpen(false);
-                }}
-              >
-                Спочатку старіші
-              </Item>
-            </Dropdown>
-          )}
-        </WrapperSort>
-            
-          </WrapperTop>
-      
+                <Item
+                  onClick={() => {
+                    setSortType('date');
+                    setSortOrder('desc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Спочатку новіші
+                </Item>
+                <Item
+                  onClick={() => {
+                    setSortType('date');
+                    setSortOrder('asc');
+                    setIsSortOpen(false);
+                  }}
+                >
+                  Спочатку старіші
+                </Item>
+              </Dropdown>
+            )}
+          </WrapperSort>
+        </WrapperTop>
 
         <GridWrapper>
           {currentProducts.map((item) => {
             const hasDiscount = item.new_price && item.new_price < item.price;
-const isNew = item?.createdAt
-  ? Date.now() - new Date(item.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
-  : false;
+            const isNew = item?.createdAt
+              ? Date.now() - new Date(item.createdAt).getTime() <
+                7 * 24 * 60 * 60 * 1000
+              : false;
             const finalPrice = hasDiscount ? item.new_price : item.price;
-             const isAvailable = item?.available ?? true;
+            const isAvailable = item?.available ?? true;
+            const isSoldOut = item?.stock === 0;
 
             const discountPercent = hasDiscount
               ? Math.round(((item.price - item.new_price) / item.price) * 100)
@@ -294,64 +299,63 @@ const isNew = item?.createdAt
                 toast.error(`Товар уже у кошику`);
                 return;
               }
-               await handleCart(
-               item,
-               1,
-               dispatch,
-               toast
-             );
+              await handleCart(item, 1, dispatch, toast);
             };
             return (
               <Card
                 key={item.id}
                 onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
                 style={{ cursor: 'pointer' }}
-              >                {isNew && <NewBadge>Новинка</NewBadge>}
-              
-                      {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
-                <CardImg src={item.images?.[0]?.url || '/nofoto.png'} />
-
+                $soldOut={isSoldOut}
+              >
+                {' '}
+                {isNew && <NewBadge>Новинка</NewBadge>}
+                {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
+                <ImgWrapper>
+                  {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+                  <CardImg src={item.images?.[0]?.url || '/nofoto.png'} />
+                </ImgWrapper>
                 <CardTitle>{item.name}</CardTitle>
-
                 <CardBottom>
-                 <PriceWrapper>
-  <PriceBlock>
-    <CurrentPrice $discount={hasDiscount}>
-      {finalPrice.toLocaleString()}&#160;грн
-    </CurrentPrice>
+                  <PriceWrapper>
+                    <PriceBlock>
+                      <CurrentPrice $discount={hasDiscount}>
+                        {finalPrice.toLocaleString()}&#160;грн
+                      </CurrentPrice>
 
-    {hasDiscount && (
-      <OldPrice>
-        {item.price.toLocaleString()}&#160;грн
-      </OldPrice>
-    )}
+                      {hasDiscount && (
+                        <OldPrice>
+                          {item.price.toLocaleString()}&#160;грн
+                        </OldPrice>
+                      )}
 
-    {hasDiscount && (
-      <DiscountBadge>-{discountPercent}%</DiscountBadge>
-    )}
-  </PriceBlock>
-</PriceWrapper>
+                      {hasDiscount && (
+                        <DiscountBadge>-{discountPercent}%</DiscountBadge>
+                      )}
+                    </PriceBlock>
+                  </PriceWrapper>
 
                   <CardButtons>
-                            {isAvailable && (
-                     <Button onClick={(e) => handleAdd(item, e)}>
-                       <ShoppingCart
-                         size={24}
-                         color={inCart ? 'var(--orange-color)' : 'black'}
-                         strokeWidth={2}
-                       />
-                     </Button>
-                   )}
-                    
+                    {isAvailable && !isSoldOut && (
+                      <Button onClick={(e) => handleAdd(item, e)}>
+                        <ShoppingCart
+                          size={24}
+                          color={inCart ? 'var(--orange-color)' : 'black'}
+                          strokeWidth={2}
+                        />
+                      </Button>
+                    )}
 
-                    <Button onClick={(e) => handleClickFavorite(item, e)}>
-                      <Heart
-                        size={24}
-                        fill={isFavorite ? '#ff4d4f' : 'none'}
-                        color={isFavorite ? '#ff4d4f' : '#000000'}
-                        strokeWidth={isFavorite ? 1 : 2}
-                      />
-                    </Button>
+                    {!isSoldOut && (
+                      <Button onClick={(e) => handleClickFavorite(item, e)}>
+                        <Heart
+                          size={24}
+                          fill={isFavorite ? '#ff4d4f' : 'none'}
+                          color={isFavorite ? '#ff4d4f' : '#000000'}
+                          strokeWidth={isFavorite ? 1 : 2}
+                        />
+                      </Button>
+                    )}
                   </CardButtons>
                 </CardBottom>
               </Card>

@@ -27,6 +27,7 @@ import {
   QuantitySelector,
   RatingRow,
   Sku,
+  SoldOutBadge,
   SpecRow,
   SpecsGrid,
   TabButton,
@@ -122,6 +123,7 @@ export const ProductPage = () => {
   }, [identifier, isId]);
 
   const isAvailable = product?.available ?? true;
+  const isSoldOut = product?.stock === 0;
 
   useEffect(() => {
     if (product && product.images) {
@@ -228,24 +230,22 @@ export const ProductPage = () => {
   //   }
   // };
 
-const handleAdd = async () => {
-  if (alreadyInCartQty >= product.stock) {
-    toast.warning('Товар вже в кошику (досягнуто максимум)');
-    return;
-  }
+  const handleAdd = async () => {
+    if (isSoldOut) {
+      return;
+    }
+    if (alreadyInCartQty >= product.stock) {
+      toast.warning('Товар вже в кошику (досягнуто максимум)');
+      return;
+    }
 
-  if (alreadyInCartQty + quantity > product.stock) {
-    toast.warning(`Доступно лише ${product.stock} шт.`);
-    return;
-  }
+    if (alreadyInCartQty + quantity > product.stock) {
+      toast.warning(`Доступно лише ${product.stock} шт.`);
+      return;
+    }
 
-  await handleCart(
-    product,
-    quantity,
-    dispatch,
-    toast
-  );
-};
+    await handleCart(product, quantity, dispatch, toast);
+  };
 
   const handleClickFavorite = (product, e) => {
     e.stopPropagation();
@@ -298,7 +298,7 @@ const handleAdd = async () => {
       </Breadcrumbs>
       <MainSection>
         {/* Ліва колонка: Галерея */}
-        <GallerySection>
+        {/* <GallerySection>
           <MainImage
             src={activeImage}
             alt={product.name}
@@ -316,6 +316,41 @@ const handleAdd = async () => {
                   style={{
                     cursor: 'pointer',
                     opacity: activeImage === imageUrl ? 1 : 0.4,
+                  }}
+                />
+              );
+            })}
+          </Thumbnails>
+        </GallerySection> */}
+        <GallerySection>
+          <div style={{ position: 'relative' }}>
+            <MainImage
+              src={activeImage}
+              alt={product.name}
+              onClick={!isSoldOut ? handleMainImageClick : undefined}
+              style={{
+                filter: isSoldOut ? 'grayscale(100%)' : 'none',
+                opacity: isSoldOut ? 0.55 : 1,
+                cursor: isSoldOut ? 'default' : 'pointer',
+              }}
+            />
+
+            {isSoldOut && <SoldOutBadge>ПРОДАНО</SoldOutBadge>}
+          </div>
+
+          <Thumbnails>
+            {(product.images ?? []).map((img) => {
+              const imageUrl = img.url;
+
+              return (
+                <Thumb
+                  key={img.id}
+                  src={imageUrl}
+                  onClick={() => !isSoldOut && setActiveImage(imageUrl)}
+                  style={{
+                    cursor: isSoldOut ? 'default' : 'pointer',
+                    opacity: activeImage === imageUrl ? 1 : 0.4,
+                    filter: isSoldOut ? 'grayscale(100%)' : 'none',
                   }}
                 />
               );
@@ -377,7 +412,10 @@ const handleAdd = async () => {
 
             <ActionRow>
               <QuantitySelector>
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={isSoldOut}
+                >
                   -
                 </button>
                 <span>{quantity}</span>
@@ -386,7 +424,7 @@ const handleAdd = async () => {
                     onClick={() =>
                       setQuantity(Math.min(product.stock, quantity + 1))
                     }
-                    disabled={quantity >= product.stock}
+                    disabled={isSoldOut || quantity >= product.stock}
                   >
                     +
                   </button>
@@ -395,7 +433,10 @@ const handleAdd = async () => {
                 </TooltipWrapper>
               </QuantitySelector>
 
-              <AddToCartBtn onClick={handleAdd} disabled={!isAvailable}>
+              <AddToCartBtn
+                onClick={handleAdd}
+                disabled={!isAvailable || isSoldOut}
+              >
                 {' '}
                 <ShoppingCart size={25} />
                 <span>В&nbsp;КОШИК</span>
@@ -403,7 +444,11 @@ const handleAdd = async () => {
 
               <FavoriteButton
                 $active={isFavorite}
-                onClick={(e) => handleClickFavorite(product, e)}
+                onClick={(e) => {
+                  if (isSoldOut) return;
+                  handleClickFavorite(product, e);
+                }}
+                 disabled={isSoldOut}
               >
                 <HeartIcon $active={isFavorite}>
                   {' '}

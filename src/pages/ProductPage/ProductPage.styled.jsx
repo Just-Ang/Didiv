@@ -41,6 +41,24 @@ export const MainSection = styled.div`
 `;
 
 export const GallerySection = styled.div``;
+export const SoldOutBadge = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+
+  padding: 10px 20px;
+  border-radius: 6px;
+
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+`;
 
 export const Badge = styled.div`
   position: absolute;
@@ -366,10 +384,14 @@ export const FavoriteButton = styled.button`
       display: none;
     }
   }
-
-  &:hover {
-    border-color: #bbb;
+ &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
+ 
+&:not(:disabled):hover {
+  border-color: #bbb;
+}
 `;
 
 export const HeartIcon = styled.svg`

@@ -239,7 +239,7 @@ if (token) {
 }
     try {
       // cтворення замовлення
-      const response =  await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+      const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
         method: 'POST',
          headers,
         body: JSON.stringify({
@@ -289,10 +289,41 @@ if (token) {
           },
         }),
       });
-      const result = await response.json();
 
-console.log('STATUS:', response.status);
-console.log('RESPONSE:', result);
+  // перевіряємо, що замовлення реально створилось
+  if (!orderRes.ok) {
+    throw new Error('Не вдалося створити замовлення');
+  }
+
+  // 2. Зменшуємо stock товарів
+  for (const item of cartItems) {
+    const newStock = Math.max(0, item.stock - item.quantity);
+
+    const stockRes = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/products/${item.documentId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && {
+            Authorization: `Bearer ${token}`,
+          }),
+        },
+        body: JSON.stringify({
+          data: {
+            stock: newStock,
+          },
+        }),
+      }
+    );
+
+    if (!stockRes.ok) {
+      console.error(
+        `Не вдалося оновити stock товару ${item.name}`
+      );
+    }
+  }
+
 
       // Якщо LiqPay
       if (paymentMethod === 'liqpay') {

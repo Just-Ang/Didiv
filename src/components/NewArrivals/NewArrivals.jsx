@@ -27,7 +27,7 @@ import {
   OldPrice,
   PriceBlock,
   PriceWrapper,
-
+  SoldOutBadge,
 } from '../ProductList/ProductList.styled';
 
 import { handleFavorite } from '../../api/utils/handleFavorite';
@@ -79,12 +79,8 @@ export const NewArrivals = () => {
       <Grid>
         {displayProducts.map((item) => {
           const isFavorite = favorites.some((fav) => fav.id === item.id);
-const isAvailable = item?.available ?? true;
-console.log({
-  name: item.name,
-  available: item.available,
-  isAvailable,
-});
+          const isAvailable = item?.available ?? true;
+          const isSoldOut = item?.stock === 0;
           const inCart = cartItems.find((c) => c.id === item.id);
           const currentQty = inCart ? inCart.quantity : 0;
 
@@ -113,12 +109,12 @@ console.log({
             <ProductCard
               key={item.id}
               onClick={() => navigate(`/product/${item.slug ?? item.id}`)}
+              $soldOut={isSoldOut}
             >
-                             
-              
               <ImageLink>
                 <NewBadge>Новинка</NewBadge>
-                  {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
+                 {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+                {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
                 <img
                   src={item.images?.[0].url || placeholder}
                   alt={item.name}
@@ -154,22 +150,24 @@ console.log({
                   </PriceWrapper>
 
                   <CardButtons>
-                    {isAvailable && <Button onClick={(e) => handleAdd(item, e)}>
-                      <ShoppingCart
-                        size={24}
-                        color={inCart ? 'var(--orange-color)' : 'black'}
-                        strokeWidth={inCart ? 2 : 2}
-                      />
-                    </Button>}
+                   {isAvailable && !isSoldOut && (
+                      <Button onClick={(e) => handleAdd(item, e)}>
+                        <ShoppingCart
+                          size={24}
+                          color={inCart ? 'var(--orange-color)' : 'black'}
+                          strokeWidth={inCart ? 2 : 2}
+                        />
+                      </Button>
+                    )}
 
-                    <Button onClick={(e) => handleClickFavorite(item, e)}>
+                      {!isSoldOut && ( <Button onClick={(e) => handleClickFavorite(item, e)}>
                       <Heart
                         size={24}
                         fill={isFavorite ? '#ff4d4f' : 'none'}
                         color={isFavorite ? '#ff4d4f' : '#000000'}
                         strokeWidth={isFavorite ? 1 : 2}
                       />
-                    </Button>
+                    </Button>)}
                   </CardButtons>
                 </PriceRow>
               </ProductInfo>

@@ -19,6 +19,7 @@ import {
   PriceWrapper,
   ProductImg,
   ProductInfo,
+  SoldOutBadge,
   SummaryCard,
   SummaryRow,
   Title,
@@ -34,7 +35,7 @@ import placeholder from '../../../public/nofoto.png';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { BallTriangle } from 'react-loader-spinner';
 import { clearCartFromBackend } from '../../api/utils/clearCartFromBackend';
-import { ImgWrapper } from '../../components/ProductList/ProductList.styled';
+import { ImgWrapper, } from '../../components/ProductList/ProductList.styled';
 import { ReservedBadgeFavorite } from '../FavoritesPage/FavoritesPage.styled';
 import { deleteCartItemFromBackend } from '../../api/utils/deleteCartItemFromBackend';
 
@@ -54,11 +55,11 @@ const CartPage = () => {
 console.log('localCartItems',localCartItemsProduct)
 
 const totalQuantity = reduxCartItems
-  .filter((item) => item.available !== false)
+  .filter((item) => item.available !== false && item.stock > 0)
   .reduce((sum, item) => sum + item.quantity, 0);
 
 const total = reduxCartItems
-  .filter((item) => item.available !== false)
+  .filter((item) => item.available !== false && item.stock > 0)
   .reduce(
     (sum, item) =>
       sum + (item.new_price ?? item.price) * (item.quantity || 1),
@@ -246,6 +247,7 @@ const handleDelete = async (item) => {
                 const hasDiscount =
                   item.new_price && item.new_price < item.price;
                 const isAvailable = item?.available ?? true;
+                     const isSoldOut = item?.stock === 0;
 
                 const finalPrice = hasDiscount ? item.new_price : item.price;
 
@@ -256,26 +258,29 @@ const handleDelete = async (item) => {
                   : 0;
                 return (
                   <CartItem
-                    key={`${item.id}-${index}`}
-                    className={`
+  key={`${item.id}-${index}`}
+  className={`
     ${removingIds.includes(item.id) ? 'removing' : ''}
     ${!isAvailable ? 'unavailable' : ''}
+    ${isSoldOut ? 'sold-out' : ''}
   `}
-                 
-                  >
+>
                     <ImgWrapper    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
                       {!isAvailable && (
                         <ReservedBadgeFavorite>Бронь</ReservedBadgeFavorite>
-                      )}
-                      <ProductImg
-                        src={item.images?.[0]?.url || '/nofoto.png'}
-                        alt={item.name}
-                        // onClick={() => navigate(`/product/${item.id}`)}
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = placeholder;
-                        }}
-                      />
+                      )} {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+<ProductImg
+  src={item.images?.[0]?.url || '/nofoto.png'}
+  alt={item.name}
+  style={{
+    filter: isSoldOut ? 'grayscale(100%)' : 'none',
+    opacity: isSoldOut ? 0.55 : 1,
+  }}
+  onError={(e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = placeholder;
+  }}
+/>
                     </ImgWrapper>
                     <ProductInfo    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
                       <h3>{item.name}</h3>
@@ -286,6 +291,8 @@ const handleDelete = async (item) => {
   cartItem={cartItem}
   user={user}
   token={token}
+    disabled={isSoldOut}
+isSoldOut={isSoldOut}
 />
                       <PriceWrapper>
                         <PriceBlock>
@@ -313,7 +320,11 @@ const handleDelete = async (item) => {
                     </CounterPrice>
                     <BtnIcons>
                       <ButtonFavorite
-                        onClick={(e) => handleClickFavorite(item, e)}
+                         onClick={(e) => {
+    if (isSoldOut) return;
+    handleClickFavorite(item, e);
+  }}
+  disabled={isSoldOut}
                         style={{
                           background: 'none',
                           border: 'none',
@@ -351,7 +362,12 @@ const handleDelete = async (item) => {
                 <span>На суму:</span>
                 <strong>{total} грн</strong>
               </SummaryRow>
-              <OrderButton to="/checkout">Оформити замовлення</OrderButton>
+              <OrderButton to="/checkout"   onClick={(e) => {
+    if (totalQuantity === 0) {
+      e.preventDefault();
+      toast.warning('У кошику немає доступних товарів');
+    }
+  }}>Оформити замовлення</OrderButton>
               <ClearButton onClick={handleClear}>Oчистити кошик</ClearButton>
             </SummaryCard>
           </ContentWrapper>
