@@ -115,7 +115,7 @@ const OrderConfirmation = () => {
       </OrderSummaryBox>
 
       <NextActions>
-        <Button primary onClick={() => navigate('/')}>
+        <Button onClick={() => navigate('/')}>
           Повернутися на головну
         </Button>
         <Button onClick={() => navigate('/catalog')}>Продовжити покупки</Button>

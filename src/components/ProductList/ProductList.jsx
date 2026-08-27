@@ -28,13 +28,14 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice';
+
 import { toast, ToastContainer } from 'react-toastify';
 import placeholder from '../../../public/nofoto.png';
 import { ArrowDownNarrowWide, Heart, ShoppingCart } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { BallTriangle } from 'react-loader-spinner';
 import { handleFavorite } from '../../api/utils/handleFavorite';
+import { handleCart } from '../../api/utils/handleCart';
 
 export const ProductList = ({
   setValues,
@@ -312,9 +313,9 @@ const isNew = product?.createdAt
   ? Date.now() - new Date(product.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
   : false;
             const inCart = cartItems.find((c) => c.id === product.id);
-            const currentQty = inCart ? inCart.quantity : 0;
+            // const currentQty = inCart ? inCart.quantity : 0;
 
-            const isOutOfStock = currentQty >= (product.stock || 0);
+            // const isOutOfStock = currentQty >= (product.stock || 0);
             const isAvailable = product?.available ?? true;
 
             const hasDiscount =
@@ -327,22 +328,45 @@ const isNew = product?.createdAt
                   ((product.price - product.new_price) / product.price) * 100
                 )
               : 0;
+            
 
-            const handleAdd = (product, e) => {
-              e.stopPropagation();
-              if (isOutOfStock) {
-                toast.error(`Товар уже у кошику`);
-                return;
-              }
-              dispatch(
-                addToCart({
-                  ...product,
-                  quantity: 1,
-                })
-              );
-              toast.success(`${product.name} додано в кошик!`);
-            };
+  const cartItem = product
+    ? cartItems.find((item) => item.id === product.id)
+    : null;
+  const alreadyInCartQty = cartItem?.quantity || 0;
+            // const handleAdd = (product, e) => {
+            //   e.stopPropagation();
+            //   if (isOutOfStock) {
+            //     toast.error(`Товар уже у кошику`);
+            //     return;
+            //   }
+            //   dispatch(
+            //     addToCart({
+            //       ...product,
+            //       quantity: 1,
+            //     })
+            //   );
+            //   toast.success(`${product.name} додано в кошик!`);
+            // };
+const handleAdd = async (product, e) => {
+    e.stopPropagation();
+  if (alreadyInCartQty >= product.stock) {
+    toast.warning('Товар вже в кошику (досягнуто максимум)');
+    return;
+  }
 
+  if (alreadyInCartQty + 1 > product.stock) {
+    toast.warning(`Доступно лише ${product.stock} шт.`);
+    return;
+  }
+
+  await handleCart(
+    product,
+    1,
+    dispatch,
+    toast
+  );
+};
             return (
               <Card
                 key={product.id}

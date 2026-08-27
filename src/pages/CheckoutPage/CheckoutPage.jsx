@@ -53,6 +53,7 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   const [noCall, setNoCall] = useState(false);
+  console.log('noCall', noCall)
 
 const userDataInitialized = useRef(false);
 
@@ -254,6 +255,9 @@ const totalQuantity = cartItems
 
             status_order: 'pending',
             order_number: orderNumber,
+           no_call: noCall,
+
+
 
             payment_method:
               paymentMethod === 'liqpay'
