@@ -16,12 +16,17 @@ import {
   DeliveryDetails,
 } from './OrderPage.styled';
 import { ProfileWrapper } from './OrderPage.styled';
+import { useNavigate } from 'react-router-dom';
+import placeholder from '../../../public/nofoto.png';
+
 
 export const OrderPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
+  console.log('orders',orders)
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -34,7 +39,7 @@ export const OrderPage = () => {
         });
         const data = await response.json();
         
-        // Перевіряємо чи повертається масив напряму, чи через data.data (як у Strapi)
+        
         const ordersData = Array.isArray(data) ? data : data.data || [];
         setOrders(ordersData);
       } catch (error) {
@@ -84,8 +89,11 @@ export const OrderPage = () => {
 
                       <ProductsList>
                         {products.map((prod) => (
-                          <ProductItem key={prod.id}>
-                            <img src={prod.image} alt={prod.name} />
+                          <ProductItem key={prod.id}
+                            onClick={() =>
+    navigate(`/product/${prod.slug}`)
+  }>
+                            <img src={prod.image || placeholder} alt={prod.name} />
                             <ProductInfo>
                               <p>{prod.name}</p>
                               <span>

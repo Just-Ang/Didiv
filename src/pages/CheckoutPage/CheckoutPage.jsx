@@ -255,6 +255,7 @@ if (token) {
               quantity: item?.quantity,
               price: item?.new_price ?? item.price,
               image: item?.images?.[0].url,
+              slug: item?.slug,
             })),
 
             status_order: 'pending',
@@ -311,8 +312,11 @@ if (token) {
         },
         body: JSON.stringify({
           data: {
-            stock: newStock,
-          },
+          stock: newStock,
+          ...(newStock === 0 && {
+            sold_date: new Date().toISOString(),
+          }),
+        },
         }),
       }
     );

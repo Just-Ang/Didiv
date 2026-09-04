@@ -50,6 +50,8 @@ import { ShoppingCart } from 'lucide-react';
 import { BallTriangle } from 'react-loader-spinner';
 import dayjs from 'dayjs';
 import FAQSection from '../../components/FAQSection/FAQSection';
+import placeholder from '../../../public/nofoto.png';
+
 
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { handleCart } from '../../api/utils/handleCart';
@@ -325,7 +327,7 @@ export const ProductPage = () => {
         <GallerySection>
           <div style={{ position: 'relative' }}>
             <MainImage
-              src={activeImage}
+              src={activeImage || placeholder}
               alt={product.name}
               onClick={!isSoldOut ? handleMainImageClick : undefined}
               style={{

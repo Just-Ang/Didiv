@@ -89,6 +89,33 @@ export const ProductList = ({
         const data = await res.json();
         setProducts(data.data);
 
+
+        const now = Date.now();
+const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+
+const visibleProducts = data.data.filter((product) => {
+  // Якщо товар є в наявності — завжди показуємо
+  if (product.stock > 0) {
+    return true;
+  }
+
+  // Якщо stock = 0, але немає дати —
+  // краще показувати, щоб випадково не приховати товар
+  if (!product.sold_date) {
+    return true;
+  }
+
+  // Скільки часу товар без stock
+  const zeroSince = new Date(product.sold_date).getTime();
+  const timeWithoutStock = now - zeroSince;
+
+
+  // Показуємо тільки перші 7 днів
+  return timeWithoutStock < SEVEN_DAYS;
+});
+
+setProducts(visibleProducts);
+
         const prices = data.data.map((p) => p.price);
 
         if (prices.length > 0) {
