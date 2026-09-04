@@ -6,7 +6,7 @@ import DeliveryMethodSelect from '../../components/checkout/DeliveryMethodSelect
 import OfficeSelect from '../../components/checkout/OfficeSelect/OfficeSelect';
 import OrderSummary from '../../components/checkout/OrderSummary/OrderSummary';
 import ContactForm from '../../components/checkout/ContactForm/ContactForm';
-import {  CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
+import { CheckoutWrapper, Container, Section } from './CheckoutPage.styled';
 import PaymentMethodSelect from '../../components/checkout/PaymentMethodSelect/PaymentMethodSelect';
 
 import { formatPhone } from '../../api/utils/formatPhone';
@@ -19,13 +19,13 @@ const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-      const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
- const user = useMemo(() => {
-  const savedUser = localStorage.getItem('user');
+  const user = useMemo(() => {
+    const savedUser = localStorage.getItem('user');
 
-  return savedUser ? JSON.parse(savedUser) : null;
-}, []);
+    return savedUser ? JSON.parse(savedUser) : null;
+  }, []);
 
   console.log(user);
 
@@ -53,33 +53,32 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   const [noCall, setNoCall] = useState(false);
-  console.log('noCall', noCall)
+  console.log('noCall', noCall);
 
-const userDataInitialized = useRef(false);
+  const userDataInitialized = useRef(false);
 
-useEffect(() => {
-  if (!user || userDataInitialized.current) return;
+  useEffect(() => {
+    if (!user || userDataInitialized.current) return;
 
-  userDataInitialized.current = true;
+    userDataInitialized.current = true;
 
-  setFormData({
-    fullName: `${user.last_name || ""} ${user.first_name || ""}`.trim(),
+    setFormData({
+      fullName: `${user.last_name || ''} ${user.first_name || ''}`.trim(),
       phone: formatPhone(user.phone),
-    email: user.email || "",
-  });
-}, [user]);
+      email: user.email || '',
+    });
+  }, [user]);
 
-  const totalAmount = cartItems.filter((item) => item.available !== false  && item.stock !== 0).reduce(
-    (acc, i) => acc + (i.new_price ?? i.price) * i.quantity,
-    0
+  const totalAmount = cartItems
+    .filter((item) => item.available !== false && item.stock !== 0)
+    .reduce((acc, i) => acc + (i.new_price ?? i.price) * i.quantity, 0);
+  const totalCartItems = cartItems.filter(
+    (item) => item.available !== false && item.stock !== 0
   );
- const totalCartItems = cartItems.filter(
-  (item) => item.available !== false  && item.stock !== 0
-);
 
-const totalQuantity = cartItems
-  .filter((item) => item.available !== false  && item.stock !== 0)
-  .reduce((acc, i) => acc + i.quantity, 0);
+  const totalQuantity = cartItems
+    .filter((item) => item.available !== false && item.stock !== 0)
+    .reduce((acc, i) => acc + i.quantity, 0);
 
   const generateOrderNumber = () => {
     const year = new Date().getFullYear().toString().slice(-2);
@@ -230,104 +229,106 @@ const totalQuantity = cartItems
       alert('Оберіть спосіб оплати');
       return;
     }
-const headers = {
-  'Content-Type': 'application/json',
-};
+    const headers = {
+      'Content-Type': 'application/json',
+    };
 
-if (token) {
-  headers.Authorization = `Bearer ${token}`;
-}
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
     try {
       // cтворення замовлення
-      const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
-        method: 'POST',
-         headers,
-        body: JSON.stringify({
-          data: {
-            name: formData.fullName,
-            phone: formData.phone,
-            email: formData.email,
-            city: formData.city,
+      const orderRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders`,
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            data: {
+              name: formData.fullName,
+              phone: formData.phone,
+              email: formData.email,
+              city: formData.city,
+              date: new Date().toISOString(),
+              
 
-            products: cartItems?.map((item) => ({
-              id: item?.id,
-              name: item?.name,
-              quantity: item?.quantity,
-              price: item?.new_price ?? item.price,
-              image: item?.images?.[0].url,
-              slug: item?.slug,
-            })),
+              products: cartItems?.map((item) => ({
+                id: item?.id,
+                name: item?.name,
+                quantity: item?.quantity,
+                price: item?.new_price ?? item.price,
+                image: item?.images?.[0].url,
+                slug: item?.slug,
+              })),
 
-            status_order: 'pending',
-            order_number: orderNumber,
-           no_call: noCall,
-             ...(user?.documentId && {
-      user: user.documentId,
-    }),
+              status_order: 'pending',
+              order_number: orderNumber,
+              no_call: noCall,
+              ...(user?.documentId && {
+                user: user.documentId,
+              }),
 
-            payment_method:
-              paymentMethod === 'liqpay'
-                ? 'Онлайн (LiqPay)'
-                : paymentMethod === 'cod'
-                ? 'Післяплата'
-                : paymentMethod === 'bank_transfer'
-                ? 'Оплата за реквізитами'
-                : '',
+              payment_method:
+                paymentMethod === 'liqpay'
+                  ? 'Онлайн (LiqPay)'
+                  : paymentMethod === 'cod'
+                  ? 'Післяплата'
+                  : paymentMethod === 'bank_transfer'
+                  ? 'Оплата за реквізитами'
+                  : '',
 
-            delivery_method:
-              deliveryMethod === 'nova'
-                ? 'Нова Пошта'
-                : deliveryMethod === 'ukr'
-                ? 'УкрПошта'
-                : 'Самовивіз',
+              delivery_method:
+                deliveryMethod === 'nova'
+                  ? 'Нова Пошта'
+                  : deliveryMethod === 'ukr'
+                  ? 'УкрПошта'
+                  : 'Самовивіз',
 
-            delivery_address:
-              deliveryMethod === 'nova'
-                ? selectedOffice?.label
-                : deliveryMethod === 'ukr'
-                ? selectedUkrOffice
-                : 'Самовивіз',
-          },
-        }),
-      });
-
-  // перевіряємо, що замовлення реально створилось
-  if (!orderRes.ok) {
-    throw new Error('Не вдалося створити замовлення');
-  }
-
-  // 2. Зменшуємо stock товарів
-  for (const item of cartItems) {
-    const newStock = Math.max(0, item.stock - item.quantity);
-
-    const stockRes = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/products/${item.documentId}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && {
-            Authorization: `Bearer ${token}`,
+              delivery_address:
+                deliveryMethod === 'nova'
+                  ? selectedOffice?.label
+                  : deliveryMethod === 'ukr'
+                  ? selectedUkrOffice
+                  : 'Самовивіз',
+            },
           }),
-        },
-        body: JSON.stringify({
-          data: {
-          stock: newStock,
-          ...(newStock === 0 && {
-            sold_date: new Date().toISOString(),
-          }),
-        },
-        }),
-      }
-    );
-
-    if (!stockRes.ok) {
-      console.error(
-        `Не вдалося оновити stock товару ${item.name}`
+        }
       );
-    }
-  }
 
+      // перевіряємо, що замовлення реально створилось
+      if (!orderRes.ok) {
+        throw new Error('Не вдалося створити замовлення');
+      }
+
+      // 2. Зменшуємо stock товарів
+      for (const item of cartItems) {
+        const newStock = Math.max(0, item.stock - item.quantity);
+
+        const stockRes = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/products/${item.documentId}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token && {
+                Authorization: `Bearer ${token}`,
+              }),
+            },
+            body: JSON.stringify({
+              data: {
+                stock: newStock,
+                ...(newStock === 0 && {
+                  sold_date: new Date().toISOString(),
+                }),
+              },
+            }),
+          }
+        );
+
+        if (!stockRes.ok) {
+          console.error(`Не вдалося оновити stock товару ${item.name}`);
+        }
+      }
 
       // Якщо LiqPay
       if (paymentMethod === 'liqpay') {
@@ -402,7 +403,7 @@ if (token) {
             : '',
       };
       // dispatch(clearCart());
-       await clearBackendCart(user, token, dispatch);
+      await clearBackendCart(user, token, dispatch);
       navigate('/order-confirmation', { state: { order: finalOrder } });
     } catch (e) {
       console.error(e);
@@ -471,10 +472,8 @@ if (token) {
             onChange={setPaymentMethod}
             error={errors.payment}
           />
-         
-
         </Section>
-       
+
         <OrderSummary
           cartItems={totalCartItems}
           totalAmount={totalAmount}

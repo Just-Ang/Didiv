@@ -67,48 +67,79 @@ export const OrderCard = styled.div`
   padding: 20px;
   background-color: #fff;
 `;
+export const WrapperDate = styled.div`
+  display: flex;
+  flex-direction: column;
+      align-items: flex-start;
+      align-items: flex-start;
+       gap: 8px;
+`
 
 export const OrderHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+    align-items: flex-start;
   border-bottom: 1px solid #f0f0f0;
   padding-bottom: 12px;
   margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 8px;
 
-  div {
+  /* div {
     display: flex;
+    flex-direction: row;
     gap: 12px;
-    align-items: center;
-  }
+  } */
 `;
 
 export const OrderNumber = styled.span`
+  font-family: var(--second-font);
   font-weight: 700;
   font-size: 16px;
 `;
+ export const OrderDate = styled.p`
+  font-family: var(--second-font);
+  font-weight: 400;
+  font-size: 16px;
+ `
 
 export const StatusBadge = styled.span`
+  margin-left: auto;
   padding: 4px 12px;
   border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 700;
+
   background-color: ${(props) =>
-    props.status === 'completed'
-      ? '#e6f4ea'
-      : props.status === 'pending'
+    props.status === 'pending'
       ? '#fff0e6'
+      : props.status === 'confirmed'
+      ? '#e8f0fe'
+      : props.status === 'paid'
+      ? '#e6f4ea'
+      : props.status === 'delivered'
+      ? '#e0f2fe'
+      : props.status === 'done'
+      ? '#dcfce7'
+      : props.status === 'cancelled'
+      ? '#fce8e6'
       : '#f1f3f4'};
+
   color: ${(props) =>
-    props.status === 'completed'
-      ? '#137333'
-      : props.status === 'pending'
+    props.status === 'pending'
       ? '#d97706'
+      : props.status === 'confirmed'
+      ? '#1a73e8'
+      : props.status === 'paid'
+      ? '#137333'
+      : props.status === 'delivered'
+      ? '#0369a1'
+      : props.status === 'done'
+      ? '#15803d'
+      : props.status === 'cancelled'
+      ? '#d93025'
       : '#5f6368'};
 `;
-
 export const ProductsList = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,6 +147,7 @@ export const ProductsList = styled.div`
 `;
 
 export const ProductItem = styled.div`
+  font-family: var(--second-font);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -144,6 +176,7 @@ export const ProductInfo = styled.div`
 `;
 
 export const DeliveryDetails = styled.div`
+  font-family: var(--second-font);
   margin-top: 16px;
   padding-top: 12px;
   border-top: 1px dashed #e0e0e0;
