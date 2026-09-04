@@ -73,7 +73,7 @@ const total =
       />
     
       <CheckboxLabel htmlFor="noCall">
-        Не потребує підтвердження дзвінком
+        Не передзвонювати
       </CheckboxLabel>
     </CallConfirmation>
     <Button type="submit" disabled={!isFormValid} onClick={handleSubmit} style={{ opacity: isFormValid ? 1 : 0.5, cursor: isFormValid ? 'pointer' : 'not-allowed' }}>

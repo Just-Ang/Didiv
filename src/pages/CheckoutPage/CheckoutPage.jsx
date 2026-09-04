@@ -69,16 +69,16 @@ useEffect(() => {
   });
 }, [user]);
 
-  const totalAmount = cartItems.filter((item) => item.available !== false).reduce(
+  const totalAmount = cartItems.filter((item) => item.available !== false  && item.stock !== 0).reduce(
     (acc, i) => acc + (i.new_price ?? i.price) * i.quantity,
     0
   );
  const totalCartItems = cartItems.filter(
-  (item) => item.available !== false
+  (item) => item.available !== false  && item.stock !== 0
 );
 
 const totalQuantity = cartItems
-  .filter((item) => item.available !== false)
+  .filter((item) => item.available !== false  && item.stock !== 0)
   .reduce((acc, i) => acc + i.quantity, 0);
 
   const generateOrderNumber = () => {

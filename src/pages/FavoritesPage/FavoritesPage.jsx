@@ -31,6 +31,7 @@ import {
   OldPrice,
   PriceBlock,
   PriceWrapper,
+  SoldOutBadge,
 } from '../CartPage/CartPage.styled';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { BallTriangle } from 'react-loader-spinner';
@@ -107,7 +108,7 @@ const FavoritesPage = () => {
 
   const handleAllAdd = () => {
     const itemsToAdd = favorites
-      .filter((item) => item.available !== false)
+      .filter((item) => item.available !== false && item.stock !== 0)
       .map((favItem) => {
         const cartItem = cartItems.find(
           (cartItem) => cartItem.id === favItem.id
@@ -134,12 +135,17 @@ const FavoritesPage = () => {
     dispatch(addAllToCart(itemsToAdd));
     toast.success('Додано максимально доступну кількість товарів');
   };
+  console.log("favorites", favorites);
 
-  const total = favorites.reduce(
+const totalQuantity = favorites.filter(
+  (item) => item.available !== false && item.stock !== 0
+).length;
+  const total = favorites.filter((item) => item.available !== false && item.stock > 0).reduce(
     (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
     0
   );
-
+  console.log("favorites", favorites);
+  console.log(totalQuantity);
   const handleClickFavorite = async (product, e) => {
     e.stopPropagation();
 
@@ -294,6 +300,7 @@ const FavoritesPage = () => {
 
                 const finalPrice = hasDiscount ? item.new_price : item.price;
                 const isAvailable = item?.available ?? true;
+                const isSoldOut = item?.stock === 0;
 
                 const discountPercent = hasDiscount
                   ? Math.round(
@@ -329,9 +336,14 @@ const FavoritesPage = () => {
                     > {!isAvailable && (
                       <ReservedBadgeFavorite>Бронь</ReservedBadgeFavorite>
                     )}
+                    {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
                       <Image
                         src={item.images?.[0]?.url || placeholder}
                         alt={item.name}
+                         style={{
+    filter: isSoldOut ? 'grayscale(100%)' : 'none',
+    opacity: isSoldOut ? 0.55 : 1,
+  }}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                         }}
@@ -370,9 +382,11 @@ const FavoritesPage = () => {
                       <IconGroup>
                         {
                           <IconButton
-                            onClick={() => handleAdd(item)}
+                            onClick={() => {
+                               if (isSoldOut) return;
+                               handleAdd(item)}}
                             // disabled={isMax || item.stock === 0}
-                            disabled={!isAvailable}
+                             disabled={!isAvailable || isSoldOut}
                           >
                             <ShoppingCart size={30} />
                           </IconButton>
@@ -393,7 +407,7 @@ const FavoritesPage = () => {
             <SummaryCard>
               <SummaryRow>
                 <span>Всього в обраному:</span>
-                <strong>{favorites.length} шт.</strong>
+                <strong>{totalQuantity} шт.</strong>
                 <span>На суму:</span>
                 <strong>{total} грн</strong>
               </SummaryRow>
