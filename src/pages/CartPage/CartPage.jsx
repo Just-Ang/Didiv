@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-
+import { persistor } from "../../redux/store";
 import {
   Breadcrumbs,
   BtnIcons,
@@ -35,9 +35,10 @@ import placeholder from '../../../public/nofoto.png';
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { BallTriangle } from 'react-loader-spinner';
 import { clearCartFromBackend } from '../../api/utils/clearCartFromBackend';
-import { ImgWrapper, } from '../../components/ProductList/ProductList.styled';
+import { ImgWrapper } from '../../components/ProductList/ProductList.styled';
 import { ReservedBadgeFavorite } from '../FavoritesPage/FavoritesPage.styled';
 import { deleteCartItemFromBackend } from '../../api/utils/deleteCartItemFromBackend';
+import { clearFavorite } from '../../redux/favoritesSlice';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -49,130 +50,151 @@ const CartPage = () => {
 
   const [localCartItemsProduct, setLocalCartItemsProduct] = useState([]);
   const [cartItems, setCartItem] = useState([]);
-  console.log('cartItems',cartItems);
+  console.log('cartItems', cartItems);
 
   const [loading, setLoading] = useState(true);
-console.log('localCartItems',localCartItemsProduct)
+  console.log('localCartItems', localCartItemsProduct);
 
-const totalQuantity = reduxCartItems
-  .filter((item) => item.available !== false && item.stock > 0)
-  .reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = reduxCartItems
+    .filter((item) => item.available !== false && item.stock > 0)
+    .reduce((sum, item) => sum + item.quantity, 0);
 
-const total = reduxCartItems
-  .filter((item) => item.available !== false && item.stock > 0)
-  .reduce(
-    (sum, item) =>
-      sum + (item.new_price ?? item.price) * (item.quantity || 1),
-    0
-  );
+  const total = reduxCartItems
+    .filter((item) => item.available !== false && item.stock > 0)
+    .reduce(
+      (sum, item) =>
+        sum + (item.new_price ?? item.price) * (item.quantity || 1),
+      0
+    );
 
   const favorites = useSelector((state) => state.favorites.items);
   const isCartEmpty = localCartItemsProduct.length === 0;
+//   const clearAuth = () => {
+//   localStorage.removeItem('token');
+//   localStorage.removeItem('user');
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      // Якщо користувач НЕ авторизований —
-      // беремо кошик з Redux
-      if (!token || !user) {
-        setLocalCartItemsProduct(reduxCartItems);
-        setLoading(false);
+//   dispatch(clearCart());
+
+//   setLocalCartItemsProduct([]);
+//   setCartItem([]);
+
+// };
+const handleLogout = async () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+
+  dispatch(clearFavorite());
+  dispatch(clearCart());
+  setLocalCartItemsProduct([]);
+setCartItem([]);
+
+  await persistor.purge();
+  
+
+navigate("/", { replace: true });
+};
+
+useEffect(() => {
+  const fetchCart = async () => {
+    if (!token || !user) {
+      setLocalCartItemsProduct(reduxCartItems);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/cart-items?filters[user][documentId][$eq]=${
+          user.documentId
+        }&populate[product][populate]=*`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // JWT протермінований
+      if (response.status === 401) {
+      handleLogout();
         return;
       }
 
-      // Якщо авторизований —
-      // беремо актуальний кошик зі Strapi
-      try {
-        const response = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/cart-items?filters[user][documentId][$eq]=${
-            user.documentId
-          }&populate[product][populate]=*`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Не вдалося отримати кошик');
-        }
-
-        const data = await response.json();
-setCartItem(data.data);
-        const products = data.data
-          .map((cartItem) => {
-            if (!cartItem.product) return null;
-
-            return {
-              ...cartItem.product,
-              quantity: cartItem.quantity,
-            };
-          })
-          .filter(Boolean);
-
-        setLocalCartItemsProduct(products);
-        dispatch(setCartItems(products));
-      } catch (error) {
-        console.error(error);
-        toast.error('Не вдалося завантажити кошик');
-
-        // Якщо запит впав — залишаємо Redux
-        setLocalCartItemsProduct(reduxCartItems);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error('Не вдалося отримати кошик');
       }
-    };
 
-    fetchCart();
+      const data = await response.json();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      setCartItem(data.data);
+
+      const products = data.data
+        .map((cartItem) => {
+          if (!cartItem.product) return null;
+
+          return {
+            ...cartItem.product,
+            quantity: cartItem.quantity,
+          };
+        })
+        .filter(Boolean);
+
+      setLocalCartItemsProduct(products);
+      dispatch(setCartItems(products));
+    } catch (error) {
+      console.error(error);
+
+      // Тут НЕ треба підставляти Redux при 401.
+      // Цей catch тільки для реальних помилок сервера/network.
+      toast.error('Не вдалося завантажити кошик');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCart();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   useEffect(() => {
-  setLocalCartItemsProduct(reduxCartItems);
-}, [reduxCartItems]);
+    setLocalCartItemsProduct(reduxCartItems);
+  }, [reduxCartItems]);
 
+ 
   const handleClickFavorite = (product, e) => {
     e.stopPropagation();
     const isFavorite = favorites.some((favItem) => favItem.id === product?.id);
 
     handleFavorite(product, isFavorite, dispatch, toast);
   };
-const handleDelete = async (item) => {
-  setRemovingIds((prev) => [...prev, item.id]);
+  const handleDelete = async (item) => {
+    setRemovingIds((prev) => [...prev, item.id]);
 
-  try {
-    if (!user) {
+    try {
+      if (!user) {
+        setTimeout(() => {
+          dispatch(removeFromCart(item));
+
+          setRemovingIds((prev) => prev.filter((id) => id !== item.id));
+        }, 300);
+
+        return;
+      }
+
+      await deleteCartItemFromBackend(item, user.id, dispatch, token);
+
       setTimeout(() => {
-        dispatch(removeFromCart(item));
-
-        setRemovingIds((prev) =>
-          prev.filter((id) => id !== item.id)
-        );
+        setRemovingIds((prev) => prev.filter((id) => id !== item.id));
       }, 300);
+    } catch (error) {
+      setRemovingIds((prev) => prev.filter((id) => id !== item.id));
 
-      return;
+      toast.error('Не вдалося видалити товар з кошика');
     }
-
-    await deleteCartItemFromBackend(item, user.id, dispatch, token);
-
-    setTimeout(() => {
-      setRemovingIds((prev) =>
-        prev.filter((id) => id !== item.id)
-      );
-    }, 300);
-  } catch (error) {
-    setRemovingIds((prev) =>
-      prev.filter((id) => id !== item.id)
-    );
-
-    toast.error('Не вдалося видалити товар з кошика');
-  }
-};
-
-
+  };
 
   const handleClear = async () => {
     if (!user) {
@@ -239,15 +261,15 @@ const handleDelete = async (item) => {
           <ContentWrapper>
             <CartItemsList>
               {localCartItemsProduct.map((item, index) => {
-                  const cartItem = cartItems.find(
-  (cartItem) => cartItem.product?.documentId === item.documentId
-);
+                const cartItem = cartItems.find(
+                  (cartItem) => cartItem.product?.documentId === item.documentId
+                );
 
                 const isFavorite = favorites.some((fav) => fav.id === item.id);
                 const hasDiscount =
                   item.new_price && item.new_price < item.price;
                 const isAvailable = item?.available ?? true;
-                     const isSoldOut = item?.stock === 0;
+                const isSoldOut = item?.stock === 0;
 
                 const finalPrice = hasDiscount ? item.new_price : item.price;
 
@@ -258,42 +280,51 @@ const handleDelete = async (item) => {
                   : 0;
                 return (
                   <CartItem
-  key={`${item.id}-${index}`}
-  className={`
+                    key={`${item.id}-${index}`}
+                    className={`
     ${removingIds.includes(item.id) ? 'removing' : ''}
     ${!isAvailable ? 'unavailable' : ''}
     ${isSoldOut ? 'sold-out' : ''}
   `}
->
-                    <ImgWrapper    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
+                  >
+                    <ImgWrapper
+                      onClick={() =>
+                        navigate(`/product/${item.slug ?? item.id}`)
+                      }
+                    >
                       {!isAvailable && (
                         <ReservedBadgeFavorite>Бронь</ReservedBadgeFavorite>
-                      )} {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
-<ProductImg
-  src={item.images?.[0]?.url || '/nofoto.png'}
-  alt={item.name}
-  style={{
-    filter: isSoldOut ? 'grayscale(100%)' : 'none',
-    opacity: isSoldOut ? 0.55 : 1,
-  }}
-  onError={(e) => {
-    e.currentTarget.onerror = null;
-    e.currentTarget.src = placeholder;
-  }}
-/>
+                      )}{' '}
+                      {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+                      <ProductImg
+                        src={item.images?.[0]?.url || '/nofoto.png'}
+                        alt={item.name}
+                        style={{
+                          filter: isSoldOut ? 'grayscale(100%)' : 'none',
+                          opacity: isSoldOut ? 0.55 : 1,
+                        }}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = placeholder;
+                        }}
+                      />
                     </ImgWrapper>
-                    <ProductInfo    onClick={() => navigate(`/product/${item.slug ?? item.id}`)}>
+                    <ProductInfo
+                      onClick={() =>
+                        navigate(`/product/${item.slug ?? item.id}`)
+                      }
+                    >
                       <h3>{item.name}</h3>
                     </ProductInfo>
                     <CounterPrice>
-                   <Counter
-  item={item}
-  cartItem={cartItem}
-  user={user}
-  token={token}
-    disabled={isSoldOut}
-isSoldOut={isSoldOut}
-/>
+                      <Counter
+                        item={item}
+                        cartItem={cartItem}
+                        user={user}
+                        token={token}
+                        disabled={isSoldOut}
+                        isSoldOut={isSoldOut}
+                      />
                       <PriceWrapper>
                         <PriceBlock>
                           <CurrentPrice $discount={hasDiscount}>
@@ -320,11 +351,11 @@ isSoldOut={isSoldOut}
                     </CounterPrice>
                     <BtnIcons>
                       <ButtonFavorite
-                         onClick={(e) => {
-    if (isSoldOut) return;
-    handleClickFavorite(item, e);
-  }}
-  disabled={isSoldOut}
+                        onClick={(e) => {
+                          if (isSoldOut) return;
+                          handleClickFavorite(item, e);
+                        }}
+                        disabled={isSoldOut}
                         style={{
                           background: 'none',
                           border: 'none',
@@ -362,12 +393,17 @@ isSoldOut={isSoldOut}
                 <span>На суму:</span>
                 <strong>{total} грн</strong>
               </SummaryRow>
-              <OrderButton to="/checkout"   onClick={(e) => {
-    if (totalQuantity === 0) {
-      e.preventDefault();
-      toast.warning('У кошику немає доступних товарів');
-    }
-  }}>Оформити замовлення</OrderButton>
+              <OrderButton
+                to="/checkout"
+                onClick={(e) => {
+                  if (totalQuantity === 0) {
+                    e.preventDefault();
+                    toast.warning('У кошику немає доступних товарів');
+                  }
+                }}
+              >
+                Оформити замовлення
+              </OrderButton>
               <ClearButton onClick={handleClear}>Oчистити кошик</ClearButton>
             </SummaryCard>
           </ContentWrapper>

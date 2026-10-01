@@ -13,7 +13,7 @@ import { formatPhone } from '../../api/utils/formatPhone';
 import { clearBackendCart } from '../../api/utils/clearBackendCart';
 
 const API_KEY = import.meta.env.VITE_NP_API_KEY;
-const BASE_URL = 'https://api.novaposhta.ua/v2.0/json/';
+const BASE_URL_NP = 'https://api.novaposhta.ua/v2.0/json/';
 
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
@@ -90,11 +90,13 @@ const CheckoutPage = () => {
   const orderNumber = generateOrderNumber();
 
   // ---------------- МІСТА ----------------
-  useEffect(() => {
-    if (inputCity.length < 2) return;
+// ---------------- МІСТА ----------------
+useEffect(() => {
+  if (inputCity.length < 2) return;
 
-    const timer = setTimeout(async () => {
-      const res = await fetch(BASE_URL, {
+  const timer = setTimeout(async () => {
+    try {
+      const res = await fetch(BASE_URL_NP, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -104,25 +106,37 @@ const CheckoutPage = () => {
           methodProperties: { FindByString: inputCity },
         }),
       });
+
+      if (!res.ok) throw new Error(`HTTP помилка: ${res.status}`);
+
       const data = await res.json();
 
-      setCityOptions(
-        data.data.map((c) => ({
-          value: c.Ref,
-          label: c.Description,
-        }))
-      );
-    }, 500);
+      if (data.success && Array.isArray(data.data)) {
+        setCityOptions(
+          data.data.map((c) => ({
+            value: c.Ref,
+            label: c.Description,
+          }))
+        );
+      } else {
+        console.warn('API Нової Пошти повернуло помилку або порожній список міст:', data.errors);
+        setCityOptions([]);
+      }
+    } catch (error) {
+      console.error('Не вдалося завантажити міста:', error);
+    }
+  }, 500);
 
-    return () => clearTimeout(timer);
-  }, [inputCity]);
+  return () => clearTimeout(timer);
+}, [inputCity]);
 
-  // ---------------- НОВА ПОШТА ----------------
-  useEffect(() => {
-    if (!selectedCity || deliveryMethod !== 'nova') return;
+// ---------------- НОВА ПОШТА ----------------
+useEffect(() => {
+  if (!selectedCity || deliveryMethod !== 'nova') return;
 
-    const fetchOffices = async () => {
-      const res = await fetch(BASE_URL, {
+  const fetchOffices = async () => {
+    try {
+      const res = await fetch(BASE_URL_NP, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -133,18 +147,28 @@ const CheckoutPage = () => {
         }),
       });
 
+      if (!res.ok) throw new Error(`HTTP помилка: ${res.status}`);
+
       const data = await res.json();
 
-      setOfficeOptions(
-        data.data.map((o) => ({
-          value: o.Ref,
-          label: o.Description,
-        }))
-      );
-    };
+      if (data.success && Array.isArray(data.data)) {
+        setOfficeOptions(
+          data.data.map((o) => ({
+            value: o.Ref,
+            label: o.Description,
+          }))
+        );
+      } else {
+        console.warn('API Нової Пошти повернуло помилку або порожній список відділень:', data.errors);
+        setOfficeOptions([]);
+      }
+    } catch (error) {
+      console.error('Не вдалося завантажити відділення Нової Пошти:', error);
+    }
+  };
 
-    fetchOffices();
-  }, [selectedCity, deliveryMethod]);
+  fetchOffices();
+}, [selectedCity, deliveryMethod]);
 
   // ---------------- УКРПОШТА ----------------
   // useEffect(() => {

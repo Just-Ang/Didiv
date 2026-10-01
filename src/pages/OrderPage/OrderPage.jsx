@@ -23,8 +23,13 @@ export const OrderPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user'));
-  console.log('orders', orders);
+  const user = (() => {
+    try {
+      return JSON.parse(localStorage.getItem('user') || 'null');
+    } catch {
+      return null;
+    }
+  })();  console.log('orders', orders);
   const navigate = useNavigate();
   const statusLabels = {
   pending: 'Створено',
@@ -36,6 +41,10 @@ export const OrderPage = () => {
 };
 
   useEffect(() => {
+      if (!token || !user?.email) {
+    setLoading(false);
+    return;
+  }
     const fetchOrders = async () => {
       try {
         const response = await fetch(
@@ -48,6 +57,17 @@ export const OrderPage = () => {
             },
           }
         );
+        if (response.status === 401) {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+
+  navigate('/login', { replace: true });
+  return;
+}
+
+if (!response.ok) {
+  throw new Error(`HTTP ${response.status}`);
+}
         const data = await response.json();
 
         const ordersData = Array.isArray(data) ? data : data.data || [];
@@ -60,7 +80,7 @@ export const OrderPage = () => {
     };
 
     fetchOrders();
-  }, [token, user.email]);
+  }, [token, user?.email, navigate]);
 
   return (
     <Container>

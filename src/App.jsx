@@ -25,8 +25,9 @@ import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 import { AccountPage } from './pages/AccountPage/AccountPage';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFavorites } from './redux/favoritesSlice';
+import { clearFavorite, setFavorites } from './redux/favoritesSlice';
 import { OrderPage } from './pages/OrderPage/OrderPage';
+import { clearCart } from './redux/cartSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -39,9 +40,50 @@ function App() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   const userDocumentId = user?.documentId;
 
+  
   //   const token = localStorage.getItem("token");
   const localFavorites = useSelector((state) => state.favorites.items);
   const localCartItems = useSelector((state) => state.cart.items);
+
+  useEffect(() => {
+  if (!token) return;
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 401) {
+        // очищаємо авторизацію
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        // очищаємо Redux
+        dispatch(clearCart());
+        dispatch(clearFavorite());
+
+        // повністю перезавантажуємо застосунок
+        window.location.reload();
+
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('Auth check error:', response.status);
+      }
+    } catch (error) {
+      console.error('Помилка перевірки авторизації:', error);
+    }
+  };
+
+  checkAuth();
+}, [token, dispatch]);
 
   useEffect(() => {
     if (!token || !userDocumentId) return;

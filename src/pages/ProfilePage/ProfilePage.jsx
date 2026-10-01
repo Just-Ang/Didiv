@@ -7,6 +7,7 @@ import {
   SaveButton,
 } from "./ProfilePage.styled";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const ProfilePage = () => {
   const [initialForm, setInitialForm] = useState({
@@ -24,6 +25,7 @@ export const ProfilePage = () => {
 
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
+   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,6 +40,20 @@ export const ProfilePage = () => {
             },
           }
         );
+           // JWT недійсний / протермінований
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        navigate("/login", { replace: true });
+        return;
+      }
+
+      // Інша помилка сервера
+      if (!res.ok) {
+        throw new Error(`HTTP error: ${res.status}`);
+      }
+        
 
         const user = await res.json();
 
@@ -60,7 +76,7 @@ setInitialForm(userForm);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   const handleChange = e => {
     const { name, value } = e.target;

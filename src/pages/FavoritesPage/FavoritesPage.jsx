@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 
 import FavEmpty from '../../components/FavEmpty/FavEmty';
-import { addAllToCart } from '../../redux/cartSlice';
+import { addAllToCart, clearCart } from '../../redux/cartSlice';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -36,11 +36,14 @@ import {
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { BallTriangle } from 'react-loader-spinner';
 import { handleCart } from '../../api/utils/handleCart';
+import { clearFavorite } from '../../redux/favoritesSlice';
+import { persistor } from '../../redux/store';
 
 const FavoritesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+ const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user'));
   const reduxFavorites = useSelector((state) => state.favorites.items);
 
   const [favorites, setFavorites] = useState([]);
@@ -49,11 +52,22 @@ const FavoritesPage = () => {
   const [removingIds, setRemovingIds] = useState([]);
 
   const cartItems = useSelector((state) => state.cart.items);
+  
+const handleLogout = async () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 
+  dispatch(clearFavorite());
+  dispatch(clearCart());
+setFavorites([]);
+
+  await persistor.purge();
+  
+
+navigate("/", { replace: true });
+};
   useEffect(() => {
     const fetchFavorites = async () => {
-      const token = localStorage.getItem('token');
-      const user = JSON.parse(localStorage.getItem('user'));
 
       // Якщо користувач НЕ авторизований —
       // беремо обране з Redux
@@ -78,6 +92,11 @@ const FavoritesPage = () => {
             },
           }
         );
+
+        if (response.status === 401) {
+          handleLogout();
+          return;
+        }
 
         if (!response.ok) {
           throw new Error('Не вдалося отримати обране');
@@ -135,16 +154,19 @@ const FavoritesPage = () => {
     dispatch(addAllToCart(itemsToAdd));
     toast.success('Додано максимально доступну кількість товарів');
   };
-  console.log("favorites", favorites);
+  console.log('favorites', favorites);
 
-const totalQuantity = favorites.filter(
-  (item) => item.available !== false && item.stock !== 0
-).length;
-  const total = favorites.filter((item) => item.available !== false && item.stock > 0).reduce(
-    (sum, item) => sum + (item.new_price ?? item.price) * (item.quantity || 1),
-    0
-  );
-  console.log("favorites", favorites);
+  const totalQuantity = favorites.filter(
+    (item) => item.available !== false && item.stock !== 0
+  ).length;
+  const total = favorites
+    .filter((item) => item.available !== false && item.stock > 0)
+    .reduce(
+      (sum, item) =>
+        sum + (item.new_price ?? item.price) * (item.quantity || 1),
+      0
+    );
+  console.log('favorites', favorites);
   console.log(totalQuantity);
   const handleClickFavorite = async (product, e) => {
     e.stopPropagation();
@@ -328,31 +350,35 @@ const totalQuantity = favorites.filter(
                     key={item.id}
                     className={removingIds.includes(item.id) ? 'removing' : ''}
                   >
-                   
                     <ImageWrapper
                       onClick={() =>
                         navigate(`/product/${item.slug ?? item.id}`)
                       }
-                    > {!isAvailable && (
-                      <ReservedBadgeFavorite>Бронь</ReservedBadgeFavorite>
-                    )}
-                    {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+                    >
+                      {' '}
+                      {!isAvailable && (
+                        <ReservedBadgeFavorite>Бронь</ReservedBadgeFavorite>
+                      )}
+                      {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
                       <Image
                         src={item.images?.[0]?.url || placeholder}
                         alt={item.name}
-                         style={{
-    filter: isSoldOut ? 'grayscale(100%)' : 'none',
-    opacity: isSoldOut ? 0.55 : 1,
-  }}
+                        style={{
+                          filter: isSoldOut ? 'grayscale(100%)' : 'none',
+                          opacity: isSoldOut ? 0.55 : 1,
+                        }}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                         }}
                       />
                     </ImageWrapper>
-                    <ProductName  onClick={() =>
+                    <ProductName
+                      onClick={() =>
                         navigate(`/product/${item.slug ?? item.id}`)
                       }
-                    >{item.name}</ProductName>
+                    >
+                      {item.name}
+                    </ProductName>
 
                     <ActionsWrapper>
                       {/* <Price>{item.price}&nbsp;грн</Price> */}
@@ -383,10 +409,11 @@ const totalQuantity = favorites.filter(
                         {
                           <IconButton
                             onClick={() => {
-                               if (isSoldOut) return;
-                               handleAdd(item)}}
+                              if (isSoldOut) return;
+                              handleAdd(item);
+                            }}
                             // disabled={isMax || item.stock === 0}
-                             disabled={!isAvailable || isSoldOut}
+                            disabled={!isAvailable || isSoldOut}
                           >
                             <ShoppingCart size={30} />
                           </IconButton>

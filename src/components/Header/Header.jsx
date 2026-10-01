@@ -24,39 +24,76 @@ import { Menu } from '../Menu/Menu';
 import { FavoriteIcon } from '../FavoriteIcon/FavoriteIcon';
 
 import sprite from '../../img/symbol-defs.svg';
-import { BadgePercent, Home, Info, LayersPlus, Mail, ShoppingBag, UserRound, X } from 'lucide-react';
+import {
+  BadgePercent,
+  Home,
+  Info,
+  LayersPlus,
+  Mail,
+  ShoppingBag,
+  UserRound,
+  X,
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export const Header = ( { openLogin,
- }) => {
+export const Header = ({ openLogin }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const navigate = useNavigate();
 
+  // const handleAccountClick = () => {
+  //   const token = localStorage.getItem("token");
 
-const navigate = useNavigate();
+  //   if (token) {
 
-// const handleAccountClick = () => {
-//   const token = localStorage.getItem("token");
+  //     navigate("/account/orders");
+  //   } else {
 
-//   if (token) {
-//     navigate("/account");
-//   } else {
-//     openLogin(); 
-//   }
-// };
-const handleAccountClick = () => {
-  const token = localStorage.getItem("token");
+  //     openLogin();
+  //   }
+  // };
 
+  const handleAccountClick = async () => {
+    const token = localStorage.getItem('token');
 
+    if (!token) {
+      openLogin();
+      return;
+    }
 
-  if (token) {
-  
-    navigate("/account/orders");
-  } else {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    openLogin();
-  }
-};
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+          localStorage.removeItem("persist:cart");
+      localStorage.removeItem("persist:favorites");
+       window.location.reload();
+
+        openLogin();
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('Помилка перевірки авторизації:', response.status);
+        return;
+      }
+
+      // Токен валідний
+      navigate('/account/orders');
+    } catch (error) {
+      console.error('Помилка перевірки авторизації:', error);
+    }
+  };
   return (
     <HeaderSection>
       <HeaderContainer>
@@ -67,8 +104,8 @@ const handleAccountClick = () => {
             <HeadeRight>
               <CartIcon></CartIcon>
               <LoginButton onClick={handleAccountClick}>
-<UserRound  size ={28} color="#f2ebd4" strokeWidth={1.9} />
-</LoginButton>
+                <UserRound size={28} color="#f2ebd4" strokeWidth={1.9} />
+              </LoginButton>
 
               <FavoriteIcon></FavoriteIcon>
               <Menu></Menu>
@@ -92,10 +129,20 @@ const handleAccountClick = () => {
                   <StyledLink onClick={() => setMenuOpen(false)} to="/catalog">
                     <ShoppingBag size={22} strokeWidth={1.5} /> Каталог
                   </StyledLink>
-                  <StyledLink  onClick={() => setMenuOpen(false)} to="/catalog/new">
-                   <LayersPlus  size={22} strokeWidth={1.5} />Новинки</StyledLink>
-                  <StyledLink onClick={() => setMenuOpen(false)} to="/catalog/sale">
-                <BadgePercent size={22} strokeWidth={1.5} />Акційні товари</StyledLink>
+                  <StyledLink
+                    onClick={() => setMenuOpen(false)}
+                    to="/catalog/new"
+                  >
+                    <LayersPlus size={22} strokeWidth={1.5} />
+                    Новинки
+                  </StyledLink>
+                  <StyledLink
+                    onClick={() => setMenuOpen(false)}
+                    to="/catalog/sale"
+                  >
+                    <BadgePercent size={22} strokeWidth={1.5} />
+                    Акційні товари
+                  </StyledLink>
                   <StyledLink onClick={() => setMenuOpen(false)} to="/about">
                     <Info size={22} strokeWidth={1.5} /> Про нас
                   </StyledLink>
