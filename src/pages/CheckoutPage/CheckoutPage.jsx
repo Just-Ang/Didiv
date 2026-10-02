@@ -20,7 +20,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
-
+console.log(cartItems, 'cartitmes')
   const user = useMemo(() => {
     const savedUser = localStorage.getItem('user');
 

@@ -213,3 +213,26 @@ export const BottomText = styled.p`
       font-weight:600;
   }
 `;
+
+
+export const ForgotPassword = styled.p`
+  margin-bottom:20px;
+
+  text-align:center;
+
+  color:#8b817a;
+
+  font-size:15px;
+
+  span{
+      color:#ff7a00;
+      cursor:pointer;
+      font-weight:600;
+  }
+`;
+export const ErrorText = styled.p`
+  margin: -8px 0 8px;
+  color: var(--red-color);
+  font-size: 15px;
+  margin-bottom: 20px;
+`;

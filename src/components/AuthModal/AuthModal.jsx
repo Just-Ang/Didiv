@@ -10,6 +10,8 @@ import {
   Input,
   SubmitButton,
   BottomText,
+  ErrorText,
+  ForgotPassword,
 } from './AuthModal.styled';
 import { Eye, EyeOff } from 'lucide-react';
 import { InputWrapper } from './AuthModal.styled';
@@ -30,7 +32,14 @@ export const AuthModal = ({
   localCartItems,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState({
+  email: '',
+  password: '',
+  confirmPassword: '',
+});
+console.log(errors);
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -54,11 +63,18 @@ const dispatch = useDispatch();
   if (!isOpen) return null;
 
   const handleChange = (e) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const { name, value } = e.target;
+
+  setForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  setErrors((prev) => ({
+    ...prev,
+    [name]: '',
+  }));
+};
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -68,8 +84,49 @@ const dispatch = useDispatch();
 
   //log in
 
-  const handleLogin = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/local`, {
+//   const handleLogin = async () => {
+//     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/local`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         identifier: form.email,
+//         password: form.password,
+//       }),
+//     });
+
+//     const data = await res.json();
+
+//     if (!res.ok) {
+//       alert(data.error?.message || 'Помилка авторизації');
+//       return;
+//     }
+
+//     localStorage.setItem('token', data.jwt);
+//     localStorage.setItem('user', JSON.stringify(data.user));
+
+//     await syncFavorites(localFavorites, data.jwt, data.user.documentId);
+//     await syncCart(localCartItems, data.jwt, data.user.documentId);
+//     const backendCart = await fetchUserCart(
+//   data.jwt,
+//   data.user.documentId
+// );
+
+// dispatch(setCartItems(backendCart));
+
+//     onClose();
+//   };
+const handleLogin = async () => {
+  setErrors({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/auth/local`,
+    {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,91 +135,232 @@ const dispatch = useDispatch();
         identifier: form.email,
         password: form.password,
       }),
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    setErrors({
+      email: 'Неправильна електронна пошта або пароль',
+      password: 'Неправильна електронна пошта або пароль',
+      confirmPassword: '',
     });
 
-    const data = await res.json();
+    return;
+  }
 
-    if (!res.ok) {
-      alert(data.error?.message || 'Помилка авторизації');
-      return;
+  localStorage.setItem('token', data.jwt);
+  localStorage.setItem('user', JSON.stringify(data.user));
+
+  await syncFavorites(
+    localFavorites,
+    data.jwt,
+    data.user.documentId
+  );
+
+  await syncCart(
+    localCartItems,
+    data.jwt,
+    data.user.documentId
+  );
+
+  const backendCart = await fetchUserCart(
+    data.jwt,
+    data.user.documentId
+  );
+
+  dispatch(setCartItems(backendCart));
+
+  onClose();
+};
+  /// register
+ const handleRegister = async () => {
+  
+  setErrors({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ if (!form.email.trim()) {
+    setErrors((prev) => ({
+      ...prev,
+      email: 'Введіть електронну пошту',
+    }));
+    return;
+  }
+
+  if (!emailRegex.test(form.email)) {
+    setErrors((prev) => ({
+      ...prev,
+      email: 'Введіть правильну електронну пошту',
+    }));
+    return;
+  }
+
+   if (!form.password) {
+    setErrors((prev) => ({
+      ...prev,
+      password: 'Введіть пароль',
+    }));
+    return;
+  }
+
+  if (form.password.length < 6) {
+    setErrors((prev) => ({
+      ...prev,
+      password: 'Пароль має містити щонайменше 6 символів',
+    }));
+    return;
+  }
+
+  if (form.password !== form.confirmPassword) {
+    setErrors((prev) => ({
+      ...prev,
+      confirmPassword: 'Паролі не співпадають',
+    }));
+
+    return;
+  }
+
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/auth/local/register`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: form.email,
+        email: form.email,
+        password: form.password,
+      }),
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    if (
+      data.error?.message?.toLowerCase().includes('already') ||
+      data.error?.message?.toLowerCase().includes('taken') ||
+      data.error?.message?.toLowerCase().includes('email')
+    ) {
+      setErrors((prev) => ({
+        ...prev,
+        email: 'Ця пошта вже зареєстрована',
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        email: data.error?.message || 'Не вдалося зареєструватися',
+      }));
     }
 
-    localStorage.setItem('token', data.jwt);
+    return;
+  }
+
+  localStorage.setItem('token', data.jwt);
+
+  try {
+    const token = localStorage.getItem('token');
+
     localStorage.setItem('user', JSON.stringify(data.user));
 
-    await syncFavorites(localFavorites, data.jwt, data.user.documentId);
-    await syncCart(localCartItems, data.jwt, data.user.documentId);
-    const backendCart = await fetchUserCart(
-  data.jwt,
-  data.user.documentId
-);
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/users/${data.user.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name: form.first_name,
+          last_name: form.last_name,
+        }),
+      }
+    );
 
-dispatch(setCartItems(backendCart));
-
-    onClose();
-  };
-  /// register
-  const handleRegister = async () => {
-    if (form.password !== form.confirmPassword) {
-      alert('Паролі не співпадають');
-      return;
+    if (!res.ok) {
+      throw new Error('Помилка оновлення');
     }
 
+    const updatedUser = await res.json();
+
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  } catch (err) {
+    console.error(err);
+    alert('Не вдалося оновити дані');
+  }
+
+  onClose();
+};
+
+
+const handleForgotPassword = async () => {
+  setErrors({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  if (!form.email.trim()) {
+    setErrors(prev => ({
+      ...prev,
+      email: 'Введіть електронну пошту',
+    }));
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(form.email)) {
+    setErrors(prev => ({
+      ...prev,
+      email: 'Введіть правильну електронну пошту',
+    }));
+    return;
+  }
+
+  try {
     const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/auth/local/register`,
+      `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: form.email,
-          // first_name: form.first_name,
-          // last_name: form.last_name,
           email: form.email,
-          password: form.password,
         }),
       }
     );
+
     const data = await res.json();
+     console.log('Forgot password response:', data);
 
-    localStorage.setItem('token', data.jwt);
-    try {
-      const token = localStorage.getItem('token');
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/${data.user.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            first_name: form.first_name,
-            last_name: form.last_name,
-          }),
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error('Помилка оновлення');
-      }
-      const updatedUser = await res.json();
-
-  // Записуємо саме оновленого користувача
-  localStorage.setItem('user', JSON.stringify(updatedUser));
-           
-
-    } catch (err) {
-      console.error(err);
-      alert('Не вдалося оновити дані');
+    if (!res.ok) {
+      setErrors(prev => ({
+        ...prev,
+        email: data.error?.message || 'Не вдалося надіслати лист',
+      }));
+      return;
     }
 
-    onClose();
-  };
+    // успішно
+    alert('Лист для відновлення пароля надіслано на вашу пошту');
 
+  } catch (error) {
+    console.error(error);
+
+    setErrors(prev => ({
+      ...prev,
+      email: 'Помилка з’єднання із сервером',
+    }));
+  }
+};  
   return (
     <>
       {' '}
@@ -171,13 +369,21 @@ dispatch(setCartItems(backendCart));
         <Modal>
           <CloseButton onClick={onClose}>×</CloseButton>
 
-          <Title>{mode === 'login' ? 'Вхід' : 'Реєстрація'}</Title>
+      <Title>
+  {mode === 'login'
+    ? 'Вхід'
+    : mode === 'register'
+    ? 'Реєстрація'
+    : 'Відновлення пароля'}
+</Title>
 
           <Subtitle>
-            {mode === 'login'
-              ? 'Увійдіть до свого акаунта'
-              : 'Створіть новий акаунт'}
-          </Subtitle>
+  {mode === 'login'
+    ? 'Увійдіть до свого акаунта'
+    : mode === 'register'
+    ? 'Створіть новий акаунт'
+    : 'Введіть email, щоб отримати посилання для відновлення пароля'}
+</Subtitle>
 
           <Tabs>
             <Tab active={mode === 'login'} onClick={() => setMode('login')}>
@@ -217,22 +423,32 @@ dispatch(setCartItems(backendCart));
             onChange={handleChange}
             placeholder="Email"
           />
-          <InputWrapper>
-            <Input
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Пароль"
-            />
+          {errors.email && <ErrorText>{errors.email}</ErrorText>}
+  
+         {mode !== 'forgotPassword' && (
+  <>
+    <InputWrapper>
+      <Input
+        name="password"
+        type={showPassword ? 'text' : 'password'}
+        value={form.password}
+        onChange={handleChange}
+        placeholder="Пароль"
+      />
 
-            <EyeButton
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </EyeButton>
-          </InputWrapper>
+      <EyeButton
+        type="button"
+        onClick={() => setShowPassword(prev => !prev)}
+      >
+        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      </EyeButton>
+    </InputWrapper>
+
+    {errors.password && (
+      <ErrorText>{errors.password}</ErrorText>
+    )}
+  </>
+)}
 
           {mode === 'register' && (
             <InputWrapper>
@@ -248,16 +464,33 @@ dispatch(setCartItems(backendCart));
                 type="button"
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </EyeButton>
             </InputWrapper>
           )}
-
-          <SubmitButton
-            onClick={mode === 'login' ? handleLogin : handleRegister}
-          >
-            {mode === 'login' ? 'Увійти' : 'Зареєструватися'}
-          </SubmitButton>
+          {errors.confirmPassword && (
+  <ErrorText>{errors.confirmPassword}</ErrorText>
+)}
+{mode === 'login' && <ForgotPassword>
+  <span onClick={() => setMode('forgotPassword')}>
+    Забули пароль?
+  </span>
+</ForgotPassword>}
+         <SubmitButton
+  onClick={
+    mode === 'login'
+      ? handleLogin
+      : mode === 'register'
+      ? handleRegister
+      : handleForgotPassword
+  }
+>
+  {mode === 'login'
+    ? 'Увійти'
+    : mode === 'register'
+    ? 'Зареєструватися'
+    : 'Надіслати посилання'}
+</SubmitButton>
 
           <BottomText>
             {mode === 'login' ? (

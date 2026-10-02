@@ -97,7 +97,13 @@ if (!response.ok) {
             <p>У вас поки немає замовлень.</p>
           ) : (
             <OrderList>
-              {orders.map((order) => {
+              {[...orders]
+    .sort((a, b) => {
+      const dateA = new Date(a.attributes?.date || a.date);
+      const dateB = new Date(b.attributes?.date || b.date);
+
+      return dateB - dateA; 
+    }).map((order) => {
                 // Парсимо атрибути / поля замовлення
                 const item = order.attributes || order;
                 const products =
