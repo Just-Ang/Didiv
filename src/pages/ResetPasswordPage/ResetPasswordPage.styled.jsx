@@ -178,6 +178,7 @@ export const Button = styled.button`
 `;
 export const ChangeOk = styled.div`
 display: flex;
+flex-direction: column;
 justify-content: center;
 align-items:center;`
 
