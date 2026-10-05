@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Container,
   Content,
@@ -11,15 +11,22 @@ import {
   Button,
   ErrorMessage,
   SuccessMessage,
+  InputWrapper,
+  EyeButton,
 } from './ResetPasswordPage.styled';
+import { Eye, EyeOff } from 'lucide-react';
 
 const ResetPasswordPage = ({ openLogin }) => {
   const [searchParams] = useSearchParams();
- 
+  
+ const navigate = useNavigate();
 
   const code = searchParams.get('code');
 
   const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+  
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   const [error, setError] = useState('');
@@ -75,6 +82,7 @@ const ResetPasswordPage = ({ openLogin }) => {
       setSuccess(true);
 
       setTimeout(() => {
+        navigate('/');
        openLogin();
       }, 2500);
     } catch (error) {
@@ -98,24 +106,37 @@ const ResetPasswordPage = ({ openLogin }) => {
             <Form onSubmit={handleSubmit}>
               <Label>
                 Новий пароль
+                <InputWrapper>
                 <Input
-                  type="password"
+                type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Введіть новий пароль"
                   autoComplete="new-password"
                 />
+                <EyeButton
+        type="button"
+        onClick={() => setShowPassword(prev => !prev)}
+      >
+        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      </EyeButton> </InputWrapper> 
               </Label>
-
+ 
               <Label>
                 Повторіть пароль
-                <Input
-                  type="password"
+               <InputWrapper><Input
+                  type={showConfirmPassword ? 'text' : 'password'}
                   value={passwordConfirmation}
                   onChange={e => setPasswordConfirmation(e.target.value)}
                   placeholder="Повторіть новий пароль"
                   autoComplete="new-password"
                 />
+                 <EyeButton
+                                type="button"
+                                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                              >
+                                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                              </EyeButton></InputWrapper>
               </Label>
 
               {error && <ErrorMessage>{error}</ErrorMessage>}

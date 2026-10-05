@@ -105,6 +105,35 @@ export const Input = styled.input`
     border-color: #cfc5ba;
   }
 `;
+export const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+ 
+`;
+export const EyeButton = styled.button`
+  position: absolute;
+  top:50%;
+  right: 18px;
+
+  transform: translateY(-50%);
+
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  color: #8d837d;
+
+  padding: 0;
+
+  &:hover {
+    color: #ff7a00;
+  }
+`;
 
 export const Button = styled.button`
   width: 100%;
