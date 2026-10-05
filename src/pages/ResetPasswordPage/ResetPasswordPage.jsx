@@ -81,16 +81,21 @@ const ResetPasswordPage = ({ openLogin }) => {
 
       setSuccess(true);
 
-      setTimeout(() => {
-        navigate('/');
-       openLogin();
-      }, 2500);
+    //   setTimeout(() => {
+    //     navigate('/');
+    //    openLogin();
+    //   }, 2500);
     } catch (error) {
       setError('Сталася помилка. Спробуйте ще раз.');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleLoginClick = () => {
+  navigate('/');
+  openLogin();
+};
 
   return (
     <Container>
@@ -148,12 +153,15 @@ const ResetPasswordPage = ({ openLogin }) => {
           </>
         ) : (
           <>
-            <Title>Пароль змінено</Title>
+          <Title>Пароль змінено</Title>
 
-            <SuccessMessage>
-              Ваш пароль успішно змінено. Зараз ви будете перенаправлені
-              на сторінку входу.
-            </SuccessMessage>
+<SuccessMessage>
+  Ваш пароль успішно змінено. Тепер ви можете увійти до свого акаунта.
+</SuccessMessage>
+
+<Button type="button" onClick={handleLoginClick}>
+  Увійти
+</Button>
           </>
         )}
       </Content>
