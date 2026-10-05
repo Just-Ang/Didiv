@@ -5895,6 +5895,7 @@ position: relative;
   }
 `,PV=k.div`
 display: flex;
+flex-direction: column;
 justify-content: center;
 align-items:center;`,TV=k.button`
 margin-top: 50px;
