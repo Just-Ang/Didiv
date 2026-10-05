@@ -366,6 +366,7 @@ order:4;
   z-index: 500;
   /* max-width:600px */
 `,Cj=k.li`
+font-family: var(--second-font);
   display: flex;
   gap: 15px;
   padding: 10px;
@@ -385,12 +386,12 @@ order:4;
     object-fit: cover;
  `,_j=k.h3`
       text-align: left;
-      font-size: 22px;
-      font-weight: 800;
+      font-size: 18px;
+      font-weight: 400;
 
 `,Ej=k.h3`
-
-      font-size: 22px;
+ font-weight: 500;
+      font-size: 20px;
          
 
 `,Pj=k.div`
@@ -401,15 +402,15 @@ flex-direction: column;
 
       @media screen and (min-width: 768px) {
    flex-direction: row;
-  justify-content: space-between; /* Рознесе назву вліво, а ціну вправо */
-  align-items: center;            /* Вирівняє їх по вертикалі */
+  justify-content: space-between; 
+  align-items: center;            
   width: 100%;
   padding-right: 20px;
   
   }
 
     
-`,hn="/Didiv/assets/symbol-defs-fb9ce9f0.svg",Tj=()=>{const[e,t]=y.useState(""),[n,r]=y.useState([]),[i,o]=y.useState(!1),a=rt(),l=y.useRef(null);y.useEffect(()=>{if(e.trim().length<2){r([]),o(!1);return}const c=setTimeout(async()=>{try{const d=await(await fetch(`https://backenddidiv-production.up.railway.app/api/products?filters[name][$containsi]=${e}&populate=*`)).json();r(d.data),o(!0)}catch(f){console.error(f)}},300);return()=>clearTimeout(c)},[e]),y.useEffect(()=>{const c=f=>{l.current&&!l.current.contains(f.target)&&o(!1)};return document.addEventListener("mousedown",c),()=>{document.removeEventListener("mousedown",c)}},[]);const s=c=>{t(""),o(!1),a(`/product/${c.id}`)};return u.jsxs(xj,{ref:l,children:[u.jsx(yj,{name:"site-search",value:e,onChange:c=>t(c.target.value),placeholder:"Пошук",autoComplete:"off",onFocus:()=>e.trim().length>=2&&o(!0)}),u.jsx(bj,{className:"search-button",children:u.jsx(wj,{children:u.jsx("use",{href:`${hn}#icon-search`})})}),i&&n.length>0&&u.jsx(Sj,{children:n.map(c=>{var v,h;const d=c.new_price&&c.new_price<c.price?c.new_price:c.price;return u.jsxs(Cj,{onClick:()=>s(c),children:[u.jsx(kj,{src:((h=(v=c.images)==null?void 0:v[0])==null?void 0:h.url)||"/nofoto.png",alt:""}),u.jsxs(Pj,{children:[u.jsx(_j,{children:c.name}),u.jsxs(Ej,{children:[d," грн."]})]})]},c.id)})})]})};var ww={exports:{}},Sw={};/**
+`,hn="/Didiv/assets/symbol-defs-fb9ce9f0.svg",Tj=()=>{const[e,t]=y.useState(""),[n,r]=y.useState([]),[i,o]=y.useState(!1),a=rt(),l=y.useRef(null);y.useEffect(()=>{if(e.trim().length<2){r([]),o(!1);return}const c=setTimeout(async()=>{try{const d=await(await fetch(`https://backenddidiv-production.up.railway.app/api/products?filters[name][$containsi]=${e}&populate=*`)).json();r(d.data),o(!0)}catch(f){console.error(f)}},300);return()=>clearTimeout(c)},[e]),y.useEffect(()=>{const c=f=>{l.current&&!l.current.contains(f.target)&&o(!1)};return document.addEventListener("mousedown",c),()=>{document.removeEventListener("mousedown",c)}},[]);const s=c=>{t(""),o(!1),a(`/product/${c.slug??c.id}`)};return u.jsxs(xj,{ref:l,children:[u.jsx(yj,{name:"site-search",value:e,onChange:c=>t(c.target.value),placeholder:"Пошук",autoComplete:"off",onFocus:()=>e.trim().length>=2&&o(!0)}),u.jsx(bj,{className:"search-button",children:u.jsx(wj,{children:u.jsx("use",{href:`${hn}#icon-search`})})}),i&&n.length>0&&u.jsx(Sj,{children:n.map(c=>{var v,h;const d=c.new_price&&c.new_price<c.price?c.new_price:c.price;return u.jsxs(Cj,{onClick:()=>s(c),children:[u.jsx(kj,{src:((h=(v=c.images)==null?void 0:v[0])==null?void 0:h.url)||"/nofoto.png",alt:""}),u.jsxs(Pj,{children:[u.jsx(_j,{children:c.name}),u.jsxs(Ej,{children:[d," грн."]})]})]},c.id)})})]})};var ww={exports:{}},Sw={};/**
  * @license React
  * use-sync-external-store-with-selector.production.js
  *
