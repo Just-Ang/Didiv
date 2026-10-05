@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import {
   Container,
   Content,
@@ -13,9 +13,9 @@ import {
   SuccessMessage,
 } from './ResetPasswordPage.styled';
 
-const ResetPasswordPage = () => {
+const ResetPasswordPage = ({ openLogin }) => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+ 
 
   const code = searchParams.get('code');
 
@@ -75,10 +75,10 @@ const ResetPasswordPage = () => {
       setSuccess(true);
 
       setTimeout(() => {
-        navigate('/login');
+       openLogin();
       }, 2500);
     } catch (error) {
-      setError(error.message || 'Сталася помилка. Спробуйте ще раз.');
+      setError('Сталася помилка. Спробуйте ще раз.');
     } finally {
       setLoading(false);
     }

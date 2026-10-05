@@ -156,7 +156,11 @@ function App() {
             <Route path="delivery" element={<DeliveryPage />} />
                  <Route
   path="/reset-password"
-  element={<ResetPasswordPage />}
+  element={<ResetPasswordPage
+  openLogin={() => {
+                  setAuthMode('login');
+                  setIsAuthOpen(true);
+                }} />}
 />
 
             <Route
