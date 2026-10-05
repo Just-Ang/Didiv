@@ -62,7 +62,7 @@ export const SearchBar = () => {
     const handleSelect = (product) => {
     setValue('');
     setOpen(false);
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product.slug ?? product.id}`)
   };
 
   return (

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+
+
 export const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -81,6 +83,7 @@ export const Dropdown = styled.ul`
 `;
 
 export const DropdownItem = styled.li`
+font-family: var(--second-font);
   display: flex;
   gap: 15px;
   padding: 10px;
@@ -103,13 +106,13 @@ export const DropdownItem = styled.li`
 
 export const ItemTitle = styled.h3`
       text-align: left;
-      font-size: 22px;
-      font-weight: 800;
+      font-size: 18px;
+      font-weight: 400;
 
 `
 export const ItemPrice= styled.h3`
-
-      font-size: 22px;
+ font-weight: 500;
+      font-size: 20px;
          
 
 `
@@ -122,8 +125,8 @@ flex-direction: column;
 
       @media screen and (min-width: 768px) {
    flex-direction: row;
-  justify-content: space-between; /* Рознесе назву вліво, а ціну вправо */
-  align-items: center;            /* Вирівняє їх по вертикалі */
+  justify-content: space-between; 
+  align-items: center;            
   width: 100%;
   padding-right: 20px;
   

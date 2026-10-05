@@ -89,32 +89,30 @@ export const ProductList = ({
         const data = await res.json();
         setProducts(data.data);
 
-
         const now = Date.now();
-const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+        const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 
-const visibleProducts = data.data.filter((product) => {
-  // Якщо товар є в наявності — завжди показуємо
-  if (product.stock > 0) {
-    return true;
-  }
+        const visibleProducts = data.data.filter((product) => {
+          // Якщо товар є в наявності — завжди показуємо
+          if (product.stock > 0) {
+            return true;
+          }
 
-  // Якщо stock = 0, але немає дати —
-  // краще показувати, щоб випадково не приховати товар
-  if (!product.sold_date) {
-    return true;
-  }
+          // Якщо stock = 0, але немає дати —
+          // краще показувати, щоб випадково не приховати товар
+          if (!product.sold_date) {
+            return true;
+          }
 
-  // Скільки часу товар без stock
-  const zeroSince = new Date(product.sold_date).getTime();
-  const timeWithoutStock = now - zeroSince;
+          // Скільки часу товар без stock
+          const zeroSince = new Date(product.sold_date).getTime();
+          const timeWithoutStock = now - zeroSince;
 
+          // Показуємо тільки перші 7 днів
+          return timeWithoutStock < SEVEN_DAYS;
+        });
 
-  // Показуємо тільки перші 7 днів
-  return timeWithoutStock < SEVEN_DAYS;
-});
-
-setProducts(visibleProducts);
+        setProducts(visibleProducts);
 
         const prices = data.data.map((p) => p.price);
 
@@ -342,7 +340,7 @@ setProducts(visibleProducts);
                 7 * 24 * 60 * 60 * 1000
               : false;
             const inCart = cartItems.find((c) => c.id === product.id);
-           
+
             const isAvailable = product?.available ?? true;
             const isSoldOut = product?.stock === 0;
 
@@ -395,13 +393,13 @@ setProducts(visibleProducts);
                 onClick={() =>
                   navigate(`/product/${product.slug ?? product.id}`)
                 }
-                  $soldOut={isSoldOut}
+                $soldOut={isSoldOut}
                 style={{ cursor: 'pointer' }}
               >
                 <ImgWrapper>
                   {isNew && <NewBadge>Новинка</NewBadge>}
                   {!isAvailable && <ReservedBadge>Бронь</ReservedBadge>}
-                    {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
+                  {isSoldOut && <SoldOutBadge>Продано</SoldOutBadge>}
 
                   <CardImg
                     src={product.images?.[0]?.url || '/placeholder.jpg'}
@@ -441,15 +439,16 @@ setProducts(visibleProducts);
                         />
                       </Button>
                     )}
-{!isSoldOut && (<Button onClick={(e) => handleClickFavorite(product, e)}>
-                      <Heart
-                        size={24}
-                        fill={isFavorite ? '#ff4d4f' : 'none'}
-                        color={isFavorite ? '#ff4d4f' : '#000000'}
-                        strokeWidth={isFavorite ? 1 : 2}
-                      />
-                    </Button>)}
-                    
+                    {!isSoldOut && (
+                      <Button onClick={(e) => handleClickFavorite(product, e)}>
+                        <Heart
+                          size={24}
+                          fill={isFavorite ? '#ff4d4f' : 'none'}
+                          color={isFavorite ? '#ff4d4f' : '#000000'}
+                          strokeWidth={isFavorite ? 1 : 2}
+                        />
+                      </Button>
+                    )}
                   </CardButtons>
                 </CardBottom>
               </Card>

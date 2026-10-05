@@ -183,6 +183,7 @@ const handleLogin = async () => {
     confirmPassword: '',
   });
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
  if (!form.email.trim()) {
     setErrors((prev) => ({
       ...prev,
