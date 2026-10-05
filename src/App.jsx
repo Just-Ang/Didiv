@@ -154,6 +154,10 @@ function App() {
             <Route path="about" element={<AboutUs />} />
             <Route path="contacts" element={<ContactsPage />} />
             <Route path="delivery" element={<DeliveryPage />} />
+                 <Route
+  path="/reset-password"
+  element={<ResetPasswordPage />}
+/>
 
             <Route
               path="account"
@@ -166,10 +170,7 @@ function App() {
               <Route index element={<ProfilePage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="orders" element={<OrderPage /> }/>
-              <Route
-  path="/reset-password"
-  element={<ResetPasswordPage />}
-/>
+         
  {/* <Route path="favorites" element={<FavoritesAccountPage />} />
    <Route path="password" element={<ChangePasswordPage />} />  */}
             </Route>
