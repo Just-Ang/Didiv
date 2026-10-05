@@ -5,6 +5,7 @@ export const Container = styled.div`
   max-width: 750px;
   padding: 10px;
   margin: 0 auto;
+
   display: flex;
   flex-direction: column;
 
@@ -29,14 +30,15 @@ export const Content = styled.div`
 export const Title = styled.h1`
   margin: 0 0 12px;
 
-  font-size: 28px;
+  font-size: 30px;
   line-height: 1.2;
-  font-weight: 500;
+  font-weight: 300;
 
+  color: #312620;
   text-align: center;
 
   @media screen and (min-width: 768px) {
-    font-size: 34px;
+    font-size: 42px;
   }
 `;
 
@@ -45,7 +47,8 @@ export const Subtitle = styled.p`
 
   font-size: 15px;
   line-height: 1.5;
-  color: #777;
+
+  color: #8d837d;
 
   text-align: center;
 `;
@@ -53,7 +56,7 @@ export const Subtitle = styled.p`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 `;
 
 export const Label = styled.label`
@@ -62,63 +65,95 @@ export const Label = styled.label`
   gap: 8px;
 
   font-size: 14px;
+  color: #3d2f29;
 `;
 
 export const Input = styled.input`
   width: 100%;
+  height: 56px;
+
   box-sizing: border-box;
 
-  padding: 14px 16px;
+  padding: 0 18px;
 
-  border: 1px solid #d8d8d8;
-  border-radius: 0;
+  border: 1px solid #ded6cc;
+  border-radius: 18px;
+
+  background: #fff;
 
   font-family: inherit;
-  font-size: 15px;
+  font-size: 16px;
+  color: #312620;
 
   outline: none;
 
-  transition: border-color 0.2s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:focus {
-    border-color: #222;
+    border-color: #ff7a00;
+
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
   }
 
   &::placeholder {
-    color: #aaa;
+    color: #aaa29b;
+  }
+
+  &:hover {
+    border-color: #cfc5ba;
   }
 `;
 
 export const Button = styled.button`
   width: 100%;
-  padding: 15px 20px;
+  height: 58px;
+
+  padding: 0 20px;
 
   border: none;
-  border-radius: 0;
+  border-radius: 18px;
 
-  background: #222;
+  background: #ff7a00;
   color: #fff;
 
   font-family: inherit;
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: 600;
+
   cursor: pointer;
 
-  transition: opacity 0.2s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
-    opacity: 0.85;
+    background: #eb6f00;
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: default;
+    transform: none;
+    box-shadow: none;
   }
 `;
 
 export const ErrorMessage = styled.p`
-  margin: 0;
+  margin: -8px 0 8px;
 
   font-size: 14px;
+  line-height: 1.4;
+
   color: #c62828;
 `;
 
@@ -127,6 +162,7 @@ export const SuccessMessage = styled.p`
 
   font-size: 15px;
   line-height: 1.5;
+
   color: #555;
 
   text-align: center;
