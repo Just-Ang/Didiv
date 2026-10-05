@@ -176,7 +176,54 @@ export const Button = styled.button`
     box-shadow: none;
   }
 `;
+export const ChangeOk = styled.div`
+display: flex;
+justify-content: center;
+align-items:center;`
 
+export const ButtonIn = styled.button`
+margin-top: 50px;
+   margin-left:auto;
+   margin-right:auto;
+  height: 58px;
+
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 18px;
+
+  background: #ff7a00;
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:hover {
+    background: #eb6f00;
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+  }
+`
 export const ErrorMessage = styled.p`
   margin: -8px 0 8px;
 

@@ -13,6 +13,8 @@ import {
   SuccessMessage,
   InputWrapper,
   EyeButton,
+  ButtonIn,
+  ChangeOk,
 } from './ResetPasswordPage.styled';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -152,17 +154,17 @@ const ResetPasswordPage = ({ openLogin }) => {
             </Form>
           </>
         ) : (
-          <>
+          <ChangeOk>
           <Title>Пароль змінено</Title>
 
 <SuccessMessage>
   Ваш пароль успішно змінено. Тепер ви можете увійти до свого акаунта.
 </SuccessMessage>
 
-<Button type="button" onClick={handleLoginClick}>
+<ButtonIn type="button" onClick={handleLoginClick}>
   Увійти
-</Button>
-          </>
+</ButtonIn>
+          </ChangeOk>
         )}
       </Content>
     </Container>
