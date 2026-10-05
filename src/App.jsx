@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearFavorite, setFavorites } from './redux/favoritesSlice';
 import { OrderPage } from './pages/OrderPage/OrderPage';
 import { clearCart } from './redux/cartSlice';
+import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -165,6 +166,10 @@ function App() {
               <Route index element={<ProfilePage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="orders" element={<OrderPage /> }/>
+              <Route
+  path="/reset-password"
+  element={<ResetPasswordPage />}
+/>
  {/* <Route path="favorites" element={<FavoritesAccountPage />} />
    <Route path="password" element={<ChangePasswordPage />} />  */}
             </Route>
