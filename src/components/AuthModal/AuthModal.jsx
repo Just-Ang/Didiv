@@ -35,6 +35,8 @@ export const AuthModal = ({
   
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({
+  first_name: '',
+  last_name: '',
   email: '',
   password: '',
   confirmPassword: '',
@@ -119,9 +121,11 @@ const dispatch = useDispatch();
 //   };
 const handleLogin = async () => {
   setErrors({
-    email: '',
-    password: '',
-    confirmPassword: '',
+     first_name: '',
+  last_name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
   });
 
   const res = await fetch(
@@ -183,7 +187,21 @@ const handleLogin = async () => {
     confirmPassword: '',
   });
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+    if (!form.first_name.trim()) {
+  setErrors((prev) => ({
+    ...prev,
+    first_name: "Введіть ім'я",
+  }));
+  return;
+}
+
+if (!form.last_name.trim()) {
+  setErrors((prev) => ({
+    ...prev,
+    last_name: 'Введіть прізвище',
+  }));
+  return;
+} 
  if (!form.email.trim()) {
     setErrors((prev) => ({
       ...prev,
@@ -407,6 +425,9 @@ const handleForgotPassword = async () => {
                 onChange={handleChange}
                 placeholder="Ім'я"
               />
+              {errors.first_name && (
+  <ErrorText>{errors.first_name}</ErrorText>
+)}
 
               <Input
                 name="last_name"
@@ -414,6 +435,10 @@ const handleForgotPassword = async () => {
                 onChange={handleChange}
                 placeholder="Прізвище"
               />
+
+{errors.last_name && (
+  <ErrorText>{errors.last_name}</ErrorText>
+)}
             </>
           )}
 
