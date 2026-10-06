@@ -197,7 +197,12 @@ export const EyeButton = styled.button`
   }
 `;
 
-
+export const SuccessText = styled.p`
+  margin: 10px 0;
+  color: #2e7d32;
+  font-size: 14px;
+  text-align: center;
+`;
 export const BottomText = styled.p`
   margin-top:28px;
 
