@@ -22,14 +22,19 @@ export const Form = styled.form`
   max-width: 480px;
 
   margin: 0 auto;
-  
+   @media screen and (min-width:768px) {
+    margin-right:auto;
+    margin-left: 0;
+    
+  }
 `;
 
 export const Title = styled.h1`
   margin: 0 0 12px;
 
-  font-family: inherit;
-  font-size: 32px;
+    font-family: var(--main-font);
+    font-size: 28px;
+    color: var(--black-color);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.03em;
@@ -44,7 +49,7 @@ export const Title = styled.h1`
 export const Subtitle = styled.p`
   margin: 0 0 40px;
 
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.5;
 
   color: #777;
@@ -53,14 +58,15 @@ export const Subtitle = styled.p`
 export const Field = styled.div`
   display: flex;
   flex-direction: column;
-
+ font-family: var(--second-font);
+ font-weight:300;
   margin-bottom: 24px;
 `;
 
 export const Label = styled.label`
   margin-bottom: 9px;
 
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.3;
 
   color: #333;
@@ -74,13 +80,15 @@ export const Input = styled.input`
 
   box-sizing: border-box;
 
-  border: 1px solid #d8d8d8;
-  border-radius: 0;
+      padding: 0 18px;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+ 
 
   background: transparent;
 
   font-family: inherit;
-  font-size: 15px;
+  font-size: 18px;
   color: #111;
 
   outline: none;
@@ -121,7 +129,7 @@ export const SubmitButton = styled.button`
  
 
   font-family: inherit;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
 
   cursor: pointer;
