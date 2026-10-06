@@ -29,6 +29,7 @@ import { clearFavorite, setFavorites } from './redux/favoritesSlice';
 import { OrderPage } from './pages/OrderPage/OrderPage';
 import { clearCart } from './redux/cartSlice';
 import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
+import ChangePasswordPage from './pages/ChangePasswordPage/ChangePasswordPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -175,8 +176,8 @@ function App() {
               <Route path="profile" element={<ProfilePage />} />
               <Route path="orders" element={<OrderPage /> }/>
          
- {/* <Route path="favorites" element={<FavoritesAccountPage />} />
-   <Route path="password" element={<ChangePasswordPage />} />  */}
+
+   <Route path="password" element={<ChangePasswordPage />} />  
             </Route>
 
             <Route path="*" element={<ErrorPage />} />
