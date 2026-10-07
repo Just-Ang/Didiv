@@ -55,7 +55,6 @@ export const ProductList = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 24;
   let filteredProducts = products;
-  console.log(products);
   const sortRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -168,8 +167,8 @@ export const ProductList = ({
   });
 
   if (priceRange && priceRange.length === 2) {
-    const [minPrice, maxPrice] = priceRange;
-    console.log(minPrice, maxPrice);
+    // const [minPrice, maxPrice] = priceRange;
+   
   }
 
   const sortedProducts = useMemo(() => {

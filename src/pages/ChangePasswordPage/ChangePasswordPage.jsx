@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import {
   Container,
-
   Form,
   Title,
   Subtitle,
@@ -10,13 +9,20 @@ import {
   Label,
   Input,
   SubmitButton,
-
   Message,
   ErrorMessage,
 } from './ChangePasswordPage.styled';
+import {
+  EyeButton,
+  InputWrapper,
+} from '../ResetPasswordPage/ResetPasswordPage.styled';
+import { Eye, EyeOff } from 'lucide-react';
 
 const ChangePasswordPage = () => {
- 
+  const [showPasswordNow, setShowPasswordNow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [form, setForm] = useState({
     currentPassword: '',
@@ -28,10 +34,10 @@ const ChangePasswordPage = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -40,17 +46,13 @@ const ChangePasswordPage = () => {
     setSuccess('');
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError('');
     setSuccess('');
 
-    if (
-      !form.currentPassword ||
-      !form.newPassword ||
-      !form.confirmPassword
-    ) {
+    if (!form.currentPassword || !form.newPassword || !form.confirmPassword) {
       setError('Заповніть усі поля.');
       return;
     }
@@ -73,30 +75,28 @@ const ChangePasswordPage = () => {
     try {
       setLoading(true);
 
-   const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
-const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/auth/change-password`,
-  {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      currentPassword: form.currentPassword,
-      password: form.newPassword,
-      passwordConfirmation: form.newPassword,
-    }),
-  }
-);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/change-password`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            currentPassword: form.currentPassword,
+            password: form.newPassword,
+            passwordConfirmation: form.newPassword,
+          }),
+        }
+      );
 
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(
-          data?.message || 'Не вдалося змінити пароль.'
-        );
+        throw new Error(data?.message || 'Не вдалося змінити пароль.');
       }
 
       setSuccess('Пароль успішно змінено.');
@@ -114,74 +114,85 @@ const response = await fetch(
   };
 
   return (
-      <Container>
-        <Form onSubmit={handleSubmit}>
-          <Title>Зміна пароля</Title>
+    <Container>
+      <Form onSubmit={handleSubmit}>
+        <Title>Зміна пароля</Title>
 
-          <Subtitle>
-            Введіть поточний пароль і встановіть новий.
-          </Subtitle>
+        <Subtitle>Введіть поточний пароль і встановіть новий.</Subtitle>
 
-          <Field>
-            <Label htmlFor="currentPassword">
-              Поточний пароль
-            </Label>
-
+        <Field>
+          <Label htmlFor="currentPassword">Поточний пароль</Label>
+          <InputWrapper>
             <Input
               id="currentPassword"
               name="currentPassword"
-              type="password"
+              type={showPasswordNow ? 'text' : 'password'}
               value={form.currentPassword}
               onChange={handleChange}
               autoComplete="current-password"
               placeholder="Введіть поточний пароль"
             />
-          </Field>
+            <EyeButton
+              type="button"
+              onClick={() => setShowPasswordNow((prev) => !prev)}
+            >
+              {showPasswordNow ? <EyeOff size={20} /> : <Eye size={20} />}
+            </EyeButton>
+          </InputWrapper>
+        </Field>
 
-          <Field>
-            <Label htmlFor="newPassword">
-              Новий пароль
-            </Label>
-
+        <Field>
+          <Label htmlFor="newPassword">Новий пароль</Label>
+          <InputWrapper>
             <Input
               id="newPassword"
               name="newPassword"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               value={form.newPassword}
               onChange={handleChange}
               autoComplete="new-password"
               placeholder="Введіть новий пароль"
             />
-          </Field>
+            <EyeButton
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </EyeButton>
+          </InputWrapper>
+        </Field>
 
-          <Field>
-            <Label htmlFor="confirmPassword">
-              Підтвердження нового пароля
-            </Label>
+        <Field>
+          <Label htmlFor="confirmPassword">Підтвердження нового пароля</Label>
 
+          <InputWrapper>
             <Input
               id="confirmPassword"
               name="confirmPassword"
-              type="password"
+              type={showConfirmPassword ? 'text' : 'password'}
               value={form.confirmPassword}
               onChange={handleChange}
               autoComplete="new-password"
               placeholder="Повторіть новий пароль"
             />
-          </Field>
+            <EyeButton
+              type="button"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </EyeButton>
+          </InputWrapper>
+        </Field>
 
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
-          {success && <Message>{success}</Message>}
+        {success && <Message>{success}</Message>}
 
-          <SubmitButton type="submit" disabled={loading}>
-            {loading ? 'Зміна пароля...' : 'Змінити пароль'}
-          </SubmitButton>
-
-
-        </Form>
-      </Container>
-    
+        <SubmitButton type="submit" disabled={loading}>
+          {loading ? 'Зміна пароля...' : 'Змінити пароль'}
+        </SubmitButton>
+      </Form>
+    </Container>
   );
 };
 

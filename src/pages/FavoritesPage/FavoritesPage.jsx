@@ -42,8 +42,8 @@ import { persistor } from '../../redux/store';
 const FavoritesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
- const token = localStorage.getItem('token');
-      const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
   const reduxFavorites = useSelector((state) => state.favorites.items);
 
   const [favorites, setFavorites] = useState([]);
@@ -52,23 +52,21 @@ const FavoritesPage = () => {
   const [removingIds, setRemovingIds] = useState([]);
 
   const cartItems = useSelector((state) => state.cart.items);
-  
-const handleLogout = async () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
 
-  dispatch(clearFavorite());
-  dispatch(clearCart());
-setFavorites([]);
+  const handleLogout = async () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
 
-  await persistor.purge();
-  
+    dispatch(clearFavorite());
+    dispatch(clearCart());
+    setFavorites([]);
 
-navigate("/", { replace: true });
-};
+    await persistor.purge();
+
+    navigate('/', { replace: true });
+  };
   useEffect(() => {
     const fetchFavorites = async () => {
-
       // Якщо користувач НЕ авторизований —
       // беремо обране з Redux
       if (!token || !user) {
@@ -154,7 +152,6 @@ navigate("/", { replace: true });
     dispatch(addAllToCart(itemsToAdd));
     toast.success('Додано максимально доступну кількість товарів');
   };
-  console.log('favorites', favorites);
 
   const totalQuantity = favorites.filter(
     (item) => item.available !== false && item.stock !== 0
@@ -166,8 +163,7 @@ navigate("/", { replace: true });
         sum + (item.new_price ?? item.price) * (item.quantity || 1),
       0
     );
-  console.log('favorites', favorites);
-  console.log(totalQuantity);
+
   const handleClickFavorite = async (product, e) => {
     e.stopPropagation();
 

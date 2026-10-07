@@ -29,7 +29,7 @@ export const OrderPage = () => {
     } catch {
       return null;
     }
-  })();  console.log('orders', orders);
+  })();  
   const navigate = useNavigate();
   const statusLabels = {
   pending: 'Створено',

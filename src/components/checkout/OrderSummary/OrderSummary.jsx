@@ -3,7 +3,7 @@ import placeholder from '../../../../public/nofoto.png';
 import { CallConfirmation, Checkbox, CheckboxLabel } from "../../../pages/CheckoutPage/CheckoutPage.styled";
 
 const OrderSummary = ({ cartItems, totalAmount, totalQuantity, isFormValid, handleSubmit, noCall, setNoCall }) => {
-  console.log(totalQuantity, totalAmount)
+ 
   return(
   <Summary>
     <h3>Ваше замовлення</h3>

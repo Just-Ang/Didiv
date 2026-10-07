@@ -41,7 +41,7 @@ const CatalogPage = () => {
           }))
         );
       } catch (err) {
-        console.log(err);
+      console.error("Помилка запиту:", err);
       } finally {
         setLoading(false);
       }

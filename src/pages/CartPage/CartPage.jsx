@@ -50,10 +50,9 @@ const CartPage = () => {
 
   const [localCartItemsProduct, setLocalCartItemsProduct] = useState([]);
   const [cartItems, setCartItem] = useState([]);
-  console.log('cartItems', cartItems);
 
   const [loading, setLoading] = useState(true);
-  console.log('localCartItems', localCartItemsProduct);
+
 
   const totalQuantity = reduxCartItems
     .filter((item) => item.available !== false && item.stock > 0)

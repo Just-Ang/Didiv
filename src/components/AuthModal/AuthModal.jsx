@@ -42,7 +42,7 @@ export const AuthModal = ({
     password: '',
     confirmPassword: '',
   });
-  console.log(errors);
+
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -365,7 +365,7 @@ export const AuthModal = ({
       );
 
       const data = await res.json();
-      console.log('Forgot password response:', data);
+    
 
       if (!res.ok) {
         setErrors((prev) => ({

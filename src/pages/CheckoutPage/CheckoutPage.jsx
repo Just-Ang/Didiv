@@ -20,14 +20,14 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
-console.log(cartItems, 'cartitmes')
+
   const user = useMemo(() => {
     const savedUser = localStorage.getItem('user');
 
     return savedUser ? JSON.parse(savedUser) : null;
   }, []);
 
-  console.log(user);
+
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -36,7 +36,7 @@ console.log(cartItems, 'cartitmes')
     city: '',
     postOffice: '',
   });
-  console.log(formData);
+
 
   const [inputCity, setInputCity] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
@@ -53,7 +53,7 @@ console.log(cartItems, 'cartitmes')
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   const [noCall, setNoCall] = useState(false);
-  console.log('noCall', noCall);
+
 
   const userDataInitialized = useRef(false);
 
