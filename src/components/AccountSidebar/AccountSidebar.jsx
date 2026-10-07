@@ -7,6 +7,7 @@ import {
   Email,
   Menu,
   MenuButton,
+  UserInfo,
 } from "./AccountSidebar.styled";
 
 import { persistor } from "../../redux/store";
@@ -79,10 +80,10 @@ navigate("/", { replace: true });
           {(name || name)?.[0]?.toUpperCase() || "?"}
         </Avatar>
 
-        <div>
+        <UserInfo>
           <Name>{name}</Name>
           <Email>{email}</Email>
-        </div>
+        </UserInfo>
       </User>
 
       <Menu>

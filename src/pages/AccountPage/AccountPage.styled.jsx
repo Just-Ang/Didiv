@@ -18,7 +18,7 @@ export const AccountWrapper = styled.main`
   @media screen and (min-width: 1200px) {
    max-width: 1448px;
     display: grid;
-    grid-template-columns: 290px 1fr;
+    grid-template-columns: 350px 1fr;
     gap: 40px;
     align-items: start;
   }

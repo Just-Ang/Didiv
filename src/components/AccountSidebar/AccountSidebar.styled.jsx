@@ -17,15 +17,20 @@ export const Sidebar = styled.aside`
 `;
 
 export const User = styled.div`
-  display: flex;
+   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 28px;
+  min-width: 0;
+  
 `;
 
 export const Avatar = styled.div`
-  width: 70px;
+   width: 70px;
   height: 70px;
+  min-width: 70px;
+  min-height: 70px;
+  flex-shrink: 0;
 
   border-radius: 50%;
   background: #4c3a30;
@@ -38,6 +43,10 @@ export const Avatar = styled.div`
 
   font-size: 26px;
 `;
+export const UserInfo = styled.div`
+  min-width: 0;
+  flex: 1;
+`;
 
 export const Name = styled.h3`
   margin-bottom: 4px;
@@ -45,6 +54,13 @@ export const Name = styled.h3`
 
 export const Email = styled.p`
   color: #777;
+   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  width: 100%;
+   flex: 1;
+  
 `;
 
 export const Menu = styled.div`
