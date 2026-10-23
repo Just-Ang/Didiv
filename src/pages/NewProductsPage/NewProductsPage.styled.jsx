@@ -11,7 +11,7 @@ export const Container = styled.div`
     margin-left: auto;
   margin-right: auto;
   align-items: center;
-        padding: 40px 30px;
+        padding: 30px 10px;
 min-height: calc(100vh - 120px); 
 /* min-height: 100vh; */
  @media screen and (min-width: 768px) {
@@ -57,6 +57,13 @@ export const GridWrapper = styled.div`
 
   grid-template-columns: 1fr;
       margin-bottom: 30px;
+      @media screen and (max-width: 768px) 
+  {
+        width: 100%;
+        max-width: 750px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
 
   @media screen and (min-width: 768px) {
  

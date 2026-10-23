@@ -134,7 +134,7 @@ export const NewArrivals = () => {
                   <PriceWrapper>
                     <PriceBlock>
                       <CurrentPrice $discount={hasDiscount}>
-                        {finalPrice.toLocaleString()}&#160;грн
+                        {finalPrice?.toLocaleString()}&#160;грн
                       </CurrentPrice>
 
                       {hasDiscount && (
