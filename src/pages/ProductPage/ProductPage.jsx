@@ -407,7 +407,7 @@ export const ProductPage = () => {
                 </>
               ) : (
                 <CurrentPrice>
-                  {product.price.toLocaleString()} грн
+                  {product.price?.toLocaleString()} грн
                 </CurrentPrice>
               )}
             </PriceWrapper>
