@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 export const Section = styled.section`
   background-color: var(--second-background);
+
 `;
 export const Container = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   align-items: center;
-  padding-top: 30px;
+  padding-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
   @media screen and (min-width: 768px) {
@@ -22,6 +23,17 @@ export const Container = styled.div`
   }
   @media screen and (min-width: 1200px) {
     max-width: 1448px;
+  }
+`;
+export const Breadcrumbs = styled.div`
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: #8c8c8c;
+     margin-right: auto;
+
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 `;
 

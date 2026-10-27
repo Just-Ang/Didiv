@@ -6,7 +6,18 @@ export const Breadcrumbs = styled.div`
   font-size: 14px;
   color: #8c8c8c;
   background-color: #fdfaf7;
+   @media screen and (min-width: 1200px) {
+    max-width: 1448px;
+   margin-left: auto;
+  margin-right: auto;
+  }
+   a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
+
+
 
 export const Container = styled.div`
    
@@ -21,10 +32,12 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h1`
+
   font-size: 32px;
   color: #333;
   margin-bottom: 40px;
   font-weight: 600;
+ 
 `;
 
 export const CartImage = styled.img`

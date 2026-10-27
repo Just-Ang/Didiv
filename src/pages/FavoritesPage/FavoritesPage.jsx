@@ -295,19 +295,10 @@ const FavoritesPage = () => {
       ) : (
         <Container>
           <ToastContainer autoClose={1500} />
-          <Breadcrumbs>
-            {' '}
-            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-              Головна
-            </Link>{' '}
-            /{' '}
-            <Link
-              to="/favorite"
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              Обране
-            </Link>
-          </Breadcrumbs>
+           <Breadcrumbs>
+                        <Link to="/">Головна</Link> / <Link to="/favorite">Обране</Link> {' '}
+                       
+                      </Breadcrumbs>
           <Title>Обране</Title>
 
           <Layout>

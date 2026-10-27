@@ -11,7 +11,7 @@ export const Container = styled.div`
     margin-left: auto;
   margin-right: auto;
   align-items: center;
-        padding: 30px 10px;
+        padding: 20px 10px;
 min-height: calc(100vh - 120px); 
 /* min-height: 100vh; */
  @media screen and (min-width: 768px) {
@@ -26,6 +26,7 @@ min-height: calc(100vh - 120px);
   
 `;
 export const WrapperTop =styled.div`
+ 
      width: 100%;
   display: flex;
   justify-content: space-between;
@@ -34,6 +35,8 @@ export const WrapperTop =styled.div`
   
 `
 export const TitleNew = styled.h1`
+  /* flex: 1;
+   text-align:center; */
 
     font-size: 25px;
 font-family: var(--main-font);
@@ -42,14 +45,14 @@ text-transform: uppercase;
  @media screen and (min-width: 360px) {
   font-size: 32px;
   }
-
-
-@media screen and (min-width: 768px) {
-  
-  }
-
 `;
 
+
+export const WrapperSort = styled.div`
+  position: relative;
+  display: inline-block;
+    /* flex-shrink: 0; */
+`; 
 export const GridWrapper = styled.div`
  width: 100%;
   display: grid;
@@ -216,12 +219,6 @@ export const PageButton = styled.button`
 `;
 
 
-export const WrapperSort = styled.div`
-  position: relative;
-  display: inline-block;
-  
-
-`;
 export const SortButton = styled.button`
   width: 100%;
       min-width: 130px;

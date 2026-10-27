@@ -52,7 +52,6 @@ import dayjs from 'dayjs';
 import FAQSection from '../../components/FAQSection/FAQSection';
 import placeholder from '../../../public/nofoto.png';
 
-
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { handleCart } from '../../api/utils/handleCart';
 
@@ -296,6 +295,7 @@ export const ProductPage = () => {
       <ToastContainer autoClose={1500} />
       <Breadcrumbs>
         <Link to="/">Головна</Link> / <Link to="/catalog">Каталог</Link> /{' '}
+        <Link to={`/catalog/${product.category?.title}`}>{product.category?.title}</Link> /{' '}
         {product.name}
       </Breadcrumbs>
       <MainSection>
@@ -450,7 +450,7 @@ export const ProductPage = () => {
                   if (isSoldOut) return;
                   handleClickFavorite(product, e);
                 }}
-                 disabled={isSoldOut}
+                disabled={isSoldOut}
               >
                 <HeartIcon $active={isFavorite}>
                   {' '}

@@ -20,11 +20,16 @@ export const Container = styled.div`
   }
 `;
 
-export const Breadcrumbs = styled.nav`
+export const Breadcrumbs = styled.div`
   font-family: var(--main-font);
   font-size: 14px;
   color: #8c8c8c;
   margin-bottom: 15px;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 export const Title = styled.h1`

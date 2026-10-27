@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import { NewArrivals } from '../../components/NewArrivals/NewArrivals';
 import {
+  Breadcrumbs,
   CatalogBox,
   CatalogTitle,
   ImgWrapper,
@@ -78,6 +80,10 @@ const CatalogPage = () => {
   return (
     <Section>
       <Container>
+         <Breadcrumbs>
+                <Link to="/">Головна</Link> / <Link to="/catalog">Каталог</Link>
+                
+              </Breadcrumbs>
         <WrapperNew>
           <NewArrivals />
         </WrapperNew>

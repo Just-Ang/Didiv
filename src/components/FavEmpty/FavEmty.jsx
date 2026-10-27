@@ -1,9 +1,13 @@
+import { Link } from "react-router-dom";
 import { ActionButton, Breadcrumbs, CartImage, Container,  SubMessage,  } from "./FavEmpty.styled";
 
 const FavEmpty = () => {
   return (
     <>
-      <Breadcrumbs>Головна / Обране</Breadcrumbs>
+      <Breadcrumbs>
+              <Link to="/">Головна</Link> / <Link to="/favorite">Обране</Link> {' '}
+             
+            </Breadcrumbs>
       <Container>
         <CartImage
           src={import.meta.env.BASE_URL + 'sad.png'}
