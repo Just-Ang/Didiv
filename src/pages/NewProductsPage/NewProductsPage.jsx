@@ -342,7 +342,7 @@ export const NewProductsPage = () => {
 
     {hasDiscount && (
       <OldPrice>
-        {product.price.toLocaleString()}&#160;грн
+        {product.price?.toLocaleString()}&#160;грн
       </OldPrice>
     )}
 
