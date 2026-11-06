@@ -5,7 +5,8 @@ const FavEmpty = () => {
   return (
     <>
       <Breadcrumbs>
-              <Link to="/">Головна</Link> / <Link to="/favorite">Обране</Link> {' '}
+              <Link to="/">Головна</Link> / <Link to="/favorite">Обране</Link>  
+               {' '}
              
             </Breadcrumbs>
       <Container>
