@@ -12,7 +12,7 @@ export default defineConfig({
           assets: '/src/assets'
         },
       },
-      base: '/Didiv/',
-      // base: '/',
+      // base: '/Didiv/',
+      base: '/',
       
     });

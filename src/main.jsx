@@ -10,7 +10,7 @@ import 'modern-normalize/modern-normalize.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
     <Provider store={store}>
   <React.StrictMode>
-    <BrowserRouter basename="/Didiv/">
+    <BrowserRouter basename="/">
       <App />
     </BrowserRouter>
   </React.StrictMode>
