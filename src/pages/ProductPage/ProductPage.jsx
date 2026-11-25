@@ -54,6 +54,7 @@ import placeholder from '../../../public/nofoto.png';
 
 import { handleFavorite } from '../../api/utils/handleFavorite';
 import { handleCart } from '../../api/utils/handleCart';
+import QueryString from 'qs';
 
 export const ProductPage = () => {
   const { identifier } = useParams();
@@ -106,16 +107,29 @@ export const ProductPage = () => {
       try {
         setLoading(true);
 
-        const filter = isId
-          ? `filters[id][$eq]=${identifier}`
-          : `filters[slug][$eq]=${identifier}`;
+      const query = QueryString.stringify(
+  {
+    populate: {
+      attributes: {
+        populate: {
+          label: { populate: '*' },
+          value: { populate: '*' },
+        },
+      },
+      features: { populate: '*' },
+      category: true,
+      images: true,
+    },
+    filters: isId
+      ? { id: { $eq: identifier } }
+      : { slug: { $eq: identifier } },
+  },
+  { encodeValuesOnly: true }
+);
 
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/products?${filter}&populate=*`
-        );
-
-        const data = await res.json();
-        setProducts(data.data);
+const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products?${query}`);
+const data = await res.json();
+setProducts(data.data);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
@@ -555,10 +569,31 @@ export const ProductPage = () => {
             <TitleSpecs> Характеристики</TitleSpecs>
 
             {(() => {
-              const allSpecs = [
-                ...(product.attributes || []),
-                ...(product.features || []),
-              ];
+             const normalizedAttributes = (product.attributes || [])
+  .map((attr) => {
+    const labelText =
+      attr.label?.label ??
+      attr.label?.name ??
+      attr.label?.title ??
+      attr.label?.value ??
+      '';
+    const valueText = attr.value?.value ?? '';
+
+    if (!labelText || !valueText) return null;
+
+    return {
+      id: attr.id ?? `${labelText}-${valueText}`,
+      label: labelText,
+      value: valueText,
+    };
+  })
+  .filter(Boolean);
+console.log(normalizedAttributes, 'normalizedAttributes');
+
+const allSpecs = [
+  ...normalizedAttributes,
+  ...(product.features || []),
+];
 
               return allSpecs.length ? (
                 allSpecs.map((spec, index) => (
