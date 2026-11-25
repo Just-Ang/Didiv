@@ -37,11 +37,13 @@ width: 100vw;
 height:30vw;
 
   @media screen and (min-width: 768px) {
-  width: 60vw;
-  height:80vw;
+   width: 60vw; 
+
+  height: 80vw;
   }
    @media screen and (min-width: 1200px) {
- 
+     width: 80vw; 
+   max-width: 1155px;
   height:40vw;
   }
       
@@ -51,7 +53,7 @@ export const GridWrapper = styled.div`
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  align-items: start;
+ align-items: stretch;
   gap: 24px;
   width: 100%;
   max-width: 750px;
@@ -90,6 +92,8 @@ export const GridWrapper = styled.div`
 `;
 
 export const Card = styled.div`
+display: flex;        
+  flex-direction: column;
   position: relative;
 font-family: var(--second-font);
 font-weight: 500;
@@ -213,6 +217,7 @@ export const CardImg = styled.img`
 `;
 
 export const CardBottom = styled.div`
+margin-top: auto;
   padding: 10px;
       display: flex;
     align-content: center;
