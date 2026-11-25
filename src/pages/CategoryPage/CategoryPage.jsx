@@ -32,6 +32,7 @@ export const CategoryPage = () => {
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [sortType, setSortType] = useState('date');
   const [sortOrder, setSortOrder] = useState('desc'); // asc  desc
+console.log(selectedFilters, 'selectedFilters');
 
   const [childValues, setChildValues] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 0]);

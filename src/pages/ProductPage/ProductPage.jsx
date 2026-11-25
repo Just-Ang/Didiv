@@ -66,9 +66,12 @@ export const ProductPage = () => {
   const [loading, setLoading] = useState(true);
 
   const isId = !isNaN(identifier);
+ 
+  
   const product = products.find((p) =>
     isId ? String(p.id) === String(identifier) : p.slug === identifier
   );
+
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
     : false;

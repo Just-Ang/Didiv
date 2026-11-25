@@ -14,6 +14,7 @@ import {
   Checkmark,
 } from '../SidebarFiltersMobile/SidebarFiltersMobile.styled';
 import { useEffect, useState } from 'react';
+import QueryString from 'qs';
 
 export const SidebarFiltersMobile = ({
   childValues,
@@ -29,38 +30,68 @@ export const SidebarFiltersMobile = ({
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
-            category
-          )}&pagination[pageSize]=200`
-        );
-
-        const data = await res.json();
-
-        const products = data.data || [];
+       const query = QueryString.stringify(
+         {
+           populate: {
+             attributes: {
+               populate: {
+                 label: {
+                   populate: '*',
+                 },
+                 value: {
+                   populate: '*',
+                 },
+               },
+             },
+             category: true,
+           },
+           filters: {
+             category: {
+               title: {
+                 $eq: category,
+               },
+             },
+           },
+           pagination: {
+             pageSize: 200,
+           },
+         },
+         { encodeValuesOnly: true }
+       );
+       
+       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products?${query}`);
+       const data = await res.json();
+           
+             const products = data.data || [];
 
         const aggregated = {};
 
-        products.forEach((product) => {
-          product.attributes?.forEach((attr) => {
-            if (!aggregated[attr.label]) aggregated[attr.label] = new Set();
-            aggregated[attr.label].add(attr.value);
-          });
-        });
+products.forEach((product) => {
+  product.attributes?.forEach((attr) => {
+    const labelText =
+      attr.label?.label ?? attr.label?.name ?? attr.label?.title;
+    const valueText = attr.value?.value;
 
-        // Створюємо масив об’єктів для SidebarFilters
-        const apiFilters = Object.entries(aggregated).map(
-          ([label, optionsSet]) => ({
-            type: 'checkbox',
-            label,
-            name: label.toLowerCase(),
-            options: Array.from(optionsSet),
-          })
-        );
+    // Пропускаємо порожні або незаповнені значення
+    if (!labelText || !valueText) return;
 
-        setFilters(apiFilters);
+    if (!aggregated[labelText]) {
+      aggregated[labelText] = new Set();
+    }
+
+    aggregated[labelText].add(valueText);
+  });
+});
+
+// Створюємо масив об’єктів для SidebarFilters
+const apiFilters = Object.entries(aggregated).map(([label, optionsSet]) => ({
+  type: 'checkbox',
+  label,
+  name: label.toLowerCase(),
+  options: Array.from(optionsSet),
+}));
+
+setFilters(apiFilters);
       } catch (error) {
         console.error(error);
       }

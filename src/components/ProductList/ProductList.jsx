@@ -1,3 +1,4 @@
+ import qs from 'qs';
 import {
   Button,
   Card,
@@ -77,13 +78,43 @@ export const ProductList = ({
       try {
         setLoading(true);
 
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
-            category
-          )}&pagination[pageSize]=500`
-        );
+        // const res = await fetch(
+        //   `${
+        //     import.meta.env.VITE_API_URL
+        //   }/api/products?populate=*&filters[category][title][$eq]=${encodeURIComponent(
+        //     category
+        //   )}&pagination[pageSize]=500`
+        // );
+       
+
+// усередині fetchProducts:
+const query = qs.stringify(
+  {
+    populate: {
+      attributes: {
+        populate: {
+          label: { populate: '*' },
+          value: { populate: '*' },
+        },
+      },
+      category: true,
+      images: true,
+    },
+    filters: {
+      category: {
+        title: {
+          $eq: category,
+        },
+      },
+    },
+    pagination: {
+      pageSize: 500,
+    },
+  },
+  { encodeValuesOnly: true }
+);
+
+const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products?${query}`);
 
         const data = await res.json();
         setProducts(data.data);
@@ -158,10 +189,25 @@ export const ProductList = ({
 
     if (Array.isArray(value) && value.length > 0) {
       filteredProducts = filteredProducts.filter((p) => {
-        const attr = p.attributes?.find(
-          (a) => a.label.toLowerCase() === key.toLowerCase()
-        );
-        return attr && value.includes(attr.value);
+        // const attr = p.attributes?.find(
+        //   (a) => a.label.toLowerCase() === key.toLowerCase()
+        // );
+        // return attr && value.includes(attr.value);
+        return p.attributes?.some((a) => {
+  const labelText = (
+    a.label?.label ??
+    a.label?.name ??
+    a.label?.title ??
+    a.label?.value ??
+    ''
+  )
+    .toString()
+    .toLowerCase();
+
+  const valueText = a.value?.value;
+
+  return labelText === key.toLowerCase() && value.includes(valueText);
+});
       });
     }
   });
