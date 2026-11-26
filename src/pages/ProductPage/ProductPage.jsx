@@ -67,8 +67,7 @@ export const ProductPage = () => {
   const [loading, setLoading] = useState(true);
 
   const isId = !isNaN(identifier);
- 
-  
+
   const product = products.find((p) =>
     isId ? String(p.id) === String(identifier) : p.slug === identifier
   );
@@ -107,29 +106,36 @@ export const ProductPage = () => {
       try {
         setLoading(true);
 
-      const query = QueryString.stringify(
-  {
-    populate: {
-      attributes: {
-        populate: {
-          label: { populate: '*' },
-          value: { populate: '*' },
-        },
-      },
-      features: { populate: '*' },
-      category: true,
-      images: true,
-    },
-    filters: isId
-      ? { id: { $eq: identifier } }
-      : { slug: { $eq: identifier } },
-  },
-  { encodeValuesOnly: true }
-);
+        const query = QueryString.stringify(
+          {
+            populate: {
+              attributes: {
+                populate: {
+                  label: { populate: '*' },
+                  value: { populate: '*' },
+                },
+              },
+              features: {
+                populate: {
+                  label: { populate: '*' },
+                  value: { populate: '*' },
+                },
+              },
+              category: true,
+              images: true,
+            },
+            filters: isId
+              ? { id: { $eq: identifier } }
+              : { slug: { $eq: identifier } },
+          },
+          { encodeValuesOnly: true }
+        );
 
-const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products?${query}`);
-const data = await res.json();
-setProducts(data.data);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/products?${query}`
+        );
+        const data = await res.json();
+        setProducts(data.data);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
@@ -312,8 +318,10 @@ setProducts(data.data);
       <ToastContainer autoClose={1500} />
       <Breadcrumbs>
         <Link to="/">Головна</Link> / <Link to="/catalog">Каталог</Link> /{' '}
-        <Link to={`/catalog/${product.category?.title}`}>{product.category?.title}</Link> /{' '}
-        {product.name}
+        <Link to={`/catalog/${product.category?.title}`}>
+          {product.category?.title}
+        </Link>{' '}
+        / {product.name}
       </Breadcrumbs>
       <MainSection>
         {/* Ліва колонка: Галерея */}
@@ -569,32 +577,37 @@ setProducts(data.data);
             <TitleSpecs> Характеристики</TitleSpecs>
 
             {(() => {
-             const normalizedAttributes = (product.attributes || [])
-  .map((attr) => {
-    const labelText =
-      attr.label?.label ??
-      attr.label?.name ??
-      attr.label?.title ??
-      attr.label?.value ??
-      '';
-    const valueText = attr.value?.value ?? '';
+           const normalizeSpecs = (items = []) =>
+  items
+    .map((item) => {
+      const labelText =
+        item.label?.label ??
+        item.label?.name ??
+        item.label?.title ??
+        item.label?.value ??
+        '';
 
-    if (!labelText || !valueText) return null;
+      const valueText = item.value?.value ?? '';
 
-    return {
-      id: attr.id ?? `${labelText}-${valueText}`,
-      label: labelText,
-      value: valueText,
-    };
-  })
-  .filter(Boolean);
-console.log(normalizedAttributes, 'normalizedAttributes');
+      if (!labelText || !valueText) return null;
+
+      return {
+        id: item.id ?? `${labelText}-${valueText}`,
+        label: labelText,
+        value: valueText,
+      };
+    })
+    .filter(Boolean);
+
+const normalizedAttributes = normalizeSpecs(product.attributes);
+const normalizedFeatures = normalizeSpecs(product.features);
 
 const allSpecs = [
   ...normalizedAttributes,
-  ...(product.features || []),
+  ...normalizedFeatures,
 ];
 
+console.log(allSpecs, 'allSpecs');
               return allSpecs.length ? (
                 allSpecs.map((spec, index) => (
                   <SpecRow key={`${spec.id}-${index}`}>
