@@ -1,4 +1,4 @@
- import qs from 'qs';
+import qs from 'qs';
 import {
   Button,
   Card,
@@ -85,36 +85,37 @@ export const ProductList = ({
         //     category
         //   )}&pagination[pageSize]=500`
         // );
-       
 
-// усередині fetchProducts:
-const query = qs.stringify(
-  {
-    populate: {
-      attributes: {
-        populate: {
-          label: { populate: '*' },
-          value: { populate: '*' },
-        },
-      },
-      category: true,
-      images: true,
-    },
-    filters: {
-      category: {
-        title: {
-          $eq: category,
-        },
-      },
-    },
-    pagination: {
-      pageSize: 500,
-    },
-  },
-  { encodeValuesOnly: true }
-);
+        // усередині fetchProducts:
+        const query = qs.stringify(
+          {
+            populate: {
+              attributes: {
+                populate: {
+                  label: { populate: '*' },
+                  value: { populate: '*' },
+                },
+              },
+              category: true,
+              images: true,
+            },
+            filters: {
+              category: {
+                title: {
+                  $eq: category,
+                },
+              },
+            },
+            pagination: {
+              pageSize: 500,
+            },
+          },
+          { encodeValuesOnly: true }
+        );
 
-const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products?${query}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/products?${query}`
+        );
 
         const data = await res.json();
         setProducts(data.data);
@@ -184,37 +185,44 @@ const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products?${query}`)
     handleFavorite(product, isFavorite, dispatch, toast);
   };
 
-  Object.keys(selectedFilters).forEach((key) => {
-    const value = selectedFilters[key];
+  
+Object.keys(selectedFilters).forEach((key) => {
+  const value = selectedFilters[key];
 
-    if (Array.isArray(value) && value.length > 0) {
-      filteredProducts = filteredProducts.filter((p) => {
-        // const attr = p.attributes?.find(
-        //   (a) => a.label.toLowerCase() === key.toLowerCase()
-        // );
-        // return attr && value.includes(attr.value);
-        return p.attributes?.some((a) => {
-  const labelText = (
-    a.label?.label ??
-    a.label?.name ??
-    a.label?.title ??
-    a.label?.value ??
-    ''
-  )
-    .toString()
-    .toLowerCase();
+  if (Array.isArray(value) && value.length > 0) {
+    filteredProducts = filteredProducts.filter((p) => {
 
-  const valueText = a.value?.value;
+      // Окремо перевіряємо condition
+      if (key === 'condition') {
+        return value.includes(p.condition);
+      }
 
-  return labelText === key.toLowerCase() && value.includes(valueText);
-});
+      // Усі інші фільтри шукаємо в attributes
+      return p.attributes?.some((a) => {
+        const labelText = (
+          a.label?.label ??
+          a.label?.name ??
+          a.label?.title ??
+          a.label?.value ??
+          ''
+        )
+          .toString()
+          .toLowerCase();
+
+        const valueText = a.value?.value;
+
+        return (
+          labelText === key.toLowerCase() &&
+          value.includes(valueText)
+        );
       });
-    }
-  });
+    });
+  }
+});
+
 
   if (priceRange && priceRange.length === 2) {
     // const [minPrice, maxPrice] = priceRange;
-   
   }
 
   const sortedProducts = useMemo(() => {

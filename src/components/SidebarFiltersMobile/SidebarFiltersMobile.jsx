@@ -65,6 +65,7 @@ export const SidebarFiltersMobile = ({
              const products = data.data || [];
 
         const aggregated = {};
+        const conditions = new Set();
 
 products.forEach((product) => {
   product.attributes?.forEach((attr) => {
@@ -81,6 +82,9 @@ products.forEach((product) => {
 
     aggregated[labelText].add(valueText);
   });
+   if (product.condition) {
+    conditions.add(product.condition);
+  }
 });
 
 // Створюємо масив об’єктів для SidebarFilters
@@ -90,6 +94,15 @@ const apiFilters = Object.entries(aggregated).map(([label, optionsSet]) => ({
   name: label.toLowerCase(),
   options: Array.from(optionsSet),
 }));
+
+if (conditions.size > 0) {
+  apiFilters.push({
+    type: 'checkbox',
+    label: 'Стан',
+    name: 'condition',
+    options: Array.from(conditions),
+  });
+}
 
 setFilters(apiFilters);
       } catch (error) {

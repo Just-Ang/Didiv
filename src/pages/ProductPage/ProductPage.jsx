@@ -71,6 +71,7 @@ export const ProductPage = () => {
   const product = products.find((p) =>
     isId ? String(p.id) === String(identifier) : p.slug === identifier
   );
+  console.log(product, 'product');
 
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
@@ -117,8 +118,8 @@ export const ProductPage = () => {
               },
               features: {
                 populate: {
-                  label: { populate: '*' },
-                  value: { populate: '*' },
+                  features_label: { populate: '*' },
+                  features_value: { populate: '*' },
                 },
               },
               category: true,
@@ -577,17 +578,20 @@ export const ProductPage = () => {
             <TitleSpecs> Характеристики</TitleSpecs>
 
             {(() => {
-           const normalizeSpecs = (items = []) =>
+              console.log('FEATURES:', product.features);
+console.log('ATTRIBUTES:', product.attributes);
+           
+
+const normalizeSpecs = (items = [], isFeature = false) =>
   items
     .map((item) => {
-      const labelText =
-        item.label?.label ??
-        item.label?.name ??
-        item.label?.title ??
-        item.label?.value ??
-        '';
+      const labelText = isFeature
+        ? item.features_label?.label
+        : item.label?.label;
 
-      const valueText = item.value?.value ?? '';
+      const valueText = isFeature
+        ? item.features_value?.value
+        : item.value?.value;
 
       if (!labelText || !valueText) return null;
 
@@ -600,7 +604,7 @@ export const ProductPage = () => {
     .filter(Boolean);
 
 const normalizedAttributes = normalizeSpecs(product.attributes);
-const normalizedFeatures = normalizeSpecs(product.features);
+const normalizedFeatures = normalizeSpecs(product.features, true);
 
 const allSpecs = [
   ...normalizedAttributes,
@@ -608,6 +612,8 @@ const allSpecs = [
 ];
 
 console.log(allSpecs, 'allSpecs');
+
+
               return allSpecs.length ? (
                 allSpecs.map((spec, index) => (
                   <SpecRow key={`${spec.id}-${index}`}>
