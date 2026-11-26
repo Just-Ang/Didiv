@@ -293,6 +293,7 @@ font-family: var(--second-font);
 `
 
 export const SpecRow = styled.div`
+font-family: var(--second-font);
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #eee;
@@ -304,6 +305,7 @@ export const SpecRow = styled.div`
 
   b {
     color: #222;
+    font-weight: 400;
   }
 `;
 

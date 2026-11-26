@@ -72,6 +72,8 @@ export const ProductPage = () => {
     isId ? String(p.id) === String(identifier) : p.slug === identifier
   );
   console.log(product, 'product');
+  console.log(product?.condition, 'product.condition');
+
 
   const isNew = product
     ? dayjs().diff(dayjs(product.createdAt), 'day') < 7
@@ -515,20 +517,55 @@ export const ProductPage = () => {
             {activeTab === 'description' && (
               <DescriptionText>{product.description}</DescriptionText>
             )}
-            {activeTab === 'attributes' && (
-              <SpecsGrid>
-                {product.attributes?.length ? (
-                  product.attributes.map((attr) => (
-                    <SpecRow key={attr.id}>
-                      <span>{attr.label}</span>
-                      <b>{attr.value}</b>
-                    </SpecRow>
-                  ))
-                ) : (
-                  <p>Характеристики відсутні</p>
-                )}
-              </SpecsGrid>
-            )}
+           {activeTab === 'attributes' && (
+  <SpecsGrid>
+    {(() => {
+      const normalizeSpecs = (items = [], isFeature = false) =>
+        items
+          .map((item) => {
+            const labelText = isFeature
+              ? item.features_label?.label
+              : item.label?.label;
+
+            const valueText = isFeature
+              ? item.features_value?.value
+              : item.value?.value;
+
+            if (!labelText || !valueText) return null;
+
+            return {
+              id: item.id ?? `${labelText}-${valueText}`,
+              label: labelText,
+              value: valueText,
+            };
+          })
+          .filter(Boolean);
+
+      const allSpecs = [
+        ...normalizeSpecs(product.attributes),
+        ...normalizeSpecs(product.features, true),
+        ...(product.condition
+          ? [{
+              id: 'condition',
+              label: 'Стан',
+              value: product.condition,
+            }]
+          : []),
+      ];
+
+      return allSpecs.length ? (
+        allSpecs.map((spec, index) => (
+          <SpecRow key={`${spec.id}-${index}`}>
+            <span>{spec.label}</span>
+            <b>{spec.value}</b>
+          </SpecRow>
+        ))
+      ) : (
+        <p>Характеристики відсутні</p>
+      );
+    })()}
+  </SpecsGrid>
+)}
             {activeTab === 'FAQ' && (
               <FAQSection
                 productId={product.documentId}
@@ -605,13 +642,20 @@ const normalizeSpecs = (items = [], isFeature = false) =>
 
 const normalizedAttributes = normalizeSpecs(product.attributes);
 const normalizedFeatures = normalizeSpecs(product.features, true);
-
+console.log(product.condition, 'product.condition');
 const allSpecs = [
   ...normalizedAttributes,
   ...normalizedFeatures,
+  ...(product.condition
+    ? [{
+        id: 'condition',
+        label: 'Стан',
+             value: product.condition,
+      }]
+    : []),
 ];
 
-console.log(allSpecs, 'allSpecs');
+console.log('ALL SPECS:', allSpecs);
 
 
               return allSpecs.length ? (
